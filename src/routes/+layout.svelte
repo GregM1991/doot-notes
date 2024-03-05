@@ -39,7 +39,7 @@
 		grid-area: main;
 		background: var(--palette-base);
 		margin: 0 80px;
-    padding: var(--space-1); /* TODO: Impl dynamic spacing with utopia */
+    padding: var(--space-xl) var(--space-2xl-3xl); 
 		border: 10px solid var(--palette-secondary);
 		border-radius: 30px; /* TODO: Impl border radius in css-vars */
 	}

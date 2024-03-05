@@ -119,9 +119,11 @@
   --space-l-xl: clamp(1.75rem, 1.0543rem + 3.4783vi, 3.75rem);
   --space-xl-2xl: clamp(2.625rem, 1.7989rem + 4.1304vi, 5rem);
   --space-2xl-3xl: clamp(3.5rem, 2.1087rem + 6.9565vi, 7.5rem);
+  --space-xl-3xl: clamp(2.625rem, 0.9293rem + 8.4783vi, 7.5rem);
 
   /* Custom pairs */
   --space-s-l: clamp(0.875rem, 0.3098rem + 2.8261vi, 2.5rem);
+  --space-xl-3xl: clamp(2.625rem, 0.9293rem + 8.4783vi, 7.5rem);
 }
 
 @font-face {

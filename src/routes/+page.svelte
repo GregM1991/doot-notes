@@ -7,9 +7,10 @@
 
 <style>
 	h1 {
-		color: var(--palette-primary);
+		color: var(--palette-pop);
 		font-family: var(--font-primary);
     font-size: var(--type-step-4); 
+		text-align: center;
 	}
 
   p {
