@@ -8,7 +8,10 @@ export default defineConfig({
 		cssMinify: MODE === 'production',
 		rollupOptions: {
 			external: [/node:.*/, 'stream', 'crypto', 'fsevents']
-		}
+		},
 	},
-	plugins: [sveltekit()]
+	plugins: [sveltekit()],
+	css: {
+		devSourcemap: MODE === 'development',
+	}
 });

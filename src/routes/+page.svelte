@@ -1,9 +1,19 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<h1>Welcome to DootNotes 📯</h1>
+<p>
+	DootNotes is a simple note-taking app that allows you to create, edit, and
+	delete notes. It's built with SvelteKit and uses a JSON file to store the
+	notes.
+</p>
 
 <style>
-  h1 {
-    color: var(--primary);
-    font-family: var(--font-primary);
+	h1 {
+		color: var(--palette-primary);
+		font-family: var(--font-primary);
+    font-size: var(--type-step-4); 
+	}
+
+  p {
+    font-size: var(--type-step-1);
+    text-align: center;
   }
 </style>

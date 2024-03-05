@@ -80,15 +80,48 @@
   --palette-cream-100: var(--base-cream), 100%;
 
   /* Color palette declaration */
-  --primary: hsla(var(--palette-pink-50), 100%);
-  --secondary: hsla(var(--palette-orange-50), 100%);
-  --tertiary: hsla(var(--palette-yellow-50), 100%);
-  --pop: hsla(var(--palette-blue-50), 100%);
-  --pop-secondary: hsla(var(--palette-green-50), 100%);
-  --base: hsla(var(--palette-cream-50), 100%);
+  --palette-primary: hsla(var(--palette-orange-50), 100%);
+  --palette-secondary: hsla(var(--palette-pink-80), 100%);
+  --palette-tertiary: hsla(var(--palette-yellow-50), 100%);
+  --palette-pop: hsla(var(--palette-blue-50), 100%);
+  --palette-pop-secondary: hsla(var(--palette-green-50), 100%);
+  --palette-base: hsla(var(--palette-cream-90), 100%);
+
+  /* Typography */
+  /* @link https://utopia.fyi/type/calculator?c=320,14,1.333,1240,20,1.414,5,1,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+  --type-step--1: clamp(0.6564rem, 0.5772rem + 0.3958vi, 0.884rem);
+  --type-step-0: clamp(0.875rem, 0.7446rem + 0.6522vi, 1.25rem);
+  --type-step-1: clamp(1.1664rem, 0.9573rem + 1.0454vi, 1.7675rem);
+  --type-step-2: clamp(1.5548rem, 1.2263rem + 1.6426vi, 2.4992rem);
+  --type-step-3: clamp(2.0725rem, 1.5642rem + 2.5416vi, 3.5339rem);
+  --type-step-4: clamp(2.7627rem, 1.9855rem + 3.8858vi, 4.997rem);
+  --type-step-5: clamp(3.6826rem, 2.5059rem + 5.8836vi, 7.0657rem);
+  --font-primary: 'Nunito', sans-serif;
 
   /* Layout */
-  --font-primary: 'Nunito', sans-serif;
+  /* @link https://utopia.fyi/space/calculator?c=320,14,1.333,1240,20,1.414,5,1,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+  --space-3xs: clamp(0.25rem, 0.2283rem + 0.1087vi, 0.3125rem);
+  --space-2xs: clamp(0.4375rem, 0.3723rem + 0.3261vi, 0.625rem);
+  --space-xs: clamp(0.6875rem, 0.6005rem + 0.4348vi, 0.9375rem);
+  --space-s: clamp(0.875rem, 0.7446rem + 0.6522vi, 1.25rem);
+  --space-m: clamp(1.3125rem, 1.1168rem + 0.9783vi, 1.875rem);
+  --space-l: clamp(1.75rem, 1.4891rem + 1.3043vi, 2.5rem);
+  --space-xl: clamp(2.625rem, 2.2337rem + 1.9565vi, 3.75rem);
+  --space-2xl: clamp(3.5rem, 2.9783rem + 2.6087vi, 5rem);
+  --space-3xl: clamp(5.25rem, 4.4674rem + 3.913vi, 7.5rem);
+
+  /* One-up pairs */
+  --space-3xs-2xs: clamp(0.25rem, 0.1196rem + 0.6522vi, 0.625rem);
+  --space-2xs-xs: clamp(0.4375rem, 0.2636rem + 0.8696vi, 0.9375rem);
+  --space-xs-s: clamp(0.6875rem, 0.4918rem + 0.9783vi, 1.25rem);
+  --space-s-m: clamp(0.875rem, 0.5272rem + 1.7391vi, 1.875rem);
+  --space-m-l: clamp(1.3125rem, 0.8995rem + 2.0652vi, 2.5rem);
+  --space-l-xl: clamp(1.75rem, 1.0543rem + 3.4783vi, 3.75rem);
+  --space-xl-2xl: clamp(2.625rem, 1.7989rem + 4.1304vi, 5rem);
+  --space-2xl-3xl: clamp(3.5rem, 2.1087rem + 6.9565vi, 7.5rem);
+
+  /* Custom pairs */
+  --space-s-l: clamp(0.875rem, 0.3098rem + 2.8261vi, 2.5rem);
 }
 
 @font-face {
@@ -147,12 +180,18 @@ html:focus-within {
   scroll-behavior: smooth;
 }
 
+html {
+  height: 100%;
+  overflow-x: hidden;
+}
+
 /* Set core body defaults */
 body {
   min-height: 100vh;
   text-rendering: geometricPrecision;
   font-family: 'Nunito', sans-serif;
   -webkit-font-smoothing: antialiased;
+  font-size: var(--type-step-0);
 }
 
 /* A elements that don't have a class get default styles */
