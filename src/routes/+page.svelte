@@ -8,7 +8,7 @@
 <style>
 	h1 {
 		color: var(--palette-pop);
-		font-family: var(--font-primary);
+		font-family: var(--type-primary);
     font-size: var(--type-step-4); 
 		text-align: center;
 	}

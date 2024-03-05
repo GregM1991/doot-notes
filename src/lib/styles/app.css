@@ -3,72 +3,67 @@
   /* Color palette declaration */
   /* Primary */
   --base-orange: 14, 77%;
-  --palette-orange-10: var(--base-orange), 10%;
+  /* --palette-orange-10: var(--base-orange), 10%;
   --palette-orange-20: var(--base-orange), 20%;
   --palette-orange-30: var(--base-orange), 30%;
-  --palette-orange-40: var(--base-orange), 40%;
+  --palette-orange-40: var(--base-orange), 40%; */
   --palette-orange-50: var(--base-orange), 50%;
-  --palette-orange-60: var(--base-orange), 60%;
+  /* --palette-orange-60: var(--base-orange), 60%;
   --palette-orange-70: var(--base-orange), 70%;
   --palette-orange-80: var(--base-orange), 80%;
-  --palette-orange-90: var(--base-orange), 90%;
-  --palette-orange-100: var(--base-orange), 100%;
+  --palette-orange-90: var(--base-orange), 90%; */
 
   /* Secondary */
   --base-pink: 358, 83%;
-  --palette-pink-10: var(--base-pink), 10%;
+  /* --palette-pink-10: var(--base-pink), 10%;
   --palette-pink-20: var(--base-pink), 20%;
   --palette-pink-30: var(--base-pink), 30%;
   --palette-pink-40: var(--base-pink), 40%;
   --palette-pink-50: var(--base-pink), 50%;
   --palette-pink-60: var(--base-pink), 60%;
-  --palette-pink-70: var(--base-pink), 70%;
+  --palette-pink-70: var(--base-pink), 70%; */
   --palette-pink-80: var(--base-pink), 80%;
-  --palette-pink-90: var(--base-pink), 90%;
-  --palette-pink-100: var(--base-pink), 100%;
+  /* --palette-pink-90: var(--base-pink), 90%; */
 
   /* Tertiary */
   --base-yellow: 41, 81%;
-  --palette-yellow-10: var(--base-yellow), 10%;
+  /* --palette-yellow-10: var(--base-yellow), 10%;
   --palette-yellow-20: var(--base-yellow), 20%;
   --palette-yellow-30: var(--base-yellow), 30%;
   --palette-yellow-40: var(--base-yellow), 40%;
-  --palette-yellow-50: var(--base-yellow), 50%;
+  --palette-yellow-50: var(--base-yellow), 50%; */
   --palette-yellow-60: var(--base-yellow), 60%;
-  --palette-yellow-70: var(--base-yellow), 70%;
+  /* --palette-yellow-70: var(--base-yellow), 70%;
   --palette-yellow-80: var(--base-yellow), 80%;
-  --palette-yellow-90: var(--base-yellow), 90%;
-  --palette-yellow-100: var(--base-yellow), 100%;
+  --palette-yellow-90: var(--base-yellow), 90%; */
   --base-cream: 28, 27%;
 
   /* Pop */
   --base-blue: 201, 95%;
-  --palette-blue-10: var(--base-blue), 10%;
+  /* --palette-blue-10: var(--base-blue), 10%;
   --palette-blue-20: var(--base-blue), 20%;
-  --palette-blue-30: var(--base-blue), 30%;
+  --palette-blue-30: var(--base-blue), 30%; */
   --palette-blue-40: var(--base-blue), 40%;
-  --palette-blue-50: var(--base-blue), 50%;
+  /* --palette-blue-50: var(--base-blue), 50%;
   --palette-blue-60: var(--base-blue), 60%;
   --palette-blue-70: var(--base-blue), 70%;
   --palette-blue-80: var(--base-blue), 80%;
-  --palette-blue-90: var(--base-blue), 90%;
-  --palette-blue-100: var(--base-blue), 100%;
+  --palette-blue-90: var(--base-blue), 90%; */
 
   /* Pop Secondary */
   --base-green: 106, 32%;
-  --palette-green-10: var(--base-green), 10%;
+  /* --palette-green-10: var(--base-green), 10%;
   --palette-green-20: var(--base-green), 20%;
-  --palette-green-30: var(--base-green), 30%;
+  --palette-green-30: var(--base-green), 30%; */
   --palette-green-40: var(--base-green), 40%;
-  --palette-green-50: var(--base-green), 50%;
+  /* --palette-green-50: var(--base-green), 50%;
   --palette-green-60: var(--base-green), 60%;
   --palette-green-70: var(--base-green), 70%;
   --palette-green-80: var(--base-green), 80%;
-  --palette-green-90: var(--base-green), 90%;
-  --palette-green-100: var(--base-green), 100%;
+  --palette-green-90: var(--base-green), 90%; */
 
   /* Base */
-  --palette-cream-10: var(--base-cream), 10%;
+  /* --palette-cream-10: var(--base-cream), 10%;
   --palette-cream-20: var(--base-cream), 20%;
   --palette-cream-30: var(--base-cream), 30%;
   --palette-cream-40: var(--base-cream), 40%;
@@ -76,16 +71,16 @@
   --palette-cream-60: var(--base-cream), 60%;
   --palette-cream-70: var(--base-cream), 70%;
   --palette-cream-80: var(--base-cream), 80%;
-  --palette-cream-90: var(--base-cream), 90%;
-  --palette-cream-100: var(--base-cream), 100%;
+  --palette-cream-90: var(--base-cream), 90%; */
+  --palette-cream-95: var(--base-cream), 95%;
 
   /* Color palette declaration */
   --palette-primary: hsla(var(--palette-orange-50), 100%);
   --palette-secondary: hsla(var(--palette-pink-80), 100%);
-  --palette-tertiary: hsla(var(--palette-yellow-50), 100%);
-  --palette-pop: hsla(var(--palette-blue-50), 100%);
-  --palette-pop-secondary: hsla(var(--palette-green-50), 100%);
-  --palette-base: hsla(var(--palette-cream-90), 100%);
+  --palette-tertiary: hsla(var(--palette-yellow-60), 100%);
+  --palette-pop: hsla(var(--palette-blue-40), 100%);
+  --palette-pop-secondary: hsla(var(--palette-green-40), 100%);
+  --palette-base: hsla(var(--palette-cream-95), 100%);
 
   /* Typography */
   /* @link https://utopia.fyi/type/calculator?c=320,14,1.333,1240,20,1.414,5,1,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
@@ -96,10 +91,10 @@
   --type-step-3: clamp(2.0725rem, 1.5642rem + 2.5416vi, 3.5339rem);
   --type-step-4: clamp(2.7627rem, 1.9855rem + 3.8858vi, 4.997rem);
   --type-step-5: clamp(3.6826rem, 2.5059rem + 5.8836vi, 7.0657rem);
-  --font-primary: 'Nunito', sans-serif;
-
+  --type-primary: 'Nunito', sans-serif;
+  --type-bold: 700;
   /* Layout */
-  /* @link https://utopia.fyi/space/calculator?c=320,14,1.333,1240,20,1.414,5,1,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+  /* @link https://utopia.fyi/space/calculator?c=320,14,1.333,1240,20,1.414,5,1,&s=0.75|0.5|0.25,1.5|2|3|4|6,xl-3xl|3xl-xl|s-l&g=s,l,xl,12 */
   --space-3xs: clamp(0.25rem, 0.2283rem + 0.1087vi, 0.3125rem);
   --space-2xs: clamp(0.4375rem, 0.3723rem + 0.3261vi, 0.625rem);
   --space-xs: clamp(0.6875rem, 0.6005rem + 0.4348vi, 0.9375rem);
@@ -122,8 +117,9 @@
   --space-xl-3xl: clamp(2.625rem, 0.9293rem + 8.4783vi, 7.5rem);
 
   /* Custom pairs */
-  --space-s-l: clamp(0.875rem, 0.3098rem + 2.8261vi, 2.5rem);
   --space-xl-3xl: clamp(2.625rem, 0.9293rem + 8.4783vi, 7.5rem);
+  --space-3xl-xl: clamp(3.75rem, 5.7717rem + -2.6087vi, 5.25rem);
+  --space-s-l: clamp(0.875rem, 0.3098rem + 2.8261vi, 2.5rem);
 }
 
 @font-face {
@@ -189,7 +185,6 @@ html {
 
 /* Set core body defaults */
 body {
-  min-height: 100vh;
   text-rendering: geometricPrecision;
   font-family: 'Nunito', sans-serif;
   -webkit-font-smoothing: antialiased;
