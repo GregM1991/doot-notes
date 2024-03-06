@@ -62,11 +62,14 @@
 
 	.line {
 		display: flex;
+		position: relative;
 		align-items: center;
 	}
 
-	.line.top {
-		/* TODO: do the horn before element */
+	.line.top::before {
+		content: "📯";
+		position: absolute;
+		left: -30px;
 	}
 
 	.line.bottom {
