@@ -29,7 +29,7 @@
 	div {
 		display: grid;
 		grid-template-columns: var(--space-3xl) 1fr var(--space-3xl);
-		grid-template-rows: 80px 1fr 80px;
+		grid-template-rows: auto 1fr auto;
 		grid-template-areas:
 			'header header header'
 			'gutter1 main gutter2'
@@ -39,8 +39,7 @@
 	}
 	header {
 		grid-area: header;
-		background: var(--palette-secondary);
-		padding: 0 var(--space-3xl);
+		padding: var(--space-s) var(--space-3xl);
 	}
 	nav {
 		display: flex;
@@ -55,8 +54,7 @@
 		justify-content: center;
 		align-items: flex-start;
 		font-size: var(--type-step-0);
-		color: var(--palette-pop);
-		text-decoration: none;
+		color: var(--palette-primary);
 		font-weight: var(--type-bold);
 	}
 
@@ -69,12 +67,13 @@
 	.line.top::before {
 		content: "📯";
 		position: absolute;
-		left: -30px;
+		left: -35px;
 	}
 
-	.line.bottom {
-		/* TODO: do the horn after element */
-	}
+	.line.bottom::after {
+		content: "📯";
+		position: absolute;
+		right: -30px;	}
 
 	main {
 		display: flex;
