@@ -24,7 +24,6 @@
     "@types/bun": "^1.0.8",
     "@types/eslint": "^8.56.0",
     "@remix-run/eslint-config": "2.7.2",
-
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
     "@vitejs/plugin-react": "^4.2.1",
@@ -48,6 +47,7 @@
   "dependencies": {
     "@epic-web/remember": "^1.0.2",
     "@faker-js/faker": "^8.4.1",
-    "@prisma/client": "latest"
+    "@prisma/client": "latest",
+    "zod": "^3.22.4"
   }
 }
