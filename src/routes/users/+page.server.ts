@@ -35,11 +35,13 @@ export const load: PageServerLoad = async ({ request }) => {
 			status: 'error',
 			error: result.error.message,
 			statusCode: 400,
+			searchQuery
 		} as const
 	}
 
 	return {
 		status: 'idle',
 		users: result.data,
+		searchQuery
 	} as const
 }

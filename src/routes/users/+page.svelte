@@ -1,9 +1,11 @@
 <script lang="ts">
+	// import { page } from '$app/stores'
 	import type { PageData } from './$types'
 
   // TODO: Figure out how to pull the page params
 	export let data: PageData
   const id = crypto.randomUUID()
+	console.log(data.searchQuery)
 </script>
 
 <h1>User's</h1>
