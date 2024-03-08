@@ -1,6 +1,7 @@
 import type { PageServerLoad, Actions } from './$types'
 import { prisma } from '$utils/db.server'
 import { z } from 'zod'
+import { redirect } from '@sveltejs/kit'
 
 const UserSearchResultSchema = z.object({
 	id: z.string(),
@@ -11,7 +12,13 @@ const UserSearchResultSchema = z.object({
 const UserSearchResultsSchema = z.array(UserSearchResultSchema)
 
 export const load: PageServerLoad = async ({ request }) => {
+	console.log('server')
 	const searchQuery = new URL(request.url).searchParams.get('search')
+	console.log(searchQuery)
+	if (searchQuery === '') {
+		throw redirect(307, '/users')
+	}
+
 	const like = `%${searchQuery}%`
 
 	const rawUsers = await prisma.$queryRaw`
@@ -35,13 +42,13 @@ export const load: PageServerLoad = async ({ request }) => {
 			status: 'error',
 			error: result.error.message,
 			statusCode: 400,
-			searchQuery
+			searchQuery,
 		} as const
 	}
 
 	return {
 		status: 'idle',
 		users: result.data,
-		searchQuery
+		searchQuery,
 	} as const
 }

@@ -1,18 +1,24 @@
 <script lang="ts">
 	// import { page } from '$app/stores'
 	import type { PageData } from './$types'
+	import { debounce } from '$utils/misc'
 
-  // TODO: Figure out how to pull the page params
 	export let data: PageData
-  const id = crypto.randomUUID()
+	let search = data.searchQuery || ''
 	console.log(data.searchQuery)
+	$: console.log(search)
 </script>
 
 <h1>User's</h1>
 <div>
-	<form method="GET">
-		<label class="sr-only" for={id}> Search </label>
-		<input placeholder="Search" name="search" type="search" id={id} />
+	<form method="GET" action="/users">
+		<label class="sr-only" for="search">Search</label>
+		<input
+			placeholder="Search"
+			name="search"
+			type="search"
+			bind:value={search}
+		/>
 		<button>Search</button>
 	</form>
 	{#if data.status === 'error'}
