@@ -1,5 +1,5 @@
 import type { PageServerLoad } from './$types'
-import { prisma } from '$utils/db.server'
+import { prisma } from '$lib/utils/db.server'
 import { z } from 'zod'
 
 const UserSearchResultSchema = z.object({

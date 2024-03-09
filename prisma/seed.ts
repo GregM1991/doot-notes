@@ -6,7 +6,7 @@ createPassword,
 getNoteImages,
 getUserImages,
 img */
-import { prisma } from '$utils/db.server'
+import { prisma } from '$lib/utils/db.server'
 import { createUser, cleanupDb } from '$tests/db-utils'
 
 // create function seed, is main function where all seed logic sits
