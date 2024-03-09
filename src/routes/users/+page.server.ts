@@ -1,7 +1,6 @@
-import type { PageServerLoad, Actions } from './$types'
+import type { PageServerLoad } from './$types'
 import { prisma } from '$utils/db.server'
 import { z } from 'zod'
-import { redirect } from '@sveltejs/kit'
 
 const UserSearchResultSchema = z.object({
 	id: z.string(),
@@ -11,13 +10,9 @@ const UserSearchResultSchema = z.object({
 
 const UserSearchResultsSchema = z.array(UserSearchResultSchema)
 
-export const load: PageServerLoad = async ({ request }) => {
-	console.log('server')
-	const searchQuery = new URL(request.url).searchParams.get('search')
-	console.log(searchQuery)
-	if (searchQuery === '') {
-		throw redirect(307, '/users')
-	}
+export const load: PageServerLoad = async ({ url }) => {
+	const searchQuery = url.searchParams.get('search') ?? ''
+	console.log('load func', { searchQuery })
 
 	const like = `%${searchQuery}%`
 
