@@ -1,4 +1,3 @@
-import type { PageServerLoad } from './$types'
 import { prisma } from '$lib/utils/db.server'
 import { z } from 'zod'
 
@@ -10,7 +9,7 @@ const UserSearchResultSchema = z.object({
 
 const UserSearchResultsSchema = z.array(UserSearchResultSchema)
 
-export const load: PageServerLoad = async ({ url }) => {
+export const load = async ({ url }) => {
 	const searchQuery = url.searchParams.get('search') ?? ''
 	console.log('load func', { searchQuery })
 
