@@ -6,7 +6,6 @@
 	export let data
 
 	const searchUsers = debounce(async (event: CustomEvent<OnSearch>) => {
-		console.log('hello')
 		const data = new FormData(event.detail.form)
 		const search = data.get('search')
 		goto(`?search=${search}`, { replaceState: true, keepFocus: true })
@@ -24,7 +23,7 @@
 				<li>{user.username}</li>
 			{/each}
 		</ul>
-	{:else}
+	{:else}¬
 		<span>No users were found.</span>
 	{/if}
 </div>

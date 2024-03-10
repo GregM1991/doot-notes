@@ -125,7 +125,7 @@ async function generateSvgSprite({
 					},
 				})
 				.transform(input)
-
+			return root.toString().trim()
 			// const svg = root.querySelector('svg')
 			// if (!svg) throw new Error('No SVG element found')
 

@@ -7,7 +7,7 @@
 	{#if !import.meta.env.Prod}
 		<!-- TODO: Do dev things here if need -->
 	{/if}
-
+	<link rel="preload" href="/src/lib/components/icons/sprite.svg" as="image">
 	<title>📯 Let's doot some notes 📯</title>
 </svelte:head>
 
