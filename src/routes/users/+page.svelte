@@ -18,12 +18,18 @@
 	{#if data.status === 'error'}
 		<span>{data.error}</span>
 	{:else if data.users.length}
-		<ul>
+		<ul role="list">
 			{#each data.users as user}
-				<li>{user.username}</li>
+				<li>
+					<a data-sveltekit-preload-data="hover" href={`/users/${user.username}`}>
+						<!-- TODO: put gravatar in -->
+						<span>{user.name}</span>
+						<span class="username">{user.username}</span>
+					</a>
+				</li>
 			{/each}
 		</ul>
-	{:else}¬
+	{:else}
 		<span>No users were found.</span>
 	{/if}
 </div>
@@ -32,6 +38,36 @@
 	h1 {
 		color: var(--palette-pop);
 		font-size: var(--type-step-4);
-		margin: var(--space-m)
+		margin: var(--space-m);
+	}
+
+	div {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--space-m);
+	}
+
+	ul {
+		display: flex;
+		gap: var(--space-s);
+	}
+
+	li {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		flex: 1;
+		padding: var(--space-s);
+		background: var(--palette-primary-ultra-light);
+		border-radius: 1rem;
+		border: var(--border-primary);
+		text-align: center;
+		font-weight: var(--type-weight-bold);
+	}
+
+	span.username {
+		font-size: var(--type-step--1);
+		font-weight: 400;
 	}
 </style>

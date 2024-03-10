@@ -4,7 +4,7 @@
 	export let name: IconName
 
 </script>
-
+<!-- TODO: Get icons working with sprite -->
 {#if $$slots.default}
 	<span>
 		<svelte:self {name} />

@@ -10,8 +10,8 @@
   --palette-orange-50: var(--base-orange), 50%;
   /* --palette-orange-60: var(--base-orange), 60%;
   --palette-orange-70: var(--base-orange), 70%;
-  --palette-orange-80: var(--base-orange), 80%;
-  --palette-orange-90: var(--base-orange), 90%; */
+  --palette-orange-80: var(--base-orange), 80%; */
+  --palette-orange-90: var(--base-orange), 90%;
 
   /* Secondary */
   --base-pink: 358, 83%;
@@ -89,6 +89,7 @@
 
   /* Color palette declaration */
   --palette-primary: hsla(var(--palette-orange-50), 100%);
+  --palette-primary-ultra-light: hsla(var(--palette-orange-90), 100%);
   --palette-secondary: hsla(var(--palette-pink-80), 100%);
   --palette-secondary-dark: hsla(var(--palette-pink-40), 100%);
   --palette-secondary-light: hsla(var(--palette-pink-85), 100%);
@@ -108,7 +109,9 @@
   --type-step-4: clamp(2.7627rem, 1.9855rem + 3.8858vi, 4.997rem);
   --type-step-5: clamp(3.6826rem, 2.5059rem + 5.8836vi, 7.0657rem);
   --type-primary: 'Nunito', sans-serif;
-  --type-bold: 700;
+  --type-weight-bold: 700;
+  --type-weight-standard: 400;
+
   /* Layout */
   /* @link https://utopia.fyi/space/calculator?c=320,14,1.333,1240,20,1.414,5,1,&s=0.75|0.5|0.25,1.5|2|3|4|6,xl-3xl|3xl-xl|s-l&g=s,l,xl,12 */
   --space-3xs: clamp(0.25rem, 0.2283rem + 0.1087vi, 0.3125rem);
@@ -138,7 +141,13 @@
   --space-s-l: clamp(0.875rem, 0.3098rem + 2.8261vi, 2.5rem);
 
   /* Animations */
-  --animation-standard: 0.2s ease-in;
+  --animation-quick: 0.1s ease-in;
+
+  /* Other */
+  --border-radius: 1rem;
+  --border-radius-large: 2rem;
+  --border: 2px solid var(--palette-grey-20);
+  --border-primary: 2px solid var(--palette-primary);
 }
 
 @font-face {

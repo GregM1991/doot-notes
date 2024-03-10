@@ -38,13 +38,13 @@
 
 	input {
 		padding: var(--space-xs);
-		border: 2px solid var(--palette-grey-20);
+		border: var(--border);
 		background-color: var(--palette-secondary);
 		border-radius: 1rem;
 		outline: none;
 		filter: drop-shadow(3px 3px 0px var(--palette-grey-20));
 
-		transition: var(--animation-standard);
+		transition: var(--animation-quick);
 	}
 
 	input:focus-visible {
@@ -62,13 +62,13 @@
 		place-items: center;
 		padding: var(--space-xs);
 		border: 2px solid var(--palette-grey-20);
-		background-color: var(--palette-secondary);
+		background-color: var(--palette-tertiary);
 		border-radius: 1rem;
 		outline: none;
 		filter: drop-shadow(3px 3px 0px var(--palette-grey-20));
 		cursor: pointer;
 
-		transition: 0.1s;
+		transition: var(--animation-quick);
 	}
 
 	button:focus {

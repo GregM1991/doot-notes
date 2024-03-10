@@ -21,7 +21,7 @@
 		align-items: flex-start;
 		font-size: var(--type-step-0);
 		color: var(--palette-primary);
-		font-weight: var(--type-bold);
+		font-weight: var(--type-weight-bold);
 	}
 
 	.line {
