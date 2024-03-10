@@ -11,7 +11,6 @@ const UserSearchResultsSchema = z.array(UserSearchResultSchema)
 
 export const load = async ({ url }) => {
 	const searchQuery = url.searchParams.get('search') ?? ''
-	console.log('load func', { searchQuery })
 
 	const like = `%${searchQuery}%`
 

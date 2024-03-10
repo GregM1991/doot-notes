@@ -1,4 +1,5 @@
 <script>
+	import { Navbar } from '$lib/components'
 	import '$lib/styles/app.css'
 </script>
 
@@ -12,13 +13,7 @@
 
 <div>
 	<header>
-		<nav>
-			<a href="/" class="logo">
-				<span class="line top"> Doot</span>
-				<span class="line bottom">Notes</span>
-			</a>
-			<a href="/about" class="nav-link">About</a>
-		</nav>
+		<Navbar />
 	</header>
 	<main>
 		<slot />
@@ -37,43 +32,11 @@
 		height: 100vh;
 		background: var(--palette-base);
 	}
+
 	header {
 		grid-area: header;
 		padding: var(--space-s) var(--space-3xl);
 	}
-	nav {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		height: 100%;
-	}
-
-	.logo {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: flex-start;
-		font-size: var(--type-step-0);
-		color: var(--palette-primary);
-		font-weight: var(--type-bold);
-	}
-
-	.line {
-		display: flex;
-		position: relative;
-		align-items: center;
-	}
-
-	.line.top::before {
-		content: "📯";
-		position: absolute;
-		left: -35px;
-	}
-
-	.line.bottom::after {
-		content: "📯";
-		position: absolute;
-		right: -30px;	}
 
 	main {
 		display: flex;

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Search, type OnSearch } from '$lib/components/index'
+	import { Searchbar, type OnSearch } from '$lib/components/index'
 	import { debounce } from '$lib/utils/misc'
 	import { goto } from '$app/navigation'
 
@@ -15,7 +15,7 @@
 
 <h1>Doot Notes User's</h1>
 <div>
-	<Search on:search={searchUsers} on:submit={searchUsers} />
+	<Searchbar on:search={searchUsers} on:submit={searchUsers} />
 	{#if data.status === 'error'}
 		<span>{data.error}</span>
 	{:else if data.users.length}
@@ -31,6 +31,8 @@
 
 <style>
 	h1 {
+		color: var(--palette-pop);
 		font-size: var(--type-step-4);
+		margin: var(--space-m)
 	}
 </style>

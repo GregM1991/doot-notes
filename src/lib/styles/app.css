@@ -23,6 +23,7 @@
   --palette-pink-60: var(--base-pink), 60%;
   --palette-pink-70: var(--base-pink), 70%; */
   --palette-pink-80: var(--base-pink), 80%;
+  --palette-pink-85: var(--base-pink), 85%;
   /* --palette-pink-90: var(--base-pink), 90%; */
 
   /* Tertiary */
@@ -36,7 +37,6 @@
   /* --palette-yellow-70: var(--base-yellow), 70%;
   --palette-yellow-80: var(--base-yellow), 80%;
   --palette-yellow-90: var(--base-yellow), 90%; */
-  --base-cream: 28, 27%;
 
   /* Pop */
   --base-blue: 201, 95%;
@@ -63,6 +63,7 @@
   --palette-green-90: var(--base-green), 90%; */
 
   /* Base */
+  --base-cream: 28, 27%;
   /* --palette-cream-10: var(--base-cream), 10%;
   --palette-cream-20: var(--base-cream), 20%;
   --palette-cream-30: var(--base-cream), 30%;
@@ -74,13 +75,28 @@
   --palette-cream-90: var(--base-cream), 90%; */
   --palette-cream-95: var(--base-cream), 95%;
 
+  /* Grey */
+  --base-grey: 28, 10%;
+  --palette-grey-10: hsl(var(--base-grey), 10%);
+  --palette-grey-20: hsl(var(--base-grey), 20%);
+  --palette-grey-30: hsl(var(--base-grey), 30%);
+  --palette-grey-40: hsl(var(--base-grey), 40%);
+  --palette-grey-50: hsl(var(--base-grey), 50%);
+  --palette-grey-60: hsl(var(--base-grey), 60%);
+  --palette-grey-70: hsl(var(--base-grey), 70%);
+  --palette-grey-80: hsl(var(--base-grey), 80%);
+  --palette-grey-90: hsl(var(--base-grey), 90%);
+
   /* Color palette declaration */
   --palette-primary: hsla(var(--palette-orange-50), 100%);
   --palette-secondary: hsla(var(--palette-pink-80), 100%);
+  --palette-secondary-dark: hsla(var(--palette-pink-40), 100%);
+  --palette-secondary-light: hsla(var(--palette-pink-85), 100%);
   --palette-tertiary: hsla(var(--palette-yellow-60), 100%);
   --palette-pop: hsla(var(--palette-blue-40), 100%);
   --palette-pop-secondary: hsla(var(--palette-green-40), 100%);
   --palette-base: hsla(var(--palette-cream-95), 100%);
+
 
   /* Typography */
   /* @link https://utopia.fyi/type/calculator?c=320,14,1.333,1240,20,1.414,5,1,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
@@ -120,6 +136,9 @@
   --space-xl-3xl: clamp(2.625rem, 0.9293rem + 8.4783vi, 7.5rem);
   --space-3xl-xl: clamp(3.75rem, 5.7717rem + -2.6087vi, 5.25rem);
   --space-s-l: clamp(0.875rem, 0.3098rem + 2.8261vi, 2.5rem);
+
+  /* Animations */
+  --animation-standard: 0.2s ease-in;
 }
 
 @font-face {
@@ -167,7 +186,8 @@ dd {
   margin: 0;
 }
 
-/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+/* Remove list styles on ul, ol elements with a list role, which suggests 
+   default styling will be removed */
 ul[role='list'],
 ol[role='list'] {
   list-style: none;
@@ -189,6 +209,7 @@ body {
   font-family: 'Nunito', sans-serif;
   -webkit-font-smoothing: antialiased;
   font-size: var(--type-step-0);
+  color: var(--palette-grey-20);
 }
 
 /* A elements that don't have a class get default styles */
