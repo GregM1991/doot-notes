@@ -1,4 +1,6 @@
-export { default as Searchbar } from '$lib/components/Search/Searchbar.svelte'
-export { default as Navbar } from '$lib/components/Navbar/Navbar.svelte'
+export { default as Button } from '$lib/components/Button/Button.svelte'
 export { default as Icon } from '$lib/components/icons/Icon.svelte'
+export { default as LinkButton } from '$lib/components/LinkButton/LinkButton.svelte'
+export { default as Navbar } from '$lib/components/Navbar/Navbar.svelte'
+export { default as Searchbar } from '$lib/components/Search/Searchbar.svelte'
 export * from '$lib/components/Search/search.types'
