@@ -11,7 +11,7 @@
   </a>
 	<span class="right-links">
 		{#if username}
-			<a href={`/users/${username}/notes`}>{`${username}'s Notes`}</a>
+			<a href={`${username}/notes`}>{`${username}'s Notes`}</a>
 		{/if}
 		<a href="/users" class="nav-link">Users</a>
 	</span>

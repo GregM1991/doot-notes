@@ -12,7 +12,7 @@
     <span>Username: {username}</span>
     <span class="date-joined">joined {userJoinedDisplay}</span>
   </div>
-	<LinkButton href={`users/${username}/notes`}>View {name}'s notes</LinkButton>
+	<LinkButton href={`${username}/notes`}>View {name}'s notes</LinkButton>
 </main>
 
 <style>
