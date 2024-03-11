@@ -3,7 +3,7 @@
     <span class="line top"> Doot</span>
     <span class="line bottom">Notes</span>
   </a>
-  <a href="/users" class="nav-link">User's</a>
+  <a href="/users" class="nav-link">Users</a>
 </nav>
 
 <style>

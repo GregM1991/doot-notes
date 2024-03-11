@@ -13,35 +13,36 @@
 </script>
 
 <h1>Doot Notes User's</h1>
-<div>
+<main>
 	<Searchbar on:search={searchUsers} on:submit={searchUsers} />
 	{#if data.status === 'error'}
 		<span>{data.error}</span>
 	{:else if data.users.length}
 		<ul role="list">
 			{#each data.users as user}
+			<a data-sveltekit-preload-data="hover" href={`/users/${user.username}`}>
 				<li>
-					<a data-sveltekit-preload-data="hover" href={`/users/${user.username}`}>
 						<!-- TODO: put gravatar in -->
 						<span>{user.name}</span>
 						<span class="username">{user.username}</span>
-					</a>
-				</li>
+					</li>
+				</a>
 			{/each}
 		</ul>
 	{:else}
 		<span>No users were found.</span>
 	{/if}
-</div>
+</main>
 
 <style>
+	/* TODO: Create Typography component */
 	h1 {
 		color: var(--palette-pop);
 		font-size: var(--type-step-4);
 		margin: var(--space-m);
 	}
 
-	div {
+	main {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
