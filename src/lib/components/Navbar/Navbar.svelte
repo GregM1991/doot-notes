@@ -1,9 +1,20 @@
+<script lang="ts">
+	import { page } from "$app/stores"
+
+	$: username = $page.params.username
+</script>
+
 <nav>
   <a href="/" class="logo">
     <span class="line top"> Doot</span>
     <span class="line bottom">Notes</span>
   </a>
-  <a href="/users" class="nav-link">Users</a>
+	<span class="right-links">
+		{#if username}
+			<a href={`/users/${username}/notes`}>{`${username}'s Notes`}</a>
+		{/if}
+		<a href="/users" class="nav-link">Users</a>
+	</span>
 </nav>
 
 <style>
@@ -40,5 +51,10 @@
 		content: '📯';
 		position: absolute;
 		right: -30px;
+	}
+
+	.right-links {
+		display: flex;
+		gap: var(--space-l);
 	}
 </style>

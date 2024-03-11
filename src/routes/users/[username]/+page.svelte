@@ -2,7 +2,7 @@
 	import { LinkButton } from '$lib/components'
 
 	export let data
-	$: ({ id, name, username, image } = data.user)
+	$: ({ name, username, image } = data.user) // TODO: add user image
 	$: ({ userJoinedDisplay } = data)
 </script>
 
@@ -16,7 +16,7 @@
 </main>
 
 <style>
-	h1 {
+	h1 { 
 		color: var(--palette-pop);
 		font-size: var(--type-step-3);
 		margin-bottom: var(--space-3xs);
