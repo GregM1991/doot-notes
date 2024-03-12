@@ -7,7 +7,7 @@
 	{#if !import.meta.env.Prod}
 		<!-- TODO: Do dev things here if need -->
 	{/if}
-	<link rel="preload" href="/src/lib/components/icons/sprite.svg" as="image">
+	<link rel="preload" href="/src/lib/components/icons/sprite.svg" as="image" />
 	<title>📯 Let's doot some notes 📯</title>
 </svelte:head>
 
@@ -18,9 +18,7 @@
 	<div class="content-body">
 		<slot />
 	</div>
-	<footer>
-		I'm the 🦶er
-	</footer>
+	<footer>I'm the 🦶er</footer>
 </div>
 
 <style>
@@ -48,6 +46,10 @@
 		align-items: center;
 		grid-area: main;
 		padding-top: var(--space-3xl);
+	}
+
+	.content-body:has( > div[data-layout='grid']) {
+		display: block;
 	}
 
 	footer {

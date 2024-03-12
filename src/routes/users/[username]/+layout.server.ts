@@ -1,4 +1,5 @@
 import { prisma } from '$lib/utils/db.server'
+import { invariantResponse } from '$lib/utils/misc.js'
 import { error } from '@sveltejs/kit'
 
 export const load = async ({ params }) => {
@@ -15,9 +16,7 @@ export const load = async ({ params }) => {
 		},
 	})
 
-	if (!user) {
-		error(404, 'User not found')
-	}
+	invariantResponse(user, 'User not found', 404)
 
 	return { user, userJoinedDisplay: user.createdAt.toLocaleDateString() }
 }

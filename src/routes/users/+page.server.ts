@@ -1,6 +1,6 @@
 import { prisma } from '$lib/utils/db.server'
 import { z } from 'zod'
-import type { PageServerLoad } from './[username]/notes/$types'
+import type { PageServerLoad } from './$types'
 
 const UserSearchResultSchema = z.object({
 	id: z.string(),

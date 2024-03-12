@@ -1,8 +1,10 @@
 <script lang="ts">
-  export let href: string;
+  export let href: string
+  export let width: string = 'auto'
 </script>
 
-<a {href}>
+<!-- TODO: Figure out how to pass in width here -->
+<a {href} class:width={`--width=${width}`}>
   <slot />
 </a>
 
@@ -13,6 +15,8 @@
     border-radius: var(--border-radius);
     border: var(--border);
     filter: var(--border-drop-shadow-black);
+    display: inline-block;
+    width: var(--width);
 
     transition: var(--animation-quick);
   }
