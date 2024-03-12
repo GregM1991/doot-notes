@@ -1,18 +1,9 @@
-<script lang="ts">
-	import { page } from "$app/stores"
-
-	$: username = $page.params.username
-</script>
-
 <nav>
   <a href="/" class="logo">
     <span class="line top"> Doot</span>
     <span class="line bottom">Notes</span>
   </a>
 	<span class="right-links">
-		{#if username}
-			<a href={`${username}/notes`}>{`${username}'s Notes`}</a>
-		{/if}
 		<a href="/users" class="nav-link">Users</a>
 	</span>
 </nav>

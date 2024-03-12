@@ -8,6 +8,7 @@ getUserImages,
 img */
 import { prisma } from '$lib/utils/db.server'
 import { createUser, cleanupDb } from '$tests/db-utils'
+import { faker } from '@faker-js/faker'
 
 // create function seed, is main function where all seed logic sits
 async function seed() {
@@ -30,6 +31,14 @@ async function seed() {
 			select: { id: true },
 			data: {
 				...userData,
+				notes: {
+					create: Array.from({
+						length: faker.number.int({ min: 5, max: 10 }),
+					}).map(() => ({
+						title: faker.lorem.sentence({ min: 1, max: 5 }),
+						body: faker.lorem.paragraphs({ min: 2, max: 4 }),
+					})),
+				},
 				// TODO: add password, image, roles, notes
 			},
 		})

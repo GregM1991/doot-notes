@@ -33,7 +33,7 @@
 	form {
 		display: flex;
 		align-items: center;
-		gap: var(--space-2xs)
+		gap: var(--space-2xs);
 	}
 
 	input {
@@ -81,6 +81,5 @@
 
 	button:active {
 		filter: drop-shadow(1px 1px 0px var(--palette-grey-20));
-
 	}
 </style>
