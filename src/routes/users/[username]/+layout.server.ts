@@ -1,5 +1,5 @@
 import { prisma } from '$lib/utils/db.server'
-import { invariantResponse } from '$lib/utils/misc.js'
+import { error } from '@sveltejs/kit'
 
 export const load = async ({ params }) => {
 	const user = await prisma.user.findFirst({
@@ -15,7 +15,9 @@ export const load = async ({ params }) => {
 		},
 	})
 
-	invariantResponse(user, 'User not found', { status: 404 })
+	if (!user) {
+		error(404, 'User not found')
+	}
 
 	return { user, userJoinedDisplay: user.createdAt.toLocaleDateString() }
 }

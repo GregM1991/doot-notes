@@ -5,10 +5,11 @@ export const load = (async ({ parent }) => {
 	const { user } = await parent()
 
 	const userNotes = await prisma.note.findMany({
-		select: { id: true },
+		select: { id: true, title: true },
 		where: {
 			ownerId: user.id,
 		},
 	})
-	return { user }
+
+	return { notes: userNotes }
 }) satisfies PageServerLoad

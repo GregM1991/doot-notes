@@ -11,38 +11,49 @@
 	<title>📯 Let's doot some notes 📯</title>
 </svelte:head>
 
-<div>
+<div class="content">
 	<header>
 		<Navbar />
 	</header>
-	<main>
+	<div class="content-body">
 		<slot />
-	</main>
+	</div>
+	<footer>
+		I'm the 🦶er
+	</footer>
 </div>
 
 <style>
-	div {
+	.content {
 		display: grid;
 		grid-template-columns: var(--space-3xl) 1fr var(--space-3xl);
 		grid-template-rows: auto 1fr auto;
 		grid-template-areas:
-			'header header header'
+			'gutter1 header gutter2'
 			'gutter1 main gutter2'
 			'footer footer footer';
+		gap: var(--space-xs);
 		height: 100vh;
 		background: var(--palette-base);
 	}
 
 	header {
 		grid-area: header;
-		padding: var(--space-s) var(--space-3xl);
+		padding: var(--space-s) 0;
 	}
 
-	main {
+	.content-body {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		grid-area: main;
 		padding-top: var(--space-3xl);
+	}
+
+	footer {
+		display: grid;
+		place-items: center;
+		grid-area: footer;
+		padding: var(--space-xs);
 	}
 </style>
