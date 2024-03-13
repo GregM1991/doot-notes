@@ -2,6 +2,7 @@
 	import { page } from '$app/stores'
 	import { Button } from '$lib/components'
 	import type { LayoutServerData } from './$types'
+	import Pencil2 from 'virtual:icons/radix-icons/pencil2'
 
 	export let data: LayoutServerData
 	const hrefBase = `/users/${$page.params.username}/notes`
@@ -10,6 +11,12 @@
 <div class="wrapper" data-layout="grid">
 	<div class="sidebar">
 		<h1>{data.user.name}'s notes</h1>
+		<!-- TODO: How do I submit a form to the page etc. -->
+		<form action="" method="POST">
+			<Button secondary style="margin-bottom: var(--space-xs)">
+				Doot new note <Pencil2 />
+			</Button>
+		</form>
 		<ul role="list">
 			{#each data.notes as note (note.id)}
 				<li>
@@ -60,7 +67,6 @@
 		border-left: none;
 		overflow: auto;
 	}
-
 
 	ul {
 		display: flex;

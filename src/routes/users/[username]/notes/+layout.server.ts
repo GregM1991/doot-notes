@@ -1,4 +1,5 @@
 import { prisma } from '$lib/utils/db.server'
+import type { Actions } from '@sveltejs/kit'
 import type { LayoutServerLoad } from './$types'
 
 export const load = (async ({ parent }) => {

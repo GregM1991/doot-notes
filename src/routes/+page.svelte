@@ -9,8 +9,6 @@
 	notes.
 </p>
 
-<Button on:click={() => console.log('clicked')}>Doot me</Button>
-
 <style>
 	h1 {
 		color: var(--palette-pop);

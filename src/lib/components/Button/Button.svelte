@@ -2,49 +2,44 @@
 	import { createEventDispatcher } from 'svelte'
 
 	export let href: string | undefined = undefined
-	export let customStyles: Record<string, string> | undefined = undefined
-	export let primary: boolean = true
-	export let secondary: boolean = false
+	export let primary = true
+	export let secondary = false
 	export let fluid = false
-
-	// TODO: Test this works...
-	function styleSpreader(style: Record<string, string>) {
-		console.log(style)
-		return undefined
-	}
-	const style = customStyles ? styleSpreader(customStyles) : undefined
+	export let style = ''
 
 	const type = href ? 'a' : 'button'
 	const role = type === 'a' ? 'link' : 'button'
 
 	const dispatch = createEventDispatcher()
 	function onClick() {
-		dispatch('click')
+		if (type === 'button') dispatch('click')
 	}
 </script>
 
 <svelte:element
 	this={type}
-	on:click={onClick}
-	class="base"
 	{href}
+	{role}
+	{style}
+	class="base"
 	class:primary
 	class:fluid
 	class:secondary
-	{style}
-	{role}
+	on:click={onClick}
 >
 	<slot />
 </svelte:element>
 
 <style>
 	.base {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-3xs);
 		padding: var(--space-xs);
 		background: var(--link-background);
 		border-radius: var(--border-radius);
 		border: var(--border);
 		filter: var(--border-drop-shadow-black);
-		display: inline-block;
 		width: var(--link-width);
 
 		transition: var(--animation-quick);
