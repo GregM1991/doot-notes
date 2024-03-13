@@ -70,10 +70,11 @@
   --palette-cream-40: var(--base-cream), 40%;
   --palette-cream-50: var(--base-cream), 50%;
   --palette-cream-60: var(--base-cream), 60%;
-  --palette-cream-70: var(--base-cream), 70%;
+  --palette-cream-70: var(--base-cream), 70%;*/
   --palette-cream-80: var(--base-cream), 80%;
-  --palette-cream-90: var(--base-cream), 90%; */
+  /* --palette-cream-90: var(--base-cream), 90%; */
   --palette-cream-95: var(--base-cream), 95%;
+  --palette-cream-98: var(--base-cream), 98%;
 
   /* Grey */
   --base-grey: 28, 10%;
@@ -99,6 +100,8 @@
   --palette-pop-extra-light: hsla(var(--palette-blue-90), 100%);
   --palette-pop-secondary: hsla(var(--palette-green-40), 100%);
   --palette-base: hsla(var(--palette-cream-95), 100%);
+  --palette-base-medium: hsla(var(--palette-cream-80), 100%);
+  --palette-base-light: hsla(var(--palette-cream-98), 100%);
 
 
   /* Typography */

@@ -4,7 +4,6 @@
 	import type { LayoutServerData } from './$types'
 
 	export let data: LayoutServerData
-	console.log($page)
 </script>
 
 <div class="wrapper" data-layout="grid">
@@ -36,7 +35,6 @@
 		grid-template-columns: 2fr 5fr;
 		grid-template-areas:
 			'sidebar main';
-		gap: var(--space-xl);
 		height: 100%;
 	}
 
@@ -48,6 +46,8 @@
 		padding-top: var(--space-m);
 		border-radius: var(--border-radius) 0 0 var(--border-radius);
 		border: 4px solid var(--palette-pop-light);
+		border-right: none;
+		overflow-y: hidden;
 	}
 
 	ul {
