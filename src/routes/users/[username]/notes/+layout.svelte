@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores'
-	import { LinkButton } from '$lib/components'
+	import { Button } from '$lib/components'
 	import type { LayoutServerData } from './$types'
 
 	export let data: LayoutServerData
@@ -13,9 +13,9 @@
 		<ul role="list">
 			{#each data.notes as note (note.id)}
 				<li>
-					<LinkButton fluid href={`${hrefBase}/${note.id}`}>
+					<Button fluid href={`${hrefBase}/${note.id}`}>
 						{note.title}
-					</LinkButton>
+					</Button>
 				</li>
 			{/each}
 		</ul>

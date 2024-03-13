@@ -1,9 +1,15 @@
+<script lang="ts">
+	import { Button } from '$lib/components'
+</script>
+
 <h1>Welcome to DootNotes 📯</h1>
 <p>
 	DootNotes is a simple note-taking app that allows you to create, edit, and
 	delete notes. It's built with SvelteKit and uses a JSON file to store the
 	notes.
 </p>
+
+<Button on:click={() => console.log('clicked')}>Doot me</Button>
 
 <style>
 	h1 {

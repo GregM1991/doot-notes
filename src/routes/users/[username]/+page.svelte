@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { LinkButton } from '$lib/components'
+	import { Button } from '$lib/components'
 
 	export let data
 	$: ({ name, username, image } = data.user) // TODO: add user image
@@ -12,7 +12,7 @@
     <span>Username: {username}</span>
     <span class="date-joined">joined {userJoinedDisplay}</span>
   </div>
-	<LinkButton href={`${username}/notes`}>View {name}'s notes</LinkButton>
+	<Button href={`${username}/notes`}>View {name}'s notes</Button>
 </main>
 
 <style>
