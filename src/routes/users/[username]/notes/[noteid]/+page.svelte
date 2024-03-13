@@ -1,29 +1,31 @@
 <script lang="ts">
-	import type { PageData } from "./$types"
+	import type { PageData } from './$types'
 
-  
-  export let data: PageData
+	export let data: PageData
+  let paragraphs = data.note.body.split('\n');
 </script>
 
-<main>
+<article>
   <h2>{data.note.title}</h2>
-  <p>{data.note.body}</p>
-</main>
+  <!-- TODO: Add note images here -->
+  
+  {#each paragraphs as paragraph}
+    <p>{paragraph}</p>
+  {/each}
+</article>
 
 <style>
-  main {
-    padding: var(--space-m) var(--space-xl);
-    background: var(--palette-base-light);
-    border-radius: 0 var(--border-radius) var(--border-radius) 0;
-    border: 4px solid var(--palette-base-medium);
-    border-left: none;
+  article {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
   }
 
-  h2 {
-    color: var(--palette-pop);
-    font-size: var(--type-step-3);
-    margin-bottom: var(--space-3xs);
-    line-height: 2.2rem;
-    margin-bottom: var(--space-xs);
-  }
+	h2 {
+		color: var(--palette-pop);
+		font-size: var(--type-step-3);
+		margin-bottom: var(--space-3xs);
+		line-height: 2.8rem;
+		margin-bottom: var(--space-xs);
+	}
 </style>

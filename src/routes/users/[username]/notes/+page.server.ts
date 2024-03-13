@@ -9,6 +9,5 @@ export const load = (async ({ parent }) => {
 			ownerId: user.id,
 		},
 	})
-
 	return { notes: userNotes }
 }) satisfies PageServerLoad

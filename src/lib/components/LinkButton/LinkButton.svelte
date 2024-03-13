@@ -26,24 +26,31 @@
 		border: var(--border);
 		filter: var(--border-drop-shadow-black);
 		display: inline-block;
-		width: auto;
+		width: var(--link-width);
 
 		transition: var(--animation-quick);
 	}
-	D a:hover {
+
+	a:hover {
 		filter: drop-shadow(5px 5px 0px var(--palette-grey-20));
 	}
 
 	a:focus {
 		filter: drop-shadow(5px 5px 0px var(--palette-grey-20));
+    outline: none;
 	}
+
+  a:active {
+    filter: drop-shadow(1px 1px 0px var(--palette-grey-20));
+  }
 
 	.primary {
 		--link-background: var(--palette-secondary);
 	}
 
 	.secondary {
-		--link-background: var(--palette-);
+		--link-background: var(--palette-pop);
+    color: white;
 	}
 
 	.fluid {
