@@ -45,10 +45,10 @@
   --palette-blue-30: var(--base-blue), 30%; */
   --palette-blue-40: var(--base-blue), 40%;
   /* --palette-blue-50: var(--base-blue), 50%;
-  --palette-blue-60: var(--base-blue), 60%;
+  --palette-blue-60: var(--base-blue), 60%; */
   --palette-blue-70: var(--base-blue), 70%;
-  --palette-blue-80: var(--base-blue), 80%;
-  --palette-blue-90: var(--base-blue), 90%; */
+  /* --palette-blue-80: var(--base-blue), 80%; */
+  --palette-blue-90: var(--base-blue), 90%;
 
   /* Pop Secondary */
   --base-green: 106, 32%;
@@ -95,6 +95,8 @@
   --palette-secondary-light: hsla(var(--palette-pink-85), 100%);
   --palette-tertiary: hsla(var(--palette-yellow-60), 100%);
   --palette-pop: hsla(var(--palette-blue-40), 100%);
+  --palette-pop-light: hsla(var(--palette-blue-70), 100%);
+  --palette-pop-extra-light: hsla(var(--palette-blue-90), 100%);
   --palette-pop-secondary: hsla(var(--palette-green-40), 100%);
   --palette-base: hsla(var(--palette-cream-95), 100%);
 
@@ -134,7 +136,7 @@
   --space-l-xl: clamp(1.75rem, 1.0543rem + 3.4783vi, 3.75rem);
   --space-xl-2xl: clamp(2.625rem, 1.7989rem + 4.1304vi, 5rem);
   --space-2xl-3xl: clamp(3.5rem, 2.1087rem + 6.9565vi, 7.5rem);
-  --space-xl-3xl: clamp(2.625rem, 0.9293rem + 8.4783vi, 7.5rem);
+  --space-xl-3exl: clamp(2.625rem, 0.9293rem + 8.4783vi, 7.5rem);
 
   /* Custom pairs */
   --space-xl-3xl: clamp(2.625rem, 0.9293rem + 8.4783vi, 7.5rem);

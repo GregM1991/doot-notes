@@ -24,8 +24,8 @@
 <style>
 	.content {
 		display: grid;
-		grid-template-columns: var(--space-3xl) 1fr var(--space-3xl);
-		grid-template-rows: auto 1fr auto;
+		grid-template-columns: var(--space-xl) 1fr var(--space-xl);
+		grid-template-rows: 80px minmax(400px, 1fr) 50px;
 		grid-template-areas:
 			'gutter1 header gutter2'
 			'gutter1 main gutter2'
@@ -45,11 +45,7 @@
 		flex-direction: column;
 		align-items: center;
 		grid-area: main;
-		padding-top: var(--space-3xl);
-	}
-
-	.content-body:has( > div[data-layout='grid']) {
-		display: block;
+		flex: 1 1 0%;
 	}
 
 	footer {

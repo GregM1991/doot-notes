@@ -1,10 +1,16 @@
 <script lang="ts">
   export let href: string
-  export let width: string = 'auto'
+  export let width: string = '';
+  export let primary: boolean = true;
+  export let fluid = false;
 </script>
 
 <!-- TODO: Figure out how to pass in width here -->
-<a {href} class:width={`--width=${width}`}>
+<a 
+  {href} style={width && `--width: ${width}`}
+  class:primary
+  class:fluid
+  >
   <slot />
 </a>
 
@@ -28,5 +34,13 @@
 	a:focus {
 		filter: drop-shadow(5px 5px 0px var(--palette-grey-20));
 	}
+
+  .primary {
+    --width: auto;
+  }
+
+  .fluid {
+    --width: 100%;
+  }
 
 </style>

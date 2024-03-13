@@ -11,9 +11,14 @@
 </main>
 
 <style>
+  main {
+    padding: var(--space-2xs);
+    padding-top: var(--space-m);
+  }
+
   h2 {
     color: var(--palette-pop);
-    font-size: var(--type-step-2);
+    font-size: var(--type-step-3);
     margin-bottom: var(--space-3xs);
     line-height: 2.2rem;
     margin-bottom: var(--space-xs);
