@@ -6,18 +6,14 @@
 
 	export let data: LayoutServerData
 	const hrefBase = `/users/${$page.params.username}/notes`
-	console.log($page)
 </script>
 
 <div class="wrapper" data-layout="grid">
 	<div class="sidebar">
 		<h1>{data.user.name}'s notes</h1>
-		<!-- TODO: How do I submit a form to the page etc. -->
-		<form action={hrefBase} method="POST">
-			<Button secondary style="margin-bottom: var(--space-xs)">
-				Doot new note <Pencil2 />
-			</Button>
-		</form>
+		<Button href="notes/new-note" secondary style="margin-bottom: var(--space-xs)">
+			Doot new note <Pencil2 />
+		</Button>
 		<ul role="list">
 			{#each data.notes as note (note.id)}
 				<li>

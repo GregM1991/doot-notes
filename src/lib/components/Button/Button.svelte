@@ -1,23 +1,26 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte'
 
+
+	export let type: 'submit' | 'button' | 'reset' | undefined = undefined
 	export let href: string | undefined = undefined
 	export let primary = true
 	export let secondary = false
 	export let fluid = false
 	export let style = ''
 
-	const type = href ? 'a' : 'button'
-	const role = type === 'a' ? 'link' : 'button'
+	const element = href ? 'a' : 'button'
+	const role = element === 'a' ? 'link' : 'button'
 
 	const dispatch = createEventDispatcher()
 	function onClick() {
-		if (type === 'button') dispatch('click')
+		if (element === 'button') dispatch('click')
 	}
 </script>
 
 <svelte:element
-	this={type}
+	this={element}
+	{type}
 	{href}
 	{role}
 	{style}
