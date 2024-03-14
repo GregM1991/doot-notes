@@ -11,7 +11,7 @@
 <div class="wrapper" data-layout="grid">
 	<div class="sidebar">
 		<h1>{data.user.name}'s notes</h1>
-		<Button href="notes/new-note" secondary style="margin-bottom: var(--space-xs)">
+		<Button href="{hrefBase}/new-note" secondary style="margin-bottom: var(--space-xs)">
 			Doot new note <Pencil2 />
 		</Button>
 		<ul role="list">

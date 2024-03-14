@@ -2,6 +2,7 @@
 	import { Searchbar, type OnSearch } from '$lib/components/index'
 	import { debounce } from '$lib/utils/misc'
 	import { goto } from '$app/navigation'
+	import {page} from '$app/stores'
 
 	export let data
 
@@ -10,11 +11,12 @@
 		const search = data.get('search')
 		goto(`?search=${search}`, { replaceState: true, keepFocus: true })
 	}, 400)
+	const search = $page.url.searchParams.get('search') ?? ''
 </script>
 
 <h1>Doot Notes User's</h1>
 <main>
-	<Searchbar on:search={searchUsers} on:submit={searchUsers} />
+	<Searchbar on:search={searchUsers} on:submit={searchUsers} searchQuery={search} />
 	{#if data.status === 'error'}
 		<span>{data.error}</span>
 	{:else if data.users.length}

@@ -1,29 +1,23 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte'
-	import { type OnSearch, Icon } from '$lib/components'
+	import { Input, type OnSearch } from '$lib/components'
 	import MagnifyingGlass from 'virtual:icons/radix-icons/magnifying-glass'
-	export let autofocus = false
-	export let searchQuery = ''
+
+	export let searchQuery: string;
 
 	const dispatch = createEventDispatcher<{ search: OnSearch }>()
 	let form: HTMLFormElement
-
+	
 	function onSearch() {
 		dispatch('search', { form })
 	}
+
 </script>
 
 <form bind:this={form} on:submit|preventDefault={onSearch}>
 	<label class="sr-only" for="search">Search</label>
-	<!-- svelte-ignore a11y-autofocus -->
-	<input
-		placeholder="Search"
-		name="search"
-		type="search"
-		on:input={onSearch}
-		{autofocus}
-		value={searchQuery}
-	/>
+	<Input on:input={onSearch} placeholder="Search" name="search" type="search" value={searchQuery.toString()}/>
+	<!-- TODO: Extract to icon button -->
 	<button type="submit">
 		<MagnifyingGlass />
 	</button>
@@ -34,27 +28,6 @@
 		display: flex;
 		align-items: center;
 		gap: var(--space-2xs);
-	}
-
-	input {
-		padding: var(--space-xs);
-		border: var(--border);
-		background-color: var(--palette-secondary);
-		border-radius: 1rem;
-		outline: none;
-		filter: drop-shadow(3px 3px 0px var(--palette-grey-20));
-
-		transition: var(--animation-quick);
-	}
-
-	input:focus-visible {
-		background-color: var(--palette-secondary-light);
-		filter: drop-shadow(1px 1px 0px var(--palette-grey-20));
-	}
-
-	input::placeholder {
-		color: var(--palette-grey-20);
-		opacity: 100%;
 	}
 
 	button {
