@@ -1,6 +1,7 @@
 import { prisma } from '$lib/utils/db.server'
 import { invariantResponse } from '$lib/utils/misc'
-import type { PageServerLoad } from './$types'
+import { formatDistanceToNow } from 'date-fns'
+import type { Actions, PageServerLoad } from './$types'
 
 export const load = (async ({ params }) => {
 	const { username, noteid } = params
@@ -23,5 +24,17 @@ export const load = (async ({ params }) => {
 
 	invariantResponse(note, 'Could not find note', 404)
 
-	return { note }
+	const date = new Date(note.updatedAt)
+	const timeSinceUpdate = formatDistanceToNow(date)
+
+	return { note, timeSinceUpdate }
 }) satisfies PageServerLoad
+
+export const actions = {
+	edit: async () => {
+		console.log('edit')
+	},
+	delete: async () => {
+		console.log('delete')
+	},
+} satisfies Actions

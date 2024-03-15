@@ -53,6 +53,7 @@
     "@faker-js/faker": "^8.4.1",
     "@prisma/client": "latest",
     "@types/fs-extra": "^11.0.4",
+    "date-fns": "^3.5.0",
     "glob": "^10.3.10",
     "zod": "^3.22.4",
     "zod-form-data": "^2.0.2"

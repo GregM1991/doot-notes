@@ -53,10 +53,13 @@
 		border: 4px solid var(--palette-pop-light);
 		border-right: none;
 		overflow-y: auto;
-		scrollbar-gutter: stable both-edges;
 	}
 
+	/* TODO: fix the scrollbar-gutter: stable both-edges; thing */
 	.main {
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-template-rows: 1fr auto;
 		padding: var(--space-m) var(--space-xl);
 		background: var(--palette-base-light);
 		border-radius: 0 var(--border-radius) var(--border-radius) 0;
