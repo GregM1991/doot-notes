@@ -28,8 +28,8 @@
       <Button type="submit">Delete</Button>
     </form>
   </div>
-  <div class="blur"/>
 </div>
+<div class="blur"/>
 
 <style>
   article {
@@ -38,6 +38,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-2xs);
+    overflow: auto;
   }
 
 	h2 {
@@ -59,17 +60,25 @@
     right: var(--space-xl);
     padding: var(--space-s);
     border-radius: var(--border-radius);
-    background: hsla(var(--palette-cream-80), 30%);
   }
    
   .buttons {
     display: flex;
     gap: var(--space-s);
-    z-index: 1;
   }
 
   .blur {
-    filter: blur(2px);
-    border-radius: inherit;
+    grid-column: 1 / 2;
+    grid-row: 2 / span 1;
+    backdrop-filter: blur(2px);
+    border-radius: var(--border-radius);
+    background: hsla(var(--palette-cream-80), 10%);
+    /* background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3); */
+    
   }
 </style>
