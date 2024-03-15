@@ -36,7 +36,7 @@ async function seed() {
 						length: faker.number.int({ min: 5, max: 10 }),
 					}).map(() => ({
 						title: faker.lorem.sentence({ min: 1, max: 5 }),
-						body: faker.lorem.paragraphs(10),
+						content: faker.lorem.paragraphs(10),
 					})),
 				},
 				// TODO: add password, image, roles, notes

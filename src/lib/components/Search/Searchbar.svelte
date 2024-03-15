@@ -3,20 +3,26 @@
 	import { Input, type OnSearch } from '$lib/components'
 	import MagnifyingGlass from 'virtual:icons/radix-icons/magnifying-glass'
 
-	export let searchQuery: string;
+	export let searchQuery: string
 
 	const dispatch = createEventDispatcher<{ search: OnSearch }>()
 	let form: HTMLFormElement
-	
+
 	function onSearch() {
 		dispatch('search', { form })
 	}
-
 </script>
 
 <form bind:this={form} on:submit|preventDefault={onSearch}>
 	<label class="sr-only" for="search">Search</label>
-	<Input on:input={onSearch} placeholder="Search" name="search" type="search" value={searchQuery.toString()}/>
+	<Input
+		id="search"
+		on:input={onSearch}
+		placeholder="Search"
+		name="search"
+		type="search"
+		value={searchQuery.toString()}
+	/>
 	<!-- TODO: Extract to icon button -->
 	<button type="submit">
 		<MagnifyingGlass />

@@ -9,7 +9,7 @@ export const load = (async ({ params }) => {
 		select: {
 			id: true,
 			title: true,
-			body: true,
+			content: true,
 			updatedAt: true,
 			createdAt: true,
 		},

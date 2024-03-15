@@ -3,20 +3,19 @@
 	import { Button, Input } from '$lib/components'
 	import Plus from 'virtual:icons/radix-icons/plus'
 	import type { ActionData } from './$types'
-	
+	import type { FlattenedNoteFormErrors } from './+page.server'
+
 	export let form: ActionData
-	let title = ''
-	let body = ''
-	let errors;
+	let title = '';
+  let content = '';
+  let errors: FlattenedNoteFormErrors | null = null;
+  let id = '';
 
-	console.log(form)
-	if (form) {
-		title = form.data.title.toString()
-		body = form.data.body.toString()
-		errors =form.errors
-		console.log(errors)
-	}
-
+  $: {
+    title = form?.data.title.toString() ?? '';
+    content = form?.data.content.toString() ?? '';
+    errors = form?.errors ?? null;
+  }
 </script>
 
 <pre>
@@ -26,19 +25,20 @@
 <form method="POST" use:enhance>
 	<h3>Doot a new note 📯</h3>
 	<div class="form-group">
-		<label for="title"> Title </label>
-		<Input secondary name="title" type="text" bind:value={title} />
+		<Input errors={errors?.title} label="Title" {id} secondary name="title" type="text" bind:value={title} />
 	</div>
 	<div class="form-group">
-		<label for="body"> Body </label>
-		<textarea name="body" id="body" bind:value={body} />
+		<label for="content">Content</label>
+		<textarea name="content" id="content" bind:value={content} />
 	</div>
-	<Button secondary type="submit">Create note <Plus /></Button>
+	<Button secondary type="submit">
+		Create note <Plus />
+	</Button>
 </form>
 
 <style>
 	pre {
-		padding:  var(--space-xs);
+		padding: var(--space-xs);
 		background: #eee;
 		margin-bottom: var(--space-xs);
 	}

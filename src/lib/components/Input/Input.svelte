@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte'
 
+	export let id: string;
 	export let placeholder = ''
 	export let name: string
 	export let type: string
@@ -8,7 +9,10 @@
 	export let secondary = false
 	export let value = ''
 	export let required = false
+	export let label = ''
+	export let errors: string[] | null = null
 
+	const errorId = `${id}-error`
 	const dispatch = createEventDispatcher()
 
 	function handleInput() {
@@ -16,8 +20,12 @@
 	}
 </script>
 
+{#if (label)}
+<label for={id}>{label}</label>
+{/if}
 <!-- svelte-ignore a11y-autofocus -->
 <input
+	{id}
 	{placeholder}
 	{name}
 	{type}
@@ -28,6 +36,16 @@
 	class="base"
 	{required}
 />
+<div id={errorId} class="error">
+	{#if errors}
+		<ul role="list">
+			{#each errors as error}
+				<li>{error}</li>
+			{/each}
+		</ul>
+	{/if}
+</div>
+
 
 <style>
 	.base {
@@ -56,5 +74,11 @@
 	.secondary {
 		--background-color: var(--palette-base);
 		--background-color-light: var(--palette-base-light);
+	}
+
+	.error {
+		color: tomato;
+		font-size: var(--type-step--1);
+		margin-top: var(--space-3xs)
 	}
 </style>

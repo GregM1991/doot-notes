@@ -2,7 +2,7 @@
 	import type { PageData } from './$types'
 
 	export let data: PageData
-  let paragraphs = data.note.body.split('\n');
+  let paragraphs = data.note.content.split('\n');
 </script>
 
 <article>
