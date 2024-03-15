@@ -20,6 +20,7 @@
 		color: var(--palette-pop);
 		font-size: var(--type-step-3);
 		margin-bottom: var(--space-3xs);
+    text-align: center;
 	}
 
   main {

@@ -6,30 +6,42 @@
 	import type { FlattenedNoteFormErrors } from './+page.server'
 
 	export let form: ActionData
-	let title = '';
-  let content = '';
-  let errors: FlattenedNoteFormErrors | null = null;
-  let id = '';
+	let title = ''
+	let content = ''
+	let errors: FlattenedNoteFormErrors | null = null
+	const [titleId, contentId] = [crypto.randomUUID(), crypto.randomUUID()]
 
-  $: {
-    title = form?.data.title.toString() ?? '';
-    content = form?.data.content.toString() ?? '';
-    errors = form?.errors ?? null;
-  }
+	$: {
+		title = form?.data.title.toString() ?? ''
+		content = form?.data.content.toString() ?? ''
+		errors = form?.errors ?? null
+	}
 </script>
-
-<pre>
-	{JSON.stringify(form, null, 2)}
-</pre>
 
 <form method="POST" use:enhance>
 	<h3>Doot a new note 📯</h3>
 	<div class="form-group">
-		<Input errors={errors?.title} label="Title" {id} secondary name="title" type="text" bind:value={title} />
+		<Input
+			errors={errors?.title}
+			label="Title"
+			id={titleId}
+			secondary
+			name="title"
+			type="text"
+			bind:value={title}
+		/>
 	</div>
 	<div class="form-group">
-		<label for="content">Content</label>
-		<textarea name="content" id="content" bind:value={content} />
+		<Input
+			textArea
+			errors={errors?.content}
+			label="Content"
+			id={contentId}
+			secondary
+			name="content"
+			type="content"
+			bind:value={content}
+		/>
 	</div>
 	<Button secondary type="submit">
 		Create note <Plus />
@@ -37,12 +49,6 @@
 </form>
 
 <style>
-	pre {
-		padding: var(--space-xs);
-		background: #eee;
-		margin-bottom: var(--space-xs);
-	}
-
 	h3 {
 		color: var(--palette-pop);
 		font-size: var(--type-step-3);

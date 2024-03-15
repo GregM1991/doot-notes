@@ -11,6 +11,9 @@
 	export let required = false
 	export let label = ''
 	export let errors: string[] | null = null
+	export let textArea = false
+
+	const el = textArea ? 'textarea' : 'input'
 
 	const errorId = `${id}-error`
 	const dispatch = createEventDispatcher()
@@ -21,10 +24,11 @@
 </script>
 
 {#if (label)}
-<label for={id}>{label}</label>
+	<label for={id}>{label}</label>
 {/if}
 <!-- svelte-ignore a11y-autofocus -->
-<input
+<svelte:element
+	this={el}
 	{id}
 	{placeholder}
 	{name}
@@ -77,7 +81,7 @@
 	}
 
 	.error {
-		color: tomato;
+		color: var(--palette-primary);
 		font-size: var(--type-step--1);
 		margin-top: var(--space-3xs)
 	}

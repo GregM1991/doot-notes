@@ -2,7 +2,7 @@
 	import { Searchbar, type OnSearch } from '$lib/components/index'
 	import { debounce } from '$lib/utils/misc'
 	import { goto } from '$app/navigation'
-	import {page} from '$app/stores'
+	import { page } from '$app/stores'
 
 	export let data
 
@@ -14,27 +14,31 @@
 	const search = $page.url.searchParams.get('search') ?? ''
 </script>
 
-<h1>Doot Notes User's</h1>
-<main>
-	<Searchbar on:search={searchUsers} on:submit={searchUsers} searchQuery={search} />
-	{#if data.status === 'error'}
-		<span>{data.error}</span>
-	{:else if data.users.length}
-		<ul role="list">
-			{#each data.users as user}
-			<a data-sveltekit-preload-data="hover" href={`/users/${user.username}`}>
-				<li>
-						<!-- TODO: put gravatar in -->
-						<span>{user.name}</span>
-						<span class="username">{user.username}</span>
-					</li>
-				</a>
-			{/each}
-		</ul>
-	{:else}
-		<span>No users were found.</span>
-	{/if}
-</main>
+	<h1>Doot Notes User's</h1>
+	<main>
+		<Searchbar
+			on:search={searchUsers}
+			on:submit={searchUsers}
+			searchQuery={search}
+		/>
+		{#if data.status === 'error'}
+			<span>{data.error}</span>
+		{:else if data.users.length}
+			<ul role="list">
+				{#each data.users as user}
+					<a data-sveltekit-preload-data="hover" href={`/users/${user.username}`}>
+						<li>
+							<!-- TODO: put gravatar in -->
+							<span>{user.name}</span>
+							<span class="username">{user.username}</span>
+						</li>
+					</a>
+				{/each}
+			</ul>
+		{:else}
+			<span>No users were found.</span>
+		{/if}
+	</main>
 
 <style>
 	/* TODO: Create Typography component */
@@ -42,6 +46,7 @@
 		color: var(--palette-pop);
 		font-size: var(--type-step-4);
 		margin: var(--space-m);
+		text-align: center;
 	}
 
 	main {
