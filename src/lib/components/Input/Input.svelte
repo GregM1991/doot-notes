@@ -7,6 +7,7 @@
 	export let autofocus = false
 	export let secondary = false
 	export let value = ''
+	export let required = false
 
 	const dispatch = createEventDispatcher()
 
@@ -25,6 +26,7 @@
 	class:secondary
 	on:input={handleInput}
 	class="base"
+	{required}
 />
 
 <style>
