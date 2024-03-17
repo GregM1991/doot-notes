@@ -36,18 +36,11 @@ export const actions = {
 		}
 		const { id: noteId } = await prisma.note.upsert({
 			select: { id: true },
-			where: { id: params.noteid ?? "__this_can't_exist__" },
+			where: { id: submission.data.id ?? "__this_can't_exist__" },
 			update: note,
 			create: note,
 		})
 
 		redirect(303, `/users/${params.username}/notes/${noteId}`)
-	},
-	delete: async ({ params }) => {
-		await prisma.note.delete({
-			where: { id: params.noteid },
-		})
-
-		redirect(303, './')
 	},
 } satisfies Actions

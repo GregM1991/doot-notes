@@ -26,7 +26,7 @@
   <span class="time-since-update"><Timer />{data.timeSinceUpdate}</span>
   <div class="buttons">
       <Button small secondary href="{$page.params.noteid}/edit"><Pencil2 />Edit</Button>
-    <form action="?/delete" method="POST" use:enhance>
+    <form method="POST" use:enhance>
       <Button small danger type="submit"><Eraser /> Delete</Button>
     </form>
   </div>

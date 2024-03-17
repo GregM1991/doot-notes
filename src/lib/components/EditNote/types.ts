@@ -13,4 +13,5 @@ export const contentMinLength = 1
 export const NoteEditorSchema = zfd.formData({
 	title: z.string().min(titleMinLength).max(titleMaxLength),
 	content: z.string().min(contentMinLength).max(contentMaxLength),
+	id: z.string(),
 })

@@ -19,6 +19,9 @@
 
 <form method="POST" action="/users/{$page.params.username}/notes?/new-or-update" use:enhance>
 	<h3>{header}</h3>
+	{#if (!newNote)}
+		<input type="hidden" name="id" value={$page.params.noteid} /> 
+	{/if}
 	<div class="form-group">
 		<Input
 			errors={errors?.title}
