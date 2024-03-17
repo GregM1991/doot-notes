@@ -19,6 +19,7 @@ export const actions = {
 				data: Object.fromEntries(formData),
 				errors: errorData,
 			}
+
 			return fail(400, data)
 		}
 
