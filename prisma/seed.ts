@@ -27,21 +27,26 @@ async function seed() {
 	console.time(`👫 created ${totalUsers} users...`)
 	for (let i = 0; i < totalUsers; i++) {
 		const userData = createUser()
-		await prisma.user.create({
-			select: { id: true },
-			data: {
-				...userData,
-				notes: {
-					create: Array.from({
-						length: faker.number.int({ min: 5, max: 10 }),
-					}).map(() => ({
-						title: faker.lorem.sentence({ min: 1, max: 5 }),
-						content: faker.lorem.paragraphs(10),
-					})),
+		await prisma.user
+			.create({
+				select: { id: true },
+				data: {
+					...userData,
+					notes: {
+						create: Array.from({
+							length: faker.number.int({ min: 1, max: 3 }),
+						}).map(() => ({
+							title: faker.lorem.sentence(),
+							content: faker.lorem.paragraphs(),
+						})),
+					},
+					// TODO: add password, image, roles, notes
 				},
-				// TODO: add password, image, roles, notes
-			},
-		})
+			})
+			.catch(e => {
+				console.error('Error creating a user:', e)
+				return null
+			})
 	}
 	console.timeEnd(`👫 created ${totalUsers} users...`)
 	console.timeEnd('🌱 database has been seeded')

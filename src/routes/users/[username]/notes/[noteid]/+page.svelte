@@ -1,9 +1,13 @@
 <script lang="ts">
 	import { enhance } from '$app/forms'
 	import Button from '$lib/components/Button/Button.svelte'
-	import type { PageData } from './$types'
+	import Timer from 'virtual:icons/radix-icons/timer'
+	import Eraser from 'virtual:icons/radix-icons/eraser'
+	import Pencil2 from 'virtual:icons/radix-icons/pencil2'
+	import type { LayoutData } from './$types'
+	import { page } from '$app/stores'
 
-	export let data: PageData
+	export let data: LayoutData
   let paragraphs = data.note.content.split('\n').filter(para =>  para.trim().length > 0)
 
 </script>
@@ -19,13 +23,11 @@
 
 <!-- TODO: only allow for owner of note -->
 <div class="info-bar">
-  <span>{data.timeSinceUpdate}</span>
+  <span class="time-since-update"><Timer />{data.timeSinceUpdate}</span>
   <div class="buttons">
-    <form action="?/edit" method="POST" use:enhance>
-      <Button secondary type="submit">Edit</Button>
-    </form>
+      <Button small secondary href="{$page.params.noteid}/edit"><Pencil2 />Edit</Button>
     <form action="?/delete" method="POST" use:enhance>
-      <Button type="submit">Delete</Button>
+      <Button small danger type="submit"><Eraser /> Delete</Button>
     </form>
   </div>
 </div>
@@ -33,7 +35,7 @@
 
 <style>
   article {
-    grid-column: 1 / 1;
+    grid-column: 2 / 3;
     grid-row: 1 / span 2;
     display: flex;
     flex-direction: column;
@@ -50,7 +52,7 @@
 	}
 
   .info-bar {
-    grid-column: 1 / 2;
+    grid-column: 1 / 4;
     grid-row: 2 / span 1;
     display: flex;
     justify-content: space-between;
@@ -60,6 +62,13 @@
     right: var(--space-xl);
     padding: var(--space-s);
     border-radius: var(--border-radius);
+    z-index: 1;
+  }
+
+  .time-since-update {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs)
   }
    
   .buttons {
@@ -68,17 +77,11 @@
   }
 
   .blur {
-    grid-column: 1 / 2;
+    grid-column: 1 / 4;
     grid-row: 2 / span 1;
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(4px);
     border-radius: var(--border-radius);
-    background: hsla(var(--palette-cream-80), 10%);
-    /* background: rgba(255, 255, 255, 0.2);
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.3); */
-    
+    background: hsla(0, 0%, 100%, 0.7);
+    z-index: 0;
   }
 </style>

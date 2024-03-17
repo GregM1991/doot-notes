@@ -7,7 +7,7 @@ import { invariantResponse } from '$lib/utils/misc'
 import { redirect, type Actions, fail } from '@sveltejs/kit'
 
 export const actions = {
-	newOrUpdate: async ({ request, params }) => {
+	'new-or-update': async ({ request, params }) => {
 		const formData = await request.formData()
 		const submission = NoteEditorSchema.safeParse(formData)
 
@@ -26,19 +26,21 @@ export const actions = {
 			select: { id: true },
 			where: { username: params.username },
 		})
-
 		invariantResponse(owner, 'Could not find user of note', 404)
 
-		const { id: noteId } = await prisma.note.create({
+		const note = {
+			title: submission.data.title,
+			content: submission.data.content,
+			ownerId: owner.id,
+		}
+		const { id: noteId } = await prisma.note.upsert({
 			select: { id: true },
-			data: {
-				title: submission.data.title,
-				content: submission.data.content,
-				ownerId: owner.id,
-			},
+			where: { id: params.noteid ?? "__this_can't_exist__" },
+			update: note,
+			create: note,
 		})
 
-		redirect(303, `${noteId}`)
+		redirect(303, `/users/${params.username}/notes/${noteId}`)
 	},
 	delete: async ({ params }) => {
 		await prisma.note.delete({

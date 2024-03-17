@@ -9,6 +9,8 @@
 	export let secondary = false
 	export let fluid = false
 	export let style = ''
+	export let small = false;
+	export let danger = false;
 
 	const element = href ? 'a' : 'button'
 	const role = element === 'a' ? 'link' : 'button'
@@ -29,6 +31,8 @@
 	class:primary
 	class:fluid
 	class:secondary
+	class:small
+	class:danger
 	on:click={onClick}
 >
 	<slot />
@@ -36,15 +40,18 @@
 
 <style>
 	.base {
+		--padding: var(--space-xs);
+		--font-size: var(--type-step-0);
 		display: inline-flex;
 		align-items: center;
 		gap: var(--space-3xs);
-		padding: var(--space-xs);
-		background: var(--link-background);
+		padding: var(--padding);
+		background: var(--background);
 		border-radius: var(--border-radius);
 		border: var(--border);
 		filter: var(--border-drop-shadow-black);
-		width: var(--link-width);
+		width: var(--width);
+		font-size: var(--font-size);
 
 		transition: var(--animation-quick);
 	}
@@ -63,15 +70,24 @@
 	}
 
 	.primary {
-		--link-background: var(--palette-secondary);
+		--background: var(--palette-secondary);
 	}
 
 	.secondary {
-		--link-background: var(--palette-pop);
+		--background: var(--palette-pop);
 		color: white;
 	}
 
+	.danger {
+		--background: tomato;
+	}
+
+	.small {
+		--padding: var(--space-3xs) var(--space-2xs);
+		--font-size: var(--type-step--1);
+	}
+
 	.fluid {
-		--link-width: 100%;
+		--width: 100%;
 	}
 </style>

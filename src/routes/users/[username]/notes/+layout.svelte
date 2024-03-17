@@ -2,7 +2,7 @@
 	import { page } from '$app/stores'
 	import { Button } from '$lib/components'
 	import type { LayoutServerData } from './$types'
-	import Pencil2 from 'virtual:icons/radix-icons/pencil2'
+	import Pencil1 from 'virtual:icons/radix-icons/pencil1'
 
 	export let data: LayoutServerData
 	const hrefBase = `/users/${$page.params.username}/notes`
@@ -12,7 +12,7 @@
 	<div class="sidebar">
 		<h1>{data.user.name}'s notes</h1>
 		<Button href="{hrefBase}/new-note" secondary style="margin-bottom: var(--space-xs)">
-			Doot new note <Pencil2 />
+			<Pencil1 /> Doot new note
 		</Button>
 		<ul role="list">
 			{#each data.notes as note (note.id)}
@@ -58,9 +58,9 @@
 	/* TODO: fix the scrollbar-gutter: stable both-edges; thing */
 	.main {
 		display: grid;
-		grid-template-columns: 1fr;
+		grid-template-columns: var(--space-m) 1fr var(--space-m);
 		grid-template-rows: 1fr auto;
-		padding: var(--space-m) var(--space-xl);
+		padding: var(--space-m);
 		background: var(--palette-base-light);
 		border-radius: 0 var(--border-radius) var(--border-radius) 0;
 		border: 4px solid var(--palette-base-medium);
