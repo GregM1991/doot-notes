@@ -10,6 +10,7 @@
 	export let title = ''
 	export let content = ''
 	export let newNote = false
+	export let action: string;
 	let header =  newNote ? "Doot a new note 📯" : `Edit ${title}`
 	let buttonText = newNote ? "Create note" : "Save changes"
 	let Icon = newNote ? Plus : Check
@@ -17,7 +18,7 @@
 	const [titleId, contentId] = [crypto.randomUUID(), crypto.randomUUID()]
 </script>
 
-<form method="POST" action="/users/{$page.params.username}/notes?/new-or-update" use:enhance>
+<form method="POST" {action} use:enhance>
 	<h3>{header}</h3>
 	{#if (!newNote)}
 		<input type="hidden" name="id" value={$page.params.noteid} /> 

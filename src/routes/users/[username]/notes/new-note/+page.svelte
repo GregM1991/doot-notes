@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores'
 	import { EditNote } from '$lib/components'
 	import type { FlattenedNoteFormErrors } from '$lib/components/EditNote/types'
 	import type { ActionData } from '../$types'
@@ -7,7 +8,8 @@
 	let title = ''
 	let content = ''
 	let errors: FlattenedNoteFormErrors | null = null
-
+	const action = `/users/${$page.params.username}/notes/new-note?/newOrUpdate`
+	
 	$: {
 		title = form?.data.title.toString() ?? ''
 		content = form?.data.content.toString() ?? ''
@@ -15,4 +17,4 @@
 	}
 </script>
 
-<EditNote {title} {content} {errors} />
+<EditNote {action} {title} {content} {errors} />
