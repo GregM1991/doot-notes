@@ -3,6 +3,15 @@ import { dev } from '$app/environment'
 import type { CookieSerializeOptions } from 'cookie'
 import { SESSION_SECRET } from '$env/static/private'
 import { z } from 'zod'
+import { redirect, type Cookies } from '@sveltejs/kit'
+
+interface ICookieSession {
+	name: string
+	options: CookieSerializeOptions & {
+		path?: string
+	}
+	secrets?: string[]
+}
 
 const ToastSchema = z.object({
 	description: z.string(),
@@ -13,14 +22,6 @@ const ToastSchema = z.object({
 
 export type Toast = z.infer<typeof ToastSchema>
 export type ToastInput = z.input<typeof ToastSchema>
-
-interface ICookieSession {
-	name: string
-	options: CookieSerializeOptions & {
-		path?: string
-	}
-	secrets?: string[]
-}
 
 export const toastSessionStorage: ICookieSession = {
 	name: 'dn_toast',
@@ -33,4 +34,12 @@ export const toastSessionStorage: ICookieSession = {
 	secrets: SESSION_SECRET.split(','),
 }
 
-export function redirectWithToast(url: string, toast: ToastInput) {}
+export function redirectWithToast(
+	url: string,
+	toast: ToastInput,
+	cookies: Cookies,
+) {
+	const { name, options, secrets } = toastSessionStorage
+
+	return redirect(url)
+}
