@@ -13,15 +13,17 @@ interface ICookieSession {
 	secrets?: string[]
 }
 
+type sveltekitRedirectStatus = Parameters<typeof redirect>[0]
+type sveltekitRedirectLocation = Parameters<typeof redirect>[1]
+export type Toast = z.infer<typeof ToastSchema>
+export type ToastInput = z.input<typeof ToastSchema>
+
 const ToastSchema = z.object({
 	description: z.string(),
 	id: z.string().default(() => cuid()),
 	title: z.string().optional(),
 	type: z.enum(['message', 'success', 'error']).default('message'),
 })
-
-export type Toast = z.infer<typeof ToastSchema>
-export type ToastInput = z.input<typeof ToastSchema>
 
 export const toastSessionStorage: ICookieSession = {
 	name: 'dn_toast',
@@ -35,11 +37,12 @@ export const toastSessionStorage: ICookieSession = {
 }
 
 export function redirectWithToast(
-	url: string,
+	status: sveltekitRedirectStatus,
+	url: sveltekitRedirectLocation,
 	toast: ToastInput,
 	cookies: Cookies,
 ) {
 	const { name, options, secrets } = toastSessionStorage
 
-	return redirect(url)
+	return redirect(status, url)
 }
