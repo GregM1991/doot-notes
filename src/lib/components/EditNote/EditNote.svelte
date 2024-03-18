@@ -34,7 +34,7 @@
 			bind:value={title}
 		/>
 	</div>
-	<div class="form-group">
+	<div class="form-group full-height">
 		<Input
 			textArea
 			errors={errors?.content}
@@ -44,6 +44,7 @@
 			name="content"
 			type="content"
 			bind:value={content}
+			style="height: 100%"
 		/>
 	</div>
 	<Button secondary type="submit">
@@ -70,5 +71,9 @@
 	.form-group {
 		display: flex;
 		flex-direction: column;
+	}
+
+	.full-height {
+		flex: 1;
 	}
 </style>

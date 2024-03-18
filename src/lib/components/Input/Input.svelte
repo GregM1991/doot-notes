@@ -12,12 +12,12 @@
 	export let label = ''
 	export let errors: string[] | null = null
 	export let textArea = false
+	export let style = ''
 
 	const el = textArea ? 'textarea' : 'input'
-
 	const errorId = `${id}-error`
+	
 	const dispatch = createEventDispatcher()
-
 	function handleInput() {
 		dispatch('input')
 	}
@@ -35,10 +35,11 @@
 	{type}
 	{autofocus}
 	{value}
+	{style}
+	{required}
 	class:secondary
 	on:input={handleInput}
 	class="base"
-	{required}
 />
 <div id={errorId} class="error">
 	{#if errors}
