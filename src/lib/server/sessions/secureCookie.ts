@@ -1,31 +1,37 @@
-// TODO: encrypt and decrypt function to ensure secure cookies
-
 import crypto from 'crypto'
 import type { ToastInput } from './toastSessionStorage'
 import { SESSION_SECRET } from '$env/static/private'
 
 const algorithm = 'aes-256-cbc'
-const secret = SESSION_SECRET.split(',')[0]
+// const secret = SESSION_SECRET.split(',')[0]
+const secret = '37x9T7RJfZpCBUo6hB2bxd3ZZFj67zNh'
 
-export function encryptAndSignCookieValue<T>(value: T) {
+export function encryptAndSignCookieValue(value: unknown) {
 	const iv = crypto.randomBytes(16)
 	const cookieValueString = objectToCookieValueString(value)
 	const cipher = crypto.createCipheriv(algorithm, secret, iv)
 
-	const encryptedCookieValueString = cipher.update(cookieValueString)
+	const encryptedCookieValueBuffer = cipher.update(cookieValueString)
 	const encryptedCookieValue = Buffer.concat([
-		encryptedCookieValueString,
+		encryptedCookieValueBuffer,
 		cipher.final(),
 	]).toString('hex')
+	const signedandEncryptedCookie = signCookie(encryptedCookieValue)
 
 	return objectToCookieValueString({
 		iv: iv.toString('hex'),
-		encryptedCookieValue,
+		cookieVal: signedandEncryptedCookie,
 	})
 }
 
-export function decryptCookie(cookieValue: string, secret: string) {
+export function decryptCookie(cookieValue: string) {
+	const parsedCookieValue = cookieValueStringToObject(cookieValue)
+	console.log(parsedCookieValue)
 	let iv = Buffer.from(cookieValue, 'hex')
+}
+
+function signCookie(cookieValue: string) {
+	return crypto.createHmac('sha256', secret).update(cookieValue).digest('hex')
 }
 
 function objectToCookieValueString<T>(obj: T): string {
@@ -33,14 +39,19 @@ function objectToCookieValueString<T>(obj: T): string {
 	return encodeURIComponent(jsonString)
 }
 
-function cookieValueStringToObject<T>(value: string): T {
+function cookieValueStringToObject(value: string) {
 	const jsonString = decodeURIComponent(value)
 	return JSON.parse(jsonString)
 }
 
-const encryptedCookie = encryptAndSignCookieValue<ToastInput>({
+const signedAndEncryptedCookie = encryptAndSignCookieValue({
 	description: 'blah',
 	title: 'title',
 	type: 'success',
 })
-console.log({ encryptedCookie })
+console.log({ signedAndEncryptedCookie })
+console.log(
+	'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',
+)
+const decryptedCookie = decryptCookie(signedAndEncryptedCookie)
+console.log({ decryptedCookie })

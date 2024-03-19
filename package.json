@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@iconify/json": "^2.2.190",
-    "@playwright/test": "^1.28.1",
+    "@playwright/test": "^1.42.1",
     "@remix-run/eslint-config": "2.7.2",
     "@sveltejs/adapter-auto": "^3.0.0",
     "@sveltejs/kit": "^2.0.0",
