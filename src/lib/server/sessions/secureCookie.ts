@@ -12,15 +12,13 @@ const EncryptedAndSignedCookieSchema = z.object({
 const algorithm = 'aes-256-cbc'
 const secret = SESSION_SECRET.split(',')[0]
 
-export function encryptAndSignCookieValue(
-	value: unknown,
+export function encryptAndSignCookieValue<T>(
+	value: T,
 	signOpts?: Parameters<typeof jwt.sign>[2],
 ) {
 	const iv = crypto.randomBytes(16)
 	const cookieValueString = objectToCookieValueString(value)
-	console.log({ cookieValueString })
 	const cipher = crypto.createCipheriv(algorithm, secret, iv)
-
 	const encryptedCookieValueBuffer = cipher.update(cookieValueString)
 	const encryptedCookieValue = Buffer.concat([
 		encryptedCookieValueBuffer,
@@ -50,7 +48,7 @@ export function decryptCookie(encryptedCookieValue: string) {
 		const { iv, cookieVal } = parsedEncryptedAndSignedCookie.data
 		const verified = jwt.verify(cookieVal, secret)
 		const jwtToken = z.string().safeParse(verified)
-		if (!jwtToken.success) throw new Error('Fuck balls')
+		if (!jwtToken.success) throw new Error('Unable to parse jwt token')
 
 		const ivBuffer = Buffer.from(iv, 'hex')
 		const encryptedBuffer = Buffer.from(jwtToken.data, 'hex')

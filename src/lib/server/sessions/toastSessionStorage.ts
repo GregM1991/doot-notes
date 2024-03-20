@@ -1,16 +1,13 @@
 import { createId as cuid } from '@paralleldrive/cuid2'
 import { dev } from '$app/environment'
 import type { CookieSerializeOptions } from 'cookie'
-import { SESSION_SECRET } from '$env/static/private'
 import { z } from 'zod'
 import { redirect, type Cookies } from '@sveltejs/kit'
+import { encryptAndSignCookieValue } from './secureCookie'
 
 interface ICookieSession {
 	name: string
-	options: CookieSerializeOptions & {
-		path?: string
-	}
-	secrets?: string[]
+	options: CookieSerializeOptions & { path: string }
 }
 
 type sveltekitRedirectStatus = Parameters<typeof redirect>[0]
@@ -33,7 +30,6 @@ export const toastSessionStorage: ICookieSession = {
 		httpOnly: true,
 		secure: dev,
 	},
-	secrets: SESSION_SECRET.split(','),
 }
 
 export function redirectWithToast(
@@ -42,7 +38,9 @@ export function redirectWithToast(
 	toast: ToastInput,
 	cookies: Cookies,
 ) {
-	const { name, options, secrets } = toastSessionStorage
+	const { name, options } = toastSessionStorage
+	const encryptedToastValue = encryptAndSignCookieValue(toast)
+	cookies.set(name, encryptedToastValue, options)
 
 	return redirect(status, url)
 }
