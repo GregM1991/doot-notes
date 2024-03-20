@@ -3,7 +3,6 @@ import { dev } from '$app/environment'
 import type { CookieSerializeOptions } from 'cookie'
 import { z } from 'zod'
 import { redirect, type Cookies } from '@sveltejs/kit'
-import { encryptAndSignCookieValue } from './secureCookie'
 
 interface ICookieSession {
 	name: string
@@ -38,9 +37,5 @@ export function redirectWithToast(
 	toast: ToastInput,
 	cookies: Cookies,
 ) {
-	const { name, options } = toastSessionStorage
-	const encryptedToastValue = encryptAndSignCookieValue(toast)
-	cookies.set(name, encryptedToastValue, options)
-
 	return redirect(status, url)
 }

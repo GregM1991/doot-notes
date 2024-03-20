@@ -1,8 +1,14 @@
-import { fail } from '@sveltejs/kit'
+import { fail, type Cookies } from '@sveltejs/kit'
 import { SESSION_SECRET } from '$env/static/private'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import { z } from 'zod'
+import type { CookieParseOptions, CookieSerializeOptions } from 'cookie'
+import type {
+	CreateCookieSessionStorageFunction,
+	CookieOptions,
+	GetCookie,
+} from './types.secureCookies'
 
 const EncryptedAndSignedCookieSchema = z.object({
 	iv: z.string().length(32),
@@ -12,7 +18,64 @@ const EncryptedAndSignedCookieSchema = z.object({
 const algorithm = 'aes-256-cbc'
 const secret = SESSION_SECRET.split(',')[0]
 
-export function encryptAndSignCookieValue<T>(
+function getSessionFromCookieString(cookieValue: string) {}
+
+export const createCookieSessionStorage: CreateCookieSessionStorageFunction = (
+	name: string,
+	options?: CookieOptions,
+) => {
+	const cookieName = name
+	async function getSession(
+		getCookie: GetCookie,
+		options?: CookieParseOptions,
+	) {
+		// I need to create a function that calls cookies.get and converts the session string value into the session object
+		const cookieStringValue = getCookie(cookieName, options)
+		if (!cookieStringValue) {
+		}
+		getSessionFromCookieString(cookieStringValue)
+		console.log('Commiting session')
+		// This provides the 'Set-Cookie' header for outgoing requests with changes
+		// to the cookie session values
+		return {
+			id: 'id',
+			data: {},
+			has: () => true,
+			get: () => undefined,
+			set: () => console.log('set'),
+			flash: () => console.log('set'),
+			unset: () => console.log('set'),
+		}
+	}
+
+	// Takes a HTTP cookie from the current request (headers.get("Cookie"))
+	async function commitSession(
+		cookies: Cookies,
+		options?: CookieSerializeOptions,
+	) {
+		console.log('Reading session')
+		//	this returns the session Cookie if it exists, otherwise creates a session
+		return 'poops'
+	}
+
+	async function destroySession(
+		cookies: Cookies,
+		options?: CookieSerializeOptions,
+	) {
+		console.log('Destroying session')
+		// This provides the 'Set-Cookie' header for outgoing requests which destroys
+		// the cookie session
+		return 'mcgee'
+	}
+
+	return {
+		getSession,
+		commitSession,
+		destroySession,
+	}
+}
+
+function encryptAndSignCookieValue<T>(
 	value: T,
 	signOpts?: Parameters<typeof jwt.sign>[2],
 ) {
@@ -35,7 +98,7 @@ export function encryptAndSignCookieValue<T>(
 	})
 }
 
-export function decryptCookie(encryptedCookieValue: string) {
+function decryptCookie(encryptedCookieValue: string) {
 	try {
 		const encryptedAndSignedCookieObj =
 			cookieValueStringToObject(encryptedCookieValue)
