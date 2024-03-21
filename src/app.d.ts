@@ -2,10 +2,8 @@
 // for information about these interfaces
 import type { Session } from 'svelte-kit-cookie-session'
 
-type SessionData = {
-	views: number
-}
 type ToastSessionData = {
+	flash: boolean
 	description: string
 	id: string
 	title: string

@@ -1,6 +1,9 @@
 /** @type {import('@sveltejs/kit').LayoutServerLoad} */
-export function load({ locals }) {
+export async function load({ locals }) {
+	const toast = locals.dn_toast.data
+	if (toast.flash) await locals.dn_toast.destroy()
+
 	return {
-		dn_toast: locals.dn_toast.data,
+		dn_toast: toast,
 	}
 }

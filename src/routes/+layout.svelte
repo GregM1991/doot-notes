@@ -1,6 +1,10 @@
-<script>
+<script lang="ts">
+	import { page } from '$app/stores';
 	import { Navbar } from '$lib/components'
 	import '$lib/styles/app.css'
+
+	$: toast = $page.data.dn_toast;
+	$: console.log("layout svelte page toast: ", toast)
 </script>
 
 <svelte:head>
