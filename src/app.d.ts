@@ -17,12 +17,10 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			session: Session<SessionData>
-			toastSession: Session<ToastSessionData>
+			dn_toast: Session<ToastSessionData>
 		}
 		interface PageData {
-			session: SessionData
-			toastSession: ToastSessionData
+			dn_toast: ToastSessionData
 		}
 		// interface PageState {}
 		// interface Platform {}

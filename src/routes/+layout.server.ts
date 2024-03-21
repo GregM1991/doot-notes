@@ -1,6 +1,6 @@
 /** @type {import('@sveltejs/kit').LayoutServerLoad} */
 export function load({ locals }) {
 	return {
-		session: locals.session.data,
+		dn_toast: locals.dn_toast.data,
 	}
 }

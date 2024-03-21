@@ -3,10 +3,7 @@ import { NoteEditorSchema, type FlattenedNoteFormErrors } from './types'
 import { prisma } from '$lib/utils/db.server'
 import { invariantResponse } from '$lib/utils/misc'
 
-export const newOrUpdate: Action = async ({ request, params, locals }) => {
-	const { views = 0 } = locals.session.data
-	await locals.session.update(({ views }) => ({ views: views ? views + 1 : 0 }))
-
+export const newOrUpdate: Action = async ({ request, params }) => {
 	const formData = await request.formData()
 	const submission = NoteEditorSchema.safeParse(formData)
 
