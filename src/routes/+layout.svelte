@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { Navbar } from '$lib/components'
+	import { page } from '$app/stores'
+	import { Navbar, Toast } from '$lib/components'
 	import '$lib/styles/app.css'
 
-	$: toast = $page.data.dn_toast;
-	$: console.log("layout svelte page toast: ", toast)
+	$: toast = $page.data.dn_toast
+	$: console.log(toast)
 </script>
 
 <svelte:head>
@@ -16,6 +16,13 @@
 </svelte:head>
 
 <div class="content">
+	{#if Object.keys(toast).length}
+		<Toast
+			title={toast.title}
+			description={toast.description}
+			type={toast.type}
+		/>
+	{/if}
 	<header>
 		<Navbar />
 	</header>
@@ -31,10 +38,11 @@
 		grid-template-columns: var(--space-xl) 1fr var(--space-xl);
 		grid-template-rows: auto minmax(400px, 1fr) auto;
 		grid-template-areas:
-			'gutter1 header gutter2'
-			'gutter1 main gutter2'
+			'. header .'
+			'. main .'
 			'footer footer footer';
 		gap: var(--space-xs);
+		position: relative;
 		height: 100vh;
 		background: var(--palette-base);
 	}
