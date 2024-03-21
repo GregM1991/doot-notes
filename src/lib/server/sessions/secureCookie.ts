@@ -25,17 +25,15 @@ const EncryptedAndSignedCookieSchema = z.object({
 
 const algorithm = 'aes-256-cbc'
 const secret = SESSION_SECRET.split(',')[0]
-
-function getSessionFromCookieString(cookieValue: string) {}
+const flashPrefix = '__flash'
 
 export const createCookieSessionStorage: CreateCookieSessionStorageFunction =
 	async (cookie: CookieOptions) => {
 		const cookieOptions = { ...defaultCookieOptions, ...cookie }
 		const id = createId()
-		let data
 
 		async function getSession(cookies: Cookies, options?: CookieParseOptions) {
-			// I need to create a function that calls cookies.get and converts the session string value into the session object
+			let data = undefined
 			const cookieValueString = cookies.get(cookieOptions.name, cookieOptions)
 			if (!cookieValueString) {
 				const stringValue = objectToCookieValueString({ hello: 'poops mcgee' })
@@ -45,25 +43,37 @@ export const createCookieSessionStorage: CreateCookieSessionStorageFunction =
 
 			const sessionObject = cookieValueStringToObject(cookieValueString)
 
-			function has(name: (keyof Data | keyof FlashData) & string) {}
+			function has(name: string) {
+				return Object.hasOwn(sessionObject, name)
+			}
 
-			function get() {}
+			function get(name: string) {
+				const value = sessionObject[name] ?? undefined
+				return value
+			}
 
-			function set() {}
+			function set(name: string, value: any) {
+				sessionObject[name] = value
+			}
 
-			function flash() {}
+			function flash(name: string, value: any) {
+				const flashName = `${flashPrefix}${name}`
+				sessionObject[flashName] = value
+			}
 
-			function unset() {}
+			function unset(name: string) {
+				delete sessionObject[name]
+			}
 			// This provides the 'Set-Cookie' header for outgoing requests with changes
 			// to the cookie session values
 			return {
 				id,
 				data,
-				has: () => true,
-				get: () => undefined,
-				set: () => console.log('set'),
-				flash: () => console.log('set'),
-				unset: () => console.log('set'),
+				has,
+				get,
+				set,
+				flash,
+				unset,
 			}
 		}
 
