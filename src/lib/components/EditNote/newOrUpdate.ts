@@ -2,12 +2,14 @@ import { fail, redirect, type Action } from '@sveltejs/kit'
 import { NoteEditorSchema, type FlattenedNoteFormErrors } from './types'
 import { prisma } from '$lib/utils/db.server'
 import { invariantResponse } from '$lib/utils/misc'
-import { redirectWithToast } from '$lib/server/sessions/toastSessionStorage'
 
-export const newOrUpdate: Action = async ({ request, params, cookies }) => {
+export const newOrUpdate: Action = async ({ request, params, locals }) => {
+	const { views = 0 } = locals.session.data
+	await locals.session.update(({ views }) => ({ views: views ? views + 1 : 0 }))
+
 	const formData = await request.formData()
 	const submission = NoteEditorSchema.safeParse(formData)
-	console.log({ submission, request })
+
 	if (!submission.success) {
 		const errorData = submission.error.flatten()
 			.fieldErrors as FlattenedNoteFormErrors //TODO: See if there's a better way to do this - ,-
@@ -38,14 +40,5 @@ export const newOrUpdate: Action = async ({ request, params, cookies }) => {
 		create: note,
 	})
 
-	throw redirectWithToast(
-		303,
-		`/users/${params.username}/notes/${noteId}`,
-		{
-			type: 'success',
-			title: 'Success',
-			description: 'Your note has been deleted',
-		},
-		cookies,
-	)
+	throw redirect(303, `/users/${params.username}/notes/${noteId}`)
 }

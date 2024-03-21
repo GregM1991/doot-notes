@@ -1,6 +1,5 @@
 import { prisma } from '$lib/utils/db.server'
 import { invariantResponse } from '$lib/utils/misc.js'
-import { error } from '@sveltejs/kit'
 
 export const load = async ({ params }) => {
 	const user = await prisma.user.findFirst({
