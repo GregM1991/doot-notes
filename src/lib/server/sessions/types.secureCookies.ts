@@ -4,13 +4,13 @@ interface SessionData {
 	[name: string]: any
 }
 export type CookieOptions = CookieParseOptions &
-	CookieSerializeOptions & { path: string; secrets: string[] }
+	CookieSerializeOptions & { secrets?: string[]; name?: string }
 
 export type CreateCookieSessionStorageFunction = <
 	Data = SessionData,
 	FlashData = Data,
 >(
-	options?: CookieOptions,
+	cookie: CookieOptions,
 ) => SessionStorage<Data, FlashData>
 
 interface SessionStorage<Data = SessionData, FlashData = Data> {

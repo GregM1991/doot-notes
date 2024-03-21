@@ -3,10 +3,12 @@ import { dev } from '$app/environment'
 import type { CookieSerializeOptions } from 'cookie'
 import { z } from 'zod'
 import { redirect, type Cookies } from '@sveltejs/kit'
+import { createCookieSessionStorage } from './secureCookie'
+import { SESSION_SECRET } from '$env/static/private'
 
 interface ICookieSession {
-	name: string
-	options: CookieSerializeOptions & { path: string }
+	name?: string
+	options?: CookieSerializeOptions & { path: string }
 }
 
 type sveltekitRedirectStatus = Parameters<typeof redirect>[0]
@@ -21,15 +23,14 @@ const ToastSchema = z.object({
 	type: z.enum(['message', 'success', 'error']).default('message'),
 })
 
-export const toastSessionStorage: ICookieSession = {
+export const toastSessionStorage = createCookieSessionStorage({
 	name: 'dn_toast',
-	options: {
-		sameSite: 'lax',
-		path: '/',
-		httpOnly: true,
-		secure: dev,
-	},
-}
+	sameSite: 'lax',
+	path: '/',
+	httpOnly: true,
+	secure: dev,
+	secrets: SESSION_SECRET.split(','),
+})
 
 export function redirectWithToast(
 	status: sveltekitRedirectStatus,

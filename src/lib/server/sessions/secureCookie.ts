@@ -7,8 +7,16 @@ import type { CookieParseOptions, CookieSerializeOptions } from 'cookie'
 import type {
 	CreateCookieSessionStorageFunction,
 	CookieOptions,
-	GetCookie,
 } from './types.secureCookies'
+import { createId } from '@paralleldrive/cuid2'
+
+const defaultCookieOptions = {
+	name: '__session',
+	path: '/',
+	httpOnly: true,
+	secure: process.env.NODE_ENV === 'production',
+	sameSite: 'lax' as const,
+}
 
 const EncryptedAndSignedCookieSchema = z.object({
 	iv: z.string().length(32),
@@ -20,60 +28,71 @@ const secret = SESSION_SECRET.split(',')[0]
 
 function getSessionFromCookieString(cookieValue: string) {}
 
-export const createCookieSessionStorage: CreateCookieSessionStorageFunction = (
-	name: string,
-	options?: CookieOptions,
-) => {
-	const cookieName = name
-	async function getSession(
-		getCookie: GetCookie,
-		options?: CookieParseOptions,
-	) {
-		// I need to create a function that calls cookies.get and converts the session string value into the session object
-		const cookieStringValue = getCookie(cookieName, options)
-		if (!cookieStringValue) {
+export const createCookieSessionStorage: CreateCookieSessionStorageFunction =
+	async (cookie: CookieOptions) => {
+		const cookieOptions = { ...defaultCookieOptions, ...cookie }
+		const id = createId()
+		let data
+
+		async function getSession(cookies: Cookies, options?: CookieParseOptions) {
+			// I need to create a function that calls cookies.get and converts the session string value into the session object
+			const cookieValueString = cookies.get(cookieOptions.name, cookieOptions)
+			if (!cookieValueString) {
+				const stringValue = objectToCookieValueString({ hello: 'poops mcgee' })
+				cookies.set(cookieOptions.name, stringValue, cookieOptions)
+				return undefined
+			}
+
+			const sessionObject = cookieValueStringToObject(cookieValueString)
+
+			function has(name: (keyof Data | keyof FlashData) & string) {}
+
+			function get() {}
+
+			function set() {}
+
+			function flash() {}
+
+			function unset() {}
+			// This provides the 'Set-Cookie' header for outgoing requests with changes
+			// to the cookie session values
+			return {
+				id,
+				data,
+				has: () => true,
+				get: () => undefined,
+				set: () => console.log('set'),
+				flash: () => console.log('set'),
+				unset: () => console.log('set'),
+			}
 		}
-		getSessionFromCookieString(cookieStringValue)
-		console.log('Commiting session')
-		// This provides the 'Set-Cookie' header for outgoing requests with changes
-		// to the cookie session values
+
+		// Takes a HTTP cookie from the current request (headers.get("Cookie"))
+		async function commitSession(
+			cookies: Cookies,
+			options?: CookieSerializeOptions,
+		) {
+			console.log('Committing session')
+			//	this returns the session Cookie if it exists, otherwise creates a session
+			return 'poops'
+		}
+
+		async function destroySession(
+			cookies: Cookies,
+			options?: CookieSerializeOptions,
+		) {
+			console.log('Destroying session')
+			// This provides the 'Set-Cookie' header for outgoing requests which destroys
+			// the cookie session
+			return 'mcgee'
+		}
+
 		return {
-			id: 'id',
-			data: {},
-			has: () => true,
-			get: () => undefined,
-			set: () => console.log('set'),
-			flash: () => console.log('set'),
-			unset: () => console.log('set'),
+			getSession,
+			commitSession,
+			destroySession,
 		}
 	}
-
-	// Takes a HTTP cookie from the current request (headers.get("Cookie"))
-	async function commitSession(
-		cookies: Cookies,
-		options?: CookieSerializeOptions,
-	) {
-		console.log('Reading session')
-		//	this returns the session Cookie if it exists, otherwise creates a session
-		return 'poops'
-	}
-
-	async function destroySession(
-		cookies: Cookies,
-		options?: CookieSerializeOptions,
-	) {
-		console.log('Destroying session')
-		// This provides the 'Set-Cookie' header for outgoing requests which destroys
-		// the cookie session
-		return 'mcgee'
-	}
-
-	return {
-		getSession,
-		commitSession,
-		destroySession,
-	}
-}
 
 function encryptAndSignCookieValue<T>(
 	value: T,
