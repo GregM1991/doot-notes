@@ -34,7 +34,7 @@ export const createCookieSessionStorage: CreateCookieSessionStorageFunction =
 
 		async function getSession(cookies: Cookies, options?: CookieParseOptions) {
 			let data = undefined
-			const cookieValueString = cookies.get(cookieOptions.name, cookieOptions)
+			const cookieValueString = cookies.get(cookieOptions.name, options)
 			if (!cookieValueString) {
 				const stringValue = objectToCookieValueString({ hello: 'poops mcgee' })
 				cookies.set(cookieOptions.name, stringValue, cookieOptions)
@@ -83,7 +83,6 @@ export const createCookieSessionStorage: CreateCookieSessionStorageFunction =
 			options?: CookieSerializeOptions,
 		) {
 			console.log('Committing session')
-			//	this returns the session Cookie if it exists, otherwise creates a session
 			return 'poops'
 		}
 

@@ -1,3 +1,4 @@
+import type { Cookies } from '@sveltejs/kit'
 import type { CookieParseOptions, CookieSerializeOptions } from 'cookie'
 
 interface SessionData {
@@ -15,7 +16,7 @@ export type CreateCookieSessionStorageFunction = <
 
 interface SessionStorage<Data = SessionData, FlashData = Data> {
 	getSession: (
-		getCookie: GetCookie,
+		cookies: Cookies,
 		options?: CookieParseOptions,
 	) => Promise<Session<Data, FlashData>>
 	commitSession: (
