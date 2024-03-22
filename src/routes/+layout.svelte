@@ -4,7 +4,11 @@
 	import '$lib/styles/app.css'
 
 	$: toast = $page.data.dn_toast
-	$: console.log(toast)
+	$: showToast = !!Object.keys(toast).length
+	const handleClose = () => {
+		console.log('hello?')
+		showToast = false
+		}
 </script>
 
 <svelte:head>
@@ -16,11 +20,12 @@
 </svelte:head>
 
 <div class="content">
-	{#if Object.keys(toast).length}
+	{#if showToast}
 		<Toast
 			title={toast.title}
 			description={toast.description}
 			type={toast.type}
+			on:close={handleClose}
 		/>
 	{/if}
 	<header>

@@ -1,72 +1,84 @@
 <script lang="ts">
-	import type { Type } from "$lib/server/sessions/toast"
-  import Cross from 'virtual:icons/radix-icons/cross1'
+	import type { Type } from '$lib/server/sessions/toast'
+	import { createEventDispatcher } from 'svelte'
+	import Cross from 'virtual:icons/radix-icons/cross1'
 
-  export let title: string;
-  export let description: string;
-  export let type: Type
-  console.log(type)
+	export let title: string
+	export let description: string
+	export let type: Type
+
+	const dispatch = createEventDispatcher()
+	function onClose() {
+		dispatch('close')
+	}
 </script>
 
 <div class="wrapper">
-  <span class="type-icon icon-layout {type}">
-    Icon
-  </span>
-  <div class="content">
-    <span>
-      {title}
-    </span>
-    <span>
-      {description}
-    </span>
-  </div>
-  <span on:click={() => console.log('dismiss me')} class="icon-layout">
-    <Cross />
-  </span>
+	<span class="type-icon icon-layout {type}"> Icon </span>
+	<div class="content">
+		<span>
+			{title}
+		</span>
+		<span>
+			{description}
+		</span>
+	</div>
+	<button on:click={onClose}>
+		<Cross />
+	</button>
 </div>
 
 <style>
-.wrapper {
-  display: flex;
-  position: absolute;
-  border: var(--border);
-  border-radius: var(--border-radius);
-  background: var(--palette-base);
-  top: 25px;
-  left: 50%;
-  transform: translateX(-50%);
-}
+	.wrapper {
+		display: flex;
+    align-items: center;
+		position: absolute;
+		border: var(--border);
+		border-radius: var(--border-radius);
+		background: var(--palette-base);
+		top: 25px;
+		left: 50%;
+		transform: translateX(-50%);
+    overflow: hidden;
+	}
 
-.content {
-  padding: var(--space-3xs) var(--space-2xs);
-  display: flex;
-  flex-direction: column;
-}
+	.content {
+		padding: var(--space-3xs) var(--space-2xs);
+		display: flex;
+		flex-direction: column;
+	}
 
-.icon-layout {
-  display: grid;
-  place-items: center;
-  padding: var(--space-3xs) var(--space-2xs);
-}
+	.icon-layout {
+		display: grid;
+		place-items: center;
+    align-self: stretch;
+		padding: var(--space-3xs) var(--space-2xs);
+    background: var(--content-background);
+		color: var(--content-color);
+	}
 
-.type-icon {
-  background: var(--content-background);
-  color: var(--content-color);
-  border-radius: var(--border-radius) 0 0 var(--border-radius);
-}
+  button {
+    display: flex;
+    align-items: center;
+    margin: 0 var(--space-2xs);
+    border: none;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    background: none;
+    cursor: pointer;
+  }
 
-.error {
-  --content-background: tomato;
-  --content-color: white;
-}
+	.error {
+		--content-background: tomato;
+		--content-color: white;
+	}
 
-.success {
-  --content-background: var(--palette-tertiary);
-  --content-color: white;
-}
+	.success {
+		--content-background: var(--palette-pop-secondary);
+		--content-color: white;
+	}
 
-.message {
-  --content-background: var(--palette-secondary-light);
-  --content-color: inherit;
-}
+	.message {
+		--content-background: var(--palette-secondary-light);
+		--content-color: inherit;
+	}
 </style>
