@@ -42,7 +42,6 @@
 			id={contentId}
 			secondary
 			name="content"
-			type="content"
 			bind:value={content}
 			style="height: 100%"
 		/>

@@ -1,8 +1,9 @@
 <script lang="ts">
+	import { enhance } from "$app/forms"
 	import { Button, Input } from "$lib/components"
 
 </script>
-<form>
+<form method="POST" use:enhance>
   <h1>Hello again!</h1>
   <div class="field-group">
     <Input label="Enter username" id="username" name="username" />
