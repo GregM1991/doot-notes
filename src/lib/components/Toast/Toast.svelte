@@ -1,9 +1,10 @@
 <script lang="ts">
 	import type { Type } from '$lib/server/sessions/toast'
 	import { createEventDispatcher } from 'svelte'
+	import { fade, fly } from 'svelte/transition'
 	import Cross from 'virtual:icons/radix-icons/cross1'
 
-	export let title: string
+	export let title: string | undefined
 	export let description: string
 	export let type: Type
 
@@ -13,25 +14,33 @@
 	}
 </script>
 
-<div class="wrapper">
+<div
+	in:fly|fade={{ y: -50, duration: 300 }}
+	out:fly|fade={{ y: -50, duration: 150 }}
+	class="wrapper"
+>
 	<span class="type-icon icon-layout {type}"> Icon </span>
 	<div class="content">
-		<span>
-			{title}
-		</span>
+		{#if title}
+			<span>
+				{title}
+			</span>
+		{/if}
 		<span>
 			{description}
 		</span>
 	</div>
-	<button on:click={onClose}>
-		<Cross />
-	</button>
+	<form>
+		<button type="submit" on:click={onClose}>
+			<Cross />
+		</button>
+	</form>
 </div>
 
 <style>
 	.wrapper {
 		display: flex;
-    align-items: center;
+		align-items: center;
 		position: absolute;
 		border: var(--border);
 		border-radius: var(--border-radius);
@@ -39,7 +48,7 @@
 		top: 25px;
 		left: 50%;
 		transform: translateX(-50%);
-    overflow: hidden;
+		overflow: hidden;
 	}
 
 	.content {
@@ -51,21 +60,21 @@
 	.icon-layout {
 		display: grid;
 		place-items: center;
-    align-self: stretch;
+		align-self: stretch;
 		padding: var(--space-3xs) var(--space-2xs);
-    background: var(--content-background);
+		background: var(--content-background);
 		color: var(--content-color);
 	}
 
-  button {
-    display: flex;
-    align-items: center;
-    margin: 0 var(--space-2xs);
-    border: none;
-    border-radius: 0 var(--border-radius) var(--border-radius) 0;
-    background: none;
-    cursor: pointer;
-  }
+	button {
+		display: flex;
+		align-items: center;
+		margin: 0 var(--space-2xs);
+		border: none;
+		border-radius: 0 var(--border-radius) var(--border-radius) 0;
+		background: none;
+		cursor: pointer;
+	}
 
 	.error {
 		--content-background: tomato;

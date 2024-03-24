@@ -1,14 +1,27 @@
 <script lang="ts">
-	import { page } from '$app/stores'
 	import { Navbar, Toast } from '$lib/components'
 	import '$lib/styles/app.css'
+	import { onDestroy } from 'svelte'
+	import type { LayoutData } from './$types'
 
-	$: toast = $page.data.dn_toast
-	$: showToast = !!Object.keys(toast).length
-	const handleClose = () => {
-		console.log('hello?')
+	export let data: LayoutData
+	$: showToast = data.toast ? true : false
+
+	function dismissToast() {
 		showToast = false
-		}
+	}
+
+	let timeoutId: ReturnType<typeof setTimeout>
+
+	$: if (data.toast) {
+		if (timeoutId) clearTimeout(timeoutId)
+
+		timeoutId = setTimeout(() => {
+			dismissToast()
+		}, 5000)
+
+		onDestroy(() => timeoutId && clearTimeout(timeoutId))
+	}
 </script>
 
 <svelte:head>
@@ -20,12 +33,12 @@
 </svelte:head>
 
 <div class="content">
-	{#if showToast}
+	{#if showToast && data.toast}
 		<Toast
-			title={toast.title}
-			description={toast.description}
-			type={toast.type}
-			on:close={handleClose}
+			title={data.toast.title}
+			description={data.toast.description}
+			type={data.toast.type}
+			on:close={dismissToast}
 		/>
 	{/if}
 	<header>
