@@ -21,7 +21,6 @@ export const actions = {
 			flash: true,
 		})
 		const encryptedToastValue = encryptAndSignCookieValue(toastValue)
-		console.log({ encryptedToastValue })
 		cookies.set(name, encryptedToastValue, options)
 
 		await prisma.note.delete({

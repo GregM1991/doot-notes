@@ -1,22 +1,35 @@
+<script lang="ts">
+	import { Button } from '$lib/components'
+
+	export let user: any = undefined // TODO: Make sure this is typed plz and 10q
+</script>
+
 <nav>
-  <a href="/" class="logo">
-    <span class="line top"> Doot</span>
-    <span class="line bottom">Notes</span>
-  </a>
-	<span class="right-links">
-		<a href="/users" class="nav-link">Users</a>
-	</span>
+	<a href="/" class="logo">
+		<span class="line top"> Doot</span>
+		<span class="line bottom">Notes</span>
+	</a>
+	<div class="right-nav-group">
+		<span class="right-links">
+			<a href="/users" class="nav-link">Users</a>
+		</span>
+		{#if user}
+			{user.name}
+		{:else}
+			<Button href="login">Login</Button>
+		{/if}
+	</div>
 </nav>
 
 <style>
-  nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-  }
+	nav {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 100%;
+	}
 
-  .logo {
+	.logo {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -24,6 +37,12 @@
 		font-size: var(--type-step-0);
 		color: var(--palette-primary);
 		font-weight: var(--type-weight-bold);
+	}
+
+	.right-nav-group {
+		display: flex;
+		align-items: center;
+		gap: var(--space-l)
 	}
 
 	.line {

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte'
 
-
 	export let type: 'submit' | 'button' | 'reset' | undefined = undefined
 	export let href: string | undefined = undefined
 	// TODO: Need to make primary and secondary one prop as they can't be both

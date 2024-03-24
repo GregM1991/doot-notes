@@ -28,8 +28,6 @@ export const toastOptionValues = {
 export function getToastData(toastCookie: string) {
 	const decryptedToastValue = decryptCookie(toastCookie)
 	const parsedToast = JSON.parse(decryptedToastValue)
-	console.log({ decryptedToastValue: parsedToast })
-
 	const toast = ToastSchema.safeParse(parsedToast)
 
 	return toast.success ? toast.data : undefined

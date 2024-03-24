@@ -17,7 +17,7 @@
 <div
 	in:fly|fade={{ y: -50, duration: 300 }}
 	out:fly|fade={{ y: -50, duration: 150 }}
-	class="wrapper"
+	class="wrapper {type}"
 >
 	<span class="type-icon icon-layout {type}"> Icon </span>
 	<div class="content">
@@ -42,7 +42,7 @@
 		display: flex;
 		align-items: center;
 		position: absolute;
-		border: var(--border);
+		border: 2px solid var(--content-background);
 		border-radius: var(--border-radius);
 		background: var(--palette-base);
 		top: 25px;

@@ -24,8 +24,9 @@ export function encryptAndSignCookieValue<T>(
 		encryptedCookieValueBuffer,
 		cipher.final(),
 	]).toString('hex')
-	const signedAndEncryptedCookieValue = signCookie(
+	const signedAndEncryptedCookieValue = jwt.sign(
 		encryptedCookieValue,
+		secret,
 		signOpts,
 	)
 
@@ -60,13 +61,6 @@ export function decryptCookie(encryptedCookieValue: string) {
 	} catch (error) {
 		return fail(403, { error })
 	}
-}
-
-function signCookie(
-	cookieValue: string,
-	opts?: Parameters<typeof jwt.sign>[2],
-) {
-	return jwt.sign(cookieValue, secret, { ...opts })
 }
 
 function objectToCookieValueString<T>(obj: T): string {

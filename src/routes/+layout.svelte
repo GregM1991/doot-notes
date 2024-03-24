@@ -5,13 +5,11 @@
 	import type { LayoutData } from './$types'
 
 	export let data: LayoutData
+	let timeoutId: ReturnType<typeof setTimeout>
 	$: showToast = data.toast ? true : false
-
 	function dismissToast() {
 		showToast = false
 	}
-
-	let timeoutId: ReturnType<typeof setTimeout>
 
 	$: if (data.toast) {
 		if (timeoutId) clearTimeout(timeoutId)
@@ -19,9 +17,8 @@
 		timeoutId = setTimeout(() => {
 			dismissToast()
 		}, 5000)
-
-		onDestroy(() => timeoutId && clearTimeout(timeoutId))
 	}
+	onDestroy(() => timeoutId && clearTimeout(timeoutId))
 </script>
 
 <svelte:head>
@@ -42,7 +39,7 @@
 		/>
 	{/if}
 	<header>
-		<Navbar />
+		<Navbar user={undefined} />
 	</header>
 	<div class="content-body">
 		<slot />
