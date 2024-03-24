@@ -1,3 +1,4 @@
+import { encryptAndSignCookieValue } from '$lib/server/sessions/secureCookie'
 import { toastOptionValues } from '$lib/server/sessions/toast'
 import { prisma } from '$lib/utils/db.server'
 import { invariantResponse } from '$lib/utils/misc'
@@ -19,7 +20,9 @@ export const actions = {
 			type: 'success',
 			flash: true,
 		})
-		cookies.set(name, toastValue, options)
+		const encryptedToastValue = encryptAndSignCookieValue(toastValue)
+		console.log({ encryptedToastValue })
+		cookies.set(name, encryptedToastValue, options)
 
 		await prisma.note.delete({
 			where: { id: note.id },

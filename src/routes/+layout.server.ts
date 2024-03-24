@@ -7,9 +7,9 @@ export async function load({ cookies }) {
 	const toastCookieString = cookies.get(name)
 	if (!toastCookieString) return { toast: undefined }
 	const toast = getToastData(toastCookieString)
-
+	console.log('Layout Server: ', toast)
 	if (toast && toast.flash) {
-		cookies.delete('dn_toast', options)
+		cookies.delete(name, options)
 	}
 
 	return { toast }

@@ -1,5 +1,6 @@
 import { createId as cuid } from '@paralleldrive/cuid2'
 import { z } from 'zod'
+import { decryptCookie } from './secureCookie'
 
 const types = ['message', 'success', 'error'] as const
 export type Type = (typeof types)[number]
@@ -25,7 +26,11 @@ export const toastOptionValues = {
 }
 
 export function getToastData(toastCookie: string) {
-	const toastValue = JSON.parse(toastCookie)
-	const toast = ToastSchema.safeParse(toastValue)
+	const decryptedToastValue = decryptCookie(toastCookie)
+	const parsedToast = JSON.parse(decryptedToastValue)
+	console.log({ decryptedToastValue: parsedToast })
+
+	const toast = ToastSchema.safeParse(parsedToast)
+
 	return toast.success ? toast.data : undefined
 }
