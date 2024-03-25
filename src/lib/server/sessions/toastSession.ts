@@ -25,10 +25,3 @@ export const toastOptionValues = {
 	},
 }
 
-export function getToastData(toastCookie: string) {
-	const decryptedToastValue = decryptCookie(toastCookie)
-	const parsedToast = JSON.parse(decryptedToastValue)
-	const toast = ToastSchema.safeParse(parsedToast)
-
-	return toast.success ? toast.data : undefined
-}
