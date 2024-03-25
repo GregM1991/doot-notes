@@ -2,6 +2,10 @@ import { type Password, type User } from '@prisma/client'
 import { prisma } from './db.server'
 import bcrypt from 'bcryptjs'
 
+export const SESSION_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 30
+export const getSessionExpirationDate = () =>
+	new Date(Date.now() + SESSION_EXPIRATION_TIME)
+
 export async function login({
 	username,
 	password,
@@ -11,9 +15,15 @@ export async function login({
 }) {
 	const user = verifyUserPassword({ username }, password)
 
-  if (!user) return null
+	if (!user) return null
 
-  const session = await prisma.
+	const session = await prisma.session.create({
+		where: { username },
+		data: {
+			expirationDate: getSessionExpirationDate(),
+			userId: user.id,
+		},
+	})
 }
 
 async function verifyUserPassword(
