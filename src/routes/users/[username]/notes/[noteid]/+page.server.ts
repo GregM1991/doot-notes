@@ -1,5 +1,5 @@
 import { encryptAndSignCookieValue } from '$lib/server/sessions/secureCookie'
-import { toastOptionValues } from '$lib/server/sessions/toast'
+import { toastOptionValues } from '$lib/server/sessions/toastSession'
 import { prisma } from '$lib/utils/db.server'
 import { invariantResponse } from '$lib/utils/misc'
 import { redirect, type Actions } from '@sveltejs/kit'

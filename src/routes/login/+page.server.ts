@@ -24,7 +24,6 @@ export const actions = {
 
 			// return data and session
 		}).safeParse(formData)
-		// TODO: Create session in parse
 
 		// If submission is not successful, or there's no session
 		if (!submission.success) {

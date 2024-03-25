@@ -13,17 +13,16 @@ export async function login({
 	username: User['username']
 	password: string
 }) {
-	const user = verifyUserPassword({ username }, password)
-
+	const user = await verifyUserPassword({ username }, password)
 	if (!user) return null
-
 	const session = await prisma.session.create({
-		where: { username },
+		select: { id: true, expirationDate: true, userId: true },
 		data: {
 			expirationDate: getSessionExpirationDate(),
 			userId: user.id,
 		},
 	})
+	return session
 }
 
 async function verifyUserPassword(

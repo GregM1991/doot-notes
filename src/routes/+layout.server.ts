@@ -1,4 +1,7 @@
-import { getToastData, toastOptionValues } from '$lib/server/sessions/toast.js'
+import {
+	getToastData,
+	toastOptionValues,
+} from '$lib/server/sessions/toastSession'
 
 /** @type {import('@sveltejs/kit').LayoutServerLoad} */
 export async function load({ cookies }) {
