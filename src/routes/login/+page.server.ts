@@ -1,5 +1,4 @@
-import { redirect, type Actions, fail } from '@sveltejs/kit'
-import { prisma } from '$lib/utils/db.server'
+import { type Actions, fail } from '@sveltejs/kit'
 import { z } from 'zod'
 import type { PageServerLoad } from './$types'
 import { zfd } from 'zod-form-data'
@@ -20,6 +19,7 @@ export const load = (async () => {
 export const actions = {
 	default: async ({ request, cookies }) => {
 		const formData = await request.formData()
+		let username = formData.get('username') ?? ''
 		// TODO: Create honeypot
 		const submission = LoginFormSchema.transform(async (data, ctx) => {
 			const session = await login(data)
@@ -37,13 +37,17 @@ export const actions = {
 
 		// If submission is not successful, or there's no session
 		if (!submission.success) {
-			throw fail(400, { data: { error: 'Invalid username or password' } })
+			throw fail(400, {
+				data: {
+					error: submission.error,
+					formData: { username },
+				},
+			})
 		}
 
 		// grab value from submission
 		const { remember, session } = submission.data
 
 		return handleNewSession({ cookies, session, remember: remember ?? false })
-		// handleNewSession() { request, session, remember, redirectTo }
 	},
 } satisfies Actions

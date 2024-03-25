@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { enhance } from "$app/forms"
 	import { Button, Input } from "$lib/components"
+	import type { ActionData } from "./$types"
 
+  export let formData: ActionData
 </script>
 <form method="POST" use:enhance>
   <h1>Hello again!</h1>

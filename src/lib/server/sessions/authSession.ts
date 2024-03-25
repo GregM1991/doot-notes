@@ -1,7 +1,11 @@
 import { z } from 'zod'
-import { decryptCookie } from '$lib/server/sessions/secureCookie'
-import type { Cookies } from '@sveltejs/kit'
+import {
+	decryptCookie,
+	encryptAndSignCookieValue,
+} from '$lib/server/sessions/secureCookie'
+import { redirect, type Cookies } from '@sveltejs/kit'
 import type { Session } from '@prisma/client'
+import { sessionKey } from '$lib/utils/auth.server'
 
 interface HandleNewSessionParams {
 	cookies: Cookies
@@ -26,12 +30,12 @@ export const authOptionValues = {
 }
 
 // TODO: Research way to create function that parses different schemas correctly (getToastData)
-export function getSessionData(toastCookie: string) {
-	const decryptedToastValue = decryptCookie(toastCookie)
+export function getSessionData(sessionCookie: string) {
+	const decryptedToastValue = decryptCookie(sessionCookie)
 	const parsedToast = JSON.parse(decryptedToastValue)
-	const toast = AuthSchema.safeParse(parsedToast)
+	const session = AuthSchema.safeParse(parsedToast)
 
-	return toast.success ? toast.data : undefined
+	return session.success ? session.data : undefined
 }
 
 function getOrSetSessionCookie(cookies: Cookies) {
@@ -51,7 +55,17 @@ export async function handleNewSession({
 	// Get session from cookie
 	const cookieSessionString = getOrSetSessionCookie(cookies)
 	// Set the sessionKey to session.id
-	const cookieSession = getSessionData(cookieSessionString)
+	const cookieSession = getSessionData(cookieSessionString) ?? {}
+	const encryptedCookieString = encryptAndSignCookieValue({
+		...cookieSession,
+		[sessionKey]: session.id,
+	})
 	// set cookie with new val
+	cookies.set(
+		authOptionValues.name,
+		encryptedCookieString,
+		authOptionValues.options,
+	)
 	// redirect to home for now
+	throw redirect(303, '/')
 }
