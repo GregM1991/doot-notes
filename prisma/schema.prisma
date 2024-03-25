@@ -18,6 +18,14 @@ model User {
 
   image UserImage?
   notes Note[]
+  password Password?
+  session Session[]
+}
+
+model Password {
+  hash String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String @unique
 }
 
 model Note {
@@ -58,4 +66,18 @@ model NoteImage {
 
   note   Note   @relation(fields: [noteId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   noteId String
+}
+
+model Session {
+  id String @id @default(cuid())
+  expirationDate DateTime
+
+  createdAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  // non-unique foreign key
+  @@index([userId])
 }

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib/components'
 
-	export let user: any = undefined // TODO: Make sure this is typed plz and 10q
+	export let user: { name: string } | undefined = undefined // TODO: Make sure this is typed plz and 10q
 </script>
 
 <nav>
@@ -16,7 +16,7 @@
 		{#if user}
 			{user.name}
 		{:else}
-			<Button href="login">Login</Button>
+			<Button small href="login">Login</Button>
 		{/if}
 	</div>
 </nav>

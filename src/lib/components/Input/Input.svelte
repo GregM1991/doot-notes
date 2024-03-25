@@ -4,7 +4,7 @@
 	export let id: string;
 	export let placeholder = ''
 	export let name: string
-	export let type: "text" | "password" = "text"
+	export let type: "text" | "password" | "search" = "text"
 	export let autofocus = false
 	export let secondary = false
 	export let value = ''
