@@ -1,5 +1,8 @@
 import { fail, redirect, type Action } from '@sveltejs/kit'
-import { NoteEditorSchema, type FlattenedNoteFormErrors } from './types'
+import {
+	NoteEditorSchema,
+	type FlattenedNoteFormErrors,
+} from '$lib/components/EditNote/types'
 import { prisma } from '$lib/utils/db.server'
 import { invariantResponse } from '$lib/utils/misc'
 

@@ -7,7 +7,7 @@ export type Type = (typeof types)[number]
 export type Toast = z.infer<typeof ToastSchema>
 export type ToastInput = z.input<typeof ToastSchema>
 
-const ToastSchema = z.object({
+export const ToastSchema = z.object({
 	flash: z.boolean(),
 	description: z.string(),
 	id: z.string().default(() => cuid()),
@@ -25,3 +25,10 @@ export const toastOptionValues = {
 	},
 }
 
+export function getToastData(toastCookie: string) {
+	const decryptedToastValue = decryptCookie(toastCookie)
+	const parsedToast = JSON.parse(decryptedToastValue)
+	const toast = ToastSchema.safeParse(parsedToast)
+
+	return toast.success ? toast.data : undefined
+}

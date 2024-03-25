@@ -11,6 +11,10 @@
   <div class="field-group">
     <Input label="Enter password" id="password" name="password" type="password"/>
   </div>
+  <div>
+    <label for="remember">Remember me</label>
+    <input name="remember" id="remember" type="checkbox" /><spann>Remember me</spann>
+  </div>
   <Button fluid type="submit" secondary>Submit</Button>
 </form>
 

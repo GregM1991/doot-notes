@@ -72,19 +72,3 @@ function cookieValueStringToObject(value: string) {
 	const jsonString = decodeURIComponent(value)
 	return JSON.parse(jsonString)
 }
-
-export function getCookieData(cookie: string, schema: SessionSchemas) {
-	const decryptedToastValue = decryptCookie(toastCookie)
-	const parsedToast = JSON.parse(decryptedToastValue)
-	const toast = ToastSchema.safeParse(parsedToast)
-
-	return toast.success ? toast.data : undefined
-}
-
-export function getToastData(toastCookie: string) {
-	const decryptedToastValue = decryptCookie(toastCookie)
-	const parsedToast = JSON.parse(decryptedToastValue)
-	const toast = ToastSchema.safeParse(parsedToast)
-
-	return toast.success ? toast.data : undefined
-}
