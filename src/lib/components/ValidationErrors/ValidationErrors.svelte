@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let errorId: string
-	export let errors: string[] | null
+	export let errors: string[] | null | undefined
 </script>
 
 <div id="{errorId}-error" class="error">

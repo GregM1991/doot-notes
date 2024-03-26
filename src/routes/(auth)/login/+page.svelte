@@ -4,7 +4,7 @@
 
 	export let form
 	const formId = "login-form"
-	const formErrors = form ? form?.data.errors.formErrors : null
+	$: formErrors = form?.data.formErrors
 </script>
 
 <pre>
@@ -18,9 +18,9 @@
 			label="Enter username"
 			id="username"
 			name="username"
-			value={form?.data.formData.username ?? ''}
-      errors={form?.data?.errors.fieldErrors.username}
-      required
+			value={''}
+      errors={['']}
+      
 		/>
 	</div>
 	<div class="field-group">
@@ -29,8 +29,8 @@
 			id="password"
 			name="password"
 			type="password"
-      errors={form?.data?.errors.fieldErrors.password}
-      required
+      errors={[""]}
+      
 		/>
 	</div>
 	<div class="remember-forgot">

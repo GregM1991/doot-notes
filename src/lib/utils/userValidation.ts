@@ -7,11 +7,9 @@ export const UsernameSchema = z
 	.regex(/^[a-zA-Z0-9_]+$/, {
 		message: 'Username can only include letters, numbers, and underscores',
 	})
-	.nullable()
 	.transform(value => value?.toLowerCase())
 
 export const PasswordSchema = z
 	.string({ required_error: 'Password is required' })
 	.min(6, { message: 'Password is too short' })
 	.max(100, { message: 'Password is too long' })
-	.nullable()

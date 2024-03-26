@@ -21,3 +21,13 @@ export function invariantResponse(
 		error(status, typeof message === 'function' ? message() : message)
 	}
 }
+
+export function formatFormErrors(
+	errorObj: Record<string, Array<string> | string[] | null> | null | undefined,
+) {
+	let formErrors: Array<string> = []
+	for (let error in errorObj) {
+		formErrors = [...formErrors, ...error]
+	}
+	return formErrors
+}
