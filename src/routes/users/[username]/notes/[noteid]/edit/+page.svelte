@@ -4,9 +4,9 @@
 	import type { ActionData } from '../../$types'
 	import { page } from '$app/stores'
 	export let data: PageData
-	export let form: ActionData
+	export let formData: ActionData
 	const action = `/users/${$page.params.username}/notes/${$page.params.noteid}/edit?/newOrUpdate`
 </script>
 
 
-<EditNote {action} errors={form?.errors} title={data.note.title} content={data.note.content} />
+<EditNote {action} errors={formData?.errors} title={data.note.title} content={data.note.content} />

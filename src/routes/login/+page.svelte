@@ -3,19 +3,21 @@
 	import { Button, Input } from "$lib/components"
 	import type { ActionData } from "./$types"
 
-  export let formData: ActionData
+  export let actionData: ActionData
+
 </script>
+
 <form method="POST" use:enhance>
   <h1>Hello again!</h1>
   <div class="field-group">
-    <Input label="Enter username" id="username" name="username" />
+    <Input  label="Enter username" id="username" name="username" value={actionData?.data.formData.username ?? ''}/>
   </div>
   <div class="field-group">
     <Input label="Enter password" id="password" name="password" type="password"/>
   </div>
   <div>
     <label for="remember">Remember me</label>
-    <input name="remember" id="remember" type="checkbox" /><spann>Remember me</spann>
+    <input name="remember" id="remember" type="checkbox" />
   </div>
   <Button fluid type="submit" secondary>Submit</Button>
 </form>

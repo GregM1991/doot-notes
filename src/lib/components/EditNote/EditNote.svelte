@@ -32,6 +32,7 @@
 			name="title"
 			type="text"
 			bind:value={title}
+			required
 		/>
 	</div>
 	<div class="form-group full-height">
@@ -44,6 +45,7 @@
 			name="content"
 			bind:value={content}
 			style="height: 100%"
+			required
 		/>
 	</div>
 	<Button secondary type="submit">

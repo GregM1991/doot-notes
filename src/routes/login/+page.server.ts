@@ -4,10 +4,11 @@ import type { PageServerLoad } from './$types'
 import { zfd } from 'zod-form-data'
 import { login } from '$lib/utils/auth.server'
 import { handleNewSession } from '$lib/server/sessions/authSession'
+import { PasswordSchema, UsernameSchema } from '$lib/utils/userValidation'
 
 const LoginFormSchema = zfd.formData({
-	username: z.string(),
-	password: z.string(),
+	username: UsernameSchema,
+	password: PasswordSchema,
 	remember: z.boolean().optional(),
 	// TODO: Add redirectTo
 })
@@ -19,9 +20,9 @@ export const load = (async () => {
 export const actions = {
 	default: async ({ request, cookies }) => {
 		const formData = await request.formData()
-		let username = formData.get('username') ?? ''
+		let username = formData.get('username')?.toString() ?? ''
 		// TODO: Create honeypot
-		const submission = LoginFormSchema.transform(async (data, ctx) => {
+		const submission = await LoginFormSchema.transform(async (data, ctx) => {
 			const session = await login(data)
 			if (!session) {
 				ctx.addIssue({
@@ -31,15 +32,24 @@ export const actions = {
 				return z.NEVER
 			}
 
-			return { session, ...data }
+			return {
+				session,
+				...data,
+			}
 			// return data and session
-		}).safeParse(formData)
+		}).safeParseAsync(formData)
 
 		// If submission is not successful, or there's no session
 		if (!submission.success) {
-			throw fail(400, {
+			console.log(
+				JSON.stringify(Object.entries(submission.error.flatten().fieldErrors)),
+			)
+			return fail(400, {
 				data: {
-					error: submission.error,
+					errors: {
+						formErrors: submission.error.message,
+						fieldErrors: submission.error.flatten().fieldErrors.entries,
+					},
 					formData: { username },
 				},
 			})
