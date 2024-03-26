@@ -1,10 +1,11 @@
 <script lang="ts">
+	import { ValidationErrors } from '$lib/components'
 	import { createEventDispatcher } from 'svelte'
 
-	export let id: string;
+	export let id: string
 	export let placeholder = ''
 	export let name: string
-	export let type: "text" | "password" | "search" = "text"
+	export let type: 'text' | 'password' | 'search' = 'text'
 	export let autofocus = false
 	export let secondary = false
 	export let value = ''
@@ -15,15 +16,14 @@
 	export let style = ''
 
 	const el = textArea ? 'textarea' : 'input'
-	const errorId = `${id}-error`
-	
+
 	const dispatch = createEventDispatcher()
 	function handleInput() {
 		dispatch('input')
 	}
 </script>
 
-{#if (label)}
+{#if label}
 	<label for={id}>{label}</label>
 {/if}
 <!-- svelte-ignore a11y-autofocus -->
@@ -41,16 +41,7 @@
 	on:input={handleInput}
 	class="base"
 />
-<div id={errorId} class="error">
-	{#if errors}
-		<ul role="list">
-			{#each errors as error}
-				<li>{error}</li>
-			{/each}
-		</ul>
-	{/if}
-</div>
-
+<ValidationErrors {errors} errorId={id} />
 
 <style>
 	.base {
@@ -82,8 +73,9 @@
 	}
 
 	.error {
+		min-height: var(--space-s);
 		color: var(--palette-primary);
-		font-size: var(--type-step--1);
-		margin-top: var(--space-3xs)
+		font-size: var(--type-step--2);
+		margin-top: var(--space-3xs);
 	}
 </style>

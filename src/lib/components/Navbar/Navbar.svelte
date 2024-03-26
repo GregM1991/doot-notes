@@ -16,7 +16,7 @@
 		{#if user}
 			{user.name}
 		{:else}
-			<Button small href="/login">Login</Button>
+			<Button href="/login">Login</Button>
 		{/if}
 	</div>
 </nav>

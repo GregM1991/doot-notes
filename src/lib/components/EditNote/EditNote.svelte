@@ -2,11 +2,11 @@
 	import { Input, Button } from "$lib/components"
 	import Plus from 'virtual:icons/radix-icons/plus'
 	import Check from 'virtual:icons/radix-icons/check'
-	import type { FlattenedNoteFormErrors } from "./types"
+	import type { FlattenedNoteFormFieldErrors } from "./types"
 	import { enhance } from "$app/forms"
 	import { page } from "$app/stores"
 
-	export let errors: FlattenedNoteFormErrors | null = null
+	export let errors: FlattenedNoteFormFieldErrors | null = null
 	export let title = ''
 	export let content = ''
 	export let newNote = false

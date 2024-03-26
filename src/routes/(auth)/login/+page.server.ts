@@ -1,25 +1,30 @@
-import { type Actions, fail } from '@sveltejs/kit'
+import { type Actions, fail, redirect } from '@sveltejs/kit'
 import { z } from 'zod'
-import type { PageServerLoad } from './$types'
-import { zfd } from 'zod-form-data'
 import { login } from '$lib/utils/auth.server'
 import { handleNewSession } from '$lib/server/sessions/authSession'
 import { PasswordSchema, UsernameSchema } from '$lib/utils/userValidation'
+import type { PageServerLoad } from './$types'
 
-const LoginFormSchema = zfd.formData({
+const LoginFormSchema = z.object({
 	username: UsernameSchema,
 	password: PasswordSchema,
 	remember: z.boolean().optional(),
 	// TODO: Add redirectTo
 })
 
-export const load = (async () => {
+export const load = (async ({ locals }) => {
+	if (locals.userId) throw redirect(303, '/')
 	console.log('Login load')
 }) satisfies PageServerLoad
 
 export const actions = {
 	default: async ({ request, cookies }) => {
 		const formData = await request.formData()
+		const data = {
+			username: formData.get('username'),
+			password: formData.get('password'),
+		}
+		console.log(data, typeof data.username, typeof data.password)
 		let username = formData.get('username')?.toString() ?? ''
 		// TODO: Create honeypot
 		const submission = await LoginFormSchema.transform(async (data, ctx) => {
@@ -36,26 +41,26 @@ export const actions = {
 				session,
 				...data,
 			}
-			// return data and session
 		}).safeParseAsync(formData)
 
-		// If submission is not successful, or there's no session
 		if (!submission.success) {
-			console.log(
-				JSON.stringify(Object.entries(submission.error.flatten().fieldErrors)),
-			)
+			console.log(submission.error)
+			const { formErrors, fieldErrors } = submission.error.flatten()
+			console.log({ formErrors, fieldErrors })
 			return fail(400, {
 				data: {
 					errors: {
-						formErrors: submission.error.message,
-						fieldErrors: submission.error.flatten().fieldErrors.entries,
+						formErrors: formErrors.map(error => {
+							console.log(error)
+							return ''
+						}),
+						fieldErrors,
 					},
 					formData: { username },
 				},
 			})
 		}
 
-		// grab value from submission
 		const { remember, session } = submission.data
 
 		return handleNewSession({ cookies, session, remember: remember ?? false })

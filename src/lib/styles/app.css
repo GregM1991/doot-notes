@@ -106,6 +106,7 @@
 
   /* Typography */
   /* @link https://utopia.fyi/type/calculator?c=320,16,1.2,1240,18,1.333,6,1,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+  --type-step--2: clamp(0.6944rem, 0.7344rem + 0.0135vi, 0.7033rem);
   --type-step--1: clamp(0.8333rem, 0.8296rem + 0.0185vi, 0.844rem);
   --type-step-0: clamp(1rem, 0.9565rem + 0.2174vi, 1.125rem);
   --type-step-1: clamp(1.2rem, 1.0958rem + 0.5211vi, 1.4996rem);

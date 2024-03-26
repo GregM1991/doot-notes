@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { zfd } from 'zod-form-data'
 
-export type FlattenedNoteFormErrors = z.inferFlattenedErrors<
+export type FlattenedNoteFormFieldErrors = z.inferFlattenedErrors<
 	typeof NoteEditorSchema
 >['fieldErrors']
 

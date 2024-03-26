@@ -1,7 +1,7 @@
 import { fail, redirect, type Action } from '@sveltejs/kit'
 import {
 	NoteEditorSchema,
-	type FlattenedNoteFormErrors,
+	type FlattenedNoteFormFieldErrors,
 } from '$lib/components/EditNote/types'
 import { prisma } from '$lib/utils/db.server'
 import { invariantResponse } from '$lib/utils/misc'
@@ -12,7 +12,7 @@ export const newOrUpdate: Action = async ({ request, params }) => {
 
 	if (!submission.success) {
 		const errorData = submission.error.flatten()
-			.fieldErrors as FlattenedNoteFormErrors //TODO: See if there's a better way to do this - ,-
+			.fieldErrors as FlattenedNoteFormFieldErrors //TODO: See if there's a better way to do this - ,-
 
 		const data = {
 			data: Object.fromEntries(formData),
