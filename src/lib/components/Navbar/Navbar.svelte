@@ -1,7 +1,6 @@
 <script lang="ts">
+	import { page } from '$app/stores'
 	import { Button } from '$lib/components'
-
-	export let user: { name: string } | undefined = undefined // TODO: Make sure this is typed plz and 10q
 </script>
 
 <nav>
@@ -13,8 +12,8 @@
 		<span class="right-links">
 			<a href="/users" class="nav-link">Users</a>
 		</span>
-		{#if user}
-			{user.name}
+		{#if $page.data.user}
+			{$page.data.user.name}
 		{:else}
 			<Button href="/login">Login</Button>
 		{/if}

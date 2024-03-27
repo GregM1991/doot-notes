@@ -13,8 +13,8 @@
 			label="Enter username"
 			id="username"
 			name="username"
-			value={''}
-      errors={['']}
+			value=''
+      errors={form?.result.error?.username}
       
 		/>
 	</div>
@@ -24,7 +24,7 @@
 			id="password"
 			name="password"
 			type="password"
-      errors={[""]}
+      errors={form?.result.error?.password}
       
 		/>
 	</div>
@@ -38,7 +38,7 @@
     </div>
 	</div>
 	<Button fluid type="submit" secondary>Submit</Button>
-	<ValidationErrors errorId={formId} errors={form?.data.formErrors} />
+	<ValidationErrors errorId={formId} errors={form?.result.error?.['']} /> <!-- TODO: this is a bit stinky --> 
 </form>
 
 <style>

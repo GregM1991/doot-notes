@@ -34,13 +34,11 @@ async function verifyUserPassword(
 		where,
 		select: { id: true, password: { select: { hash: true } } },
 	})
-
 	if (!userWithPassword || !userWithPassword.password) {
 		return null
 	}
 
 	const isValid = await bcrypt.compare(password, userWithPassword.password.hash)
-
 	if (!isValid) {
 		return null
 	}

@@ -6,7 +6,7 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			userId: string
+			userId: string | undefined
 		}
 		// interface PageData {}
 		// interface PageState {}

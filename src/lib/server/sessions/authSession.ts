@@ -31,20 +31,10 @@ export const authOptionValues = {
 
 // TODO: Research way to create function that parses different schemas correctly (getToastData)
 export function getSessionData(sessionCookie: string) {
-	const decryptedToastValue = decryptCookie(sessionCookie)
-	const parsedToast = JSON.parse(decryptedToastValue)
-	const session = AuthSchema.safeParse(parsedToast)
+	const decryptedSessionValue = decryptCookie(sessionCookie)
+	const session = AuthSchema.safeParse(decryptedSessionValue)
 
 	return session.success ? session.data : undefined
-}
-
-function getOrSetSessionCookie(cookies: Cookies) {
-	const cookieSessionString = cookies.get(authOptionValues.name)
-	if (cookieSessionString) {
-		return cookieSessionString
-	}
-	cookies.set(authOptionValues.name, '', authOptionValues.options)
-	return ''
 }
 
 export async function handleNewSession({
@@ -52,20 +42,13 @@ export async function handleNewSession({
 	session,
 	remember,
 }: HandleNewSessionParams) {
-	// Get session from cookie
-	const cookieSessionString = getOrSetSessionCookie(cookies)
-	// Set the sessionKey to session.id
-	const cookieSession = getSessionData(cookieSessionString) ?? {}
 	const encryptedCookieString = encryptAndSignCookieValue({
-		...cookieSession,
 		[sessionKey]: session.id,
 	})
-	// set cookie with new val
-	cookies.set(
-		authOptionValues.name,
-		encryptedCookieString,
-		authOptionValues.options,
-	)
-	// redirect to home for now
+	cookies.set(authOptionValues.name, encryptedCookieString, {
+		...authOptionValues.options,
+		expires: remember ? session.expirationDate : undefined,
+	})
+
 	throw redirect(303, '/')
 }

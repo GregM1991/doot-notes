@@ -39,7 +39,7 @@
 		/>
 	{/if}
 	<header>
-		<Navbar user={undefined} />
+		<Navbar />
 	</header>
 	<div class="content-body">
 		<slot />

@@ -2,17 +2,22 @@ import {
 	getToastData,
 	toastOptionValues,
 } from '$lib/server/sessions/toastSession'
+import { prisma } from '$lib/utils/db.server'
 
-/** @type {import('@sveltejs/kit').LayoutServerLoad} */
-export async function load({ cookies }) {
+export async function load({ cookies, locals }) {
 	const { name, options } = toastOptionValues
 
 	const toastCookieString = cookies.get(name)
-	if (!toastCookieString) return { toast: undefined }
-	const toast = getToastData(toastCookieString)
-	if (toast && toast.flash) {
-		cookies.delete(name, options)
+	const toast = toastCookieString ? getToastData(toastCookieString) : undefined
+	if (toastCookieString) {
+		if (toast && toast.flash) {
+			cookies.delete(name, options)
+		}
 	}
+	const user = await prisma.user.findFirst({
+		select: { name: true, id: true, username: true },
+		where: { id: locals.userId },
+	})
 
-	return { toast }
+	return { toast, user }
 }

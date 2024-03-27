@@ -3,7 +3,7 @@ import { type Actions, fail, redirect } from '@sveltejs/kit'
 import { parseWithZod } from '@conform-to/zod'
 import { handleNewSession } from '$lib/server/sessions/authSession'
 import { login } from '$lib/utils/auth.server'
-import { formatFormErrors } from '$lib/utils/misc'
+// import { formatFormErrors } from '$lib/utils/misc'
 import { PasswordSchema, UsernameSchema } from '$lib/utils/userValidation'
 import type { PageServerLoad } from './$types'
 
@@ -16,7 +16,6 @@ const LoginFormSchema = z.object({
 
 export const load = (async ({ locals }) => {
 	if (locals.userId) throw redirect(303, '/')
-	console.log('Login load')
 }) satisfies PageServerLoad
 
 export const actions = {
@@ -27,7 +26,6 @@ export const actions = {
 		const submission = await parseWithZod(formData, {
 			schema: intent =>
 				LoginFormSchema.transform(async (data, ctx) => {
-					console.log({ intent })
 					const session = await login(data)
 					if (!session) {
 						ctx.addIssue({
@@ -46,9 +44,8 @@ export const actions = {
 		})
 
 		if (submission.status !== 'success' || !submission.value.session) {
-			const formErrors = formatFormErrors(submission.reply().error)
 			return fail(submission.status === 'error' ? 400 : 200, {
-				data: { ...submission.reply({ hideFields: ['password'] }), formErrors },
+				result: submission.reply({ hideFields: ['password'] }),
 			})
 		}
 
