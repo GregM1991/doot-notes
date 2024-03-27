@@ -2,6 +2,7 @@ import {
 	getToastData,
 	toastOptionValues,
 } from '$lib/server/sessions/toastSession'
+import { logout } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
 
 export async function load({ cookies, locals }) {
@@ -14,9 +15,17 @@ export async function load({ cookies, locals }) {
 			cookies.delete(name, options)
 		}
 	}
-	const user = await prisma.user.findFirst({
-		where: { id: locals.userId },
-	})
+
+	const user = locals.userId
+		? await prisma.user.findFirst({
+				where: { id: locals.userId },
+			})
+		: null
+
+	if (locals.userId && !user) {
+		console.info('User drift')
+		await logout(cookies, '/')
+	}
 
 	return { toast, user }
 }

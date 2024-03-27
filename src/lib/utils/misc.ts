@@ -21,3 +21,15 @@ export function invariantResponse(
 		error(status, typeof message === 'function' ? message() : message)
 	}
 }
+
+export function safeRedirect(redirectTo: string | null, defaultPath = '/') {
+	console.log(redirectTo)
+	if (
+		redirectTo &&
+		redirectTo.startsWith('/') &&
+		!redirectTo.startsWith('//')
+	) {
+		return redirectTo
+	}
+	return defaultPath
+}

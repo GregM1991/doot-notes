@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms'
 	import { Button, Input, ValidationErrors } from '$lib/components'
+	import { page } from "$app/stores"
 
 	export let form
 	const formId = "login-form"
@@ -37,6 +38,7 @@
       <a href="/forgot-password">Forgot password?</a>
     </div>
 	</div>
+	<Input id="redirectTo" name="redirectTo" type="hidden" value={$page.params.redirectTo} />
 	<Button fluid type="submit" secondary>Submit</Button>
 	<ValidationErrors errorId={formId} errors={form?.result.error?.['']} /> <!-- TODO: this is a bit stinky --> 
 </form>

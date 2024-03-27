@@ -1,10 +1,10 @@
 <script lang="ts">
+	import { enhance } from "$app/forms"
+	import { page } from "$app/stores"
 	import { Input, Button } from "$lib/components"
 	import Plus from 'virtual:icons/radix-icons/plus'
 	import Check from 'virtual:icons/radix-icons/check'
 	import type { FlattenedNoteFormFieldErrors } from "./types"
-	import { enhance } from "$app/forms"
-	import { page } from "$app/stores"
 
 	export let errors: FlattenedNoteFormFieldErrors | null = null
 	export let title = ''

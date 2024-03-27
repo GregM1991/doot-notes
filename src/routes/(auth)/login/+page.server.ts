@@ -11,7 +11,7 @@ const LoginFormSchema = z.object({
 	username: UsernameSchema,
 	password: PasswordSchema,
 	remember: z.boolean().optional(),
-	// TODO: Add redirectTo
+	redirectTo: z.string().optional(),
 })
 
 export const load = (async ({ locals }) => {
@@ -49,8 +49,13 @@ export const actions = {
 			})
 		}
 
-		const { remember, session } = submission.value
+		const { remember, session, redirectTo } = submission.value
 
-		return handleNewSession({ cookies, session, remember: remember ?? false })
+		return handleNewSession({
+			cookies,
+			session,
+			remember: remember ?? false,
+			redirectTo: redirectTo ? redirectTo : null,
+		})
 	},
 } satisfies Actions

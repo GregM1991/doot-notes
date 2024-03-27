@@ -5,7 +5,7 @@
 	export let id: string
 	export let placeholder = ''
 	export let name: string
-	export let type: 'text' | 'password' | 'search' = 'text'
+	export let type: 'text' | 'password' | 'search' | 'hidden' = 'text'
 	export let autofocus = false
 	export let secondary = false
 	export let value = ''
@@ -14,6 +14,7 @@
 	export let errors: string[] | null = null
 	export let textArea = false
 	export let style = ''
+	export let hidden = false
 
 	const el = textArea ? 'textarea' : 'input'
 

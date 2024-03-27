@@ -5,8 +5,12 @@ import {
 } from '$lib/components/EditNote/types'
 import { prisma } from '$lib/utils/db.server'
 import { invariantResponse } from '$lib/utils/misc'
+import { requireUserId } from '$lib/utils/auth.server'
 
-export const newOrUpdate: Action = async ({ request, params }) => {
+export const newOrUpdate: Action = async ({ request, params, locals }) => {
+	// Do something with this
+	const userId = requireUserId(locals.userId, request)
+
 	const formData = await request.formData()
 	const submission = NoteEditorSchema.safeParse(formData)
 
