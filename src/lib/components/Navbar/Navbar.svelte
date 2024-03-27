@@ -13,7 +13,7 @@
 			<a href="/users" class="nav-link">Users</a>
 		</span>
 		{#if $page.data.user}
-			{$page.data.user.name}
+			<a class="nav-link" href="/users/{$page.data.user.username}">{$page.data.user.name}</a>
 		{:else}
 			<Button href="/login">Login</Button>
 		{/if}
@@ -41,7 +41,7 @@
 	.right-nav-group {
 		display: flex;
 		align-items: center;
-		gap: var(--space-l)
+		gap: var(--space-l);
 	}
 
 	.line {
@@ -65,5 +65,13 @@
 	.right-links {
 		display: flex;
 		gap: var(--space-l);
+	}
+
+	.nav-link {
+		transition: all 100ms ease-out;
+	}
+	
+	.nav-link:hover {
+		color: var(--palette-primary);
 	}
 </style>

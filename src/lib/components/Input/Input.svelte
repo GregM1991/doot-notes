@@ -52,18 +52,18 @@
 		background-color: var(--background-color);
 		border-radius: 1rem;
 		outline: none;
-		filter: drop-shadow(3px 3px 0px var(--palette-grey-20));
+		filter: drop-shadow(3px 3px 0px var(--color-grey-20));
 
 		transition: var(--animation-quick);
 	}
 
 	.base:focus-visible {
 		background-color: var(--background-color-light);
-		filter: drop-shadow(1px 1px 0px var(--palette-grey-20));
+		filter: drop-shadow(1px 1px 0px var(--color-grey-20));
 	}
 
 	.base::placeholder {
-		color: var(--palette-grey-20);
+		color: var(--color-grey-20);
 		opacity: 100%;
 	}
 

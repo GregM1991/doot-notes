@@ -40,25 +40,25 @@
 		display: inline-grid;
 		place-items: center;
 		padding: var(--space-xs);
-		border: 2px solid var(--palette-grey-20);
+		border: 2px solid var(--color-grey-20);
 		background-color: var(--palette-tertiary);
 		border-radius: 1rem;
 		outline: none;
-		filter: drop-shadow(3px 3px 0px var(--palette-grey-20));
+		filter: drop-shadow(3px 3px 0px var(--color-grey-20));
 		cursor: pointer;
 
 		transition: var(--animation-quick);
 	}
 
 	button:focus {
-		filter: drop-shadow(5px 5px 0px var(--palette-grey-20));
+		filter: drop-shadow(5px 5px 0px var(--color-grey-20));
 	}
 
 	button:hover {
-		filter: drop-shadow(5px 5px 0px var(--palette-grey-20));
+		filter: drop-shadow(5px 5px 0px var(--color-grey-20));
 	}
 
 	button:active {
-		filter: drop-shadow(1px 1px 0px var(--palette-grey-20));
+		filter: drop-shadow(1px 1px 0px var(--color-grey-20));
 	}
 </style>
