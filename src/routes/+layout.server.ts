@@ -15,7 +15,6 @@ export async function load({ cookies, locals }) {
 		}
 	}
 	const user = await prisma.user.findFirst({
-		select: { name: true, id: true, username: true },
 		where: { id: locals.userId },
 	})
 

@@ -6,14 +6,21 @@
 
 	export let data: LayoutServerData
 	const hrefBase = `/users/${$page.params.username}/notes`
+	$: isOwner = $page.data.user.username === $page.params.username
 </script>
 
 <div class="wrapper" data-layout="grid">
 	<div class="sidebar">
-		<h1>{data.user.name}'s notes</h1>
-		<Button href="{hrefBase}/new-note" secondary style="margin-bottom: var(--space-xs)">
-			<Pencil1 /> Doot new note
-		</Button>
+		<h1>{data.owner.name}'s notes</h1>
+		{#if isOwner}
+			<Button
+				href="{hrefBase}/new-note"
+				secondary
+				style="margin-bottom: var(--space-xs)"
+			>
+				<Pencil1 /> Doot new note
+			</Button>
+		{/if}
 		<ul role="list">
 			{#each data.notes as note (note.id)}
 				<li>

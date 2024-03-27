@@ -10,5 +10,5 @@ export const load = (async ({ parent }) => {
 		},
 	})
 
-	return { notes: userNotes, user: { name: user.name, id: user.id } }
+	return { notes: userNotes, owner: { name: user.name, id: user.id } }
 }) satisfies LayoutServerLoad
