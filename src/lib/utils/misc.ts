@@ -27,7 +27,8 @@ export function formatFormErrors(
 ) {
 	let formErrors: Array<string> = []
 	for (let error in errorObj) {
-		formErrors = [...formErrors, ...error]
+		const errorArray = errorObj[error] ?? []
+		formErrors = [...formErrors, ...errorArray]
 	}
 	return formErrors
 }

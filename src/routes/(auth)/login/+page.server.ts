@@ -47,7 +47,6 @@ export const actions = {
 
 		if (submission.status !== 'success' || !submission.value.session) {
 			const formErrors = formatFormErrors(submission.reply().error)
-			console.log({ formErrors })
 			return fail(submission.status === 'error' ? 400 : 200, {
 				data: { ...submission.reply({ hideFields: ['password'] }), formErrors },
 			})

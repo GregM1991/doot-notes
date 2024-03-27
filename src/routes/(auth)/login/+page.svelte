@@ -4,12 +4,7 @@
 
 	export let form
 	const formId = "login-form"
-	$: formErrors = form?.data.formErrors
 </script>
-
-<pre>
-	{JSON.stringify(formErrors, null, 2)}
-</pre>
 
 <form method="POST" use:enhance id={formId}>
 	<h1>Hello again!</h1>
@@ -43,7 +38,7 @@
     </div>
 	</div>
 	<Button fluid type="submit" secondary>Submit</Button>
-	<ValidationErrors errorId={formId} errors={formErrors} />
+	<ValidationErrors errorId={formId} errors={form?.data.formErrors} />
 </form>
 
 <style>

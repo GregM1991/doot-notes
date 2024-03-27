@@ -71,11 +71,4 @@
 		--background-color: var(--palette-base);
 		--background-color-light: var(--palette-base-light);
 	}
-
-	.error {
-		min-height: var(--space-s);
-		color: var(--palette-primary);
-		font-size: var(--type-step--2);
-		margin-top: var(--space-3xs);
-	}
 </style>
