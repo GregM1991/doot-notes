@@ -13,6 +13,7 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 	const submission = await parseWithZod(formData, {
 		schema: NoteEditorSchema.superRefine(async (data, ctx) => {
 			if (!data.id) return
+			console.log({ THING: data.id })
 
 			const note = await prisma.note.findUnique({
 				select: { id: true },

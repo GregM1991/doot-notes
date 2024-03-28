@@ -1,18 +1,16 @@
 <script lang="ts">
-	import { enhance } from "$app/forms"
-	import { page } from "$app/stores"
-	import { Input, Button } from "$lib/components"
+	import { enhance } from '$app/forms'
+	import { Input, Button } from '$lib/components'
 	import Plus from 'virtual:icons/radix-icons/plus'
 	import Check from 'virtual:icons/radix-icons/check'
-	import type { FlattenedNoteFormFieldErrors } from "./types"
 
-	export let errors: FlattenedNoteFormFieldErrors | null = null
+	export let errors: { title: string[]; content: string[] } | null = null
 	export let title = ''
 	export let content = ''
 	export let newNote = false
-	export let action: string;
-	let header =  newNote ? "Doot a new note 📯" : `Edit ${title}`
-	let buttonText = newNote ? "Create note" : "Save changes"
+	export let action: string
+	let header = newNote ? 'Doot a new note 📯' : `Edit ${title}`
+	let buttonText = newNote ? 'Create note' : 'Save changes'
 	let Icon = newNote ? Plus : Check
 
 	const [titleId, contentId] = [crypto.randomUUID(), crypto.randomUUID()]
@@ -20,8 +18,8 @@
 
 <form method="POST" {action} use:enhance>
 	<h3>{header}</h3>
-	{#if (!newNote)}
-		<input type="hidden" name="id" value={$page.params.noteid} /> 
+	{#if !newNote}
+		<input type="hidden" name="id" value={note.id} />
 	{/if}
 	<div class="form-group">
 		<Input
@@ -49,13 +47,14 @@
 		/>
 	</div>
 	<Button secondary type="submit">
-		<Icon /> {buttonText}
+		<Icon />
+		{buttonText}
 	</Button>
 </form>
 
 <style>
 	form {
-    grid-row: 1 / span 2;
+		grid-row: 1 / span 2;
 		grid-column: 2 / 3;
 		display: flex;
 		flex-direction: column;

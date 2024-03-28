@@ -8,5 +8,5 @@ export const contentMinLength = 1
 export const NoteEditorSchema = z.object({
 	title: z.string().min(titleMinLength).max(titleMaxLength),
 	content: z.string().min(contentMinLength).max(contentMaxLength),
-	id: z.string(),
+	id: z.string().optional(),
 })
