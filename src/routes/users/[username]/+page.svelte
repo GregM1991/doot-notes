@@ -2,7 +2,7 @@
 	import { Button } from '$lib/components'
 
 	export let data
-	$: ({ name, username, image } = data.user) // TODO: add user image
+	$: ({ name, username, image } = data.owner) // TODO: add user image
 	$: ({ userJoinedDisplay } = data)
 </script>
 

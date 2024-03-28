@@ -2,13 +2,13 @@ import { prisma } from '$lib/utils/db.server'
 import type { LayoutServerLoad } from './$types'
 
 export const load = (async ({ parent }) => {
-	const { user } = await parent()
-	const userNotes = await prisma.note.findMany({
+	const { owner } = await parent()
+	const ownerNotes = await prisma.note.findMany({
 		select: { id: true, title: true },
 		where: {
-			ownerId: user.id,
+			ownerId: owner.id,
 		},
 	})
 
-	return { notes: userNotes, owner: { name: user.name, id: user.id } }
+	return { notes: ownerNotes, owner: { name: owner.name, id: owner.id } }
 }) satisfies LayoutServerLoad

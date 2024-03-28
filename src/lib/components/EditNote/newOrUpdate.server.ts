@@ -1,48 +1,64 @@
+import z from 'zod'
+import { parseWithZod } from '@conform-to/zod'
 import { fail, redirect, type Action } from '@sveltejs/kit'
-import {
-	NoteEditorSchema,
-	type FlattenedNoteFormFieldErrors,
-} from '$lib/components/EditNote/types'
+import { requireUserId } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
 import { invariantResponse } from '$lib/utils/misc'
-import { requireUserId } from '$lib/utils/auth.server'
+import { NoteEditorSchema } from './types'
 
-export const newOrUpdate: Action = async ({ request, params, locals }) => {
-	// Do something with this
+export const newOrUpdate: Action = async ({ request, locals }) => {
 	const userId = requireUserId(locals.userId, request)
 
 	const formData = await request.formData()
-	const submission = NoteEditorSchema.safeParse(formData)
+	const submission = await parseWithZod(formData, {
+		schema: NoteEditorSchema.superRefine(async (data, ctx) => {
+			if (!data.id) return
 
-	if (!submission.success) {
-		const errorData = submission.error.flatten()
-			.fieldErrors as FlattenedNoteFormFieldErrors //TODO: See if there's a better way to do this - ,-
+			const note = await prisma.note.findUnique({
+				select: { id: true },
+				where: { id: data.id, ownerId: userId },
+			})
+			if (!note) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: 'Note not found',
+				})
+			}
+		}),
+		async: true,
+	})
 
-		const data = {
-			data: Object.fromEntries(formData),
-			errors: errorData,
-		}
-
-		return fail(400, data)
+	if (submission.status !== 'success') {
+		return fail(submission.status === 'error' ? 400 : 200, {
+			result: submission.reply(),
+		})
 	}
 
 	const owner = await prisma.user.findUnique({
 		select: { id: true },
-		where: { username: params.username },
+		where: { id: userId },
 	})
 	invariantResponse(owner, 'Could not find user of note', 404)
 
-	const note = {
-		title: submission.data.title,
-		content: submission.data.content,
-		ownerId: owner.id,
-	}
-	const { id: noteId } = await prisma.note.upsert({
-		select: { id: true },
-		where: { id: submission.data.id ?? "__this_can't_exist__" },
-		update: note,
-		create: note,
+	// TODO: Extracting values here as this'll help when images will be pulled from the transformed data
+	const { id: noteId, title, content } = submission.value
+
+	const updatedNote = await prisma.note.upsert({
+		select: { id: true, owner: { select: { username: true } } },
+		where: { id: noteId ?? "__this_can't_exist__" },
+		update: {
+			title,
+			content,
+		},
+		create: {
+			ownerId: userId,
+			title,
+			content,
+		},
 	})
 
-	throw redirect(303, `/users/${params.username}/notes/${noteId}`)
+	throw redirect(
+		303,
+		`/users/${updatedNote.owner.username}/notes/${updatedNote.id}`,
+	)
 }

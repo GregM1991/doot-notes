@@ -24,7 +24,9 @@ export const actions = {
 		// TODO: Create honeypot
 
 		const submission = await parseWithZod(formData, {
-			schema: intent =>
+			schema: (
+				intent, // TODO: Intent will be used later to distinguish login/register/2fa etc
+			) =>
 				LoginFormSchema.transform(async (data, ctx) => {
 					const session = await login(data)
 					if (!session) {

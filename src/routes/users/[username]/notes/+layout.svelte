@@ -6,7 +6,7 @@
 
 	export let data: LayoutServerData
 	const hrefBase = `/users/${$page.params.username}/notes`
-	$: isOwner = $page.data.user.username === $page.params.username
+	$: isOwner = $page.data?.user?.id === data.owner.id
 </script>
 
 <div class="wrapper" data-layout="grid">

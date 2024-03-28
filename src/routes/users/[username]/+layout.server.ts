@@ -2,7 +2,7 @@ import { prisma } from '$lib/utils/db.server'
 import { invariantResponse } from '$lib/utils/misc.js'
 
 export const load = async ({ params }) => {
-	const user = await prisma.user.findFirst({
+	const owner = await prisma.user.findFirst({
 		select: {
 			id: true,
 			name: true,
@@ -15,7 +15,7 @@ export const load = async ({ params }) => {
 		},
 	})
 
-	invariantResponse(user, 'User not found', 404)
+	invariantResponse(owner, 'User not found', 404)
 
-	return { user, userJoinedDisplay: user.createdAt.toLocaleDateString() }
+	return { owner, userJoinedDisplay: owner.createdAt.toLocaleDateString() }
 }

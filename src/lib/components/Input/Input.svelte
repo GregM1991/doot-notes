@@ -14,7 +14,6 @@
 	export let errors: string[] | null = null
 	export let textArea = false
 	export let style = ''
-	export let hidden = false
 
 	const el = textArea ? 'textarea' : 'input'
 

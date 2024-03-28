@@ -17,7 +17,7 @@ export async function load({ cookies, locals }) {
 	}
 
 	const user = locals.userId
-		? await prisma.user.findFirst({
+		? await prisma.user.findUnique({
 				where: { id: locals.userId },
 			})
 		: null
