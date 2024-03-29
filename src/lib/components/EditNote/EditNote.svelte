@@ -4,21 +4,22 @@
 	import Plus from 'virtual:icons/radix-icons/plus'
 	import Check from 'virtual:icons/radix-icons/check'
 
+	export let note: { id: string | null, title: string, content: string } | null = null
 	export let errors: { title: string[]; content: string[] } | null = null
-	export let title = ''
-	export let content = ''
-	export let newNote = false
 	export let action: string
-	let header = newNote ? 'Doot a new note 📯' : `Edit ${title}`
-	let buttonText = newNote ? 'Create note' : 'Save changes'
-	let Icon = newNote ? Plus : Check
+
+	let title = note?.title ?? ''
+	let content = note?.content ?? ''
+	let header = note ? `Edit ${note.title}` : 'Doot a new note 📯'
+	let buttonText = note ? 'Save changes' : 'Create note'
+	let Icon = note ? Check : Plus
 
 	const [titleId, contentId] = [crypto.randomUUID(), crypto.randomUUID()]
 </script>
 
 <form method="POST" {action} use:enhance>
 	<h3>{header}</h3>
-	{#if !newNote}
+	{#if note}
 		<input type="hidden" name="id" value={note.id} />
 	{/if}
 	<div class="form-group">

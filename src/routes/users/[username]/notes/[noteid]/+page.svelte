@@ -22,8 +22,7 @@
 	{/each}
 </article>
 
-<!-- TODO: only allow for owner of note -->
-{#if $page.data.user}
+{#if $page.data.user.username === data.note.owner.username}
 	<div class="info-bar">
 		<span class="time-since-update"><Timer />{data.timeSinceUpdate}</span>
 		<div class="buttons">

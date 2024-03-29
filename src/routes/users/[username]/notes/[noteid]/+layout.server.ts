@@ -13,6 +13,7 @@ export const load = (async ({ params }) => {
 			content: true,
 			updatedAt: true,
 			createdAt: true,
+			owner: { select: { username: true } },
 		},
 		where: {
 			owner: {

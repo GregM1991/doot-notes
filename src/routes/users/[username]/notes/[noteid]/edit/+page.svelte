@@ -8,7 +8,6 @@
 
 <EditNote
 	{action}
-	title={form?.result.initialValue.title}
-	content={form?.result.initialValue.content}
+	note={$page.data.note}
 	errors={form?.result.error}
 />
