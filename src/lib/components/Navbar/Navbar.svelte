@@ -14,6 +14,9 @@
 		</span>
 		{#if $page.data.user}
 			<a class="nav-link" href="/users/{$page.data.user.username}">{$page.data.user.name}</a>
+			<form method="POST" action="/logout">
+			<Button type="submit">Logout bitches</Button>
+			</form>
 		{:else}
 			<Button href="/login">Login</Button>
 		{/if}

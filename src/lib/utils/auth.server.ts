@@ -53,7 +53,7 @@ export async function login({ username, password }: LoginParams) {
 	return session
 }
 
-export async function logout(cookies: Cookies, redirectTo: string) {
+export async function logout(cookies: Cookies, redirectTo = '/') {
 	const session = getSessionData(cookies.get(authSessionCookieName))
 	if (session) {
 		void prisma.session
