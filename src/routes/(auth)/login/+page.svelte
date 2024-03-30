@@ -7,8 +7,8 @@
 	const formId = "login-form"
 </script>
 
+<h1>Hello again!</h1>
 <form method="POST" use:enhance id={formId}>
-	<h1>Hello again!</h1>
 	<div class="field-group">
 		<Input
 			label="Enter username"
@@ -40,7 +40,10 @@
 	</div>
 	<Input id="redirectTo" name="redirectTo" type="hidden" value={$page.params.redirectTo} />
 	<Button fluid type="submit" secondary>Submit</Button>
-	<ValidationErrors errorId={formId} errors={form?.result.error?.['']} /> <!-- TODO: this is a bit stinky --> 
+	<ValidationErrors errorId={formId} errors={form?.result.error?.['']} /> <!-- TODO: this is a bit stinky -->
+	 <span>
+		New here? <a href="/signup" class="link">Create an account</a>
+	 </span>
 </form>
 
 <style>
@@ -49,14 +52,15 @@
 		flex-direction: column;
 		align-items: center;
 		height: 100%;
-		max-width: fit-content;
 		margin: 0 auto;
-		padding-top: var(--space-3xl);
+		width: 30vw;
+		padding-top: var(--space-2xl)
 	}
 
 	h1 {
-		font-size: var(--type-step-5);
+		font-size: var(--type-step-4);
 		color: var(--palette-pop);
+		text-align: center;
 	}
 
 	@media (max-width: 560px) {
@@ -78,4 +82,8 @@
     width: 100%;
     margin-bottom: var(--space-2xs)
   }
+
+	.link {
+		color: var(--palette-pop)
+	}
 </style>

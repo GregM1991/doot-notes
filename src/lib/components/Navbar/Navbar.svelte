@@ -15,7 +15,7 @@
 		{#if $page.data.user}
 			<a class="nav-link" href="/users/{$page.data.user.username}">{$page.data.user.name}</a>
 			<form method="POST" action="/logout">
-			<Button type="submit">Logout bitches</Button>
+			<Button type="submit">Logout bitches</Button> <!-- TODO: User dropdown menu -->
 			</form>
 		{:else}
 			<Button href="/login">Login</Button>
