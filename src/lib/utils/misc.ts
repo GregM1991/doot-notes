@@ -33,3 +33,16 @@ export function safeRedirect(redirectTo: string | null, defaultPath = '/') {
 	}
 	return defaultPath
 }
+
+/*
+	This function helps construct an enviro-agnostic URL. It also ensures https 
+	unless we're on local and is flexible with proxies + load balancers
+*/
+export function getDomainUrl(request: Request) {
+	const host =
+		request.headers.get('X-Forwarded-Host') ??
+		request.headers.get('host') ??
+		new URL(request.url).host
+	const protocol = host.includes('localhost') ? 'http' : 'https'
+	return `${protocol}://${host}`
+}
