@@ -1,3 +1,4 @@
+import { sendEmail } from '$lib/server/email'
 import { prepareVerification } from '$lib/server/verify'
 import { prisma } from '$lib/utils/db.server.js'
 import { parseWithZod } from '@conform-to/zod'
@@ -48,7 +49,8 @@ export const actions = {
     const response = await sendEmail({
       to: email,
       subject: `Let's get Dootin!`,
-      email: 'Shit, how do I do this without React email thing'
+      html: 'Shit, how do I do this without React email thing',
+      text: 'Whats this also?'
     })
 
     if (response.status === 'success') {
