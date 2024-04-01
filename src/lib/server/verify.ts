@@ -1,10 +1,14 @@
+import otpGenerator from 'otp-generator'
 import { getDomainUrl } from '$lib/utils/misc'
 import {
+	_codeQueryParam,
 	_redirectToQueryParam,
 	_targetQueryParam,
 	_typeQueryParam,
 	type VerificationTypes,
 } from '$routes/(auth)/verify/+page.server'
+import { generateTOTP, verifyTOTP } from '$lib/server/totp'
+import { prisma } from '$lib/utils/db.server'
 
 type PrepareVerificatinParams = {
 	period: number
@@ -21,7 +25,8 @@ type GetRedirectToUrlParams = {
 }
 
 /*
-  This function TODO: rest
+  This function takes in the type of verification and adds the necessary search
+  params to a base domain URL and returns the URL
 */
 export function getRedirectToUrl({
 	request,
@@ -51,15 +56,30 @@ export async function prepareVerification({
 	target,
 }: PrepareVerificatinParams) {
 	console.log({ period, request, type, target })
-	// Get redirect URl (getRedirectToUrl({request, type, target}))
+	const verifyUrl = getRedirectToUrl({ request, type, target })
+	const redirectTo = new URL(verifyUrl.toString())
+	const { otp, ...verificationConfig } = generateTOTP({
+		algorithm: 'SHA256',
+		charSet: 'ABCDEFGHIJKLMNOPPQRSTUVWXYZ123456789',
+		period,
+	})
+	const verificationData = {
+		type,
+		target,
+		...verificationConfig,
+		expiresAt: new Date(Date.now() + verificationConfig.period * 1000),
+	}
 
-	// generate otp and ...verificationConfig (generateTOTP({algorithm: 'SHA256', charset: 'ABCDEFGHIJKLMNOPPQRSTUVWXYZ123456789', period}))
+	void (await prisma.verification.upsert({
+		where: { target_type: { target, type } },
+		create: verificationData,
+		update: verificationData,
+	}))
 
-	// create verificationData (obj with type, target, ...verificationConfig, expiresAt)
-
-	// create or update verification in db
-
-	// add otp to url we'll send to the user
-
-	// return otp, redirectTo, verifyUrl
+	verifyUrl.searchParams.set(_codeQueryParam, otp)
+	return {
+		otp,
+		redirectTo,
+		verifyUrl,
+	}
 }

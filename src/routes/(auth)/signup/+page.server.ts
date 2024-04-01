@@ -1,3 +1,4 @@
+import { prepareVerification } from '$lib/server/verify'
 import { prisma } from '$lib/utils/db.server.js'
 import { parseWithZod } from '@conform-to/zod'
 import { fail, redirect } from '@sveltejs/kit'
@@ -37,7 +38,7 @@ export const actions = {
 		}
 
     const {email} = submission.value
-    const { verifyUrl, redirectTo, otp } = await prepareVerificataion({
+    const { verifyUrl, redirectTo, otp } = await prepareVerification({
       period: 10 * 60,
       request,
       type: 'onboarding',
