@@ -63,6 +63,7 @@
     "date-fns": "^3.5.0",
     "execa": "^8.0.1",
     "glob": "^10.3.10",
+    "handlebars": "^4.7.8",
     "jsonwebtoken": "^9.0.2",
     "zod": "^3.22.4",
     "zod-form-data": "^2.0.2"

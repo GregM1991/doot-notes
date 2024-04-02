@@ -1,9 +1,18 @@
 import { RESEND_API_KEY } from '$env/static/private'
 import { z } from 'zod'
 
-const ResendSuccessSchema = z.object({
-	email: z.string(),
-})
+const resendErrorSchema = z.union([
+	z.object({ name: z.string(), message: z.string(), statusCode: z.number() }),
+	z.object({
+		name: z.literal('UnkownError'),
+		message: z.literal('Unknown Error'),
+		statusCode: z.literal(500),
+		cause: z.any(),
+	}),
+])
+type ResendError = z.infer<typeof resendErrorSchema>
+const resendSuccessSchema = z.object({ id: z.string() })
+
 type SendEmailParams = {
 	to: string
 	subject: string
@@ -55,7 +64,7 @@ export async function sendEmail(options: SendEmailParams) {
 	// await data.json() call
 	// parsedData = ResendSuccessSchema.safeParse(data)
 	const data = await response.json()
-	const parsedData = ResendSuccessSchema.safeParse(data)
+	const parsedData = resendSuccessSchema.safeParse(data)
 
 	// If the response is ok && parsedData is success
 	// return object with status: 'success' and data: parsedData
@@ -75,5 +84,3 @@ export async function sendEmail(options: SendEmailParams) {
 	// make sure it stisfies ResendError
 	// type as const
 }
-
-sendEmail({ to: 'thing', subject: 'thing', text: 'string', html: 'string' })
