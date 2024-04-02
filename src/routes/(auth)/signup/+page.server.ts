@@ -49,7 +49,7 @@ export const actions = {
     const response = await sendEmail({
       to: email,
       subject: `Let's get Dootin!`,
-      html: 'Shit, how do I do this without React email thing',
+      html: _signupEmail({onboardingUrl: verifyUrl.toString(), otp}),
       text: 'Whats this also?'
     })
 

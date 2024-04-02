@@ -1,5 +1,6 @@
-import adapter from '@sveltejs/adapter-auto';
-import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import path from 'path'
+import adapter from '@sveltejs/adapter-auto'
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -15,8 +16,9 @@ const config = {
 		alias: {
 			$tests: './tests',
 			$routes: './src/routes',
+			$msw: path.resolve('./src/msw'),
 		},
 	},
 }
 
-export default config;
+export default config
