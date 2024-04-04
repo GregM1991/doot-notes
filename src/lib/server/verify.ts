@@ -1,4 +1,3 @@
-import otpGenerator from 'otp-generator'
 import { getDomainUrl } from '$lib/utils/misc'
 import {
 	_codeQueryParam,

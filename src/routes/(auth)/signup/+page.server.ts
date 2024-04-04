@@ -10,24 +10,25 @@ const SignupFormSchema = z.object({
 })
 
 export const actions = {
-	default: async ({ request, cookies }) => {
+	default: async ({ request }) => {
 		const formData = await request.formData()
+		console.log(`We're in sign-up action: `, formData.get('email'))
 		// TODO: Create honeypot
 
 		const submission = await parseWithZod(formData, {
 			schema: SignupFormSchema.superRefine(async (data, ctx) => {
-        const existingUser = await prisma.user.findUnique({
-          where: { email: data.email },
-          select: { id: true }
-        })
-        if (existingUser) {
-          ctx.addIssue({
-            path: ['email'],
-            code: z.ZodIssueCode.custom,
-            message: 'A user already exists with this email'
-          })
-          return
-        }
+				const existingUser = await prisma.user.findUnique({
+					where: { email: data.email },
+					select: { id: true },
+				})
+				if (existingUser) {
+					ctx.addIssue({
+						path: ['email'],
+						code: z.ZodIssueCode.custom,
+						message: 'A user already exists with this email',
+					})
+					return
+				}
 			}),
 			async: true,
 		})
@@ -38,33 +39,28 @@ export const actions = {
 			})
 		}
 
-    const {email} = submission.value
-    const { verifyUrl, redirectTo, otp } = await prepareVerification({
-      period: 10 * 60,
-      request,
-      type: 'onboarding',
-      target: email
-    })
+		const { email } = submission.value
+		const { verifyUrl, redirectTo, otp } = await prepareVerification({
+			period: 10 * 60,
+			request,
+			type: 'onboarding',
+			target: email,
+		})
 
-    const response = await sendEmail({
-      to: email,
-      subject: `Let's get Dootin!`,
-      html: _signupEmail({onboardingUrl: verifyUrl.toString(), otp}),
-      text: 'Whats this also?'
-    })
+		const response = await sendEmail({
+			to: email,
+			subject: `Let's get Dootin!`,
+			html: _signupEmail({ onboardingUrl: verifyUrl.toString(), otp }),
+			text: 'Whats this also?',
+		})
 
-    if (response.status === 'success') {
-      return redirect(303, redirectTo.toString())
-    } else {
-      fail(500, { submission.reply({formErrors: [response.error.message]})})
-    }
-
-		// return handleNewSession({
-		// 	cookies,
-		// 	session,
-		// 	remember: remember ?? false,
-		// 	redirectTo: redirectTo ? redirectTo : null,
-		// })
+		if (response.status === 'success') {
+			return redirect(303, redirectTo.toString())
+		} else {
+			fail(500, {
+				result: submission.reply({ formErrors: [response.error.message] }),
+			})
+		}
 	},
 }
 

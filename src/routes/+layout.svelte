@@ -6,6 +6,7 @@
 	import type { LayoutData } from './$types'
 
 	export let data: LayoutData
+	console.log({viteMSW: import.meta.env.VITE_MSW_ENABLED})
 	const isMswEnabled = dev && import.meta.env.VITE_MSW_ENABLED === 'true'
 	let timeoutId: ReturnType<typeof setTimeout>
 	$: showToast = data.toast ? true : false
@@ -25,11 +26,14 @@
 	onDestroy(() => timeoutId && clearTimeout(timeoutId))
 
 	let isReady = !isMswEnabled
-
+	console.log({ isReady, isMswEnabled })
 	if (isMswEnabled) {
-		import('$lib/server/msw')
+		import('$msw')
 			.then(res => res.inject())
-			.then(() => (isReady = true))
+			.then(() => {
+				console.log('After msw import')
+				isReady = true
+			})
 	}
 </script>
 

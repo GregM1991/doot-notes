@@ -11,7 +11,7 @@
 </svelte:head>
 
 <h1>Let's get you Dootin!</h1>
-<form action="POST" use:enhance>
+<form method="POST" use:enhance>
 	<div class="field-group">
 		<Input
 			label="Enter your email"

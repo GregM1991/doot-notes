@@ -2,15 +2,20 @@ import { RESEND_API_KEY } from '$env/static/private'
 import { z } from 'zod'
 
 const resendErrorSchema = z.union([
-	z.object({ name: z.string(), message: z.string(), statusCode: z.number() }),
 	z.object({
-		name: z.literal('UnkownError'),
+		name: z.string(),
+		message: z.string(),
+		statusCode: z.number(),
+	}),
+	z.object({
+		name: z.literal('UnknownError'),
 		message: z.literal('Unknown Error'),
 		statusCode: z.literal(500),
 		cause: z.any(),
 	}),
 ])
 type ResendError = z.infer<typeof resendErrorSchema>
+
 const resendSuccessSchema = z.object({ id: z.string() })
 
 type SendEmailParams = {
@@ -27,17 +32,13 @@ export async function sendEmail(options: SendEmailParams) {
 		from,
 		...options,
 	}
+	console.log(JSON.stringify({ email }))
 
-	// Haven't set up resend API
-	// check for RESEND_API_KEY in env && env isn't mocks
-	// console.error out RESEND_API_KEY needs to be set
-	// console.error need for RESEND_API_KEY being set in environment var
-	// console.error out Would have sent following email: JSON.stringify(email)
-	if (RESEND_API_KEY && !process.env.MOCKS) {
-		console.error('RESEND_API_KEY needs to be set')
-		console.error('RESEND_API_KEY needs to be in environment variables')
+	if (!RESEND_API_KEY && !process.env.MOCKS) {
+		console.error(`RESEND_API_KEY needs to be set and we're`)
+		console.error(`RESEND_API_KEY needs to be in environment variables`)
 		console.error(
-			'The following email would have been sent:',
+			`Would have sent the following email: `,
 			JSON.stringify(email),
 		)
 		return {
@@ -46,41 +47,39 @@ export async function sendEmail(options: SendEmailParams) {
 		} as const
 	}
 
-	// make fetch to 'https://api.resend.com/emails'
-	// method POST
-	// body is stringified email
-	// headers
-	// Authorizatoin: Bearer RESEND_API_KEY
-	// Content-Type: application/json
 	const response = await fetch('https://api.resend.com/emails', {
 		method: 'POST',
 		body: JSON.stringify(email),
 		headers: {
 			Authorization: `Bearer ${RESEND_API_KEY}`,
-			ContentType: 'application/json',
+			'Content-Type': 'application/json',
 		},
 	})
-
-	// await data.json() call
-	// parsedData = ResendSuccessSchema.safeParse(data)
 	const data = await response.json()
 	const parsedData = resendSuccessSchema.safeParse(data)
 
-	// If the response is ok && parsedData is success
-	// return object with status: 'success' and data: parsedData
-
-	// else
-	// parseResult = ResendErrorSchema.safeParse(data)
-	// if the parseResult is a success
-	// return status of error and error as parseResult.data
-
-	// else
-	// return status: 'error'
-	// error:
-	// name: 'UnknownError'
-	// message: 'Unknown Error',
-	// statusCode :500
-	// cause: data
-	// make sure it stisfies ResendError
-	// type as const
+	if (response.ok && parsedData.success) {
+		return {
+			status: 'success',
+			data: parsedData,
+		} as const
+	} else {
+		const parseResult = resendErrorSchema.safeParse(data)
+		if (parseResult.success) {
+			return {
+				status: 'error',
+				error: parseResult.data,
+			} as const
+		} else {
+			return {
+				status: 'error',
+				error: {
+					name: 'UnknownError',
+					message: 'Unknown Error',
+					statusCode: 500,
+					cause: data,
+				} satisfies ResendError,
+			} as const
+		}
+	}
 }
