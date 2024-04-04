@@ -8,6 +8,14 @@
 	let timeoutId: ReturnType<typeof setTimeout>
 	$: showToast = data.toast ? true : false
 
+	/* 
+		TODO: general todo list:
+		- Add CSRF protection
+		- Add honeypot
+		- Add Fly.io things?
+			- Add caching server
+		- Rate limiting
+	*/
 	// TODO: Clean this up
 	function dismissToast() {
 		showToast = false

@@ -15,6 +15,7 @@ export const ToastSchema = z.object({
 	type: z.enum(types).default('message'),
 })
 
+// TODO: separate out name and options
 export const toastOptionValues = {
 	name: 'dn_toast',
 	options: {

@@ -18,14 +18,14 @@ type ResendError = z.infer<typeof resendErrorSchema>
 
 const resendSuccessSchema = z.object({ id: z.string() })
 
-type SendEmailParams = {
+type SendEmailArgs = {
 	to: string
 	subject: string
 	text: string
 	html: string
 }
 
-export async function sendEmail(options: SendEmailParams) {
+export async function sendEmail(options: SendEmailArgs) {
 	const from = 'gregm31@live.com'
 
 	const email = {
