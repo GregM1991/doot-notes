@@ -1,13 +1,10 @@
 <script lang="ts">
-	import { dev } from '$app/environment'
 	import { Navbar, Toast } from '$lib/components'
 	import '$lib/styles/app.css'
 	import { onDestroy } from 'svelte'
 	import type { LayoutData } from './$types'
 
 	export let data: LayoutData
-	console.log({viteMSW: import.meta.env.VITE_MSW_ENABLED})
-	const isMswEnabled = dev && import.meta.env.VITE_MSW_ENABLED === 'true'
 	let timeoutId: ReturnType<typeof setTimeout>
 	$: showToast = data.toast ? true : false
 
@@ -24,17 +21,6 @@
 		}, 5000)
 	}
 	onDestroy(() => timeoutId && clearTimeout(timeoutId))
-
-	let isReady = !isMswEnabled
-	console.log({ isReady, isMswEnabled })
-	if (isMswEnabled) {
-		import('$msw')
-			.then(res => res.inject())
-			.then(() => {
-				console.log('After msw import')
-				isReady = true
-			})
-	}
 </script>
 
 <svelte:head>
@@ -58,9 +44,7 @@
 		<Navbar />
 	</header>
 	<div class="content-body">
-		{#if isReady}
-			<slot />
-		{/if}
+		<slot />
 	</div>
 	<footer>I'm the 🦶er</footer>
 </div>

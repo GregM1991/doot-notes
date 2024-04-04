@@ -12,7 +12,6 @@ const SignupFormSchema = z.object({
 export const actions = {
 	default: async ({ request }) => {
 		const formData = await request.formData()
-		console.log(`We're in sign-up action: `, formData.get('email'))
 		// TODO: Create honeypot
 
 		const submission = await parseWithZod(formData, {

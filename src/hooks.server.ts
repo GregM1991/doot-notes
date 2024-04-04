@@ -7,6 +7,15 @@ import {
 import { prisma } from '$lib/utils/db.server'
 import { dev } from '$app/environment'
 
+if (dev) {
+	const { server } = await import('$msw/server.server')
+	console.info('🧑‍🤝‍🧑 Mock server up and running')
+	server.listen({ onUnhandledRequest: 'warn' })
+
+	closeWithGrace(() => {
+		server.close()
+	})
+}
 export const handle = async ({ resolve, event }) => {
 	const sessionData = getSessionData(event.cookies.get(authSessionCookieName))
 	if (sessionData) {
@@ -25,12 +34,3 @@ export const handle = async ({ resolve, event }) => {
 	return resolve(event)
 }
 
-if (dev) {
-	const { server } = await import('$msw/server.server')
-	console.info('🧑‍🤝‍🧑 Mock server up and running')
-	server.listen({ onUnhandledRequest: 'warn' })
-
-	closeWithGrace(() => {
-		server.close()
-	})
-}
