@@ -1,4 +1,3 @@
-import type { Verification } from '@prisma/client'
 import { redirect, type Cookies } from '@sveltejs/kit'
 import { encryptAndSignCookieValue } from './secureCookie'
 import { onboardingEmailSessionKey } from '$lib/auth/onboarding.server'
@@ -7,7 +6,7 @@ import { safeRedirect } from '$lib/utils/misc'
 interface HandleNewVerificationArgs {
 	cookies: Cookies
 	target: string
-	redirectTo?: string | null
+	redirectTo: string
 }
 
 export const verifySessionCookieName = 'dn_verification'
@@ -22,7 +21,7 @@ export const verifySessionCookieOptions = {
 export async function handleNewVerification({
 	cookies,
 	target,
-	redirectTo = null,
+	redirectTo,
 }: HandleNewVerificationArgs) {
 	const encryptedCookieString = encryptAndSignCookieValue({
 		[onboardingEmailSessionKey]: target,

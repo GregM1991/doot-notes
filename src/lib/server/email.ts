@@ -26,13 +26,12 @@ type SendEmailArgs = {
 }
 
 export async function sendEmail(options: SendEmailArgs) {
-	const from = 'gregm31@live.com'
+	const from = 'onboarding@resend.dev'
 
 	const email = {
 		from,
 		...options,
 	}
-	console.log(JSON.stringify({ email }))
 
 	if (!RESEND_API_KEY && !process.env.MOCKS) {
 		console.error(`RESEND_API_KEY needs to be set and we're`)
@@ -46,7 +45,6 @@ export async function sendEmail(options: SendEmailArgs) {
 			data: { id: 'mocked' },
 		} as const
 	}
-
 	const response = await fetch('https://api.resend.com/emails', {
 		method: 'POST',
 		body: JSON.stringify(email),

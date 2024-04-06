@@ -41,7 +41,6 @@ export function invariant(
 }
 
 export function safeRedirect(redirectTo: string | null, defaultPath = '/') {
-	console.log(redirectTo)
 	if (
 		redirectTo &&
 		redirectTo.startsWith('/') &&

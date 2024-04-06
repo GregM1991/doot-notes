@@ -15,5 +15,6 @@ export async function handleVerification({
 	return handleNewVerification({
 		cookies,
 		target: submission.value.target,
+		redirectTo: '/onboarding',
 	})
 }

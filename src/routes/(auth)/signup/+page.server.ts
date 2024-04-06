@@ -1,5 +1,5 @@
 import { sendEmail } from '$lib/server/email'
-import { prepareVerification } from '$lib/server/verify'
+import { prepareVerification } from '$lib/auth/verify.server'
 import { prisma } from '$lib/utils/db.server.js'
 import { parseWithZod } from '@conform-to/zod'
 import { fail, redirect } from '@sveltejs/kit'

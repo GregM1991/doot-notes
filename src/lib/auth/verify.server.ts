@@ -60,7 +60,6 @@ export async function prepareVerification({
 	type,
 	target,
 }: PrepareVerificatinParams) {
-	console.log({ period, request, type, target })
 	const verifyUrl = getRedirectToUrl({ request, type, target })
 	const redirectTo = new URL(verifyUrl.toString())
 	const { otp, ...verificationConfig } = generateTOTP({
@@ -96,6 +95,7 @@ export async function validateRequest(
 ) {
 	const submission = await parseWithZod(body, {
 		schema: VerifySchema.superRefine(async (data, ctx) => {
+			console.log(data)
 			const codeIsValid = await isCodeValid({
 				code: data[codeQueryParam],
 				type: data[typeQueryParam],
@@ -133,6 +133,7 @@ export async function validateRequest(
 			},
 		})
 	}
+	console.log('helo')
 
 	switch (submissionValue[typeQueryParam]) {
 		// case 'reset-password': {
@@ -159,7 +160,28 @@ export async function validateRequest(
 	}
 }
 
+/*
+	This func-a-litious takes a one-time-password and checks to see whether
+	there is a verification saved in the database that matches the target and 
+	type (target=john.doe@johns.do.main.com type=email). We can then reject
+	if there's no verification found, or if there is one found but the code isn't
+	valid (those nasty h4cker$).
+*/
 async function isCodeValid({ code, type, target }: IsCodeValidParams) {
-	console.log({ code, type, target })
+	const verification = await prisma.verification.findUnique({
+		where: {
+			target_type: { target, type },
+			OR: [{ expiresAt: { gt: new Date() } }, { expiresAt: null }],
+		},
+	})
+
+	if (!verification) return false
+	const result = verifyTOTP({
+		otp: code,
+		...verification,
+	})
+
+	if (!result) return false
+
 	return true
 }
