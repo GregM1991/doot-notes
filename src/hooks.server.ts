@@ -17,20 +17,22 @@ if (dev) {
 	})
 }
 export const handle = async ({ resolve, event }) => {
-	const sessionData = getSessionData(event.cookies.get(authSessionCookieName))
+	const { cookies, locals } = event
+	const userId = getUserId(cookies.get(authSessionCookieName)) // Replace below code with this
+	const sessionData = getSessionData(cookies.get(authSessionCookieName))
 	if (sessionData) {
 		const session = await prisma.session.findFirst({
 			where: { id: sessionData?.sessionId, expirationDate: { gt: new Date() } },
 			select: { user: { select: { id: true } } },
 		})
 		if (!session?.user) {
-			event.cookies.delete(authSessionCookieName, authSessionCookieOptions)
+			cookies.delete(authSessionCookieName, authSessionCookieOptions)
 			return resolve(event)
 		}
-		event.locals.userId = session.user.id
+		locals.userId = session.user.id
 		return resolve(event)
 	}
-	event.locals.userId = null
+	locals.userId = null
 	return resolve(event)
 }
 

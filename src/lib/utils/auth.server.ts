@@ -19,6 +19,27 @@ export const SESSION_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 30
 export const getSessionExpirationDate = () =>
 	new Date(Date.now() + SESSION_EXPIRATION_TIME)
 
+/*
+	This function gives us a way to determine if the user is logged in via checking
+	the authSession cookie we set when the user logs in. There are a few early exits
+	(obviously if there's no authSession at all there's been no attempt at login).
+*/
+export async function getUserId(sessionCookie: string | undefined) {
+	// grab the authSession sessionId from the cookies
+
+	// if there's no sessionId return null
+
+	// grab the session from the db 
+		// select the userId from the user
+		// where id equals sessionId and expiration date is greater than new Date()
+
+	// if there's no session user
+		// destroy the authSession
+		// throw a redirect to '/'
+
+	// otherwise we return the sesion.user.id
+}
+
 export function requireUserId(
 	userId: string | null,
 	request: Request,
@@ -37,6 +58,11 @@ export function requireUserId(
 		throw redirect(303, loginRedirect)
 	}
 	return userId
+}
+
+// A simple function to redirect a logged in user (eg if they somehow get to login we take them back to homepage)
+export async function requireAnonymous(userId: string | null) {
+	if (userId) throw redirect(302, '/')
 }
 
 export async function login({ username, password }: LoginParams) {
