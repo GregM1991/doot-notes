@@ -93,9 +93,10 @@ export async function validateRequest(
 	request: Request,
 	body: FormData | URLSearchParams,
 ) {
+	console.log('inside validate request')
+	console.log(body)
 	const submission = await parseWithZod(body, {
 		schema: VerifySchema.superRefine(async (data, ctx) => {
-			console.log(data)
 			const codeIsValid = await isCodeValid({
 				code: data[codeQueryParam],
 				type: data[typeQueryParam],
@@ -114,6 +115,7 @@ export async function validateRequest(
 	})
 
 	if (submission.status !== 'success') {
+		console.error(`Error parsing: ${JSON.stringify(submission.reply().error)}`)
 		return fail(submission.status === 'error' ? 400 : 200, {
 			result: submission.reply(),
 		})
@@ -133,7 +135,6 @@ export async function validateRequest(
 			},
 		})
 	}
-	console.log('helo')
 
 	switch (submissionValue[typeQueryParam]) {
 		// case 'reset-password': {

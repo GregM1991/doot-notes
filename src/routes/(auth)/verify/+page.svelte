@@ -1,10 +1,17 @@
 <script script="ts">
 	import { enhance } from '$app/forms'
 	import { Input, Button } from '$lib/components'
+	import { page } from '$app/stores'
 
 	const label = 'Enter Code'
   export let form
+	$: searchParams = {
+		type: $page.url.searchParams.get('type'),
+		target: $page.url.searchParams.get('target'),
+		redirectTo: $page.url.searchParams.get('redirectTo')
+	}
 </script>
+
 
 <h1>Have a geez' at your email</h1>
 <span>We've sent you a little prezzie to verify your email address</span>
@@ -12,9 +19,9 @@
   <div>
     <Input id="code" name="code" {label} errors={form?.result.error?.password}/>
   </div>
-  <Input hidden />
-  <Input />
-  <Input />
+  <Input name="type" id="type" value={searchParams?.type ?? ''} type="hidden" />
+  <Input name="target" id="target" value={searchParams?.target ?? ''} type="hidden"/>
+  <Input name="redirectTo" id="redirectTo" value={searchParams.redirectTo ?? ''} type="hidden"/>
 	<Button fluid secondary type="submit">Submit</Button> 
 </form>
 
