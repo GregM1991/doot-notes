@@ -1,13 +1,21 @@
 import { redirect, type Cookies } from '@sveltejs/kit'
-import { encryptAndSignCookieValue } from './secureCookie'
+import {
+	decryptCookie,
+	encryptAndSignCookieValue,
+} from '$lib/server/sessions/secureCookie'
 import { onboardingEmailSessionKey } from '$lib/auth/onboarding.server'
 import { safeRedirect } from '$lib/utils/misc'
+import { z } from 'zod'
 
 interface HandleNewVerificationArgs {
 	cookies: Cookies
 	target: string
 	redirectTo: string
 }
+
+export const VerifySessionSchema = z.object({
+	[onboardingEmailSessionKey]: z.string(),
+})
 
 export const verifySessionCookieName = 'dn_verification'
 export const verifySessionCookieOptions = {
@@ -31,4 +39,12 @@ export async function handleNewVerification({
 	})
 
 	throw redirect(303, safeRedirect(redirectTo))
+}
+
+export function getVerifySessionData(sessionCookie: string | undefined) {
+	if (!sessionCookie) return null
+	const decryptedSessionValue = decryptCookie(sessionCookie)
+	const verifySession = VerifySessionSchema.safeParse(decryptedSessionValue)
+
+	return verifySession?.success ? verifySession.data : null
 }

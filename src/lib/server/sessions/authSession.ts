@@ -15,11 +15,11 @@ interface HandleNewSessionParams {
 	redirectTo: string | null
 }
 
-export const AuthSchema = z.object({
+export const AuthSessionSchema = z.object({
 	sessionId: z.string(),
 })
 
-export type Auth = z.infer<typeof AuthSchema>
+export type Auth = z.infer<typeof AuthSessionSchema>
 
 export const authSessionCookieName = 'dn_session'
 export const authSessionCookieOptions = {
@@ -30,10 +30,10 @@ export const authSessionCookieOptions = {
 }
 
 // TODO: Research way to create function that parses different schemas correctly (getToastData)
-export function getSessionData(sessionCookie: string | undefined) {
+export function getAuthSessionData(sessionCookie: string | undefined) {
 	if (!sessionCookie) return null
 	const decryptedSessionValue = decryptCookie(sessionCookie)
-	const session = AuthSchema.safeParse(decryptedSessionValue)
+	const session = AuthSessionSchema.safeParse(decryptedSessionValue)
 
 	return session.success ? session.data : null
 }

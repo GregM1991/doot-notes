@@ -5,7 +5,7 @@ import { redirect, type Cookies } from '@sveltejs/kit'
 import {
 	authSessionCookieName,
 	authSessionCookieOptions,
-	getSessionData,
+	getAuthSessionData,
 } from '$lib/server/sessions/authSession'
 import { safeRedirect } from './misc'
 
@@ -26,7 +26,7 @@ export const getSessionExpirationDate = () =>
 */
 export async function getUserId(cookies: Cookies) {
 	const sessionCookie = cookies.get(authSessionCookieName)
-	const sessionData = getSessionData(sessionCookie)
+	const sessionData = getAuthSessionData(sessionCookie)
 	if (!sessionData) return null
 	const session = await prisma.session.findFirst({
 		where: { id: sessionData?.sessionId, expirationDate: { gt: new Date() } },
@@ -79,7 +79,7 @@ export async function login({ username, password }: LoginParams) {
 }
 
 export async function logout(cookies: Cookies, redirectTo = '/') {
-	const session = getSessionData(cookies.get(authSessionCookieName))
+	const session = getAuthSessionData(cookies.get(authSessionCookieName))
 	if (session) {
 		void prisma.session
 			.deleteMany({ where: { id: session.sessionId } })

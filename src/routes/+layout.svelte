@@ -15,6 +15,7 @@
 		- Add Fly.io things?
 			- Add caching server
 		- Rate limiting
+		- Standardise session cookie methods
 	*/
 	// TODO: Clean this up
 	function dismissToast() {
