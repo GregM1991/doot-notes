@@ -1,6 +1,6 @@
 import { handleNewVerification } from '$lib/server/sessions/verifySession'
 import { invariant } from '$lib/utils/misc'
-import type { VerifyFunctionArgs, targetQueryParam } from './verify'
+import type { VerifyFunctionArgs } from './verify'
 
 export const onboardingEmailSessionKey = 'onboardingEmail'
 

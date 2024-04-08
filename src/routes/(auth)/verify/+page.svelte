@@ -16,7 +16,7 @@
 <span>We've sent you a little prezzie to verify your email address</span>
 <form method="POST" use:enhance>
 	<div>
-		<Input name="code" {label} errors={form?.result.error?.password} />
+		<Input name="code" {label} errors={form?.result.error?.code} />
 	</div>
 	<Input name="type" value={searchParams?.type ?? ''} type="hidden" />
 	<Input name="target" value={searchParams?.target ?? ''} type="hidden" />

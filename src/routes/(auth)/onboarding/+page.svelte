@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { enhance } from '$app/forms'
 	import { Input, Button } from '$lib/components'
 
 	export let data
@@ -10,7 +11,7 @@
 
 <h1>Great to have you <br /> {data.email}</h1>
 <span>Go ahead and enter your details for us</span>
-<form method="POST">
+<form method="POST" use:enhance>
 	<div class="field-group">
 		<Input label="Username" name={username} />
 	</div>
