@@ -8,7 +8,7 @@ import {
 import { onboardingEmailSessionKey } from '$lib/auth/onboarding.server'
 
 export const load = (async ({ locals, cookies }) => {
-	const email = requireOnboardingEmail(locals.userId, cookies)
+	const email = await requireOnboardingEmail(locals.userId, cookies)
 	return { email }
 }) satisfies PageServerLoad
 

@@ -16,7 +16,6 @@
 <form bind:this={form} on:submit|preventDefault={onSearch}>
 	<label class="sr-only" for="search">Search</label>
 	<Input
-		id="search"
 		on:input={onSearch}
 		placeholder="Search"
 		name="search"

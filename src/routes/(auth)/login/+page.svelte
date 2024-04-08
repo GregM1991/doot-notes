@@ -5,6 +5,8 @@
 
 	export let form
 	const formId = "login-form"
+
+	// TODO: create a auth form component to reduce styling repeats 😎
 </script>
 
 <h1>Hello again!</h1>
@@ -12,21 +14,17 @@
 	<div class="field-group">
 		<Input
 			label="Enter username"
-			id="username"
 			name="username"
 			value=''
       errors={form?.result.error?.username}
-      
 		/>
 	</div>
 	<div class="field-group">
 		<Input
 			label="Enter password"
-			id="password"
 			name="password"
 			type="password"
       errors={form?.result.error?.password}
-      
 		/>
 	</div>
 	<div class="remember-forgot">
@@ -38,7 +36,7 @@
       <a href="/forgot-password">Forgot password?</a>
     </div>
 	</div>
-	<Input id="redirectTo" name="redirectTo" type="hidden" value={$page.params.redirectTo} />
+	<Input name="redirectTo" type="hidden" value={$page.params.redirectTo} />
 	<Button fluid type="submit" secondary>Submit</Button>
 	<ValidationErrors errorId={formId} errors={form?.result.error?.['']} /> <!-- TODO: this is a bit stinky -->
 	 <span>

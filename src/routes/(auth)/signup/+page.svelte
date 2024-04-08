@@ -15,7 +15,6 @@
 	<div class="field-group">
 		<Input
 			label="Enter your email"
-			id="email"
 			name="email"
 			value=""
 			errors={form?.result.error?.username}

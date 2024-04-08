@@ -26,7 +26,6 @@
 		<Input
 			errors={errors?.title}
 			label="Title"
-			id={titleId}
 			secondary
 			name="title"
 			type="text"
@@ -39,7 +38,6 @@
 			textArea
 			errors={errors?.content}
 			label="Content"
-			id={contentId}
 			secondary
 			name="content"
 			bind:value={content}

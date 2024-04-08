@@ -2,7 +2,6 @@
 	import { ValidationErrors } from '$lib/components'
 	import { createEventDispatcher } from 'svelte'
 
-	export let id: string
 	export let placeholder = ''
 	export let name: string
 	export let type: 'text' | 'password' | 'search' | 'hidden' = 'text'
@@ -14,7 +13,8 @@
 	export let errors: string[] | null = null
 	export let textArea = false
 	export let style = ''
-
+	
+	const id = name
 	const el = textArea ? 'textarea' : 'input'
 
 	const dispatch = createEventDispatcher()

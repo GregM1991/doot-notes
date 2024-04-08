@@ -14,7 +14,7 @@ interface HandleNewVerificationArgs {
 }
 
 export const VerifySessionSchema = z.object({
-	[onboardingEmailSessionKey]: z.string(),
+	[onboardingEmailSessionKey]: z.string().nullish(),
 })
 
 export const verifySessionCookieName = 'dn_verification'

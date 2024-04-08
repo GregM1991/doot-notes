@@ -93,8 +93,6 @@ export async function validateRequest(
 	request: Request,
 	body: FormData | URLSearchParams,
 ) {
-	console.log('inside validate request')
-	console.log(body)
 	const submission = await parseWithZod(body, {
 		schema: VerifySchema.superRefine(async (data, ctx) => {
 			const codeIsValid = await isCodeValid({
