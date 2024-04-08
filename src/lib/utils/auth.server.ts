@@ -24,20 +24,19 @@ export const getSessionExpirationDate = () =>
 	the authSession cookie we set when the user logs in. There are a few early exits
 	(obviously if there's no authSession at all there's been no attempt at login).
 */
-export async function getUserId(sessionCookie: string | undefined) {
-	// grab the authSession sessionId from the cookies
-
-	// if there's no sessionId return null
-
-	// grab the session from the db 
-		// select the userId from the user
-		// where id equals sessionId and expiration date is greater than new Date()
-
-	// if there's no session user
-		// destroy the authSession
-		// throw a redirect to '/'
-
-	// otherwise we return the sesion.user.id
+export async function getUserId(cookies: Cookies) {
+	const sessionCookie = cookies.get(authSessionCookieName)
+	const sessionData = getSessionData(sessionCookie)
+	if (!sessionData) return null
+	const session = await prisma.session.findFirst({
+		where: { id: sessionData?.sessionId, expirationDate: { gt: new Date() } },
+		select: { user: { select: { id: true } } },
+	})
+	if (!session?.user) {
+		cookies.delete(authSessionCookieName, authSessionCookieOptions)
+		return null
+	}
+	return session.user.id
 }
 
 export function requireUserId(
