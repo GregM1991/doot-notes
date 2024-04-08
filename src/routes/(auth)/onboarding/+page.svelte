@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Input } from '$lib/components'
+	import { Input, Button } from '$lib/components'
 
 	export let data
 	const username = 'username'
@@ -9,14 +9,35 @@
 </script>
 
 <h1>Great to have you <br /> {data.email}</h1>
-<form action="POST">
-	<Input label="Username" name={username} />
-	<Input label="Username" {name} />
-	<Input label="Username" name={password} />
-	<Input label="Username" name={confirm} />
+<span>Go ahead and enter your details for us</span>
+<form method="POST">
+	<div class="field-group">
+		<Input label="Username" name={username} />
+	</div>
+	<div class="field-group">
+		<Input label="Name" {name} />
+	</div>
+	<div class="field-group">
+		<Input label="Password" name={password} />
+	</div>
+	<div class="field-group">
+		<Input label="Confirm Password" name={confirm} />
+	</div>
+	<Button secondary fluid>Submit</Button>
 </form>
 
 <style>
+	h1 {
+		font-size: var(--type-step-4);
+		color: var(--palette-pop);
+		text-align: center;
+	}
+
+	span {
+		text-align: center;
+		display: block;
+	}
+
 	form {
 		display: flex;
 		flex-direction: column;
@@ -32,11 +53,5 @@
 		flex-direction: column;
 		gap: var(--space-3xs);
 		width: 30vw;
-	}
-
-	h1 {
-		font-size: var(--type-step-4);
-		color: var(--palette-pop);
-		text-align: center;
 	}
 </style>

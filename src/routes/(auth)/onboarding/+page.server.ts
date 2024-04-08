@@ -1,5 +1,5 @@
 import { requireAnonymous } from '$lib/utils/auth.server'
-import { redirect, type Cookies } from '@sveltejs/kit'
+import { redirect, type Actions, type Cookies } from '@sveltejs/kit'
 import type { PageServerLoad } from './$types'
 import {
 	getVerifySessionData,
@@ -19,3 +19,9 @@ async function requireOnboardingEmail(userId: string | null, cookies: Cookies) {
 	if (!verifySessionData) redirect(303, '/signup')
 	return verifySessionData[onboardingEmailSessionKey]
 }
+
+export const actions = {
+	default: async () => {
+		console.log('onboarding action')
+	},
+} satisfies Actions

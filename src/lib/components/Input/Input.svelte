@@ -41,6 +41,7 @@
 	on:input={handleInput}
 	class="base"
 />
+
 {#if type !== 'hidden'}
 	<ValidationErrors {errors} errorId={id} />
 {/if}
