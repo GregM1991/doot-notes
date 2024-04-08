@@ -8,35 +8,35 @@
 
 <h1>{name}'s Profile</h1>
 <main>
-  <div>
-    <span>Username: {username}</span>
-    <span class="date-joined">joined {userJoinedDisplay}</span>
-  </div>
+	<div>
+		<span>Username: {username}</span>
+		<span class="date-joined">joined {userJoinedDisplay}</span>
+	</div>
 	<Button href={`${username}/notes`}>View {name}'s notes</Button>
 </main>
 
 <style>
-	h1 { 
+	h1 {
 		color: var(--palette-pop);
 		font-size: var(--type-step-3);
 		margin-bottom: var(--space-3xs);
-    text-align: center;
+		text-align: center;
 	}
 
-  main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: var(--space-s)
-  }
+	main {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: var(--space-s);
+	}
 
-  div {
-    display: flex;
-    flex-direction: column;
-  }
+	div {
+		display: flex;
+		flex-direction: column;
+	}
 
-  .date-joined {
-    font-size: var(--type-step--1);
-  }
+	.date-joined {
+		font-size: var(--type-step--1);
+	}
 </style>

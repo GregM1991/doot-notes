@@ -1,9 +1,9 @@
-<script lang='ts'>
+<script lang="ts">
 	import type { IconName } from './name.d.ts'
 
 	export let name: IconName
-
 </script>
+
 <!-- TODO: Get icons working with sprite -->
 {#if $$slots.default}
 	<span>

@@ -5,11 +5,13 @@
 
 	export let form: ActionData
 
-	let note = form?.result ? {
-		id: null,
-		title: form.result.intialData.title,
-		content:  form.result.intialData.content
-	} : null
+	let note = form?.result
+		? {
+				id: null,
+				title: form.result.intialData.title,
+				content: form.result.intialData.content,
+			}
+		: null
 	let errors: { title: string[]; content: string[] }
 	const action = `/users/${$page.params.username}/notes/new-note?/newOrUpdate`
 </script>
@@ -17,11 +19,7 @@
 <pre>
 	{JSON.stringify(form, null, 2)}
 </pre>
-<EditNote
-	{action}
-	{note}
-	errors={form?.result.error}
-/>
+<EditNote {action} {note} errors={form?.result.error} />
 
 <style>
 	pre {

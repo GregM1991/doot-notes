@@ -33,7 +33,7 @@
 		height: 100%;
 		margin: 0 auto;
 		width: 30vw;
-		padding-top: var(--space-2xl)
+		padding-top: var(--space-2xl);
 	}
 
 	.field-group {

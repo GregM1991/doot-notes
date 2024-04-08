@@ -8,8 +8,8 @@
 	export let secondary = false
 	export let fluid = false
 	export let style = ''
-	export let small = false;
-	export let danger = false;
+	export let small = false
+	export let danger = false
 
 	const element = href ? 'a' : 'button'
 	const role = element === 'a' ? 'link' : 'button'

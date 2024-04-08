@@ -4,7 +4,11 @@
 	import Plus from 'virtual:icons/radix-icons/plus'
 	import Check from 'virtual:icons/radix-icons/check'
 
-	export let note: { id: string | null, title: string, content: string } | null = null
+	export let note: {
+		id: string | null
+		title: string
+		content: string
+	} | null = null
 	export let errors: { title: string[]; content: string[] } | null = null
 	export let action: string
 

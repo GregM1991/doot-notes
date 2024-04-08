@@ -12,12 +12,12 @@
 	h1 {
 		color: var(--palette-pop);
 		font-family: var(--type-primary);
-    font-size: var(--type-step-4); 
+		font-size: var(--type-step-4);
 		text-align: center;
 	}
 
-  p {
-    font-size: var(--type-step-1);
-    text-align: center;
-  }
+	p {
+		font-size: var(--type-step-1);
+		text-align: center;
+	}
 </style>

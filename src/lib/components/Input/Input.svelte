@@ -13,7 +13,7 @@
 	export let errors: string[] | null = null
 	export let textArea = false
 	export let style = ''
-	
+
 	const id = name
 	const el = textArea ? 'textarea' : 'input'
 
@@ -41,8 +41,8 @@
 	on:input={handleInput}
 	class="base"
 />
-{#if type !== "hidden"}
-<ValidationErrors {errors} errorId={id} />
+{#if type !== 'hidden'}
+	<ValidationErrors {errors} errorId={id} />
 {/if}
 
 <style>

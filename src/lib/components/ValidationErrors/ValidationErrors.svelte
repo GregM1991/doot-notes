@@ -18,7 +18,6 @@
 		min-height: var(--space-s);
 		color: var(--palette-primary);
 		font-size: var(--type-step--1);
-		margin-top: var(--space-3xs)
+		margin-top: var(--space-3xs);
 	}
 </style>
-
