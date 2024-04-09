@@ -13,6 +13,12 @@ type LoginParams = {
 	username: User['username']
 	password: string
 }
+type SignupArgs = {
+	email: User['email']
+	username: User['username']
+	password: string
+	name: User['name']
+}
 
 export const sessionKey = 'sessionId'
 export const SESSION_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 30
@@ -107,4 +113,20 @@ async function verifyUserPassword(
 	}
 
 	return { id: userWithPassword.id }
+}
+
+export async function signup({ email, username, password, name }: SignupArgs) {
+	// Hash password
+	const hashedPassword = await getPasswordHash(password)
+	// Create session, use prisma query to also create user and password in db
+	// select the id and expiration date and return the session
+	const session = await prisma.session.create({
+		data: {},
+		select: { id: true, expirationDate: true },
+	})
+}
+
+export async function getPasswordHash(password: string) {
+	const hash = await bcrypt.hash(password, 10)
+	return hash
 }

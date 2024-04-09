@@ -43,10 +43,6 @@ export async function handleNewVerification({
 
 export function getVerifySessionData(sessionCookie: string | undefined) {
 	if (!sessionCookie) return null
-	const decryptedSessionValue = decryptCookie(sessionCookie)
-	console.log(decryptedSessionValue) // PROBLEM IS HERE
-	const verifySession = VerifySessionSchema.safeParse(decryptedSessionValue)
-	console.log(verifySession.success ? verifySession.data : verifySession.error)
-
-	return verifySession?.success ? verifySession.data : null
+	const decryptedSessionValue = decryptCookie(sessionCookie) // TODO: Need to stop this being any (I tried safeParse but it returned expected string but got undefined error)
+	return decryptedSessionValue[onboardingEmailSessionKey] ?? null
 }

@@ -19,10 +19,10 @@
 		<Input label="Name" {name} />
 	</div>
 	<div class="field-group">
-		<Input label="Password" name={password} />
+		<Input type="password" label="Password" name={password} />
 	</div>
 	<div class="field-group">
-		<Input label="Confirm Password" name={confirm} />
+		<Input type="password" label="Confirm Password" name={confirm} />
 	</div>
 	<Button secondary fluid>Submit</Button>
 </form>
