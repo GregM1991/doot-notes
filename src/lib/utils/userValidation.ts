@@ -14,7 +14,19 @@ export const PasswordSchema = z
 	.min(6, { message: 'Password is too short' })
 	.max(100, { message: 'Password is too long' })
 
-	export const NameSchema = z
-		.string({ required_error: 'Name is required' })
-		.min(3, { message: 'Name is too short' })
-		.max(40, { message: 'Name is too long' })
+export const NameSchema = z
+	.string({ required_error: 'Name is required' })
+	.min(3, { message: 'Name is too short' })
+	.max(40, { message: 'Name is too long' })
+
+export const PasswordAndConfirmPasswordSchema = z
+	.object({ password: PasswordSchema, confirmPassword: PasswordSchema })
+	.superRefine(({ confirmPassword, password }, ctx) => {
+		if (confirmPassword !== password) {
+			ctx.addIssue({
+				path: ['confirmPassword'],
+				code: 'custom',
+				message: 'The passwords must match',
+			})
+		}
+	})

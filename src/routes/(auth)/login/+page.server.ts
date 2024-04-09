@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { type Actions, fail, redirect } from '@sveltejs/kit'
 import { parseWithZod } from '@conform-to/zod'
-import { handleNewSession } from '$lib/server/sessions/authSession'
+import { handleNewSessionWithRedirect } from '$lib/server/sessions/authSession'
 import { login } from '$lib/utils/auth.server'
 // import { formatFormErrors } from '$lib/utils/misc'
 import { PasswordSchema, UsernameSchema } from '$lib/utils/userValidation'
@@ -53,7 +53,7 @@ export const actions = {
 
 		const { remember, session, redirectTo } = submission.value
 
-		return handleNewSession({
+		return handleNewSessionWithRedirect({
 			cookies,
 			session,
 			remember: remember ?? false,

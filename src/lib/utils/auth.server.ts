@@ -115,15 +115,31 @@ async function verifyUserPassword(
 	return { id: userWithPassword.id }
 }
 
+/* 
+	This func-town simply takes user info on signup and creates the user in the db
+	with hashed password as well as creates a session in db for the user
+*/
 export async function signup({ email, username, password, name }: SignupArgs) {
-	// Hash password
 	const hashedPassword = await getPasswordHash(password)
-	// Create session, use prisma query to also create user and password in db
-	// select the id and expiration date and return the session
 	const session = await prisma.session.create({
-		data: {},
+		data: {
+			expirationDate: getSessionExpirationDate(),
+			user: {
+				create: {
+					email: email.toLowerCase(),
+					username: username.toLowerCase(),
+					name,
+					password: {
+						create: {
+							hash: hashedPassword,
+						},
+					},
+				},
+			},
+		},
 		select: { id: true, expirationDate: true },
 	})
+	return session
 }
 
 export async function getPasswordHash(password: string) {

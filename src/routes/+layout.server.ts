@@ -1,18 +1,17 @@
 import {
 	getToastData,
+	toastCookieName,
 	toastOptionValues,
 } from '$lib/server/sessions/toastSession'
 import { logout } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
 
 export async function load({ cookies, locals }) {
-	const { name, options } = toastOptionValues
-
-	const toastCookieString = cookies.get(name)
+	const toastCookieString = cookies.get(toastCookieName)
 	const toast = toastCookieString ? getToastData(toastCookieString) : undefined
 	if (toastCookieString) {
 		if (toast && toast.flash) {
-			cookies.delete(name, options)
+			cookies.delete(toastCookieName, toastOptionValues)
 		}
 	}
 

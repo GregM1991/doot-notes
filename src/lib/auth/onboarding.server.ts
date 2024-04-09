@@ -1,8 +1,6 @@
 import { handleNewVerification } from '$lib/server/sessions/verifySession'
 import { invariant } from '$lib/utils/misc'
-import type { VerifyFunctionArgs } from './verify'
-
-export const onboardingEmailSessionKey = 'onboardingEmail'
+import type { VerifyFunctionArgs } from '$lib/auth/verify'
 
 export async function handleVerification({
 	cookies,

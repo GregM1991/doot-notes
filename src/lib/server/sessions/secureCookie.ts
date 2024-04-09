@@ -36,6 +36,7 @@ export function encryptAndSignCookieValue<T>(
 	})
 }
 
+// TODO: Accept Schema so we can have type saftey when getting value from cookie string
 export function decryptCookie(encryptedCookieValue: string) {
 	try {
 		const encryptedAndSignedCookieObj =
