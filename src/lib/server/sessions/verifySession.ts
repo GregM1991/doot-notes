@@ -14,7 +14,7 @@ interface HandleNewVerificationArgs {
 }
 
 export const VerifySessionSchema = z.object({
-	[onboardingEmailSessionKey]: z.string().nullish(),
+	[onboardingEmailSessionKey]: z.string().nullable(),
 })
 
 export const verifySessionCookieName = 'dn_verification'
@@ -44,7 +44,9 @@ export async function handleNewVerification({
 export function getVerifySessionData(sessionCookie: string | undefined) {
 	if (!sessionCookie) return null
 	const decryptedSessionValue = decryptCookie(sessionCookie)
+	console.log(decryptedSessionValue) // PROBLEM IS HERE
 	const verifySession = VerifySessionSchema.safeParse(decryptedSessionValue)
+	console.log(verifySession.success ? verifySession.data : verifySession.error)
 
 	return verifySession?.success ? verifySession.data : null
 }

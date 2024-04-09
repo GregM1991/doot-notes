@@ -8,7 +8,6 @@ import {
 import { onboardingEmailSessionKey } from '$lib/auth/onboarding.server'
 
 export const load = (async ({ locals, cookies }) => {
-	// TODO: Keep debugging from here
 	const email = await requireOnboardingEmail(locals.userId, cookies)
 	return { email }
 }) satisfies PageServerLoad
@@ -17,7 +16,6 @@ async function requireOnboardingEmail(userId: string | null, cookies: Cookies) {
 	await requireAnonymous(userId)
 	const verifySessionCookie = cookies.get(verifySessionCookieName)
 	const verifySessionData = getVerifySessionData(verifySessionCookie)
-	console.log({ verifySessionData })
 
 	if (!verifySessionData || !verifySessionData[onboardingEmailSessionKey])
 		redirect(303, '/signup')
