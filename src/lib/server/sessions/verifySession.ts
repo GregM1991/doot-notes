@@ -3,7 +3,7 @@ import {
 	decryptCookie,
 	encryptAndSignCookieValue,
 } from '$lib/server/sessions/secureCookie'
-import { onboardingEmailSessionKey } from '$lib/auth/onboarding.server'
+import { onboardingEmailSessionKey } from '$lib/auth/onboarding'
 import { safeRedirect } from '$lib/utils/misc'
 import { z } from 'zod'
 

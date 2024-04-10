@@ -18,16 +18,30 @@
 <span>Go ahead and enter your details for us</span>
 <form method="POST" use:enhance>
 	<div class="field-group">
-		<Input label="Username" name={username} value={form?.result?.initialValue}/>
+		<Input
+			label="Username"
+			name={username}
+			value={form?.result?.initialValue?.username ?? ''}
+		/>
 	</div>
 	<div class="field-group">
-		<Input label="Name" {name} />
+		<Input label="Name" {name} value={form?.result?.initialValue?.name ?? ''} />
 	</div>
 	<div class="field-group">
-		<Input type="password" label="Password" name={password} />
+		<Input
+			type="password"
+			label="Password"
+			name={password}
+			value={form?.result?.initialValue?.password ?? ''}
+		/>
 	</div>
 	<div class="field-group">
-		<Input type="password" label="Confirm Password" name={confirm} />
+		<Input
+			type="password"
+			label="Confirm Password"
+			name={confirm}
+			value={form?.result?.initialValue?.confirm ?? ''}
+		/>
 	</div>
 	<label>
 		<input name="agreeToTermsOfServiceAndPrivacyPolicy" type="checkbox" />
@@ -37,7 +51,7 @@
 		<input name="remember" type="checkbox" />
 		Remember me?
 	</label>
-	<Input name="redirectTo"  type="hidden" />
+	<Input name="redirectTo" type="hidden" />
 	<Button secondary fluid>Submit</Button>
 </form>
 

@@ -68,7 +68,10 @@ export const actions = {
 
 			// TODO: Can this be extracted to util?
 			return fail(submission.status === 'error' ? 400 : 200, {
-				result: { ...submission.reply(), initialValue: initialValue. },
+				result: {
+					...submission.reply(),
+					initialValue: initialValue.success ? initialValue.data : {},
+				},
 			})
 		}
 
