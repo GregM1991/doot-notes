@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms'
-	import { Input, Button } from '$lib/components'
+	import { Input, Button, ValidationErrors } from '$lib/components'
 
 	export let data
 	export let form
@@ -9,6 +9,7 @@
 	const name = 'name'
 	const password = 'password'
 	const confirm = 'confirm'
+	const formId = 'signup'
 </script>
 
 <pre>
@@ -16,16 +17,22 @@
 </pre>
 <h1>Great to have you <br /> {data.email}</h1>
 <span>Go ahead and enter your details for us</span>
-<form method="POST" use:enhance>
+<form id={formId} method="POST" use:enhance>
 	<div class="field-group">
 		<Input
 			label="Username"
 			name={username}
 			value={form?.result?.initialValue?.username ?? ''}
+			errors={form?.result?.error?.username}
 		/>
 	</div>
 	<div class="field-group">
-		<Input label="Name" {name} value={form?.result?.initialValue?.name ?? ''} />
+		<Input
+			label="Name"
+			{name}
+			value={form?.result?.initialValue?.name ?? ''}
+			errors={form?.result?.error?.name}
+		/>
 	</div>
 	<div class="field-group">
 		<Input
@@ -33,6 +40,7 @@
 			label="Password"
 			name={password}
 			value={form?.result?.initialValue?.password ?? ''}
+			errors={form?.result?.error?.password}
 		/>
 	</div>
 	<div class="field-group">
@@ -41,11 +49,16 @@
 			label="Confirm Password"
 			name={confirm}
 			value={form?.result?.initialValue?.confirm ?? ''}
+			errors={form?.result?.error?.confirm}
 		/>
 	</div>
 	<label>
 		<input name="agreeToTermsOfServiceAndPrivacyPolicy" type="checkbox" />
 		Do you agree to our Terms of Service and Privacy Policy?
+		<ValidationErrors
+			errors={form?.result?.error?.agreeToTermsOfServiceAndPrivacyPolicy}
+			errorId="agreeToTermsOfServiceAndPrivacyPolicy"
+		/>
 	</label>
 	<label>
 		<input name="remember" type="checkbox" />
@@ -53,6 +66,7 @@
 	</label>
 	<Input name="redirectTo" type="hidden" />
 	<Button secondary fluid>Submit</Button>
+	<ValidationErrors errorId={formId} errors={form?.result.error?.['']} />
 </form>
 
 <style>
@@ -60,6 +74,7 @@
 		padding: 10px;
 		background: #efefef;
 	}
+
 	h1 {
 		font-size: var(--type-step-4);
 		color: var(--palette-pop);

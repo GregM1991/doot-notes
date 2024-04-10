@@ -20,11 +20,11 @@ export const NameSchema = z
 	.max(40, { message: 'Name is too long' })
 
 export const PasswordAndConfirmPasswordSchema = z
-	.object({ password: PasswordSchema, confirmPassword: PasswordSchema })
-	.superRefine(({ confirmPassword, password }, ctx) => {
-		if (confirmPassword !== password) {
+	.object({ password: PasswordSchema, confirm: PasswordSchema })
+	.superRefine(({ confirm, password }, ctx) => {
+		if (confirm !== password) {
 			ctx.addIssue({
-				path: ['confirmPassword'],
+				path: ['confirm'],
 				code: 'custom',
 				message: 'The passwords must match',
 			})

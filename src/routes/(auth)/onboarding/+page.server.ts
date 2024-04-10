@@ -62,6 +62,7 @@ export const actions = {
 		})
 		if (submission.status !== 'success' || !submission.value.session) {
 			const submissionInitialValue = submission.reply().initialValue
+			// TODO: Can a reply util be created to generate types for the reply method?
 			const initialValue = SignupFormInitialValueSchema.safeParse(
 				submissionInitialValue ?? {},
 			)
