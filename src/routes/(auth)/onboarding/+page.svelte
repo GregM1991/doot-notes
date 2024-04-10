@@ -1,25 +1,10 @@
 <script lang="ts">
 	import { enhance } from '$app/forms'
-	import { SignupFormSchema } from '$lib/auth/onboarding'
-	import { parseWithZod } from '@conform-to/zod'
 	import { Input, Button } from '$lib/components'
-	import type { ActionData } from './$types'
-	import { page } from '$app/stores'
 
 	export let data
-	export let form: ActionData
-	form?.result
-	let initialValues = {
-		usernameValue: '',
-		passwordValue: '',
-		confirmValue: '',
-		nameValue: '',
-	}
+	export let form
 
-	// $: usernameValue = form?.result?.initialValue?.username ? form.result.initialValue.username : ''
-	// $: passwordValue = form?.result?.initialValue?.password ?? ''
-	// $: confirmValue = form?.result?.initialValue?.confirm ?? ''
-	// $: nameValue = form?.result?.initialValue?.name ?? ''
 	const username = 'username'
 	const name = 'name'
 	const password = 'password'
@@ -33,8 +18,7 @@
 <span>Go ahead and enter your details for us</span>
 <form method="POST" use:enhance>
 	<div class="field-group">
-		<Input label="Username" name={username} />
-		<!-- value={usernameValue} -->
+		<Input label="Username" name={username} value={form?.result?.initialValue}/>
 	</div>
 	<div class="field-group">
 		<Input label="Name" {name} />
@@ -53,7 +37,7 @@
 		<input name="remember" type="checkbox" />
 		Remember me?
 	</label>
-	<Input name="redirectTo" value={redirectTo ?? ''} type="hidden" />
+	<Input name="redirectTo"  type="hidden" />
 	<Button secondary fluid>Submit</Button>
 </form>
 

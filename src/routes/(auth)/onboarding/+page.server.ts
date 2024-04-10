@@ -3,7 +3,7 @@ import { parseWithZod } from '@conform-to/zod'
 import { fail, redirect, type Actions, type Cookies } from '@sveltejs/kit'
 import {
 	SignupFormSchema,
-	SignupFormSubmissionSchema,
+	SignupFormInitialValueSchema,
 } from '$lib/auth/onboarding'
 import {
 	getVerifySessionData,
@@ -61,49 +61,15 @@ export const actions = {
 			async: true,
 		})
 		if (submission.status !== 'success' || !submission.value.session) {
-			// PICK-UP: Was trying to figure out how I can shape this return from fail
-			// so I know for sure the shape
-			const parsedSubmission = SignupFormSubmissionSchema.refine(data => {
-				console.log({ data })
-				return {
-					confirm: data.confirm ?? '',
-					name: data.name ?? '',
-					password: data.confirm ?? '',
-					username: data.confirm ?? '',
-				}
-			}).parse(submission.reply())
-			console.log({ parsedSubmission })
+			const submissionInitialValue = submission.reply().initialValue
+			const initialValue = SignupFormInitialValueSchema.safeParse(
+				submissionInitialValue ?? {},
+			)
+
 			// TODO: Can this be extracted to util?
 			return fail(submission.status === 'error' ? 400 : 200, {
-				result: submission.reply(),
+				result: { ...submission.reply(), initialValue: initialValue. },
 			})
-			/* 
-				{
-					"result": {
-						"status": "error",
-						"initialValue": {
-							"confirm": "!4mA$trongPassw0rd",
-							"name": "gregtest martintest",
-							"password": "!4mA$trongPassw0rd",
-							"username": "gregtestusername"
-						},
-						"error": {
-							"agreeToTermsOfServiceAndPrivacyPolicy": [
-								"You must agree to the terms of service and privacy policy."
-							],
-							"confirmPassword": [
-								"Password is required"
-							]
-						},
-						"fields": [
-							"username",
-							"name",
-							"password",
-							"confirm"
-						]
-					}
-				}
-			*/
 		}
 
 		const { session, remember, redirectTo } = submission.value

@@ -20,7 +20,7 @@ export const SignupFormSchema = z
 	})
 	.and(PasswordAndConfirmPasswordSchema)
 
-export const SignupFormSubmissionSchema = z.object({
+export const SignupFormInitialValueSchema = z.object({
 	confirm: z.string().optional(),
 	name: z.string().optional(),
 	password: z.string().optional(),
