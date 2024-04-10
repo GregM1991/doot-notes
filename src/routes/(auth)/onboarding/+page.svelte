@@ -12,9 +12,6 @@
 	const formId = 'signup'
 </script>
 
-<pre>
-	{JSON.stringify(form, null, 2)}
-</pre>
 <h1>Great to have you <br /> {data.email}</h1>
 <span>Go ahead and enter your details for us</span>
 <form id={formId} method="POST" use:enhance>

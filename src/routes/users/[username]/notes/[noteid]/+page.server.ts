@@ -27,7 +27,6 @@ export const actions = {
 			title: 'Success',
 			description: 'Note successfully deleted',
 			type: 'success',
-			flash: true,
 		})
 
 		await prisma.note.delete({
