@@ -17,7 +17,7 @@
 				>{$page.data.user.name}</a
 			>
 			<form method="POST" action="/logout">
-				<Button type="submit">Logout bitches</Button>
+				<Button type="submit">Logout</Button>
 				<!-- TODO: User dropdown menu -->
 			</form>
 		{:else}

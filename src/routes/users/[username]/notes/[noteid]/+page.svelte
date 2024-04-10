@@ -4,10 +4,9 @@
 	import Timer from 'virtual:icons/radix-icons/timer'
 	import Eraser from 'virtual:icons/radix-icons/eraser'
 	import Pencil2 from 'virtual:icons/radix-icons/pencil2'
-	import type { LayoutData } from './$types'
 	import { page } from '$app/stores'
 
-	export let data: LayoutData
+	export let data
 	let paragraphs = data.note.content
 		.split('\n')
 		.filter(para => para.trim().length > 0)
@@ -22,12 +21,12 @@
 	{/each}
 </article>
 
-{#if $page.data.user.username === data.note.owner.username}
+{#if data.isOwner}
 	<div class="info-bar">
 		<span class="time-since-update"><Timer />{data.timeSinceUpdate}</span>
 		<div class="buttons">
 			<Button small secondary href="{$page.params.noteid}/edit"
-				><Pencil2 />Edit</Button
+				><Pencil2 /> Edit</Button
 			>
 			<form method="POST" use:enhance>
 				<Button small danger type="submit"><Eraser /> Delete</Button>

@@ -3,7 +3,7 @@ import { invariantResponse } from '$lib/utils/misc'
 import { formatDistanceToNow } from 'date-fns'
 import { prisma } from '$lib/utils/db.server'
 
-export const load = (async ({ params }) => {
+export const load = (async ({ params, locals }) => {
 	const { username, noteid } = params
 
 	const note = await prisma.note.findFirst({
@@ -13,7 +13,7 @@ export const load = (async ({ params }) => {
 			content: true,
 			updatedAt: true,
 			createdAt: true,
-			owner: { select: { username: true } },
+			owner: { select: { username: true, id: true } },
 		},
 		where: {
 			owner: {
@@ -27,6 +27,7 @@ export const load = (async ({ params }) => {
 
 	const date = new Date(note.updatedAt)
 	const timeSinceUpdate = formatDistanceToNow(date)
+	const isOwner = locals.userId === note.owner.id
 
-	return { note, timeSinceUpdate }
+	return { note, timeSinceUpdate, isOwner }
 }) satisfies LayoutServerLoad

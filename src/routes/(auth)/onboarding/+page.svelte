@@ -67,11 +67,6 @@
 </form>
 
 <style>
-	pre {
-		padding: 10px;
-		background: #efefef;
-	}
-
 	h1 {
 		font-size: var(--type-step-4);
 		color: var(--palette-pop);

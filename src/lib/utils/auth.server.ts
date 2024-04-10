@@ -35,7 +35,7 @@ export async function getUserId(cookies: Cookies) {
 	const sessionData = getAuthSessionData(sessionCookie)
 	if (!sessionData) return null
 	const session = await prisma.session.findFirst({
-		where: { id: sessionData?.sessionId, expirationDate: { gt: new Date() } },
+		where: { id: sessionData.sessionId, expirationDate: { gt: new Date() } },
 		select: { user: { select: { id: true } } },
 	})
 	if (!session?.user) {

@@ -23,6 +23,7 @@ export async function load({ cookies, locals }) {
 		: null
 
 	if (locals.userId && !user) {
+		// This is strange, but could happen if the user was deleted. Logout to be safe.
 		console.info('User drift')
 		await logout(cookies, '/')
 	}

@@ -1,7 +1,3 @@
-<script lang="ts">
-	import { Button } from '$lib/components'
-</script>
-
 <h1>Welcome to DootNotes 📯</h1>
 <p>
 	DootNotes is a simple note-taking app that allows you to create, edit, and

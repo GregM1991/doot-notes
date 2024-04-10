@@ -3,6 +3,7 @@
 	import { debounce } from '$lib/utils/misc'
 	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
+	import Person from 'virtual:icons/radix-icons/person'
 
 	export let data
 
@@ -25,14 +26,20 @@
 		<span>{data.error}</span>
 	{:else if data.users.length}
 		<ul role="list">
-			{#each data.users as user}
-				<a data-sveltekit-preload-data="hover" href={`/users/${user.username}`}>
-					<li>
+			{#each data.users as user} <!-- TODO: Extract this to component -->
+				<li>
+					<a
+						data-sveltekit-preload-data="hover"
+						href={`/users/${user.username}`}
+					>
 						<!-- TODO: put gravatar in -->
+						<span class="gravatar">
+							<Person />
+						</span>
 						<span>{user.name}</span>
 						<span class="username">{user.username}</span>
-					</li>
-				</a>
+					</a>
+				</li>
 			{/each}
 		</ul>
 	{:else}
@@ -45,7 +52,7 @@
 	h1 {
 		color: var(--palette-pop);
 		font-size: var(--type-step-4);
-		margin: var(--space-m);
+		padding: var(--space-m);
 		text-align: center;
 	}
 
@@ -58,20 +65,43 @@
 
 	ul {
 		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		place-items: center;
 		gap: var(--space-s);
 	}
 
-	li {
+	a {
 		display: flex;
 		flex-direction: column;
+		align-items: center;
 		justify-content: center;
-		flex: 1;
 		padding: var(--space-s);
 		background: var(--palette-primary-ultra-light);
 		border-radius: 1rem;
 		border: var(--border-primary);
 		text-align: center;
 		font-weight: var(--type-weight-bold);
+		height: 10rem;
+		width: 12rem;
+	}
+
+	.gravatar {
+		display: inline-block;
+		margin-bottom: var(--space-2xs);
+		font-size: 2rem;
+		background: var(--palette-base);
+		padding: var(--space-2xs);
+		border-radius: 9999px;
+		width: 4rem;
+		height: 4rem;
+	}
+
+	span {
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		width: 100%;
 	}
 
 	span.username {
