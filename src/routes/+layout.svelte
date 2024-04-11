@@ -16,6 +16,8 @@
 			- Add caching server
 		- Rate limiting
 		- Standardise session cookie methods
+		- Get eslint rules working 🙄
+		- Potentially move cookie sessions to locals? At least impl toasts in locals
 	*/
 	// TODO: Clean this up
 	function dismissToast() {

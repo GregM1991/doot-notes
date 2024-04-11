@@ -1,24 +1,26 @@
 <script lang="ts">
-	import { enhance } from '$app/forms'
-	import { Input, Button } from '$lib/components'
 	import Plus from 'virtual:icons/radix-icons/plus'
 	import Check from 'virtual:icons/radix-icons/check'
+	import type { z } from 'zod'
+	import { enhance } from '$app/forms'
+	import { Input, Button, ImageEditor } from '$lib/components'
+	import type { ImageFieldsetSchema } from './types'
 
+	// Props
 	export let note: {
 		id: string | null
 		title: string
 		content: string
+		images: Array<z.infer<typeof ImageFieldsetSchema>> | Array<{}>
 	} | null = null
 	export let errors: { title: string[]; content: string[] } | null = null
 	export let action: string
 
-	let title = note?.title ?? ''
-	let content = note?.content ?? ''
-	let header = note ? `Edit ${note.title}` : 'Doot a new note 📯'
-	let buttonText = note ? 'Save changes' : 'Create note'
-	let Icon = note ? Check : Plus
-
-	const [titleId, contentId] = [crypto.randomUUID(), crypto.randomUUID()]
+	// consts
+	const imageList = note?.images ?? [{}]
+	const header = note ? `Edit ${note.title}` : 'Doot a new note 📯'
+	const buttonText = note ? 'Save changes' : 'Create note'
+	const Icon = note ? Check : Plus
 </script>
 
 <form method="POST" {action} use:enhance>
@@ -33,7 +35,7 @@
 			secondary
 			name="title"
 			type="text"
-			bind:value={title}
+			value={note?.title ?? ''}
 			required
 		/>
 	</div>
@@ -44,11 +46,14 @@
 			label="Content"
 			secondary
 			name="content"
-			bind:value={content}
+			value={note?.content ?? ''}
 			style="height: 100%"
 			required
 		/>
 	</div>
+	{#each imageList as image, index}
+		<ImageEditor {index} />
+	{/each}
 	<Button secondary type="submit">
 		<Icon />
 		{buttonText}
