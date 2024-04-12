@@ -24,6 +24,7 @@
 </script>
 
 <form method="POST" {action} use:enhance>
+	<button type="submit" class="hidden" />
 	<h3>{header}</h3>
 	{#if note}
 		<input type="hidden" name="id" value={note.id} />
@@ -61,6 +62,10 @@
 </form>
 
 <style>
+	.hidden {
+		display: none;
+	}
+	
 	form {
 		grid-row: 1 / span 2;
 		grid-column: 2 / 3;

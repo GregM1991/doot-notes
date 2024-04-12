@@ -23,3 +23,5 @@ export const NoteEditorSchema = z.object({
 	content: z.string().min(contentMinLength).max(contentMaxLength),
 	images: z.array(ImageFieldsetSchema).max(5).optional(),
 })
+
+export type ImageFieldset = z.infer<typeof ImageFieldsetSchema>

@@ -4,7 +4,19 @@ import { fail, redirect, type Action } from '@sveltejs/kit'
 import { requireUserId } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
 import { invariantResponse } from '$lib/utils/misc'
-import { NoteEditorSchema } from './types'
+import { NoteEditorSchema, type ImageFieldset } from './types'
+
+function imageHasFile(
+	image: ImageFieldset,
+): image is ImageFieldset & { file: NonNullable<ImageFieldset['file']> } {
+	return Boolean(image.file?.size && image.file?.size > 0)
+}
+
+function imageHasId(
+	image: ImageFieldset,
+): image is ImageFieldset & { id: NonNullable<ImageFieldset['id']> } {
+	return image.id != null
+}
 
 export const newOrUpdate: Action = async ({ request, locals }) => {
 	const userId = requireUserId(locals.userId, request)
@@ -23,6 +35,39 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 					code: z.ZodIssueCode.custom,
 					message: 'Note not found',
 				})
+			}
+		}).transform(async ({ images = [], ...data }) => {
+			return {
+				...data,
+				imageUpdates: await Promise.all(
+					images.filter(imageHasId).map(async i => {
+						if (imageHasFile(i)) {
+							return {
+								id: i.id,
+								altText: i.altText,
+								contentType: i.file.type,
+								blob: Buffer.from(await i.file?.arrayBuffer()),
+							}
+						} else {
+							return {
+								id: i.id,
+								altText: i.altText,
+							}
+						}
+					}),
+				),
+				newImages: await Promise.all(
+					images
+						.filter(imageHasFile)
+						.filter(i => !i.id)
+						.map(async image => {
+							return {
+								altText: image.altText,
+								contentType: image.file.type,
+								blob: Buffer.from(await image.file?.arrayBuffer()),
+							}
+						}),
+				),
 			}
 		}),
 		async: true,
