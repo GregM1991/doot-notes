@@ -1,9 +1,9 @@
 import z from 'zod'
 import { parseWithZod } from '@conform-to/zod'
+import { createId as cuid } from '@paralleldrive/cuid2'
 import { fail, redirect, type Action } from '@sveltejs/kit'
 import { requireUserId } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
-import { invariantResponse } from '$lib/utils/misc'
 import { NoteEditorSchema, type ImageFieldset } from './types'
 
 function imageHasFile(
@@ -79,26 +79,34 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 		})
 	}
 
-	const owner = await prisma.user.findUnique({
-		select: { id: true },
-		where: { id: userId },
-	})
-	invariantResponse(owner, 'Could not find user of note', 404)
-
-	// TODO: Extracting values here as this'll help when images will be pulled from the transformed data
-	const { id: noteId, title, content } = submission.value
+	const {
+		id: noteId,
+		title,
+		content,
+		imageUpdates = [],
+		newImages = [],
+	} = submission.value
 
 	const updatedNote = await prisma.note.upsert({
 		select: { id: true, owner: { select: { username: true } } },
 		where: { id: noteId ?? "__this_can't_exist__" },
-		update: {
-			title,
-			content,
-		},
 		create: {
 			ownerId: userId,
 			title,
 			content,
+			images: { create: newImages },
+		},
+		update: {
+			title,
+			content,
+			images: {
+				deleteMany: { id: { notIn: imageUpdates.map(image => image.id) } },
+				updateMany: imageUpdates.map(updates => ({
+					where: { id: updates.id },
+					data: { ...updates, id: updates.blob ? cuid() : updates.id },
+				})),
+				create: newImages,
+			},
 		},
 	})
 
