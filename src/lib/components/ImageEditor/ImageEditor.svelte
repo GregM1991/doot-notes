@@ -6,15 +6,14 @@
 </script>
 
 <fieldset class="container">
+	<legend class='sr-only'>Select an image to upload</legend>	
 	<button class="remove-image-button" name="intent" value="remove-image">
 		<span aria-hidden>
-			<!-- Cross Icon goes here -->
 			<Cross />
 		</span>
 		<span class="sr-only">Remove image {index}</span>
 	</button>
 	<div class="button-container">
-		<span>Images</span>
 		<label>
 			<div>
 				<!-- Plus Icon goes here -->
@@ -22,16 +21,17 @@
 			<input name="image-{index}-file" type="file" />
 		</label>
 	</div>
-	<label for="image-{index}-alt"> Alt Text </label>
-	<Input textArea name="image-{index}-alt" />
+	<label class='alt-input' for="image-{index}-alt">
+		Alt Text
+		<Input textArea name="image-{index}-alt" />
+	</label>
 </fieldset>
 
 <style>
-	fieldset {
+	.container {
+		display: flex;
 		border: none;
 		position: relative;
-	}
-	.container {
 	}
 
 	.remove-image-button {
@@ -51,5 +51,11 @@
 	}
 
 	.button-container {
+		height: 32px;
+		width: 32px;
+	}
+
+	.alt-input {
+		flex: 5
 	}
 </style>

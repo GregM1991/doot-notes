@@ -52,6 +52,7 @@
 			required
 		/>
 	</div>
+	<span>Images</span>
 	{#each imageList as image, index}
 		<ImageEditor {index} />
 	{/each}
@@ -65,7 +66,7 @@
 	.hidden {
 		display: none;
 	}
-	
+
 	form {
 		grid-row: 1 / span 2;
 		grid-column: 2 / 3;
