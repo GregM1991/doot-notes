@@ -14,6 +14,7 @@
 		</span>
 		<span class="sr-only">Remove image {index}</span>
 	</button>
+	<!-- TODO: fix focus for file input -->
 	<div class="file-input-container">
 		<label class="file-label">
 			<div class="plus">
@@ -59,6 +60,10 @@
 		border-radius: var(--border-radius);
 		border: var(--border);
 		filter: var(--border-drop-shadow-black);
+	}
+
+	.file-input-container:focus-visible {
+		filter: var(--border-drop-shadow-black-focus)
 	}
 
 	.file-label {
