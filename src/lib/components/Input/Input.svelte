@@ -55,14 +55,14 @@
 		background-color: var(--background-color);
 		border-radius: 1rem;
 		outline: none;
-		filter: drop-shadow(3px 3px 0px var(--color-grey-20));
+		filter: var(--border-drop-shadow-black);
 
 		transition: var(--animation-quick);
 	}
 
 	.base:focus-visible {
 		background-color: var(--background-color-light);
-		filter: drop-shadow(1px 1px 0px var(--color-grey-20));
+		filter: var(--border-drop-shadow-black-focus);
 	}
 
 	.base::placeholder {

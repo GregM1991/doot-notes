@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Input } from '$lib/components'
 	import Cross from 'virtual:icons/radix-icons/cross2'
+	import Plus from 'virtual:icons/radix-icons/plus'
 
 	export let index: number
 </script>
@@ -13,23 +14,24 @@
 		</span>
 		<span class="sr-only">Remove image {index}</span>
 	</button>
-	<div class="button-container">
-		<label>
-			<div>
-				<!-- Plus Icon goes here -->
+	<div class="file-input-container">
+		<label class="file-label">
+			<div class="plus">
+				<Plus />
 			</div>
-			<input name="image-{index}-file" type="file" />
+			<input class="file" name="image-{index}-file" type="file" />
 		</label>
 	</div>
-	<label class='alt-input' for="image-{index}-alt">
-		Alt Text
-		<Input textArea name="image-{index}-alt" />
-	</label>
+	<div class="alt-input">
+		<Input label="Alt text" textArea name="image-{index}-alt" />
+	</div>
 </fieldset>
 
 <style>
 	.container {
 		display: flex;
+		align-items: center;
+		gap: var(--space-m);
 		border: none;
 		position: relative;
 	}
@@ -50,12 +52,36 @@
 		display: flex;
 	}
 
-	.button-container {
-		height: 32px;
-		width: 32px;
+	.file-input-container {
+		height: var(--space-3xl);
+		width: var(--space-3xl);
+		background: var(--palette-base);
+		border-radius: var(--border-radius);
+		border: var(--border);
+		filter: var(--border-drop-shadow-black);
+	}
+
+	.file-label {
+		cursor: pointer;
+	}
+
+	.plus {
+		display: grid;
+		place-items: center;
+		height: 100%;
+		font-size: var(--type-step-1);
+	}
+
+	.file {
+		opacity: 0;
+		cursor: pointer;
+		height:	var(--space-3xl);
+		width: var(--space-3xl);
 	}
 
 	.alt-input {
-		flex: 5
+		display: flex;
+		flex-direction: column;
+		width: 100%;
 	}
 </style>

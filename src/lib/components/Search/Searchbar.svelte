@@ -43,21 +43,21 @@
 		background-color: var(--palette-tertiary);
 		border-radius: 1rem;
 		outline: none;
-		filter: drop-shadow(3px 3px 0px var(--color-grey-20));
+		filter: var(--border-drop-shadow-black);
 		cursor: pointer;
 
 		transition: var(--animation-quick);
 	}
 
 	button:focus {
-		filter: drop-shadow(5px 5px 0px var(--color-grey-20));
+		filter: var(--border-drop-shadow-black-hover);
 	}
 
 	button:hover {
-		filter: drop-shadow(5px 5px 0px var(--color-grey-20));
+		filter: var(--border-drop-shadow-black-hover);
 	}
 
 	button:active {
-		filter: drop-shadow(1px 1px 0px var(--color-grey-20));
+		filter: var(--border-drop-shadow-black-focus);
 	}
 </style>
