@@ -4,6 +4,7 @@
 	import Plus from 'virtual:icons/radix-icons/plus'
 
 	export let index: number
+	export let image: any
 </script>
 
 <fieldset class="container">

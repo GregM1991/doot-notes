@@ -54,7 +54,7 @@
 	</div>
 	<span>Images</span>
 	{#each imageList as image, index}
-		<ImageEditor {index} />
+		<ImageEditor {image} {index} />
 	{/each}
 	<Button secondary type="submit">
 		<Icon />

@@ -5,6 +5,7 @@
 	import Eraser from 'virtual:icons/radix-icons/eraser'
 	import Pencil2 from 'virtual:icons/radix-icons/pencil2'
 	import { page } from '$app/stores'
+	import { NoteInfoBar } from '$lib/components'
 
 	export let data
 	let paragraphs = data.note.content
@@ -22,18 +23,17 @@
 </article>
 
 {#if data.isOwner}
-	<div class="info-bar">
-		<span class="time-since-update"><Timer />{data.timeSinceUpdate}</span>
-		<div class="buttons">
-			<Button small secondary href="{$page.params.noteid}/edit"
-				><Pencil2 /> Edit</Button
-			>
-			<form method="POST" use:enhance>
-				<Button small danger type="submit"><Eraser /> Delete</Button>
-			</form>
-		</div>
-	</div>
-	<div class="blur" />
+	<NoteInfoBar>
+			<span class="time-since-update"><Timer />{data.timeSinceUpdate}</span>
+			<div class="buttons">
+				<Button small secondary href="{$page.params.noteid}/edit">
+					<Pencil2 /> Edit
+				</Button>
+				<form method="POST" use:enhance>
+					<Button small danger type="submit"><Eraser /> Delete</Button>
+				</form>
+			</div>
+	</NoteInfoBar>
 {/if}
 
 <style>
@@ -54,20 +54,6 @@
 		margin-bottom: var(--space-xs);
 	}
 
-	.info-bar {
-		grid-column: 1 / 4;
-		grid-row: 2 / span 1;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		bottom: var(--space-m);
-		left: var(--space-xl);
-		right: var(--space-xl);
-		padding: var(--space-s);
-		border-radius: var(--border-radius);
-		z-index: 1;
-	}
-
 	.time-since-update {
 		display: flex;
 		align-items: center;
@@ -79,12 +65,5 @@
 		gap: var(--space-s);
 	}
 
-	.blur {
-		grid-column: 1 / 4;
-		grid-row: 2 / span 1;
-		backdrop-filter: blur(4px);
-		border-radius: var(--border-radius);
-		background: hsla(0, 0%, 100%, 0.7);
-		z-index: 0;
-	}
+
 </style>
