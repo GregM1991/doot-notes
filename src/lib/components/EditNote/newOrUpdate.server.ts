@@ -19,6 +19,7 @@ function imageHasId(
 }
 
 export const newOrUpdate: Action = async ({ request, locals }) => {
+	console.log('hello')
 	const userId = requireUserId(locals.userId, request)
 
 	const formData = await request.formData()

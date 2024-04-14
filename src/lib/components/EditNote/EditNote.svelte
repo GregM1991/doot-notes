@@ -23,7 +23,7 @@
 	const Icon = note ? Check : Plus
 </script>
 
-<form method="POST" {action} use:enhance>
+<form method="POST" {action} use:enhance enctype="multipart/form-data">
 	<button type="submit" class="hidden" />
 	<h3>{header}</h3>
 	{#if note}
