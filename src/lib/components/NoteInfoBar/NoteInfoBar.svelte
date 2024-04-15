@@ -15,7 +15,6 @@
 		padding: var(--space-s);
 		border-radius: var(--border-radius);
 		z-index: 1;
-		drop-shadow: 4px 4px 4px black;
 		backdrop-filter: blur(3px);
 		background: hsl(0, 0%, 100%, .4);
 		border: 2px solid white;

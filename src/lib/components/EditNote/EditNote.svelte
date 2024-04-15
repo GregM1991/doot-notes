@@ -3,7 +3,7 @@
 	import Check from 'virtual:icons/radix-icons/check'
 	import type { z } from 'zod'
 	import { enhance } from '$app/forms'
-	import { Input, Button, ImageEditor } from '$lib/components'
+	import { Input, Button, ImageEditor, NoteInfoBar } from '$lib/components'
 	import type { ImageFieldsetSchema } from './types'
 
 	// Props
@@ -22,6 +22,8 @@
 	const buttonText = note ? 'Save changes' : 'Create note'
 	const Icon = note ? Check : Plus
 </script>
+
+<!-- TODO: Have the validation for this form be executed via JS (progressively enhanced) -->
 
 <form method="POST" {action} use:enhance enctype="multipart/form-data">
 	<button type="submit" class="hidden" />
@@ -56,10 +58,15 @@
 	{#each imageList as image, index}
 		<ImageEditor {image} {index} />
 	{/each}
-	<Button secondary type="submit">
-		<Icon />
-		{buttonText}
-	</Button>
+	<NoteInfoBar>
+		<div class="info-bar-buttons">
+			<Button danger type="reset">Reset</Button>
+			<Button secondary type="submit">
+				<Icon />
+				{buttonText}
+			</Button>
+		</div>
+	</NoteInfoBar>
 </form>
 
 <style>
@@ -89,5 +96,13 @@
 
 	.full-height {
 		flex: 1;
+	}
+
+	.info-bar-buttons {
+		display: flex;
+		gap: var(--space-2xs);
+		align-items: center;
+		justify-content: flex-end;
+		width: 100%;
 	}
 </style>
