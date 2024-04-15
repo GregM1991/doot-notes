@@ -21,6 +21,7 @@
 	const header = note ? `Edit ${note.title}` : 'Doot a new note 📯'
 	const buttonText = note ? 'Save changes' : 'Create note'
 	const Icon = note ? Check : Plus
+	let previewImage = 'thing' // PICK-UP: you were trying to get the preview image going as well as resource route to fetch the image 😎
 </script>
 
 <!-- TODO: Have the validation for this form be executed via JS (progressively enhanced) -->
