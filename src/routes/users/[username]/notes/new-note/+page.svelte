@@ -1,17 +1,21 @@
 <script lang="ts">
 	import { page } from '$app/stores'
 	import { EditNote } from '$lib/components'
-	import type { ActionData } from '../$types'
+	import { parseNewOrEditResult } from '$lib/components/EditNote/editNote.helpers'
 
+	// TODO: Not sure why this isn't coming back typed from the action...
 	export let form
+	let note = {
+		id: null,
+		title: '',
+		content: '',
+		images: [{}],
+	}
 
-	let note = form?.result
-		? {
-				id: null,
-				title: form.result.intialData.title,
-				content: form.result.intialData.content,
-			}
-		: null
+	if (form?.result?.initialValue) {
+		note = parseNewOrEditResult(note, form.result.initialValue)
+	}
+
 	const action = `/users/${$page.params.username}/notes/new-note?/newOrUpdate`
 </script>
 

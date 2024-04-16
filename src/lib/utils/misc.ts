@@ -1,4 +1,13 @@
 import { error } from '@sveltejs/kit'
+import userImg from '$lib/images/user.png'
+
+export function getUserImgSrc(imageId?: string | null) {
+	return imageId ? `api/resources/user-images/${imageId}` : userImg
+}
+
+export function getNoteImgSrc(imageId: string) {
+	return `api/resources/note-images/${imageId}`
+}
 
 export function debounce<
 	Callback extends (...args: Parameters<Callback>) => void,

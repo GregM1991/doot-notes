@@ -13,7 +13,7 @@ export const actions = {
 				ownerId: true,
 				owner: { select: { username: true } },
 			},
-			where: { id: params.noteid, ownerId: userId },
+			where: { id: params.noteId, ownerId: userId },
 		})
 
 		invariantResponse(note, 'Not found', 404)

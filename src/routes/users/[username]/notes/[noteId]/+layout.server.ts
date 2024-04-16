@@ -4,7 +4,7 @@ import { formatDistanceToNow } from 'date-fns'
 import { prisma } from '$lib/utils/db.server'
 
 export const load = (async ({ params, locals }) => {
-	const { username, noteid } = params
+	const { noteId } = params
 
 	const note = await prisma.note.findFirst({
 		select: {
@@ -13,15 +13,23 @@ export const load = (async ({ params, locals }) => {
 			content: true,
 			updatedAt: true,
 			createdAt: true,
-			owner: { select: { username: true, id: true } },
+			images: {
+				select: {
+					id: true,
+					altText: true,
+				},
+			},
+			owner: {
+				select: {
+					id: true,
+				},
+			},
 		},
 		where: {
-			owner: {
-				username,
-			},
-			id: noteid,
+			id: noteId,
 		},
 	})
+	console.log(note?.images)
 
 	invariantResponse(note, 'Could not find note', 404)
 

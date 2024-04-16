@@ -1,10 +1,12 @@
 <script lang="ts">
 	import Plus from 'virtual:icons/radix-icons/plus'
 	import Check from 'virtual:icons/radix-icons/check'
+	import Cross from 'virtual:icons/radix-icons/cross2'
 	import type { z } from 'zod'
 	import { enhance } from '$app/forms'
 	import { Input, Button, ImageEditor, NoteInfoBar } from '$lib/components'
 	import type { ImageFieldsetSchema } from './types'
+	import { removeButtonValue } from './editNote.helpers'
 
 	// Props
 	export let note: {
@@ -17,11 +19,10 @@
 	export let action: string
 
 	// consts
-	const imageList = note?.images ?? [{}]
+	const imageList = note?.images.length ? note.images : [{}]
 	const header = note ? `Edit ${note.title}` : 'Doot a new note 📯'
 	const buttonText = note ? 'Save changes' : 'Create note'
 	const Icon = note ? Check : Plus
-	let previewImage = 'thing' // PICK-UP: you were trying to get the preview image going as well as resource route to fetch the image 😎
 </script>
 
 <!-- TODO: Have the validation for this form be executed via JS (progressively enhanced) -->
@@ -57,6 +58,16 @@
 	</div>
 	<span>Images</span>
 	{#each imageList as image, index}
+		<button
+			class="remove-image-button"
+			name="intent"
+			value={removeButtonValue(index)}
+		>
+			<span aria-hidden>
+				<Cross />
+			</span>
+			<span class="sr-only">Remove image {index}</span>
+		</button>
 		<ImageEditor {image} {index} />
 	{/each}
 	<NoteInfoBar>
@@ -97,6 +108,22 @@
 
 	.full-height {
 		flex: 1;
+	}
+
+	.remove-image-button {
+		display: grid;
+		place-items: center;
+		position: absolute;
+		right: 0;
+		top: 0;
+		border: none;
+		background: none;
+		color: tomato;
+		cursor: pointer;
+	}
+
+	.remove-image-button span {
+		display: flex;
 	}
 
 	.info-bar-buttons {

@@ -1,31 +1,52 @@
 <script lang="ts">
 	import { Input } from '$lib/components'
-	import Cross from 'virtual:icons/radix-icons/cross2'
+	import { getNoteImgSrc } from '$lib/utils/misc'
 	import Plus from 'virtual:icons/radix-icons/plus'
+	import type { ImageFieldset } from '$lib/components/EditNote/types'
 
 	export let index: number
-	export let image: any
+	export let image: ImageFieldset | null = null
+	let previewImage: string | null = image?.id ? getNoteImgSrc(image.id) : null
+
+	function handleFileChange(event: Event) {
+		const file = (event.target as HTMLInputElement).files?.[0]
+		if (file) {
+			const reader = new FileReader()
+			reader.onload = () => {
+				previewImage = reader.result as string
+			}
+			reader.readAsDataURL(file)
+		} else {
+			previewImage = null
+		}
+	}
 </script>
 
 <fieldset class="container">
-	<legend class='sr-only'>Select an image to upload</legend>	
-	<button class="remove-image-button" name="intent" value="remove-image">
-		<span aria-hidden>
-			<Cross />
-		</span>
-		<span class="sr-only">Remove image {index}</span>
-	</button>
+	<legend class="sr-only">Select an image to upload</legend>
+
 	<!-- TODO: fix focus for file input -->
 	<div class="file-input-container">
-		<label class="file-label">
-			<div class="plus">
-				<Plus />
-			</div>
-			<input class="file" name="image-{index}-file" type="file" />
+		<label for="note-editor-images[{index}].file" class="file-label">
+			{#if previewImage}
+				<img class="preview-image" src={previewImage} alt={image?.altText ?? ''} />
+			{:else}
+				<div class="plus">
+					<Plus />
+				</div>
+			{/if}
+			<input
+				id="note-editor-images[{index}].file"
+				on:change={handleFileChange}
+				class="file"
+				name="images[{index}].file"
+				type="file"
+				accept="image/*"
+			/>
 		</label>
 	</div>
 	<div class="alt-input">
-		<Input label="Alt text" textArea name="image-{index}-alt" />
+		<Input label="Alt text" textArea name="note-editor-images[{index}].altText" />
 	</div>
 </fieldset>
 
@@ -38,22 +59,6 @@
 		position: relative;
 	}
 
-	.remove-image-button {
-		display: grid;
-		place-items: center;
-		position: absolute;
-		right: 0;
-		top: 0;
-		border: none;
-		background: none;
-		color: tomato;
-		cursor: pointer;
-	}
-
-	.remove-image-button span {
-		display: flex;
-	}
-
 	.file-input-container {
 		height: var(--space-3xl);
 		width: var(--space-3xl);
@@ -64,11 +69,16 @@
 	}
 
 	.file-input-container:focus-visible {
-		filter: var(--border-drop-shadow-black-focus)
+		filter: var(--border-drop-shadow-black-focus);
 	}
 
 	.file-label {
 		cursor: pointer;
+	}
+
+	.preview-image {
+		border-radius: var(--border-radius);
+		object-fit: cover;
 	}
 
 	.plus {
@@ -81,7 +91,7 @@
 	.file {
 		opacity: 0;
 		cursor: pointer;
-		height:	var(--space-3xl);
+		height: var(--space-3xl);
 		width: var(--space-3xl);
 	}
 

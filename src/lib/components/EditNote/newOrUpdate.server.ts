@@ -4,7 +4,11 @@ import { createId as cuid } from '@paralleldrive/cuid2'
 import { fail, redirect, type Action } from '@sveltejs/kit'
 import { requireUserId } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
-import { NoteEditorSchema, type ImageFieldset } from './types'
+import { MAX_UPLOAD_SIZE, NoteEditorSchema, type ImageFieldset } from './types'
+import {
+	unstable_createMemoryUploadHandler as createMemoryUploadHandler,
+	unstable_parseMultipartFormData as parseMultipartFormData,
+} from '@remix-run/node'
 
 function imageHasFile(
 	image: ImageFieldset,
@@ -19,12 +23,19 @@ function imageHasId(
 }
 
 export const newOrUpdate: Action = async ({ request, locals }) => {
-	console.log('hello')
 	const userId = requireUserId(locals.userId, request)
 
-	const formData = await request.formData()
+	const formData = await parseMultipartFormData(
+		request,
+		createMemoryUploadHandler({ maxPartSize: MAX_UPLOAD_SIZE }),
+	)
+	const formDataEntries = Array.from(formData.entries())
+	formDataEntries.forEach(([key, value]) => {
+		console.log({ key, value })
+	})
 	const submission = await parseWithZod(formData, {
 		schema: NoteEditorSchema.superRefine(async (data, ctx) => {
+			console.log('superrefine', { data })
 			if (!data.id) return
 
 			const note = await prisma.note.findUnique({
@@ -38,21 +49,23 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 				})
 			}
 		}).transform(async ({ images = [], ...data }) => {
+			console.log('transform', { data, images })
 			return {
 				...data,
 				imageUpdates: await Promise.all(
-					images.filter(imageHasId).map(async i => {
-						if (imageHasFile(i)) {
+					images.filter(imageHasId).map(async image => {
+						console.log('inside imageHasId')
+						if (imageHasFile(image)) {
 							return {
-								id: i.id,
-								altText: i.altText,
-								contentType: i.file.type,
-								blob: Buffer.from(await i.file?.arrayBuffer()),
+								id: image.id,
+								altText: image.altText,
+								contentType: image.file.type,
+								blob: Buffer.from(await image.file?.arrayBuffer()),
 							}
 						} else {
 							return {
-								id: i.id,
-								altText: i.altText,
+								id: image.id,
+								altText: image.altText,
 							}
 						}
 					}),
@@ -60,8 +73,9 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 				newImages: await Promise.all(
 					images
 						.filter(imageHasFile)
-						.filter(i => !i.id)
+						.filter(image => !image.id)
 						.map(async image => {
+							console.log('inside new image map')
 							return {
 								altText: image.altText,
 								contentType: image.file.type,
