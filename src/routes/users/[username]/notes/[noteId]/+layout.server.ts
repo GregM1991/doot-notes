@@ -29,7 +29,6 @@ export const load = (async ({ params, locals }) => {
 			id: noteId,
 		},
 	})
-	console.log(note?.images)
 
 	invariantResponse(note, 'Could not find note', 404)
 

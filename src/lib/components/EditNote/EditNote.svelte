@@ -15,11 +15,15 @@
 		content: string
 		images: Array<z.infer<typeof ImageFieldsetSchema>> | Array<{}>
 	} | null = null
-	export let errors: { title: string[]; content: string[] } | null = null
+	export let errors: {
+		title: Array<string>
+		content: Array<string>
+		image: Array<Array<string>>
+	} | null = null
 	export let action: string
 
 	// consts
-	const imageList = note?.images.length ? note.images : [{}]
+	let imageList = note?.images.length ? note.images : [{}]
 	const header = note ? `Edit ${note.title}` : 'Doot a new note 📯'
 	const buttonText = note ? 'Save changes' : 'Create note'
 	const Icon = note ? Check : Plus
@@ -57,19 +61,28 @@
 		/>
 	</div>
 	<span>Images</span>
-	{#each imageList as image, index}
-		<button
-			class="remove-image-button"
-			name="intent"
-			value={removeButtonValue(index)}
-		>
-			<span aria-hidden>
-				<Cross />
-			</span>
-			<span class="sr-only">Remove image {index}</span>
-		</button>
-		<ImageEditor {image} {index} />
-	{/each}
+	<ul>
+		{#each imageList as image, index}
+		<li>
+			<button
+				class="remove-image-button"
+				name="__intent__"
+				value={removeButtonValue(index)}
+				formnovalidate={true}
+			>
+				<span aria-hidden>
+					<Cross />
+				</span>
+				<span class="sr-only">Remove image {index}</span>
+			</button>
+			<ImageEditor {image} {index} errors={errors?.image && errors.image[index]} />
+		</li>
+		{/each}
+	</ul>
+	<Button type="button" on:click={() => imageList = [...imageList, ({})]}>
+		<Plus />
+		Add another image
+	</Button>
 	<NoteInfoBar>
 		<div class="info-bar-buttons">
 			<Button danger type="reset">Reset</Button>
@@ -108,6 +121,11 @@
 
 	.full-height {
 		flex: 1;
+	}
+
+	li {
+		list-style: none;
+		position: relative
 	}
 
 	.remove-image-button {

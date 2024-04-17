@@ -1,12 +1,17 @@
 <script lang="ts">
-	import { Input } from '$lib/components'
+	import { Input, ValidationErrors } from '$lib/components'
 	import { getNoteImgSrc } from '$lib/utils/misc'
 	import Plus from 'virtual:icons/radix-icons/plus'
 	import type { ImageFieldset } from '$lib/components/EditNote/types'
 
 	export let index: number
 	export let image: ImageFieldset | null = null
+	export let errors: Array<string> | null = null
+	// TODO: Move this to +page.server? 
 	let previewImage: string | null = image?.id ? getNoteImgSrc(image.id) : null
+
+	const fileId = `note-editor-images[${index}].file`
+	const altId = `note-editor-images[${index}].altText`
 
 	function handleFileChange(event: Event) {
 		const file = (event.target as HTMLInputElement).files?.[0]
@@ -27,26 +32,35 @@
 
 	<!-- TODO: fix focus for file input -->
 	<div class="file-input-container">
-		<label for="note-editor-images[{index}].file" class="file-label">
+		<label for={fileId} class="file-label">
 			{#if previewImage}
-				<img class="preview-image" src={previewImage} alt={image?.altText ?? ''} />
+				<img
+					class="preview-image"
+					src={previewImage}
+					alt={image?.altText ?? ''}
+				/>
 			{:else}
 				<div class="plus">
 					<Plus />
 				</div>
 			{/if}
 			<input
-				id="note-editor-images[{index}].file"
+				id={fileId}
 				on:change={handleFileChange}
 				class="file"
 				name="images[{index}].file"
 				type="file"
 				accept="image/*"
+				aria-label="Image"
 			/>
 		</label>
+		<ValidationErrors {errors} errorId={fileId} />
+		{#if image}
+			<input type="hidden" name="id" value={image.id} />
+		{/if}
 	</div>
 	<div class="alt-input">
-		<Input label="Alt text" textArea name="note-editor-images[{index}].altText" />
+		<Input label="Alt text" textArea name={altId} />
 	</div>
 </fieldset>
 
@@ -56,7 +70,6 @@
 		align-items: center;
 		gap: var(--space-m);
 		border: none;
-		position: relative;
 	}
 
 	.file-input-container {

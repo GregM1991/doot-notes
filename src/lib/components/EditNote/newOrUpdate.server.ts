@@ -30,12 +30,9 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 		createMemoryUploadHandler({ maxPartSize: MAX_UPLOAD_SIZE }),
 	)
 	const formDataEntries = Array.from(formData.entries())
-	formDataEntries.forEach(([key, value]) => {
-		console.log({ key, value })
-	})
+	console.log({ formDataEntries })
 	const submission = await parseWithZod(formData, {
 		schema: NoteEditorSchema.superRefine(async (data, ctx) => {
-			console.log('superrefine', { data })
 			if (!data.id) return
 
 			const note = await prisma.note.findUnique({
@@ -49,12 +46,10 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 				})
 			}
 		}).transform(async ({ images = [], ...data }) => {
-			console.log('transform', { data, images })
 			return {
 				...data,
 				imageUpdates: await Promise.all(
 					images.filter(imageHasId).map(async image => {
-						console.log('inside imageHasId')
 						if (imageHasFile(image)) {
 							return {
 								id: image.id,
@@ -75,7 +70,6 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 						.filter(imageHasFile)
 						.filter(image => !image.id)
 						.map(async image => {
-							console.log('inside new image map')
 							return {
 								altText: image.altText,
 								contentType: image.file.type,
@@ -87,8 +81,11 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 		}),
 		async: true,
 	})
+	console.log({ status: submission.status })
 
 	if (submission.status !== 'success') {
+		const reply = submission.reply()
+		console.log({ reply })
 		return fail(submission.status === 'error' ? 400 : 200, {
 			result: submission.reply(),
 		})
