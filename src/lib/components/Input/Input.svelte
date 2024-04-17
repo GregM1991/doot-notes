@@ -4,14 +4,16 @@
 
 	export let placeholder = ''
 	export let name: string
-	export let type: 'text' | 'password' | 'search' | 'hidden' = 'text'
+	export let textArea = false
+	export let type: 'text' | 'password' | 'search' | 'hidden' | null = textArea
+		? null
+		: 'text'
 	export let autofocus = false
 	export let secondary = false
 	export let value = ''
 	export let required = false
 	export let label = ''
 	export let errors: string[] | null = null
-	export let textArea = false
 	export let style = ''
 
 	const id = name
@@ -34,13 +36,17 @@
 	{name}
 	{type}
 	{autofocus}
-	{value}
+	value={textArea ? null : value}
 	{style}
 	{required}
 	class:secondary
 	on:input={handleInput}
 	class="base"
-/>
+>
+	{#if textArea}
+		{value}
+	{/if}
+</svelte:element>
 
 {#if type !== 'hidden'}
 	<ValidationErrors {errors} errorId={id} />
