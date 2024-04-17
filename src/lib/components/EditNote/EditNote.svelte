@@ -8,6 +8,8 @@
 	import type { ImageFieldsetSchema } from './types'
 	import { removeButtonValue } from './editNote.helpers'
 
+	// TODO: Probably easier to move textarea to its own component
+
 	// Props
 	export let note: {
 		id: string | null

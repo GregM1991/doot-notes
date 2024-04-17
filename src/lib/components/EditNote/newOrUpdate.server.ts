@@ -29,8 +29,6 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 		request,
 		createMemoryUploadHandler({ maxPartSize: MAX_UPLOAD_SIZE }),
 	)
-	const formDataEntries = Array.from(formData.entries())
-	console.log({ formDataEntries })
 	const submission = await parseWithZod(formData, {
 		schema: NoteEditorSchema.superRefine(async (data, ctx) => {
 			if (!data.id) return
@@ -81,11 +79,8 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 		}),
 		async: true,
 	})
-	console.log({ status: submission.status })
 
 	if (submission.status !== 'success') {
-		const reply = submission.reply()
-		console.log({ reply })
 		return fail(submission.status === 'error' ? 400 : 200, {
 			result: submission.reply(),
 		})

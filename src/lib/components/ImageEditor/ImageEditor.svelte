@@ -12,6 +12,7 @@
 
 	const fileId = `note-editor-images[${index}].file`
 	const altId = `note-editor-images[${index}].altText`
+	const id = `note-editor-images[${index}].id`
 
 	function handleFileChange(event: Event) {
 		const file = (event.target as HTMLInputElement).files?.[0]
@@ -35,7 +36,7 @@
 		<label for={fileId} class="file-label">
 			{#if previewImage}
 				<img
-					class="preview-image"
+					class="preview-image absolute"
 					src={previewImage}
 					alt={image?.altText ?? ''}
 				/>
@@ -47,7 +48,7 @@
 			<input
 				id={fileId}
 				on:change={handleFileChange}
-				class="file"
+				class="file absolute"
 				name="images[{index}].file"
 				type="file"
 				accept="image/*"
@@ -56,7 +57,7 @@
 		</label>
 		<ValidationErrors {errors} errorId={fileId} />
 		{#if image}
-			<input type="hidden" name="id" value={image.id} />
+			<input type="hidden" name={id} value={image.id} />
 		{/if}
 	</div>
 	<div class="alt-input">
@@ -86,19 +87,17 @@
 	}
 
 	.file-label {
+		display: inline-block;
+		position: relative;
+		height: calc(var(--space-3xl) - 2px);
+		width: calc(var(--space-3xl) - 2px);
 		cursor: pointer;
 	}
 
 	.preview-image {
 		border-radius: var(--border-radius);
-		object-fit: cover;
-	}
-
-	.plus {
-		display: grid;
-		place-items: center;
-		height: 100%;
-		font-size: var(--type-step-1);
+		height: calc(var(--space-3xl) - 2px);
+		width: calc(var(--space-3xl) - 2px);
 	}
 
 	.file {
@@ -106,6 +105,19 @@
 		cursor: pointer;
 		height: var(--space-3xl);
 		width: var(--space-3xl);
+	}
+	
+	.absolute {
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+
+	.plus {
+		display: grid;
+		place-items: center;
+		height: 100%;
+		font-size: var(--type-step-1);
 	}
 
 	.alt-input {
