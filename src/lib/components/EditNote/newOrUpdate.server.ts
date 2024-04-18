@@ -29,8 +29,11 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 		request,
 		createMemoryUploadHandler({ maxPartSize: MAX_UPLOAD_SIZE }),
 	)
+	const formDataEntries = Array.from(formData.entries())
+	console.log({ formDataEntries })
 	const submission = await parseWithZod(formData, {
 		schema: NoteEditorSchema.superRefine(async (data, ctx) => {
+			console.log('superrefine', { data })
 			if (!data.id) return
 
 			const note = await prisma.note.findUnique({
@@ -44,6 +47,7 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 				})
 			}
 		}).transform(async ({ images = [], ...data }) => {
+			console.log('transform', { data })
 			return {
 				...data,
 				imageUpdates: await Promise.all(

@@ -4,11 +4,15 @@
 	import Cross from 'virtual:icons/radix-icons/cross2'
 	import type { z } from 'zod'
 	import { enhance } from '$app/forms'
-	import { Input, Button, ImageEditor, NoteInfoBar } from '$lib/components'
+	import {
+		Input,
+		TextArea,
+		Button,
+		ImageEditor,
+		NoteInfoBar,
+	} from '$lib/components'
 	import type { ImageFieldsetSchema } from './types'
 	import { removeButtonValue } from './editNote.helpers'
-
-	// TODO: Probably easier to move textarea to its own component
 
 	// Props
 	export let note: {
@@ -51,37 +55,37 @@
 		/>
 	</div>
 	<div class="form-group full-height">
-		<Input
-			textArea
-			errors={errors?.content}
-			label="Content"
-			secondary
+		<TextArea
 			name="content"
-			value={note?.content ?? ''}
-			style="height: 100%"
 			required
+			value={note?.content ?? ''}
+			errors={errors?.content}
 		/>
 	</div>
 	<span>Images</span>
 	<ul>
 		{#each imageList as image, index}
-		<li>
-			<button
-				class="remove-image-button"
-				name="__intent__"
-				value={removeButtonValue(index)}
-				formnovalidate={true}
-			>
-				<span aria-hidden>
-					<Cross />
-				</span>
-				<span class="sr-only">Remove image {index}</span>
-			</button>
-			<ImageEditor {image} {index} errors={errors?.image && errors.image[index]} />
-		</li>
+			<li>
+				<button
+					class="remove-image-button"
+					name="__intent__"
+					value={removeButtonValue(index)}
+					formnovalidate={true}
+				>
+					<span aria-hidden>
+						<Cross />
+					</span>
+					<span class="sr-only">Remove image {index}</span>
+				</button>
+				<ImageEditor
+					{image}
+					{index}
+					errors={errors?.image && errors.image[index]}
+				/>
+			</li>
 		{/each}
 	</ul>
-	<Button type="button" on:click={() => imageList = [...imageList, ({})]}>
+	<Button type="button" on:click={() => (imageList = [...imageList, {}])}>
 		<Plus />
 		Add another image
 	</Button>
@@ -127,7 +131,7 @@
 
 	li {
 		list-style: none;
-		position: relative
+		position: relative;
 	}
 
 	.remove-image-button {

@@ -7,12 +7,13 @@
 	export let index: number
 	export let image: ImageFieldset | null = null
 	export let errors: Array<string> | null = null
-	// TODO: Move this to +page.server? 
+	// TODO: Move this to +page.server?
 	let previewImage: string | null = image?.id ? getNoteImgSrc(image.id) : null
 
 	const fileId = `note-editor-images[${index}].file`
 	const altId = `note-editor-images[${index}].altText`
 	const id = `note-editor-images[${index}].id`
+	const existingImage = Boolean(image?.id)
 
 	function handleFileChange(event: Event) {
 		const file = (event.target as HTMLInputElement).files?.[0]
@@ -49,19 +50,19 @@
 				id={fileId}
 				on:change={handleFileChange}
 				class="file absolute"
-				name="images[{index}].file"
+				name={fileId}
 				type="file"
 				accept="image/*"
 				aria-label="Image"
 			/>
 		</label>
 		<ValidationErrors {errors} errorId={fileId} />
-		{#if image}
+		{#if existingImage && image?.id}
 			<input type="hidden" name={id} value={image.id} />
 		{/if}
 	</div>
 	<div class="alt-input">
-		<Input label="Alt text" textArea name={altId} />
+		<Input label="Alt text" name={altId} />
 	</div>
 </fieldset>
 
@@ -106,7 +107,7 @@
 		height: var(--space-3xl);
 		width: var(--space-3xl);
 	}
-	
+
 	.absolute {
 		position: absolute;
 		top: 0;

@@ -4,20 +4,16 @@
 
 	export let placeholder = ''
 	export let name: string
-	export let textArea = false
-	export let type: 'text' | 'password' | 'search' | 'hidden' | null = textArea
-		? null
-		: 'text'
+	export let type: 'text' | 'password' | 'search' | 'hidden' | null = 'text'
+	export let value = ''
+	export let label: string
+	export let style = ''
+	export let errors: string[] | null = null
 	export let autofocus = false
 	export let secondary = false
-	export let value = ''
 	export let required = false
-	export let label = ''
-	export let errors: string[] | null = null
-	export let style = ''
 
 	const id = name
-	const el = textArea ? 'textarea' : 'input'
 
 	const dispatch = createEventDispatcher()
 	function handleInput() {
@@ -25,29 +21,23 @@
 	}
 </script>
 
-{#if label}
-	<label for={id}>{label}</label>
-{/if}
 <!-- svelte-ignore a11y-autofocus -->
-<svelte:element
-	this={el}
-	{id}
-	{placeholder}
-	{name}
-	{type}
-	{autofocus}
-	value={textArea ? null : value}
-	{style}
-	{required}
-	class:secondary
-	on:input={handleInput}
-	class="base"
->
-	{#if textArea}
+<label>
+	{label}
+	<input
+		{id}
+		{placeholder}
+		{name}
+		{type}
+		{autofocus}
+		{style}
+		{required}
 		{value}
-	{/if}
-</svelte:element>
-
+		class:secondary
+		on:input={handleInput}
+		class="base"
+	/>
+</label>
 {#if type !== 'hidden'}
 	<ValidationErrors {errors} errorId={id} />
 {/if}

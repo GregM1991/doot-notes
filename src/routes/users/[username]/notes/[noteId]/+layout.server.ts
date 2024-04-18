@@ -29,7 +29,6 @@ export const load = (async ({ params, locals }) => {
 			id: noteId,
 		},
 	})
-
 	invariantResponse(note, 'Could not find note', 404)
 
 	const date = new Date(note.updatedAt)
