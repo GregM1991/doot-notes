@@ -57,6 +57,8 @@
 	<div class="form-group full-height">
 		<TextArea
 			name="content"
+			label="Content"
+			secondary
 			required
 			value={note?.content ?? ''}
 			errors={errors?.content}

@@ -21,23 +21,22 @@
 	}
 </script>
 
+<label for={id}>{label}</label>
 <!-- svelte-ignore a11y-autofocus -->
-<label>
-	{label}
-	<input
-		{id}
-		{placeholder}
-		{name}
-		{type}
-		{autofocus}
-		{style}
-		{required}
-		{value}
-		class:secondary
-		on:input={handleInput}
-		class="base"
-	/>
-</label>
+<input
+	{id}
+	{placeholder}
+	{name}
+	{type}
+	{autofocus}
+	{style}
+	{required}
+	{value}
+	class:secondary
+	on:input={handleInput}
+	class="base"
+/>
+
 {#if type !== 'hidden'}
 	<ValidationErrors {errors} errorId={id} />
 {/if}
