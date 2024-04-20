@@ -10,9 +10,9 @@
 	// TODO: Move this to +page.server?
 	let previewImage: string | null = image?.id ? getNoteImgSrc(image.id) : null
 
-	const fileId = `note-editor-images[${index}].file`
-	const altId = `note-editor-images[${index}].altText`
-	const id = `note-editor-images[${index}].id`
+	const fileId = `images[${index}].file`
+	const altId = `images[${index}].altText`
+	const id = `images[${index}].id`
 	const existingImage = Boolean(image?.id)
 
 	function handleFileChange(event: Event) {

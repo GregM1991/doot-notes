@@ -6,7 +6,7 @@
 	export let name: string
 	export let type: 'text' | 'password' | 'search' | 'hidden' | null = 'text'
 	export let value = ''
-	export let label: string
+	export let label = ''
 	export let style = ''
 	export let errors: string[] | null = null
 	export let autofocus = false
@@ -21,7 +21,9 @@
 	}
 </script>
 
-<label for={id}>{label}</label>
+{#if label}
+	<label for={id}>{label}</label>
+{/if}
 <!-- svelte-ignore a11y-autofocus -->
 <input
 	{id}

@@ -1,9 +1,8 @@
-import type { LayoutServerLoad } from './$types'
-import { invariantResponse } from '$lib/utils/misc'
 import { formatDistanceToNow } from 'date-fns'
 import { prisma } from '$lib/utils/db.server'
+import { invariantResponse } from '$lib/utils/misc'
 
-export const load = (async ({ params, locals }) => {
+export const load = async ({ params, locals }) => {
 	const { noteId } = params
 
 	const note = await prisma.note.findFirst({
@@ -36,4 +35,4 @@ export const load = (async ({ params, locals }) => {
 	const isOwner = locals.userId === note.owner.id
 
 	return { note, timeSinceUpdate, isOwner }
-}) satisfies LayoutServerLoad
+}

@@ -9,14 +9,14 @@
 	import { getNoteImgSrc } from '$lib/utils/misc.js'
 
 	export let data
-	let paragraphs = data.note.content
+	// TODO: Move this to the backend
+	$: paragraphs = data.note.content
 		.split('\n')
 		.filter(para => para.trim().length > 0)
 </script>
 
 <article class="article">
 	<h2 class="heading">{data.note.title}</h2>
-	<!-- TODO: Add note images here -->
 	<ul class="image-list">
 		{#each data.note.images as image}
 			<li>
