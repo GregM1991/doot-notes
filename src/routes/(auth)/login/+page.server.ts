@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { zod } from 'sveltekit-superforms/adapters'
 import { type Actions, fail, redirect } from '@sveltejs/kit'
 import { parseWithZod } from '@conform-to/zod'
 import { handleNewSessionWithRedirect } from '$lib/server/sessions/authSession'
@@ -20,13 +21,11 @@ export const load = (async ({ locals }) => {
 
 export const actions = {
 	default: async ({ request, cookies }) => {
-		const formData = await request.formData()
 		// TODO: Create honeypot
 
-		const submission = await parseWithZod(formData, {
-			schema: (
-				intent, // TODO: Intent will be used later to distinguish login/register/2fa etc
-			) =>
+		const submission = await superValidate(
+			request,
+			zod(
 				LoginFormSchema.transform(async (data, ctx) => {
 					const session = await login(data)
 					if (!session) {
@@ -42,8 +41,8 @@ export const actions = {
 						...data,
 					}
 				}),
-			async: true,
-		})
+			),
+		)
 
 		if (submission.status !== 'success' || !submission.value.session) {
 			return fail(submission.status === 'error' ? 400 : 200, {
