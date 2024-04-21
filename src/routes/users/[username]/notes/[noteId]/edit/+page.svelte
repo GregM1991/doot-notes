@@ -5,6 +5,7 @@
 
 	export let data
 	export let form: ActionData
+
 	const action = `/users/${$page.params.username}/notes/${$page.params.noteId}/edit?/newOrUpdate`
 </script>
 

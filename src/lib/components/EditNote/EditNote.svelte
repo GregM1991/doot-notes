@@ -73,6 +73,7 @@
 					name="__intent__"
 					value={removeButtonValue(index)}
 					formnovalidate={true}
+					on:click|preventDefault={() => (imageList = imageList.filter((_, i) => i !== index))}
 				>
 					<span aria-hidden>
 						<Cross />
