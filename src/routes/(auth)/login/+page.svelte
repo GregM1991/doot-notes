@@ -1,22 +1,26 @@
 <script lang="ts">
-	import { enhance } from '$app/forms'
-	import { Button, Input, ValidationErrors } from '$lib/components'
+	import { superForm } from 'sveltekit-superforms'
 	import { page } from '$app/stores'
+	import { Button, Input, ValidationErrors } from '$lib/components'
+	import SuperDebug from 'sveltekit-superforms';
+	export let data
+	const { form, errors, constraints, enhance } = superForm(data.form)
 
-	export let form
 	const formId = 'login-form'
 
 	// TODO: create a auth form component to reduce styling repeats 😎
 </script>
 
+<SuperDebug data={$form} />
 <h1>Hello again!</h1>
 <form method="POST" use:enhance id={formId}>
 	<div class="field-group">
 		<Input
 			label="Enter username"
 			name="username"
-			value=""
-			errors={form?.result.error?.username}
+			bind:value={$form.username}
+			errors={$errors.username}
+			{...$constraints}
 		/>
 	</div>
 	<div class="field-group">
@@ -24,12 +28,14 @@
 			label="Enter password"
 			name="password"
 			type="password"
-			errors={form?.result.error?.password}
+			bind:value={$form.password}
+			errors={$errors.password}
+			{...$constraints}
 		/>
 	</div>
 	<div class="remember-forgot">
 		<div>
-			<input name="remember" id="remember" type="checkbox" />
+			<input bind:value={$form.remember} name="remember" id="remember" type="checkbox" />
 			<label for="remember">Remember me</label>
 		</div>
 		<div>
@@ -38,8 +44,7 @@
 	</div>
 	<Input name="redirectTo" type="hidden" value={$page.params.redirectTo} />
 	<Button fluid type="submit" secondary>Submit</Button>
-	<ValidationErrors errorId={formId} errors={form?.result.error?.['']} />
-	<!-- TODO: this is a bit stinky -->
+	<ValidationErrors errorId={formId} errors={$errors._errors} />
 	<span>
 		New here? <a href="/signup" class="link">Create an account</a>
 	</span>

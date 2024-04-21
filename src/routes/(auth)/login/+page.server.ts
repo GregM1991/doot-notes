@@ -1,10 +1,9 @@
 import { z } from 'zod'
+import { superValidate, fail } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
-import { type Actions, fail, redirect } from '@sveltejs/kit'
-import { parseWithZod } from '@conform-to/zod'
-import { handleNewSessionWithRedirect } from '$lib/server/sessions/authSession'
+import { type Actions, redirect } from '@sveltejs/kit'
 import { login } from '$lib/utils/auth.server'
-// import { formatFormErrors } from '$lib/utils/misc'
+import { handleNewSessionWithRedirect } from '$lib/server/sessions/authSession'
 import { PasswordSchema, UsernameSchema } from '$lib/utils/userValidation'
 import type { PageServerLoad } from './$types'
 
@@ -17,13 +16,17 @@ const LoginFormSchema = z.object({
 
 export const load = (async ({ locals }) => {
 	if (locals.userId) throw redirect(303, '/')
+	console.log('hello')
+	const form = await superValidate(zod(LoginFormSchema))
+
+	return { form }
 }) satisfies PageServerLoad
 
 export const actions = {
 	default: async ({ request, cookies }) => {
 		// TODO: Create honeypot
 
-		const submission = await superValidate(
+		const form = await superValidate(
 			request,
 			zod(
 				LoginFormSchema.transform(async (data, ctx) => {
@@ -44,13 +47,13 @@ export const actions = {
 			),
 		)
 
-		if (submission.status !== 'success' || !submission.value.session) {
-			return fail(submission.status === 'error' ? 400 : 200, {
-				result: submission.reply({ hideFields: ['password'] }),
+		if (!form.valid || !form.data.session) {
+			return fail(form.valid ? 400 : 200, {
+				form: { ...form, password: '' },
 			})
 		}
 
-		const { remember, session, redirectTo } = submission.value
+		const { remember, session, redirectTo } = form.data
 
 		return handleNewSessionWithRedirect({
 			cookies,
