@@ -2,16 +2,16 @@
 	import { superForm } from 'sveltekit-superforms'
 	import { page } from '$app/stores'
 	import { Button, Input, ValidationErrors } from '$lib/components'
-	import SuperDebug from 'sveltekit-superforms';
+	import SuperDebug from 'sveltekit-superforms'
 	export let data
-	const { form, errors, constraints, enhance } = superForm(data.form)
+	const { form, errors, constraints, enhance, message } = superForm(data.form)
 
 	const formId = 'login-form'
 
 	// TODO: create a auth form component to reduce styling repeats 😎
 </script>
 
-<SuperDebug data={$form} />
+<SuperDebug data={{ $form, $message }} />
 <h1>Hello again!</h1>
 <form method="POST" use:enhance id={formId}>
 	<div class="field-group">
@@ -35,7 +35,12 @@
 	</div>
 	<div class="remember-forgot">
 		<div>
-			<input bind:value={$form.remember} name="remember" id="remember" type="checkbox" />
+			<input
+				bind:value={$form.remember}
+				name="remember"
+				id="remember"
+				type="checkbox"
+			/>
 			<label for="remember">Remember me</label>
 		</div>
 		<div>
@@ -44,7 +49,9 @@
 	</div>
 	<Input name="redirectTo" type="hidden" value={$page.params.redirectTo} />
 	<Button fluid type="submit" secondary>Submit</Button>
-	<ValidationErrors errorId={formId} errors={$errors._errors} />
+	{#if $message}
+		<ValidationErrors errorId={formId} errors={[$message]} />
+	{/if}
 	<span>
 		New here? <a href="/signup" class="link">Create an account</a>
 	</span>

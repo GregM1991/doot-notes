@@ -71,7 +71,7 @@
     "glob": "^10.3.10",
     "handlebars": "^4.7.8",
     "jsonwebtoken": "^9.0.2",
-    "zod": "^3.22.5",
+    "zod": "^3.23.0",
     "zod-form-data": "^2.0.2"
   },
   "msw": {

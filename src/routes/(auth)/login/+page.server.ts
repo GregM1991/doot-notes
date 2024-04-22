@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { superValidate, fail } from 'sveltekit-superforms'
+import { superValidate, message, fail } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import { type Actions, redirect } from '@sveltejs/kit'
 import { login } from '$lib/utils/auth.server'
@@ -16,7 +16,6 @@ const LoginFormSchema = z.object({
 
 export const load = (async ({ locals }) => {
 	if (locals.userId) throw redirect(303, '/')
-	console.log('hello')
 	const form = await superValidate(zod(LoginFormSchema))
 
 	return { form }
@@ -26,34 +25,20 @@ export const actions = {
 	default: async ({ request, cookies }) => {
 		// TODO: Create honeypot
 
-		const form = await superValidate(
-			request,
-			zod(
-				LoginFormSchema.transform(async (data, ctx) => {
-					const session = await login(data)
-					if (!session) {
-						ctx.addIssue({
-							code: z.ZodIssueCode.custom,
-							message: 'Invalid username or password',
-						})
-						return z.NEVER
-					}
+		const form = await superValidate(request, zod(LoginFormSchema))
+		if (!form.valid)
+			return fail(400, { ...form, data: { ...form.data, password: '' } })
 
-					return {
-						session,
-						...data,
-					}
-				}),
-			),
-		)
-
-		if (!form.valid || !form.data.session) {
-			return fail(form.valid ? 400 : 200, {
-				form: { ...form, password: '' },
-			})
+		const session = await login(form.data)
+		if (!session) {
+			return message(
+				{ ...form, data: { ...form.data, password: '' } },
+				'Invalid username or password',
+				{ status: 400 },
+			)
 		}
 
-		const { remember, session, redirectTo } = form.data
+		const { remember, redirectTo } = form.data
 
 		return handleNewSessionWithRedirect({
 			cookies,
