@@ -14,7 +14,7 @@ export const ImageFieldsetSchema = z.object({
 		.refine(file => {
 			return !file || file.size <= MAX_UPLOAD_SIZE
 		}, 'Please doot down the file size to less than 3MB'),
-	altText: z.string().optional(),
+	altText: z.string().optional().nullable(),
 })
 
 export const NoteEditorSchema = z.object({

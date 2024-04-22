@@ -19,17 +19,17 @@
 	import { removeButtonValue } from './editNote.helpers'
 
 	export let data: SuperValidated<Infer<typeof NoteEditorSchema>>
-	const { form, errors, enhance } = superForm(data)
+	const { form, errors, enhance, constraints } = superForm(data, {
+		dataType: 'json',
+	})
 	export let action: string
 
 	// consts
-	let imageList = $form?.images?.length ? $form.images : [{}]
-	const header = $form ? `Edit ${$form.title}` : 'Doot a new form 📯'
-	const buttonText = $form ? 'Save changes' : 'Create $form'
-	const Icon = $form ? Check : Plus
+	$: imageList = $form.images?.length ? $form.images : [{}]
+	const header = $form.id ? `Edit ${$form.title}` : 'Doot a new note 📯'
+	const buttonText = $form.id ? 'Save changes' : 'Create $form'
+	const Icon = $form.id ? Check : Plus
 </script>
-
-<!-- TODO: Have the validation for this form be executed via JS (progressively enhanced) -->
 
 <form method="POST" {action} use:enhance enctype="multipart/form-data">
 	<button type="submit" class="hidden" />
@@ -39,13 +39,14 @@
 	{/if}
 	<div class="form-group">
 		<Input
-			errors={$errors?.title}
+			errors={$errors.title}
 			label="Title"
 			secondary
 			name="title"
 			type="text"
-			value={$form?.title ?? ''}
+			value={$form.title}
 			required
+			{...$constraints}
 		/>
 	</div>
 	<div class="form-group full-height">
@@ -54,8 +55,9 @@
 			label="Content"
 			secondary
 			required
-			value={$form?.content ?? ''}
-			errors={$errors?.content}
+			value={$form.content}
+			errors={$errors.content}
+			{...$constraints}
 		/>
 	</div>
 	<span>Images</span>

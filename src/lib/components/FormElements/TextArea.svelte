@@ -32,12 +32,12 @@
 	{autofocus}
 	{style}
 	{required}
+	bind:value={value}
 	class:secondary
 	on:input={handleInput}
 	class="base"
->
-	{value}
-</textarea>
+	aria-invalid={errors ? 'true' : undefined}
+/>
 
 {#if !hidden}
 	<ValidationErrors {errors} errorId={id} />
