@@ -34,6 +34,7 @@
 	{style}
 	{required}
 	{value}
+	aria-invalid={errors ? 'true' : undefined}
 	class:secondary
 	on:input={handleInput}
 	class="base"

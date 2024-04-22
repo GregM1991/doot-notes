@@ -2,7 +2,7 @@
 	import { superForm } from 'sveltekit-superforms'
 	import { page } from '$app/stores'
 	import { Button, Input, ValidationErrors } from '$lib/components'
-	import SuperDebug from 'sveltekit-superforms'
+	
 	export let data
 	const { form, errors, constraints, enhance, message } = superForm(data.form)
 
@@ -11,7 +11,6 @@
 	// TODO: create a auth form component to reduce styling repeats 😎
 </script>
 
-<SuperDebug data={{ $form, $message }} />
 <h1>Hello again!</h1>
 <form method="POST" use:enhance id={formId}>
 	<div class="field-group">

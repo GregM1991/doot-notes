@@ -1,9 +1,13 @@
 <script lang="ts">
-	import Plus from 'virtual:icons/radix-icons/plus'
+	import {} from 'sveltekit-superforms'
+	import {
+		type SuperValidated,
+		type Infer,
+		superForm,
+	} from 'sveltekit-superforms'
 	import Check from 'virtual:icons/radix-icons/check'
 	import Cross from 'virtual:icons/radix-icons/cross2'
-	import type { z } from 'zod'
-	import { enhance } from '$app/forms'
+	import Plus from 'virtual:icons/radix-icons/plus'
 	import {
 		Input,
 		TextArea,
@@ -11,28 +15,18 @@
 		ImageEditor,
 		NoteInfoBar,
 	} from '$lib/components'
-	import type { ImageFieldsetSchema } from './types'
+	import { NoteEditorSchema } from './types'
 	import { removeButtonValue } from './editNote.helpers'
 
-	// Props
-	export let note: {
-		id: string | null
-		title: string
-		content: string
-		images: Array<z.infer<typeof ImageFieldsetSchema>> | Array<{}>
-	} | null = null
-	export let errors: {
-		title: Array<string>
-		content: Array<string>
-		image: Array<Array<string>>
-	} | null = null
+	export let data: SuperValidated<Infer<typeof NoteEditorSchema>>
+	const { form, errors, enhance } = superForm(data)
 	export let action: string
 
 	// consts
-	let imageList = note?.images.length ? note.images : [{}]
-	const header = note ? `Edit ${note.title}` : 'Doot a new note 📯'
-	const buttonText = note ? 'Save changes' : 'Create note'
-	const Icon = note ? Check : Plus
+	let imageList = $form?.images?.length ? $form.images : [{}]
+	const header = $form ? `Edit ${$form.title}` : 'Doot a new form 📯'
+	const buttonText = $form ? 'Save changes' : 'Create $form'
+	const Icon = $form ? Check : Plus
 </script>
 
 <!-- TODO: Have the validation for this form be executed via JS (progressively enhanced) -->
@@ -40,17 +34,17 @@
 <form method="POST" {action} use:enhance enctype="multipart/form-data">
 	<button type="submit" class="hidden" />
 	<h3>{header}</h3>
-	{#if note}
-		<input type="hidden" name="id" value={note.id} />
+	{#if $form.id}
+		<input type="hidden" name="id" value={$form.id} />
 	{/if}
 	<div class="form-group">
 		<Input
-			errors={errors?.title}
+			errors={$errors?.title}
 			label="Title"
 			secondary
 			name="title"
 			type="text"
-			value={note?.title ?? ''}
+			value={$form?.title ?? ''}
 			required
 		/>
 	</div>
@@ -60,8 +54,8 @@
 			label="Content"
 			secondary
 			required
-			value={note?.content ?? ''}
-			errors={errors?.content}
+			value={$form?.content ?? ''}
+			errors={$errors?.content}
 		/>
 	</div>
 	<span>Images</span>
@@ -73,18 +67,15 @@
 					name="__intent__"
 					value={removeButtonValue(index)}
 					formnovalidate={true}
-					on:click|preventDefault={() => (imageList = imageList.filter((_, i) => i !== index))}
+					on:click|preventDefault={() =>
+						(imageList = imageList.filter((_, i) => i !== index))}
 				>
 					<span aria-hidden>
 						<Cross />
 					</span>
 					<span class="sr-only">Remove image {index}</span>
 				</button>
-				<ImageEditor
-					{image}
-					{index}
-					errors={errors?.image && errors.image[index]}
-				/>
+				<ImageEditor {image} {index} />
 			</li>
 		{/each}
 	</ul>
