@@ -20,12 +20,16 @@
 	export let action: string
 
 	// TODO: If I feel like it, I can revisit this to cater to non-js users
+	// https://www.npmjs.com/package/parse-nested-form-data
+	// https://svelte.dev/repl/d8916d45012241dab5962c1323604fe9?version=4.2.0
+	// https://github.com/ciscoheat/sveltekit-superforms/issues/186
 	const { form, errors, enhance, constraints } = superForm(data, {
 		dataType: 'json',
 	})
 
 	// consts
 	$: imageList = $form.images ?? [{}]
+	$: console.log(imageList)
 	const header = $form.id ? `Edit ${$form.title}` : 'Doot a new note 📯'
 	const buttonText = $form.id ? 'Save changes' : 'Create $form'
 	const Icon = $form.id ? Check : Plus
@@ -81,7 +85,6 @@
 				<ImageEditor
 					{image}
 					index={index.toString()}
-					errors={$errors.images ? $errors.images[index].errors : null}
 				/>
 			</li>
 		{/each}

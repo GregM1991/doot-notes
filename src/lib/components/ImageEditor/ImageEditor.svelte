@@ -6,6 +6,11 @@
 
 	export let index: string
 	export let image: ImageFieldset | null = null
+	// TODO: Errors
+	// export let errors: {
+	// 	file: string[] | undefined
+	// 	altText: string[] | undefined
+	// } | null = null
 
 	// TODO: Move this to +page.server?
 	let previewImage: string | null = image?.id ? getNoteImgSrc(image.id) : null
@@ -54,7 +59,7 @@
 				aria-label="Image"
 			/>
 		</label>
-		<ValidationErrors {errors} errorId={fileId} />
+		<!-- <ValidationErrors {errors} errorId={fileId} /> -->
 		{#if existingImage && image?.id}
 			<input type="hidden" value={image.id} />
 		{/if}
