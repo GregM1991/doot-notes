@@ -6,8 +6,7 @@
 
 	export let index: string
 	export let image: ImageFieldset | null = null
-	export let errors: Array<string> | null = null
-		
+
 	// TODO: Move this to +page.server?
 	let previewImage: string | null = image?.id ? getNoteImgSrc(image.id) : null
 
@@ -48,7 +47,6 @@
 				</div>
 			{/if}
 			<input
-				bind:value={$form.images[index].file}
 				on:change={handleFileChange}
 				class="file absolute"
 				type="file"

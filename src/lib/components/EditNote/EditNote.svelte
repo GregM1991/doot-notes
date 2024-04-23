@@ -81,7 +81,7 @@
 				<ImageEditor
 					{image}
 					index={index.toString()}
-					errors={$errors.images?._errors}
+					errors={$errors.images ? $errors.images[index].errors : null}
 				/>
 			</li>
 		{/each}
