@@ -4,7 +4,7 @@
 	import Plus from 'virtual:icons/radix-icons/plus'
 	import type { ImageFieldset } from '$lib/components/EditNote/types'
 
-	export let index: number
+	export let index: string
 	export let image: ImageFieldset | null = null
 	export let errors: Array<string> | null = null
 		
@@ -35,7 +35,7 @@
 
 	<!-- TODO: fix focus for file input -->
 	<div class="file-input-container">
-		<label for={fileId} class="file-label">
+		<label class="file-label">
 			{#if previewImage}
 				<img
 					class="preview-image absolute"
@@ -48,10 +48,9 @@
 				</div>
 			{/if}
 			<input
-				id={fileId}
+				bind:value={$form.images[index].file}
 				on:change={handleFileChange}
 				class="file absolute"
-				name={fileId}
 				type="file"
 				accept="image/*"
 				aria-label="Image"
@@ -59,7 +58,7 @@
 		</label>
 		<ValidationErrors {errors} errorId={fileId} />
 		{#if existingImage && image?.id}
-			<input type="hidden" name={id} value={image.id} />
+			<input type="hidden" value={image.id} />
 		{/if}
 	</div>
 	<div class="alt-input">
