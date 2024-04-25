@@ -30,7 +30,7 @@
 
 <a
 	use:melt={$trigger}
-	href="/user/{username}"
+	href="/users/{username}"
 	on:click|preventDefault={handleClick}
 	class="avatar"
 >
