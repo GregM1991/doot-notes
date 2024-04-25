@@ -1,23 +1,23 @@
 <script lang="ts">
-	import { Input, ValidationErrors } from '$lib/components'
+	import { Input } from '$lib/components'
 	import { getNoteImgSrc } from '$lib/utils/misc'
 	import Plus from 'virtual:icons/radix-icons/plus'
-	import type { ImageFieldset } from '$lib/components/EditNote/types'
+	import type {
+		ImageFieldset,
+		NoteEditorSchema,
+	} from '$lib/components/EditNote/types'
 
-	export let index: string
-	export let image: ImageFieldset | null = null
+	export let image: ImageFieldset | undefined
+
+	// const file = fileProxy(form.data.images[index], 'file')
 	// TODO: Errors
 	// export let errors: {
 	// 	file: string[] | undefined
 	// 	altText: string[] | undefined
 	// } | null = null
 
-	// TODO: Move this to +page.server?
 	let previewImage: string | null = image?.id ? getNoteImgSrc(image.id) : null
 
-	const fileId = `images[${index}].file`
-	const altId = `images[${index}].altText`
-	const id = `images[${index}].id`
 	const existingImage = Boolean(image?.id)
 
 	function handleFileChange(event: Event) {
@@ -52,7 +52,7 @@
 				</div>
 			{/if}
 			<input
-				on:change={handleFileChange}
+				bind:files={$file}
 				class="file absolute"
 				type="file"
 				accept="image/*"
@@ -65,7 +65,7 @@
 		{/if}
 	</div>
 	<div class="alt-input">
-		<Input label="Alt text" name={altId} />
+		<Input label="Alt text" name="" />
 	</div>
 </fieldset>
 

@@ -1,8 +1,13 @@
 <script lang="ts">
+	// TODO: If I feel like it, I can revisit this to cater to non-js users
+	// https://www.npmjs.com/package/parse-nested-form-data
+	// https://svelte.dev/repl/d8916d45012241dab5962c1323604fe9?version=4.2.0
+	// https://github.com/ciscoheat/sveltekit-superforms/issues/186
 	import {
 		type SuperValidated,
 		type Infer,
 		superForm,
+		filesFieldProxy,
 	} from 'sveltekit-superforms'
 	import Check from 'virtual:icons/radix-icons/check'
 	import Cross from 'virtual:icons/radix-icons/cross2'
@@ -19,10 +24,6 @@
 	export let data: SuperValidated<Infer<typeof NoteEditorSchema>>
 	export let action: string
 
-	// TODO: If I feel like it, I can revisit this to cater to non-js users
-	// https://www.npmjs.com/package/parse-nested-form-data
-	// https://svelte.dev/repl/d8916d45012241dab5962c1323604fe9?version=4.2.0
-	// https://github.com/ciscoheat/sveltekit-superforms/issues/186
 	const { form, errors, enhance, constraints } = superForm(data, {
 		dataType: 'json',
 	})
@@ -82,10 +83,7 @@
 					</span>
 					<span class="sr-only">Remove image {index}</span>
 				</button>
-				<ImageEditor
-					{image}
-					index={index.toString()}
-				/>
+				<ImageEditor {form} {image} />
 			</li>
 		{/each}
 	</ul>

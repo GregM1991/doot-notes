@@ -24,13 +24,12 @@ function imageHasId(
 
 export const newOrUpdate: Action = async ({ request, locals }) => {
 	const userId = requireUserId(locals.userId, request)
-	const formData = await parseMultipartFormData(
-		request,
-		createMemoryUploadHandler({ maxPartSize: MAX_UPLOAD_SIZE }),
-	)
-	const formDataEntries = Array.from(formData.entries())
-	console.log({ formDataEntries })
-	const form = await superValidate(formData, zod(NoteEditorSchema))
+	// const formData = await parseMultipartFormData(
+	// 	request,
+	// 	createMemoryUploadHandler({ maxPartSize: MAX_UPLOAD_SIZE }),
+	// )
+	// const formDataEntries = Array.from(formData.entries())
+	const form = await superValidate(request, zod(NoteEditorSchema))
 	if (!form.valid) {
 		return fail(400, { form })
 	}
@@ -43,6 +42,7 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 			return message(form, 'Note not found', { status: 404 })
 		}
 	}
+	console.log({ formImags: form.data.images })
 
 	let images = form.data.images ?? []
 
