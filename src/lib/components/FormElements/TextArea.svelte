@@ -4,18 +4,16 @@
 
 	export let placeholder = ''
 	export let name: string
-	export let type: 'text' | 'password' | 'search' | 'hidden' = 'text'
+	export let value = ''
+	export let label = ''
+	export let style = ''
+	export let errors: string[] | null = null
 	export let autofocus = false
 	export let secondary = false
-	export let value = ''
 	export let required = false
-	export let label = ''
-	export let errors: string[] | null = null
-	export let textArea = false
-	export let style = ''
+	export let hidden = false
 
 	const id = name
-	const el = textArea ? 'textarea' : 'input'
 
 	const dispatch = createEventDispatcher()
 	function handleInput() {
@@ -27,22 +25,21 @@
 	<label for={id}>{label}</label>
 {/if}
 <!-- svelte-ignore a11y-autofocus -->
-<svelte:element
-	this={el}
+<textarea
 	{id}
 	{placeholder}
 	{name}
-	{type}
 	{autofocus}
-	{value}
 	{style}
 	{required}
+	bind:value={value}
 	class:secondary
 	on:input={handleInput}
 	class="base"
+	aria-invalid={errors ? 'true' : undefined}
 />
 
-{#if type !== 'hidden'}
+{#if !hidden}
 	<ValidationErrors {errors} errorId={id} />
 {/if}
 
@@ -55,14 +52,14 @@
 		background-color: var(--background-color);
 		border-radius: 1rem;
 		outline: none;
-		filter: drop-shadow(3px 3px 0px var(--color-grey-20));
+		filter: var(--border-drop-shadow-black);
 
 		transition: var(--animation-quick);
 	}
 
 	.base:focus-visible {
 		background-color: var(--background-color-light);
-		filter: drop-shadow(1px 1px 0px var(--color-grey-20));
+		filter: var(--border-drop-shadow-black-focus);
 	}
 
 	.base::placeholder {

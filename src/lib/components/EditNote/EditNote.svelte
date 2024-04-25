@@ -1,61 +1,125 @@
 <script lang="ts">
-	import { enhance } from '$app/forms'
-	import { Input, Button } from '$lib/components'
-	import Plus from 'virtual:icons/radix-icons/plus'
+	// TODO: If I feel like it, I can revisit this to cater to non-js users
+	// https://www.npmjs.com/package/parse-nested-form-data
+	// https://svelte.dev/repl/d8916d45012241dab5962c1323604fe9?version=4.2.0
+	// https://github.com/ciscoheat/sveltekit-superforms/issues/186
+	import {
+		type SuperValidated,
+		type Infer,
+		superForm,
+		filesFieldProxy,
+	} from 'sveltekit-superforms'
 	import Check from 'virtual:icons/radix-icons/check'
+	import Cross from 'virtual:icons/radix-icons/cross2'
+	import Plus from 'virtual:icons/radix-icons/plus'
+	import {
+		Input,
+		TextArea,
+		Button,
+		ImageEditor,
+		NoteInfoBar,
+	} from '$lib/components'
+	import { NoteEditorSchema } from './types'
 
-	export let note: {
-		id: string | null
-		title: string
-		content: string
-	} | null = null
-	export let errors: { title: string[]; content: string[] } | null = null
+	export let data: SuperValidated<Infer<typeof NoteEditorSchema>>
 	export let action: string
 
-	let title = note?.title ?? ''
-	let content = note?.content ?? ''
-	let header = note ? `Edit ${note.title}` : 'Doot a new note 📯'
-	let buttonText = note ? 'Save changes' : 'Create note'
-	let Icon = note ? Check : Plus
+	const { form, errors, enhance, constraints } = superForm(data, {
+		dataType: 'json',
+	})
 
-	const [titleId, contentId] = [crypto.randomUUID(), crypto.randomUUID()]
+	// consts
+	$: imageList = $form.images ?? [{}]
+
+	const header = $form.id ? `Edit ${$form.title}` : 'Doot a new note 📯'
+	const buttonText = $form.id ? 'Save changes' : 'Create $form'
+	const Icon = $form.id ? Check : Plus
+
+	function addEmptyImage() {
+		const formImages = $form.images ?? []
+		form.update(
+			$form => {
+				$form.images = [...formImages, {}]
+				return $form
+			}
+		)
+	}
 </script>
 
-<form method="POST" {action} use:enhance>
+<form method="POST" {action} use:enhance enctype="multipart/form-data">
+	<button type="submit" class="hidden" />
 	<h3>{header}</h3>
-	{#if note}
-		<input type="hidden" name="id" value={note.id} />
+	{#if $form.id}
+		<input type="hidden" value={$form.id} />
 	{/if}
 	<div class="form-group">
 		<Input
-			errors={errors?.title}
+			errors={$errors._errors}
 			label="Title"
 			secondary
 			name="title"
 			type="text"
-			bind:value={title}
+			value={$form.title}
 			required
+			{...$constraints}
 		/>
 	</div>
 	<div class="form-group full-height">
-		<Input
-			textArea
-			errors={errors?.content}
+		<TextArea
+			name="content"
 			label="Content"
 			secondary
-			name="content"
-			bind:value={content}
-			style="height: 100%"
 			required
+			value={$form.content}
+			errors={$errors._errors}
+			{...$constraints}
 		/>
 	</div>
-	<Button secondary type="submit">
-		<Icon />
-		{buttonText}
+	<span>Images</span>
+	<ul>
+		{#each imageList as image, index}
+			<li>
+				<!-- TODO: //create formaction for delete later -->
+				<button
+					formaction="?/delete"
+					class="remove-image-button"
+					name="id"
+					value={image.id ?? index}
+					on:click|preventDefault={() =>
+						(imageList = imageList.filter((_, i) => i !== index))}
+				>
+					<span aria-hidden>
+						<Cross />
+					</span>
+					<span class="sr-only">Remove image {index}</span>
+				</button>
+				<!-- <ImageEditor {image} /> -->
+			</li>
+		{/each}
+	</ul>
+	<Button
+		type="button"
+		on:click={addEmptyImage}
+	>
+		<Plus />
+		Add another image
 	</Button>
+	<NoteInfoBar>
+		<div class="info-bar-buttons">
+			<Button danger type="reset">Reset</Button>
+			<Button secondary type="submit">
+				<Icon />
+				{buttonText}
+			</Button>
+		</div>
+	</NoteInfoBar>
 </form>
 
 <style>
+	.hidden {
+		display: none;
+	}
+
 	form {
 		grid-row: 1 / span 2;
 		grid-column: 2 / 3;
@@ -78,5 +142,34 @@
 
 	.full-height {
 		flex: 1;
+	}
+
+	li {
+		list-style: none;
+		position: relative;
+	}
+
+	.remove-image-button {
+		display: grid;
+		place-items: center;
+		position: absolute;
+		right: 0;
+		top: 0;
+		border: none;
+		background: none;
+		color: tomato;
+		cursor: pointer;
+	}
+
+	.remove-image-button span {
+		display: flex;
+	}
+
+	.info-bar-buttons {
+		display: flex;
+		gap: var(--space-2xs);
+		align-items: center;
+		justify-content: flex-end;
+		width: 100%;
 	}
 </style>

@@ -8,11 +8,14 @@
 
 <h1>{name}'s Profile</h1>
 <main>
-	<div>
+	<div class="user-info">
 		<span>Username: {username}</span>
 		<span class="date-joined">joined {userJoinedDisplay}</span>
 	</div>
-	<Button href={`${username}/notes`}>View {name}'s notes</Button>
+	<div class="buttons">
+		<Button href={`${username}/notes`}>View {name}'s notes</Button>
+		<Button href={`/settings/profile`}>View {name}'s profile</Button>
+	</div>
 </main>
 
 <style>
@@ -31,12 +34,17 @@
 		gap: var(--space-s);
 	}
 
-	div {
+	.user-info {
 		display: flex;
 		flex-direction: column;
 	}
 
 	.date-joined {
 		font-size: var(--type-step--1);
+	}
+
+	.buttons {
+		display: flex;
+		gap: var(--space-s)
 	}
 </style>

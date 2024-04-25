@@ -1,9 +1,9 @@
 import { z } from 'zod'
-import { type Actions, fail, redirect } from '@sveltejs/kit'
-import { parseWithZod } from '@conform-to/zod'
-import { handleNewSessionWithRedirect } from '$lib/server/sessions/authSession'
+import { superValidate, message, fail } from 'sveltekit-superforms'
+import { zod } from 'sveltekit-superforms/adapters'
+import { type Actions, redirect } from '@sveltejs/kit'
 import { login } from '$lib/utils/auth.server'
-// import { formatFormErrors } from '$lib/utils/misc'
+import { handleNewSessionWithRedirect } from '$lib/server/sessions/authSession'
 import { PasswordSchema, UsernameSchema } from '$lib/utils/userValidation'
 import type { PageServerLoad } from './$types'
 
@@ -16,42 +16,29 @@ const LoginFormSchema = z.object({
 
 export const load = (async ({ locals }) => {
 	if (locals.userId) throw redirect(303, '/')
+	const form = await superValidate(zod(LoginFormSchema))
+
+	return { form }
 }) satisfies PageServerLoad
 
 export const actions = {
 	default: async ({ request, cookies }) => {
-		const formData = await request.formData()
 		// TODO: Create honeypot
 
-		const submission = await parseWithZod(formData, {
-			schema: (
-				intent, // TODO: Intent will be used later to distinguish login/register/2fa etc
-			) =>
-				LoginFormSchema.transform(async (data, ctx) => {
-					const session = await login(data)
-					if (!session) {
-						ctx.addIssue({
-							code: z.ZodIssueCode.custom,
-							message: 'Invalid username or password',
-						})
-						return z.NEVER
-					}
+		const form = await superValidate(request, zod(LoginFormSchema))
+		if (!form.valid)
+			return fail(400, { ...form, data: { ...form.data, password: '' } })
 
-					return {
-						session,
-						...data,
-					}
-				}),
-			async: true,
-		})
-
-		if (submission.status !== 'success' || !submission.value.session) {
-			return fail(submission.status === 'error' ? 400 : 200, {
-				result: submission.reply({ hideFields: ['password'] }),
-			})
+		const session = await login(form.data)
+		if (!session) {
+			return message(
+				{ ...form, data: { ...form.data, password: '' } },
+				'Invalid username or password',
+				{ status: 400 },
+			)
 		}
 
-		const { remember, session, redirectTo } = submission.value
+		const { remember, redirectTo } = form.data
 
 		return handleNewSessionWithRedirect({
 			cookies,

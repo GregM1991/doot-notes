@@ -56,16 +56,16 @@
 	}
 
 	.base:hover {
-		filter: drop-shadow(5px 5px 0px var(--color-grey-20));
+		filter: var(--border-drop-shadow-black-hover);
 	}
 
 	.base:focus {
-		filter: drop-shadow(5px 5px 0px var(--color-grey-20));
+		filter: var(--border-drop-shadow-black-hover);
 		outline: none;
 	}
 
 	.base:active {
-		filter: drop-shadow(1px 1px 0px var(--color-grey-20));
+		filter: var(--border-drop-shadow-black-focus);
 	}
 
 	.primary {

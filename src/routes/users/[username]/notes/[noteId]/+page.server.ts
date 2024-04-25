@@ -13,12 +13,12 @@ export const actions = {
 				ownerId: true,
 				owner: { select: { username: true } },
 			},
-			where: { id: params.noteid, ownerId: userId },
+			where: { id: params.noteId, ownerId: userId },
 		})
 
 		invariantResponse(note, 'Not found', 404)
 		const isOwner = note.ownerId === userId
-		// TODO: Check if user has permissions (if we get that far 😅)
+		// TODO: Check if user has permissions
 		if (!isOwner)
 			throw fail(403, {
 				error: 'Unauthorized',
