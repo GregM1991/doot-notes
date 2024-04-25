@@ -6,9 +6,12 @@
 		ImageFieldset,
 		NoteEditorSchema,
 	} from '$lib/components/EditNote/types'
+	import type { Infer, SuperValidated } from 'sveltekit-superforms'
 
-	export let image: ImageFieldset | undefined
-
+	// export let image: ImageFieldset | undefined
+	export let id: string | null = null
+	export let fileValue: File | null = null
+	export let altTextValue: string | null = null
 	// const file = fileProxy(form.data.images[index], 'file')
 	// TODO: Errors
 	// export let errors: {
@@ -16,9 +19,9 @@
 	// 	altText: string[] | undefined
 	// } | null = null
 
-	let previewImage: string | null = image?.id ? getNoteImgSrc(image.id) : null
+	let previewImage: string | null = id ? getNoteImgSrc(id) : null
 
-	const existingImage = Boolean(image?.id)
+	const existingImage = Boolean(id)
 
 	function handleFileChange(event: Event) {
 		const file = (event.target as HTMLInputElement).files?.[0]
@@ -44,28 +47,28 @@
 				<img
 					class="preview-image absolute"
 					src={previewImage}
-					alt={image?.altText ?? ''}
+					alt={altTextValue ?? ''}
 				/>
 			{:else}
 				<div class="plus">
 					<Plus />
 				</div>
 			{/if}
-			<input
-				bind:files={$file}
+			<!-- <input
+				bind:files={fileValue}
 				class="file absolute"
 				type="file"
 				accept="image/*"
 				aria-label="Image"
-			/>
+			/> -->
 		</label>
 		<!-- <ValidationErrors {errors} errorId={fileId} /> -->
-		{#if existingImage && image?.id}
-			<input type="hidden" value={image.id} />
+		{#if existingImage && id}
+			<input type="hidden" value={id} />
 		{/if}
 	</div>
 	<div class="alt-input">
-		<Input label="Alt text" name="" />
+		<Input label="Alt text" name="" value={altTextValue} />
 	</div>
 </fieldset>
 

@@ -30,10 +30,20 @@
 
 	// consts
 	$: imageList = $form.images ?? [{}]
-	$: console.log(imageList)
+
 	const header = $form.id ? `Edit ${$form.title}` : 'Doot a new note 📯'
 	const buttonText = $form.id ? 'Save changes' : 'Create $form'
 	const Icon = $form.id ? Check : Plus
+
+	function addEmptyImage() {
+		const formImages = $form.images ?? []
+		form.update(
+			$form => {
+				$form.images = [...formImages, {}]
+				return $form
+			}
+		)
+	}
 </script>
 
 <form method="POST" {action} use:enhance enctype="multipart/form-data">
@@ -83,11 +93,14 @@
 					</span>
 					<span class="sr-only">Remove image {index}</span>
 				</button>
-				<ImageEditor {form} {image} />
+				<!-- <ImageEditor {image} /> -->
 			</li>
 		{/each}
 	</ul>
-	<Button type="button" on:click={() => (imageList = [...imageList, {}])}>
+	<Button
+		type="button"
+		on:click={addEmptyImage}
+	>
 		<Plus />
 		Add another image
 	</Button>

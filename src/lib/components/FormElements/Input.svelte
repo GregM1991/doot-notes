@@ -5,7 +5,7 @@
 	export let placeholder = ''
 	export let name: string
 	export let type: 'text' | 'password' | 'search' | 'hidden' | null = 'text'
-	export let value = ''
+	export let value: string | null = ''
 	export let label = ''
 	export let style = ''
 	export let errors: string[] | null = null
