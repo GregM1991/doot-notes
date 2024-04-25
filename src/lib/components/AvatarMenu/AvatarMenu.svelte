@@ -5,7 +5,6 @@
 	import Pencil from 'virtual:icons/radix-icons/pencil2'
 	import Exit from 'virtual:icons/radix-icons/exit'
 
-	export let userInitials: string
 	export let userImageId: string | null = null
 	export let username: string
 	export let name: string
@@ -16,11 +15,6 @@
 		positioning: {
 			placement: 'bottom-start',
 		},
-	})
-	const {
-		elements: { image, fallback },
-	} = createAvatar({
-		src: getUserImgSrc(userImageId),
 	})
 
 	function handleClick() {
@@ -34,8 +28,7 @@
 	on:click|preventDefault={handleClick}
 	class="avatar"
 >
-	<img use:melt={$image} alt="Avatar" class="avatar-image" />
-	<span use:melt={$fallback}>{userInitials}</span>
+	<img src={getUserImgSrc(userImageId)} alt="{name ?? username}" class="avatar-image" />
 	{name}
 </a>
 <div use:melt={$overlay} />

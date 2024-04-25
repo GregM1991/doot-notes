@@ -3,7 +3,7 @@
 	import type { User } from '@prisma/client'
 
 	export let user:
-		| (User & { image: { id: string } | null } & { initials: string })
+		| (User & { image: { id: string } | null })
 		| null = null
 </script>
 
@@ -20,7 +20,6 @@
 			<AvatarMenu
 				username={user.username}
 				userImageId={user.image?.id}
-				userInitials={user.initials}
 				name={user.name}
 			/>
 		{:else}

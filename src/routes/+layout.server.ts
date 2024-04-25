@@ -5,7 +5,6 @@ import {
 } from '$lib/server/sessions/toastSession'
 import { logout } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
-import { getUserInitials } from '$lib/utils/misc'
 
 export async function load({ cookies, locals }) {
 	const toastCookieString = cookies.get(toastCookieName)
@@ -17,7 +16,7 @@ export async function load({ cookies, locals }) {
 		cookies.delete(toastCookieName, toastOptionValues)
 	}
 
-	const dbUser = locals.userId
+	const user = locals.userId
 		? await prisma.user.findUnique({
 				where: { id: locals.userId },
 				select: {
@@ -26,20 +25,17 @@ export async function load({ cookies, locals }) {
 					name: true,
 					createdAt: true,
 					updatedAt: true,
-					image: { select: { id: true } },
 					username: true,
+					image: { select: { id: true } },
 				},
 			})
 		: null
 
-	if (locals.userId && !dbUser) {
+	if (locals.userId && !user) {
 		// This is strange, but could happen if the user was deleted. Logout to be safe.
 		console.info('User drift')
 		await logout(cookies, '/')
 	}
 
-	return {
-		toast,
-		user: dbUser ? { ...dbUser, initials: getUserInitials(dbUser.name) } : null,
-	}
+	return { toast, user }
 }
