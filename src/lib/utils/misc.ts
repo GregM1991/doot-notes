@@ -45,7 +45,9 @@ export function invariant(
 	message: string | (() => string),
 ): asserts condition {
 	if (!condition) {
-		throw new InvariantError(typeof message === 'function' ? message() : message)
+		throw new InvariantError(
+			typeof message === 'function' ? message() : message,
+		)
 	}
 }
 
@@ -79,4 +81,13 @@ class InvariantError extends Error {
 		this.name = 'InvariantError'
 		Object.setPrototypeOf(this, InvariantError.prototype)
 	}
+}
+
+const nameRgx = new RegExp(/(\p{L}{1})\p{L}+/, 'gu')
+export function getUserInitials(name: string) {
+	const initials = [...name.matchAll(nameRgx)] || []
+
+	return (
+		(initials.shift()?.[1] || '') + (initials.pop()?.[1] || '')
+	).toUpperCase()
 }

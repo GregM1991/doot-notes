@@ -19,6 +19,15 @@ export async function load({ cookies, locals }) {
 	const user = locals.userId
 		? await prisma.user.findUnique({
 				where: { id: locals.userId },
+				select: {
+					id: true,
+					email: true,
+					name: true,
+					createdAt: true,
+					updatedAt: true,
+					username: true,
+					image: { select: { id: true } },
+				},
 			})
 		: null
 

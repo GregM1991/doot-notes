@@ -1,6 +1,10 @@
 <script lang="ts">
-	import { page } from '$app/stores'
-	import { Button } from '$lib/components'
+	import { AvatarMenu, Button } from '$lib/components'
+	import type { User } from '@prisma/client'
+
+	export let user:
+		| (User & { image: { id: string } | null })
+		| null = null
 </script>
 
 <nav>
@@ -12,14 +16,12 @@
 		<span class="right-links">
 			<a href="/users" class="nav-link">Users</a>
 		</span>
-		{#if $page.data.user}
-			<a class="nav-link" href="/users/{$page.data.user.username}"
-				>{$page.data.user.name}</a
-			>
-			<form method="POST" action="/logout">
-				<Button type="submit">Logout</Button>
-				<!-- TODO: User dropdown menu -->
-			</form>
+		{#if user}
+			<AvatarMenu
+				username={user.username}
+				userImageId={user.image?.id}
+				name={user.name}
+			/>
 		{:else}
 			<Button href="/login">Login</Button>
 		{/if}

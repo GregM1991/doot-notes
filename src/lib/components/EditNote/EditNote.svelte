@@ -75,12 +75,12 @@
 			{...$constraints}
 		/>
 	</div>
-	<span>Images</span>
-	<ul>
-		{#each imageList as image, index}
-			<li>
+	<!-- <span>Images</span> -->
+	<!-- <ul> -->
+		<!-- {#each imageList as image, index} -->
+			<!-- <li> -->
 				<!-- TODO: //create formaction for delete later -->
-				<button
+				<!-- <button
 					formaction="?/delete"
 					class="remove-image-button"
 					name="id"
@@ -92,18 +92,18 @@
 						<Cross />
 					</span>
 					<span class="sr-only">Remove image {index}</span>
-				</button>
+				</button> -->
 				<!-- <ImageEditor {image} /> -->
-			</li>
-		{/each}
-	</ul>
-	<Button
+			<!-- </li> -->
+		<!-- {/each} -->
+	<!-- </ul> -->
+	<!-- <Button
 		type="button"
 		on:click={addEmptyImage}
 	>
 		<Plus />
 		Add another image
-	</Button>
+	</Button> -->
 	<NoteInfoBar>
 		<div class="info-bar-buttons">
 			<Button danger type="reset">Reset</Button>

@@ -8,17 +8,6 @@
 	let timeoutId: ReturnType<typeof setTimeout>
 	$: showToast = data.toast ? true : false
 
-	/* 
-		TODO: general todo list:
-		- Add CSRF protection
-		- Add honeypot
-		- Add Fly.io things?
-			- Add caching server
-		- Rate limiting
-		- Standardise session cookie methods
-		- Get eslint rules working 🙄
-		- Potentially move cookie sessions to locals? At least impl toasts in locals
-	*/
 	// TODO: Clean this up
 	function dismissToast() {
 		showToast = false
@@ -52,7 +41,7 @@
 		/>
 	{/if}
 	<header>
-		<Navbar />
+		<Navbar user={data.user} />
 	</header>
 	<div class="content-body">
 		<slot />

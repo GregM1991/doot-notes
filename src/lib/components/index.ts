@@ -1,3 +1,4 @@
+export { default as AvatarMenu } from '$lib/components/AvatarMenu/AvatarMenu.svelte'
 export { default as Button } from '$lib/components/Button/Button.svelte'
 export { default as EditNote } from '$lib/components/EditNote/EditNote.svelte'
 export { default as Icon } from '$lib/components/icons/Icon.svelte'
