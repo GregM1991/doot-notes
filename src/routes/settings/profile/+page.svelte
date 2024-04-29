@@ -9,16 +9,26 @@
 
 <div class="wrapper">
   <h1 class="header">Let's make some changes to your profile</h1>
-  <img class="avatar" src={profileSrc} alt="{data.user?.name}'s avatar" />
-  <Input name="username" type="text" bind:value={$form.username} />
-  <Input name="name" type="text" bind:value={$form.name} />
-  <Button type="submit">Save changes</Button>
+	<img class="avatar" src={profileSrc} alt="{data.user?.name}'s avatar" />
+	<div class="inputs">
+		<div class="form-group">
+			<Input fluid name="username" type="text" bind:value={$form.username} />
+		</div>
+		<div class="form-group">
+			<Input fluid name="name" type="text" bind:value={$form.name} />
+</div>
+	</div>
+  <Button secondary fluid type="submit">Save changes</Button>
 </div>
 
 <style>
   .wrapper {
     display: flex;
     flex-direction: column;
+		align-items: center;
+		gap: var(--space-xs);
+		max-width: 48rem;
+		margin: 0 auto;
   }
 
 	.header {
@@ -31,5 +41,16 @@
 		width: var(--space-3xl);
 		height: var(--space-3xl);
 		object-fit: contain;
+	}
+
+	.inputs {
+		display: flex;
+		gap: var(--space-xs);
+		width: 100%;
+	}
+	
+	.form-group {
+		display: flex;
+		flex-direction: column;
 	}
 </style>
