@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getUserImgSrc } from '$lib/utils/misc'
-	import { createAvatar, createDropdownMenu, melt } from '@melt-ui/svelte'
+	import { createDropdownMenu, melt } from '@melt-ui/svelte'
 	import Person from 'virtual:icons/radix-icons/person'
 	import Pencil from 'virtual:icons/radix-icons/pencil2'
 	import Exit from 'virtual:icons/radix-icons/exit'
