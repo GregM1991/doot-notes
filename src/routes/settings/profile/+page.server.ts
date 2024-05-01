@@ -1,7 +1,7 @@
 import { requireUserId } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
 import { invariantResponse } from '$lib/utils/misc'
-import { fail, superValidate } from 'sveltekit-superforms'
+import { superValidate } from 'sveltekit-superforms'
 import type { Actions, PageServerLoad } from './$types'
 import { z } from 'zod'
 import { NameSchema, UsernameSchema } from '$lib/utils/userValidation'

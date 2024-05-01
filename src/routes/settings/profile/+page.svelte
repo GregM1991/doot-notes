@@ -12,9 +12,10 @@
 
 <div class="wrapper">
 	<h1 class="header">Let's make some changes to your profile</h1>
+	<!-- TODO: Make component, use in photo/+page.svelte -->
 	<div class="avatar-wrapper">
 		<img class="avatar" src={profileSrc} alt="{data.user?.name}'s avatar" />
-		<a href="photo" class="update-photo-link">
+		<a href="/settings/profile/photo" class="update-photo-link">
 			<Camera />
 		</a>
 	</div>
