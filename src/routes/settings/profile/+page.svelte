@@ -7,29 +7,30 @@
 	const profileSrc = getUserImgSrc(data.user.id)
 </script>
 
-<div class="wrapper">
-  <h1 class="header">Let's make some changes to your profile</h1>
+<form class="wrapper">
+	<h1 class="header">Let's make some changes to your profile</h1>
 	<img class="avatar" src={profileSrc} alt="{data.user?.name}'s avatar" />
 	<div class="inputs">
+		<!-- TODO: Should really incorporate this form group class into the inputF -->
 		<div class="form-group">
-			<Input fluid name="username" type="text" bind:value={$form.username} />
+			<Input name="username" type="text" bind:value={$form.username} />
 		</div>
 		<div class="form-group">
-			<Input fluid name="name" type="text" bind:value={$form.name} />
-</div>
+			<Input name="name" type="text" bind:value={$form.name} />
+		</div>
 	</div>
-  <Button secondary fluid type="submit">Save changes</Button>
-</div>
+	<Button secondary fluid name="intent" value={profileUpdateActionIntent} type="submit">Save changes</Button>
+</form>
 
 <style>
-  .wrapper {
-    display: flex;
-    flex-direction: column;
+	.wrapper {
+		display: flex;
+		flex-direction: column;
 		align-items: center;
-		gap: var(--space-xs);
+		gap: var(--space-3xs);
 		max-width: 48rem;
 		margin: 0 auto;
-  }
+	}
 
 	.header {
 		font-size: var(--type-step-4);
@@ -48,9 +49,10 @@
 		gap: var(--space-xs);
 		width: 100%;
 	}
-	
+
 	.form-group {
 		display: flex;
 		flex-direction: column;
+		flex: 1;
 	}
 </style>
