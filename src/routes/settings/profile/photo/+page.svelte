@@ -1,23 +1,32 @@
 <script lang="ts">
 	import { Button } from '$lib/components'
 	import { getUserImgSrc } from '$lib/utils/misc'
+	import { fileProxy, superForm } from 'sveltekit-superforms'
 	import type { PageData } from './$types'
 	import Pencil from 'virtual:icons/radix-icons/pencil2'
+	import { zodClient } from 'sveltekit-superforms/adapters'
+	import { NewImageSchema } from '$lib/profile/schemas'
 
 	export let data: PageData
-	const profileSrc = getUserImgSrc(data.user.id)
+	const { form, enhance, errors } = superForm(data.form, {
+    validators: zodClient(NewImageSchema)
+  })
+
+const file = fileProxy(form, 'photoFile')
 </script>
 
 <!-- TODO: PICKUP HERE: Trying to get the photo change cranking -->
 <div class="photo-change-wrapper">
 	<div class="avatar-wrapper">
-		<img class="avatar" src={profileSrc} alt="{data.user.name}'s avatar" />
+		<img class="avatar" src={data.user ? getUserImgSrc(data.user.image?.id) : ''} alt="{data.user.name}'s avatar" />
 	</div>
-	<form method="POST">
+	<form method="POST" enctype="multipart/form-data" use:enhance>
 		<input
 			accept="image/*"
 			required
-			tabIndex={newImageSrc ? -1 : 0}
+			tabIndex={$file ? -1 : 0}
+			type="file"
+			bind:files={$file}
 		/>
 		<Button type="submit"><Pencil />Change</Button>
 	</form>
