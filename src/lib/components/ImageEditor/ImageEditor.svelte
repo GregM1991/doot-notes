@@ -2,11 +2,11 @@
 	import { Input } from '$lib/components'
 	import { getNoteImgSrc } from '$lib/utils/misc'
 	import Plus from 'virtual:icons/radix-icons/plus'
-	import type {
-		ImageFieldset,
-		NoteEditorSchema,
-	} from '$lib/components/EditNote/types'
-	import type { Infer, SuperValidated } from 'sveltekit-superforms'
+	// import type {
+	// 	ImageFieldset,
+	// 	NoteEditorSchema,
+	// } from '$lib/components/EditNote/types'
+	// import type { Infer, SuperValidated } from 'sveltekit-superforms'
 
 	// export let image: ImageFieldset | undefined
 	export let id: string | null = null
@@ -23,18 +23,18 @@
 
 	const existingImage = Boolean(id)
 
-	function handleFileChange(event: Event) {
-		const file = (event.target as HTMLInputElement).files?.[0]
-		if (file) {
-			const reader = new FileReader()
-			reader.onload = () => {
-				previewImage = reader.result as string
-			}
-			reader.readAsDataURL(file)
-		} else {
-			previewImage = null
-		}
-	}
+	// function handleFileChange(event: Event) {
+	// 	const file = (event.target as HTMLInputElement).files?.[0]
+	// 	if (file) {
+	// 		const reader = new FileReader()
+	// 		reader.onload = () => {
+	// 			previewImage = reader.result as string
+	// 		}
+	// 		reader.readAsDataURL(file)
+	// 	} else {
+	// 		previewImage = null
+	// 	}
+	// }
 </script>
 
 <fieldset class="container">
