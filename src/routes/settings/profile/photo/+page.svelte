@@ -6,25 +6,26 @@
 	import Pencil from 'virtual:icons/radix-icons/pencil2'
 	import Trash from 'virtual:icons/radix-icons/trash'
 	import { zodClient } from 'sveltekit-superforms/adapters'
-	import { NewImageSchema } from '$lib/profile/schemas'
+	import { PhotoFormSchema } from '$lib/profile/schemas'
 
 	export let data: PageData
 	const { form, enhance, errors } = superForm(data.form, {
-		validators: zodClient(NewImageSchema),
+		validators: zodClient(PhotoFormSchema),
 	})
 
 	const file = fileProxy(form, 'photoFile')
 	let newImageSrc: string | null = null
 	function handleFileChange(e: Event) {
-	const file = (e.currentTarget as HTMLInputElement).files?.[0]
-	if (file) {
-		const reader = new FileReader()
-		reader.onload = event => {
-			newImageSrc = event.target?.result?.toString() ?? null
+		const file = (e.currentTarget as HTMLInputElement).files?.[0]
+		if (file) {
+			const reader = new FileReader()
+			reader.onload = event => {
+				newImageSrc = event.target?.result?.toString() ?? null
+			}
+			reader.readAsDataURL(file)
 		}
-		reader.readAsDataURL(file)
 	}
-}
+	let lastSubmissionIntent = $form.intent
 </script>
 
 <div class="photo-change-wrapper">

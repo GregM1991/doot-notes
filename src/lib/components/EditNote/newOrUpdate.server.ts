@@ -30,9 +30,8 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 	// )
 	// const formDataEntries = Array.from(formData.entries())
 	const form = await superValidate(request, zod(NoteEditorSchema))
-	if (!form.valid) {
-		return fail(400, { form })
-	}
+	if (!form.valid) return fail(400, { form })
+
 	if (form.data.id) {
 		const note = await prisma.note.findUnique({
 			select: { id: true },
