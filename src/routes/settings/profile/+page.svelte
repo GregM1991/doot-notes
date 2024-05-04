@@ -21,7 +21,7 @@
 	</div>
 	<form class="form">
 		<div class="inputs">
-			<!-- TODO: Should really incorporate this form group class into the inputF -->
+			<!-- TODO: Should really incorporate this form group class into the input -->
 			<div class="form-group">
 				<Input name="username" type="text" bind:value={$form.username} />
 			</div>
@@ -30,11 +30,11 @@
 			</div>
 		</div>
 		<Button
-		secondary
-		fluid
-		name="intent"
-		value={profileUpdateActionIntent}
-		type="submit">Save changes</Button
+			secondary
+			fluid
+			name="intent"
+			value={profileUpdateActionIntent}
+			type="submit">Save changes</Button
 		>
 	</form>
 </div>
@@ -83,12 +83,12 @@
 		display: grid;
 		place-items: center;
 		position: absolute;
-		top: .5rem;
-		right: .5rem;
+		top: 0.5rem;
+		right: 0.5rem;
 		background: var(--palette-pop-light);
 		width: 3rem;
 		height: 3rem;
-		border-radius: 9999px
+		border-radius: 9999px;
 	}
 
 	.inputs {

@@ -19,8 +19,10 @@ export const load = (async ({ locals, request, parent }) => {
 		username: parentData.user.username,
 		image: parentData.user.image,
 	}
+	const form = await superValidate({ intent: undefined }, zod(PhotoFormSchema))
+	console.log(form)
 
-	return { user, form: await superValidate(zod(PhotoFormSchema)) }
+	return { user, form }
 }) satisfies PageServerLoad
 
 export const actions = {
@@ -39,7 +41,7 @@ export const actions = {
 			intent: form.data.intent,
 			image: {
 				contentType: form.data.photoFile.type,
-				blob: Buffer.from(await data.photoFile.arrayBuffer()),
+				blob: Buffer.from(await form.data.photoFile.arrayBuffer()),
 			},
 		}
 
@@ -47,10 +49,10 @@ export const actions = {
 			await $prisma.userImage.deleteMany({ where: { userId } })
 			await $prisma.user.update({
 				where: { id: userId },
-				data: { image: submissionData.image },
+				data: { image: { create: submissionData.image } },
 			})
 		})
 
-		return null
+		return redirect(303, '/settings/profile')
 	},
 } satisfies Actions

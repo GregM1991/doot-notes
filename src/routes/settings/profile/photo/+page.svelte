@@ -25,7 +25,7 @@
 			reader.readAsDataURL(file)
 		}
 	}
-	let lastSubmissionIntent = $form.intent
+	let lastSubmissionIntent = $form.intent ?? "idle"
 </script>
 
 <div class="photo-change-wrapper">
@@ -38,17 +38,18 @@
 	</div>
 	<form method="POST" enctype="multipart/form-data" use:enhance>
 		<div class="button-wrapper">
-			<label class="label-button">
-				<input
-					accept="image/*"
-					class="sr-only"
-					required
-					tabIndex={$file ? -1 : 0}
-					type="file"
-					name="photoFile"
-					bind:files={$file}
-					on:change={handleFileChange}
-				/>
+			<input
+			id="photoFile"
+			accept="image/*"
+			class="sr-only"
+			required
+			tabIndex={$file ? -1 : 0}
+			type="file"
+			name="photoFile"
+			bind:files={$file}
+			on:change={handleFileChange}
+			/>
+			<label id="chage-button" for="photoFile" class="label-button {lastSubmissionIntent}">
 				<Pencil />Change
 			</label>
 			{#if data.user?.image?.id}
@@ -118,5 +119,10 @@
 
 	.label-button:active {
 		filter: var(--border-drop-shadow-black-focus);
+	}
+
+	/* TODO: PICKUP Trying to replicate peer:valid peer:invalid styling */
+	#photoFile:valid + #change-button {
+
 	}
 </style>
