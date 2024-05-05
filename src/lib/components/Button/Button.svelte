@@ -12,6 +12,7 @@
 	export let danger = false
 	export let name: string | null = null
 	export let value: string | null = null
+	export let id: string | null = null
 
 	const element = href ? 'a' : 'button'
 	const role = element === 'a' ? 'link' : 'button'
@@ -30,6 +31,7 @@
 	{style}
 	{name}
 	{value}
+	{id}
 	class="base"
 	class:primary
 	class:fluid

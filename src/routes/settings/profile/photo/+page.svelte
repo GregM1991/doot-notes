@@ -25,7 +25,7 @@
 			reader.readAsDataURL(file)
 		}
 	}
-	let lastSubmissionIntent = $form.intent ?? "idle"
+	let lastSubmissionIntent = $form.intent ?? 'idle'
 </script>
 
 <div class="photo-change-wrapper">
@@ -39,19 +39,25 @@
 	<form method="POST" enctype="multipart/form-data" use:enhance>
 		<div class="button-wrapper">
 			<input
-			id="photoFile"
-			accept="image/*"
-			class="sr-only"
-			required
-			tabIndex={$file ? -1 : 0}
-			type="file"
-			name="photoFile"
-			bind:files={$file}
-			on:change={handleFileChange}
+				id="photo-file"
+				accept="image/*"
+				class="sr-only"
+				required
+				tabIndex={$file ? -1 : 0}
+				type="file"
+				name="photoFile"
+				bind:files={$file}
+				on:change={handleFileChange}
 			/>
-			<label id="chage-button" for="photoFile" class="label-button {lastSubmissionIntent}">
+			<label
+				id="change-button"
+				for="photo-file"
+				class="label-button {lastSubmissionIntent}"
+			>
 				<Pencil />Change
 			</label>
+			<Button id="save-photo-button">Save Photo</Button>
+			<Button on:click={() => newImageSrc = null} type="reset" id="reset-button" danger>Reset</Button>
 			{#if data.user?.image?.id}
 				<Button danger><Trash />Delete</Button>
 			{/if}
@@ -121,8 +127,15 @@
 		filter: var(--border-drop-shadow-black-focus);
 	}
 
-	/* TODO: PICKUP Trying to replicate peer:valid peer:invalid styling */
-	#photoFile:valid + #change-button {
+	#photo-file:valid + #change-button {
+		display: none;
+	}
 
+	:global(#photo-file:invalid ~ #save-photo-button) {
+		display: none;
+	}
+
+	:global(#photo-file:invalid ~ #reset-button) {
+		display: none;
 	}
 </style>
