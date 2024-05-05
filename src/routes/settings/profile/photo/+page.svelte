@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { Button } from '$lib/components'
 	import { getUserImgSrc } from '$lib/utils/misc'
-	import SuperDebug, { fileProxy, superForm } from 'sveltekit-superforms'
+	import { fileProxy, superForm } from 'sveltekit-superforms'
 	import type { PageData } from './$types'
 	import Pencil from 'virtual:icons/radix-icons/pencil2'
 	import Trash from 'virtual:icons/radix-icons/trash'
 	import { zodClient } from 'sveltekit-superforms/adapters'
 	import { PhotoFormSchema } from '$lib/profile/schemas'
+	import ValidationErrors from '$lib/components/ValidationErrors/ValidationErrors.svelte'
 
 	export let data: PageData
 	const { form, enhance, errors } = superForm(data.form, {
@@ -25,11 +26,8 @@
 			reader.readAsDataURL(file)
 		}
 	}
-	let lastSubmissionIntent = $form.intent ?? 'idle'
-	$: console.log($form.intent)
 </script>
 
-<SuperDebug data={$form} />
 <div class="photo-change-wrapper">
 	<div class="avatar-wrapper">
 		<img
@@ -38,7 +36,10 @@
 			alt="{data.user.name}'s avatar"
 		/>
 	</div>
+	<ValidationErrors errorId="photo-file" errors={$errors._errors} />
+	<form id="delete-image" action="?/delete" method="POST" />
 	<form
+		action="?/add-or-update-avatar"
 		method="POST"
 		enctype="multipart/form-data"
 		use:enhance
@@ -55,19 +56,10 @@
 				bind:files={$file}
 				on:change={handleFileChange}
 			/>
-			<label
-				id="change-button"
-				for="photo-file"
-				class="label-button {lastSubmissionIntent}"
-			>
+			<label id="change-button" for="photo-file" class="label-button">
 				<Pencil />Change
 			</label>
-			<Button
-				name="intent"
-				value="submit"
-				type="submit"
-				id="save-photo-button"
-			>
+			<Button name="intent" value="submit" type="submit" id="save-photo-button">
 				Save Photo
 			</Button>
 			<Button
@@ -80,10 +72,14 @@
 			</Button>
 			{#if data.user?.image?.id}
 				<Button
+					id="delete-button"
+					form="delete-image"
 					name="intent"
 					value="delete"
-					danger><Trash />Delete</Button
+					danger
 				>
+					<Trash />Delete
+				</Button>
 			{/if}
 		</div>
 	</form>
@@ -103,7 +99,7 @@
 		width: 12rem;
 		height: 12rem;
 		text-align: center;
-		border-radius: 9999px;
+		border-radius: var(--border-radius-circle);
 	}
 
 	.avatar {
@@ -112,7 +108,7 @@
 		object-fit: cover;
 		width: 100%;
 		height: 100%;
-		border-radius: 9999px;
+		border-radius: var(--border-radius-circle);
 	}
 
 	.button-wrapper {
@@ -151,11 +147,15 @@
 		filter: var(--border-drop-shadow-black-focus);
 	}
 
-	#photo-file:valid + #change-button {
+	#photo-file:valid ~ #change-button {
 		display: none;
 	}
 
 	/* TODO: Is this the best way to do this? */
+	:global(#photo-file:valid ~ #delete-button) {
+		display: none;
+	}
+
 	:global(#photo-file:invalid ~ #save-photo-button) {
 		display: none;
 	}

@@ -28,21 +28,25 @@
 	on:click|preventDefault={handleClick}
 	class="avatar"
 >
-	<img src={getUserImgSrc(userImageId)} alt="{name ?? username}" class="avatar-image" />
+	<img
+		src={getUserImgSrc(userImageId)}
+		alt={name ?? username}
+		class="avatar-image"
+	/>
 	{name}
 </a>
 <div use:melt={$overlay} />
 <div use:melt={$menu} class="dropdown">
 	<ul>
 		<li>
-			<a href="/users/{username}" use:melt={$item} class="menu-item"
-				><Person /> Profile</a
-			>
+			<a href="/users/{username}" use:melt={$item} class="menu-item">
+				<Person /> Profile
+			</a>
 		</li>
 		<li>
-			<a href="/users/{username}/notes" use:melt={$item} class="menu-item"
-				><Pencil /> Notes</a
-			>
+			<a href="/users/{username}/notes" use:melt={$item} class="menu-item">
+				<Pencil /> Notes
+			</a>
 		</li>
 		<li>
 			<form action="/logout" method="POST">
@@ -70,6 +74,7 @@
 		width: 2rem;
 		height: 2rem;
 		object-fit: contain;
+		border-radius: var(--border-radius-circle);
 	}
 
 	.dropdown {

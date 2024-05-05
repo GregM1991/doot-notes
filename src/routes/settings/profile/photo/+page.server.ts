@@ -25,17 +25,17 @@ export const load = (async ({ locals, request, parent }) => {
 }) satisfies PageServerLoad
 
 export const actions = {
-	default: async ({ locals, request }) => {
+	delete: async ({ locals, request }) => {
+		const userId = requireUserId(locals.userId, request)
+		await prisma.userImage.deleteMany({ where: { userId } })
+		return redirect(303, '/settings/profile')
+	},
+	'add-or-update-avatar': async ({ locals, request }) => {
 		const userId = requireUserId(locals.userId, request)
 		const form = await superValidate(request, zod(PhotoFormSchema))
 		if (!form.valid) return fail(400, withFiles({ form }))
 
-		if (form.data.intent === 'delete') {
-			await prisma.userImage.deleteMany({ where: { userId } })
-			return redirect(303, '/settings/profile')
-		}
 		const submissionData = {
-			intent: form.data.intent,
 			image: {
 				contentType: form.data.photoFile.type,
 				blob: Buffer.from(await form.data.photoFile.arrayBuffer()),

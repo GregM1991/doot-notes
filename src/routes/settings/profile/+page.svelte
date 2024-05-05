@@ -7,7 +7,7 @@
 
 	export let data
 	const { form } = superForm(data.editProfileForm)
-	const profileSrc = getUserImgSrc(data.user.id)
+	const profileSrc = getUserImgSrc(data.user?.image?.id)
 </script>
 
 <div class="wrapper">
@@ -67,16 +67,17 @@
 		width: 12rem;
 		height: 12rem;
 		text-align: center;
-		border-radius: 9999px;
+		border-radius: var(--border-radius-circle);
 		background: var(--palette-base-light);
 	}
 
 	.avatar {
 		display: grid;
 		place-items: center;
-		object-fit: contain;
+		object-fit: cover;
 		width: 100%;
 		height: 100%;
+		border-radius: var(--border-radius-circle);
 	}
 
 	.update-photo-link {
@@ -88,7 +89,7 @@
 		background: var(--palette-pop-light);
 		width: 3rem;
 		height: 3rem;
-		border-radius: 9999px;
+		border-radius: var(--border-radius-circle);
 	}
 
 	.inputs {

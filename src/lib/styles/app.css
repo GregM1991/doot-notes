@@ -154,6 +154,7 @@
   --border-radius-small: 0.7rem;
   --border-radius: 1rem;
   --border-radius-large: 2rem;
+  --border-radius-circle: 9999px;
   --border: 2px solid var(--color-grey-20);
   --border-drop-shadow: 3px 3px 0px;
   --border-drop-shadow-black: drop-shadow(var(--border-drop-shadow) var(--color-grey-20));

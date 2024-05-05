@@ -92,7 +92,7 @@
 		font-size: 2rem;
 		background: var(--palette-base);
 		padding: var(--space-2xs);
-		border-radius: 9999px;
+		border-radius: var(--border-radius-circle);
 		width: 4rem;
 		height: 4rem;
 	}
