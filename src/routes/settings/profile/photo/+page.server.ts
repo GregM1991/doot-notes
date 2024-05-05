@@ -1,6 +1,6 @@
 import { requireUserId } from '$lib/utils/auth.server'
 import { invariantResponse } from '$lib/utils/misc'
-import { fail, superValidate } from 'sveltekit-superforms'
+import { fail, superValidate, withFiles } from 'sveltekit-superforms'
 import type { Actions, PageServerLoad } from './$types'
 import { zod } from 'sveltekit-superforms/adapters'
 import { PhotoFormSchema } from '$lib/profile/schemas'
@@ -19,8 +19,7 @@ export const load = (async ({ locals, request, parent }) => {
 		username: parentData.user.username,
 		image: parentData.user.image,
 	}
-	const form = await superValidate({ intent: undefined }, zod(PhotoFormSchema))
-	console.log(form)
+	const form = await superValidate(zod(PhotoFormSchema))
 
 	return { user, form }
 }) satisfies PageServerLoad
@@ -28,10 +27,8 @@ export const load = (async ({ locals, request, parent }) => {
 export const actions = {
 	default: async ({ locals, request }) => {
 		const userId = requireUserId(locals.userId, request)
-
 		const form = await superValidate(request, zod(PhotoFormSchema))
-		console.log(form)
-		if (!form.valid) return fail(400, form)
+		if (!form.valid) return fail(400, withFiles({ form }))
 
 		if (form.data.intent === 'delete') {
 			await prisma.userImage.deleteMany({ where: { userId } })

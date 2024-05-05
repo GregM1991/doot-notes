@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib/components'
 	import { getUserImgSrc } from '$lib/utils/misc'
-	import { fileProxy, superForm } from 'sveltekit-superforms'
+	import SuperDebug, { fileProxy, superForm } from 'sveltekit-superforms'
 	import type { PageData } from './$types'
 	import Pencil from 'virtual:icons/radix-icons/pencil2'
 	import Trash from 'virtual:icons/radix-icons/trash'
@@ -26,8 +26,10 @@
 		}
 	}
 	let lastSubmissionIntent = $form.intent ?? 'idle'
+	$: console.log($form.intent)
 </script>
 
+<SuperDebug data={$form} />
 <div class="photo-change-wrapper">
 	<div class="avatar-wrapper">
 		<img
@@ -36,7 +38,11 @@
 			alt="{data.user.name}'s avatar"
 		/>
 	</div>
-	<form method="POST" enctype="multipart/form-data" use:enhance>
+	<form
+		method="POST"
+		enctype="multipart/form-data"
+		use:enhance
+	>
 		<div class="button-wrapper">
 			<input
 				id="photo-file"
@@ -56,10 +62,28 @@
 			>
 				<Pencil />Change
 			</label>
-			<Button id="save-photo-button">Save Photo</Button>
-			<Button on:click={() => newImageSrc = null} type="reset" id="reset-button" danger>Reset</Button>
+			<Button
+				name="intent"
+				value="submit"
+				type="submit"
+				id="save-photo-button"
+			>
+				Save Photo
+			</Button>
+			<Button
+				on:click={() => (newImageSrc = null)}
+				type="reset"
+				id="reset-button"
+				danger
+			>
+				Reset
+			</Button>
 			{#if data.user?.image?.id}
-				<Button danger><Trash />Delete</Button>
+				<Button
+					name="intent"
+					value="delete"
+					danger><Trash />Delete</Button
+				>
 			{/if}
 		</div>
 	</form>
@@ -131,6 +155,7 @@
 		display: none;
 	}
 
+	/* TODO: Is this the best way to do this? */
 	:global(#photo-file:invalid ~ #save-photo-button) {
 		display: none;
 	}
