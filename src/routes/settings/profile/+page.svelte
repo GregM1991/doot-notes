@@ -4,6 +4,7 @@
 	import { getUserImgSrc } from '$lib/utils/misc'
 	import { superForm } from 'sveltekit-superforms'
 	import Camera from 'virtual:icons/radix-icons/camera'
+	import DotsHorizontal from 'virtual:icons/radix-icons/dotsHorizontal'
 
 	export let data
 	const { form } = superForm(data.editProfileForm)
@@ -37,6 +38,7 @@
 			type="submit">Save changes</Button
 		>
 	</form>
+	<a class="link" href="profile/password"><DotsHorizontal /> Change password</a>
 </div>
 
 <style>
@@ -102,5 +104,11 @@
 		display: flex;
 		flex-direction: column;
 		flex: 1;
+	}
+
+	.link {
+		display: flex;
+		align-items: center;
+		gap: var(--space-3xs)
 	}
 </style>

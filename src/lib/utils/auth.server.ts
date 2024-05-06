@@ -95,7 +95,7 @@ export async function logout(cookies: Cookies, redirectTo = '/') {
 	redirect(303, safeRedirect(redirectTo))
 }
 
-async function verifyUserPassword(
+export async function verifyUserPassword(
 	where: Pick<User, 'username'> | Pick<User, 'id'>,
 	password: Password['hash'],
 ) {
