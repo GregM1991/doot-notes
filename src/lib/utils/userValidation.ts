@@ -30,3 +30,11 @@ export const PasswordAndConfirmPasswordSchema = z
 			})
 		}
 	})
+
+export const EmailSchema = z
+	.string({ required_error: 'Email is required' })
+	.email({ message: 'Email is invalid' })
+	.min(3, { message: 'Email is too short' })
+	.max(100, { message: 'Email is too long' })
+	// make sure to map email to lowercase
+	.transform(value => value.toLowerCase())

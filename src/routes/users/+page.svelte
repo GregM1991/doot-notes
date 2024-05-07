@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { Searchbar, type OnSearch } from '$lib/components/index'
-	import { debounce } from '$lib/utils/misc'
+	import { debounce, getUserImgSrc } from '$lib/utils/misc'
 	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
-	import Person from 'virtual:icons/radix-icons/person'
 
 	export let data
 
@@ -26,7 +25,8 @@
 		<span>{data.error}</span>
 	{:else if data.users.length}
 		<ul role="list">
-			{#each data.users as user} <!-- TODO: Extract this to component -->
+			{#each data.users as user}
+				<!-- TODO: Extract this to component -->
 				<li>
 					<a
 						data-sveltekit-preload-data="hover"
@@ -34,7 +34,11 @@
 					>
 						<!-- TODO: put gravatar in -->
 						<span class="gravatar">
-							<Person />
+							<img
+								src={getUserImgSrc(user.imageId)}
+								alt={user.name ?? user.username}
+								class="avatar-image"
+							/>
 						</span>
 						<span>{user.name}</span>
 						<span class="username">{user.username}</span>
@@ -91,7 +95,6 @@
 		margin-bottom: var(--space-2xs);
 		font-size: 2rem;
 		background: var(--palette-base);
-		padding: var(--space-2xs);
 		border-radius: var(--border-radius-circle);
 		width: 4rem;
 		height: 4rem;

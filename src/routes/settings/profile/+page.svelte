@@ -5,6 +5,7 @@
 	import { superForm } from 'sveltekit-superforms'
 	import Camera from 'virtual:icons/radix-icons/camera'
 	import DotsHorizontal from 'virtual:icons/radix-icons/dotsHorizontal'
+	import EnvelopeClosed from 'virtual:icons/radix-icons/envelopeClosed'
 
 	export let data
 	const { form } = superForm(data.editProfileForm)
@@ -38,7 +39,10 @@
 			type="submit">Save changes</Button
 		>
 	</form>
-	<a class="link" href="profile/password"><DotsHorizontal /> Change password</a>
+	<div class="profile-links">
+		<a class="link" href="profile/password"><DotsHorizontal /> Change password</a>
+		<a class="link" href="profile/change-email"><EnvelopeClosed /> Change email from {data.user.email}</a>
+	</div>
 </div>
 
 <style>
@@ -104,6 +108,14 @@
 		display: flex;
 		flex-direction: column;
 		flex: 1;
+	}
+
+	.profile-links {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: var(--space-2xs);
+		width: 48rem;
 	}
 
 	.link {

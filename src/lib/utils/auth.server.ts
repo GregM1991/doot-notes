@@ -45,21 +45,29 @@ export async function getUserId(cookies: Cookies) {
 	return session.user.id
 }
 
+export function createLoginWithRedirectUrl(
+	request: Request,
+	redirectTo: string | null = null,
+) {
+	const requestUrl = new URL(request.url)
+	redirectTo =
+		redirectTo === null
+			? null
+			: redirectTo ?? `${requestUrl.pathname}${requestUrl.search}`
+	const loginParams = redirectTo ? new URLSearchParams({ redirectTo }) : null
+	const loginRedirect = ['/login', loginParams?.toString()]
+		.filter(Boolean)
+		.join('?')
+	return loginRedirect
+}
+
 export function requireUserId(
 	userId: string | null,
 	request: Request,
 	redirectTo: string | null = null,
 ) {
 	if (!userId) {
-		const requestUrl = new URL(request.url)
-		redirectTo =
-			redirectTo === null
-				? null
-				: redirectTo ?? `${requestUrl.pathname}${requestUrl.search}`
-		const loginParams = redirectTo ? new URLSearchParams({ redirectTo }) : null
-		const loginRedirect = ['/login', loginParams?.toString()]
-			.filter(Boolean)
-			.join('?')
+		const loginRedirect = createLoginWithRedirectUrl(request, redirectTo)
 		throw redirect(303, loginRedirect)
 	}
 	return userId

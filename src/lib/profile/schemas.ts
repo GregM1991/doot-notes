@@ -1,4 +1,4 @@
-import { PasswordSchema } from '$lib/utils/userValidation'
+import { EmailSchema, PasswordSchema } from '$lib/utils/userValidation'
 import { z } from 'zod'
 
 const MAX_SIZE = 1024 * 1024 * 3 // 3MB
@@ -25,3 +25,7 @@ export const ChangePasswordForm = z
 			})
 		}
 	})
+
+export const ChangeEmailSchema = z.object({
+	email: EmailSchema,
+})
