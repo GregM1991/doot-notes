@@ -50,7 +50,7 @@
 	{#if $message}
 		<ValidationErrors errorId={formId} errors={[$message]} />
 	{/if}
-	<span>
+	<span class='signup'>
 		New here? <a href="/signup" class="link">Create an account</a>
 	</span>
 </form>
@@ -94,5 +94,9 @@
 
 	.link {
 		color: var(--palette-pop);
+	}
+
+	.signup {
+		margin-top: var(--space-s);
 	}
 </style>

@@ -16,16 +16,12 @@
 			placement: 'bottom-start',
 		},
 	})
-
-	function handleClick() {
-		console.log('Clicked on avatar')
-	}
 </script>
 
 <a
 	use:melt={$trigger}
 	href="/users/{username}"
-	on:click|preventDefault={handleClick}
+	on:click|preventDefault
 	class="avatar"
 >
 	<img

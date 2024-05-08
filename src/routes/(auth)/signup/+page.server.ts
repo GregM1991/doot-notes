@@ -14,6 +14,7 @@ export const actions = {
 		const formData = await request.formData()
 		// TODO: Create honeypot
 
+		// TODO: Parse forms with SuperForm
 		const submission = await parseWithZod(formData, {
 			schema: SignupFormSchema.superRefine(async (data, ctx) => {
 				const existingUser = await prisma.user.findUnique({
@@ -60,6 +61,7 @@ export const actions = {
 				result: submission.reply({ formErrors: [response.error.message] }),
 			})
 		}
+		// TODO: PICKUP: Do verification page part of this flow
 	},
 }
 

@@ -1,20 +1,22 @@
 <script lang="ts">
-	import { Button, Input } from '$lib/components'
+	import { Button, Input, ValidationErrors } from '$lib/components'
 	import { superForm } from 'sveltekit-superforms'
 	import type { PageData } from './$types'
 
 	export let data: PageData
-	const { form, errors, enhance } = superForm(data.changeEmailForm)
+	const { form, errors, enhance, message } = superForm(data.changeEmailForm)
 </script>
 
 <div class="wrapper">
-	<h1 class="header">Change Email</h1>
-	<p>
-		So you wanna change your email huh? You will receive an email at the new
-		email address to confirm
-	</p>
-	<p>An email notice will also be sent to your old address {data.user.email}</p>
-	<form method="POST" class="form" use:enhance>
+	<div class="copy">
+		<h1 class="header">Change Email</h1>
+		<p>
+			So you wanna change your email huh? You will receive an email at the new
+			email address to confirm
+		</p>
+		<p>An email notice will also be sent to your old address {data.user.email}</p>
+	</div>
+	<form id="change-email" method="POST" class="form" use:enhance>
 		<div class="form-group">
 			<Input
 				label="New Email"
@@ -25,8 +27,11 @@
 			/>
 		</div>
 		<div class="button-wrapper">
-			<Button type="submit">Change Password</Button>
+			<Button secondary type="submit">Change Password</Button>
 		</div>
+		{#if $message}
+			<ValidationErrors errorId="change-email" errors={$message} />
+		{/if}
 	</form>
 </div>
 
@@ -36,6 +41,10 @@
 		flex-direction: column;
 		align-items: center;
 		gap: var(--space-l);
+	}
+
+	.copy {
+		text-align: center;
 	}
 
 	.form {

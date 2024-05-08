@@ -40,7 +40,6 @@ export const load = (async ({ url }) => {
 			statusCode: 400,
 		} as const
 	}
-	console.log(result.data)
 
 	return {
 		status: 'idle',
