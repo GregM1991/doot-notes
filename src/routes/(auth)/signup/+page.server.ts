@@ -61,10 +61,10 @@ export const actions = {
 				result: submission.reply({ formErrors: [response.error.message] }),
 			})
 		}
-		// TODO: PICKUP: Do verification page part of this flow
 	},
 }
 
+// TODO: move this to relevant server file
 export function _signupEmail({
 	onboardingUrl,
 	otp,

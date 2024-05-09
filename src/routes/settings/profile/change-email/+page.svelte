@@ -29,8 +29,8 @@
 		<div class="button-wrapper">
 			<Button secondary type="submit">Change Password</Button>
 		</div>
-		{#if $message}
-			<ValidationErrors errorId="change-email" errors={$message} />
+		{#if $message?.type === 'error'}
+			<ValidationErrors errorId="change-email" errors={$message.text} />
 		{/if}
 	</form>
 </div>

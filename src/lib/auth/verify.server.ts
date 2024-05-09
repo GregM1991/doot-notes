@@ -1,7 +1,6 @@
-import { z } from 'zod'
-import { parseWithZod } from '@conform-to/zod'
-import { fail, type Cookies } from '@sveltejs/kit'
+import { type Cookies } from '@sveltejs/kit'
 import { handleVerification as handleOnboardingVerification } from '$lib/auth/onboarding.server'
+import { handleVerification as handleChangeEmailVerification } from '$lib/auth/changeEmail.server'
 import {
 	codeQueryParam,
 	redirectToQueryParam,
@@ -14,6 +13,9 @@ import {
 import { generateTOTP, verifyTOTP } from '$lib/server/totp'
 import { prisma } from '$lib/utils/db.server'
 import { getDomainUrl } from '$lib/utils/misc'
+import { message, superValidate } from 'sveltekit-superforms'
+import { zod } from 'sveltekit-superforms/adapters'
+import { requireUserId } from '$lib/utils/auth.server'
 
 type PrepareVerificatinParams = {
 	period: number
@@ -49,6 +51,28 @@ export function getRedirectToUrl({
 	return redirectToUrl
 }
 
+export async function requireRecentVerification(
+	userId: string | null,
+	request: Request,
+) {
+	void requireUserId(userId, request)
+	const shouldReverify = false // await shouldRequestTwoFA(request)
+	if (shouldReverify) {
+		// TODO: When 2FA is implementd
+		// const reqUrl = new URL(request.url)
+		// const redirectUrl = getRedirectToUrl({
+		// 	request,
+		// 	target: userId,
+		// 	type: twoFAVerificationType,
+		// 	redirectTo: reqUrl.pathname + reqUrl.search,
+		// })
+		// throw await redirectWithToast(redirectUrl.toString(), {
+		// 	title: 'Please Reverify',
+		// 	description: 'Please reverify your account before proceeding',
+		// })
+	}
+}
+
 /* 
   This function will generate a new one time password and config to create or edit
    a new verification in the db. We'll set the verification code in the url we'll email
@@ -62,6 +86,7 @@ export async function prepareVerification({
 }: PrepareVerificatinParams) {
 	const verifyUrl = getRedirectToUrl({ request, type, target })
 	const redirectTo = new URL(verifyUrl.toString())
+
 	const { otp, ...verificationConfig } = generateTOTP({
 		algorithm: 'SHA256',
 		charSet: 'ABCDEFGHIJKLMNOPPQRSTUVWXYZ123456789',
@@ -92,52 +117,42 @@ export async function validateRequest(
 	cookies: Cookies,
 	request: Request,
 	body: FormData | URLSearchParams,
+	userId: string | null,
 ) {
-	const submission = await parseWithZod(body, {
-		schema: VerifySchema.superRefine(async (data, ctx) => {
-			const codeIsValid = await isCodeValid({
-				code: data[codeQueryParam],
-				type: data[typeQueryParam],
-				target: data[targetQueryParam],
-			})
-			if (!codeIsValid) {
-				ctx.addIssue({
-					path: ['code'],
-					code: z.ZodIssueCode.custom,
-					message: `Invalid code`,
-				})
-				return
-			}
-		}),
-		async: true,
+	const form = await superValidate(body, zod(VerifySchema))
+	if (!form.valid) return { form }
+	const codeIsValid = await isCodeValid({
+		code: form.data[codeQueryParam],
+		type: form.data[typeQueryParam],
+		target: form.data[targetQueryParam],
 	})
-
-	if (submission.status !== 'success') {
-		console.error(`Error parsing: ${JSON.stringify(submission.reply().error)}`)
-		return fail(submission.status === 'error' ? 400 : 200, {
-			result: submission.reply(),
-		})
+	if (!codeIsValid) {
+		return message(
+			form,
+			{ type: 'error', text: 'Invalid code' },
+			{ status: 400 },
+		)
 	}
 
 	// ensurePrimary ~~~ This has to do with caching with fly.io I believe 🤷🏻
 
-	const { value: submissionValue } = submission
+	const { data: formValue } = form
 
 	async function deleteVerification() {
 		await prisma.verification.delete({
 			where: {
 				target_type: {
-					type: submissionValue[typeQueryParam],
-					target: submissionValue[targetQueryParam],
+					type: formValue[typeQueryParam],
+					target: formValue[targetQueryParam],
 				},
 			},
 		})
 	}
 
-	switch (submissionValue[typeQueryParam]) {
+	switch (formValue[typeQueryParam]) {
 		// case 'reset-password': {
 		//   await deleteVerification()
-		//   return handleResetPasswordVerification({ request, body, submission })
+		//   return handleResetPasswordVerification({ request, body, form })
 		// }
 		case 'onboarding': {
 			await deleteVerification()
@@ -145,16 +160,22 @@ export async function validateRequest(
 				cookies,
 				request,
 				body,
-				submission,
+				form,
 			})
 		}
-		// case 'change-email': {
-		//   await deleteVerification()
-		//   return handleChangeEmailVerification({ request, body, submission})
-		// }
+		case 'change-email': {
+			await deleteVerification()
+			return handleChangeEmailVerification({
+				cookies,
+				request,
+				body,
+				form,
+				userId,
+			})
+		}
 		// case '2fa': {
 		//   await deleteVerification()
-		//   return handleLoginTwoFactorVerification({ request, body, submission})
+		//   return handleLoginTwoFactorVerification({ request, body, form})
 		// }
 	}
 }

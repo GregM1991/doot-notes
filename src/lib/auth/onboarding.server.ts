@@ -2,17 +2,11 @@ import { handleNewVerification } from '$lib/server/sessions/verifySession'
 import { invariant } from '$lib/utils/misc'
 import type { VerifyFunctionArgs } from '$lib/auth/verify'
 
-export async function handleVerification({
-	cookies,
-	submission,
-}: VerifyFunctionArgs) {
-	invariant(
-		submission.status === 'success',
-		'Submission should be successful by now',
-	)
+export async function handleVerification({ cookies, form }: VerifyFunctionArgs) {
+	invariant(form.valid, 'Form should be successful by now')
 	return handleNewVerification({
 		cookies,
-		target: submission.value.target,
+		target: form.data.target,
 		redirectTo: '/onboarding',
 	})
 }

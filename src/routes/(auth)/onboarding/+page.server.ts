@@ -6,7 +6,7 @@ import {
 	SignupFormInitialValueSchema,
 } from '$lib/auth/onboarding'
 import {
-	getVerifySessionData,
+	getOrSetVerifySessionData,
 	verifySessionCookieName,
 	verifySessionCookieOptions,
 } from '$lib/server/sessions/verifySession'
@@ -25,7 +25,10 @@ export const load = (async ({ locals, cookies }) => {
 async function requireOnboardingEmail(userId: string | null, cookies: Cookies) {
 	await requireAnonymous(userId)
 	const verifySessionCookie = cookies.get(verifySessionCookieName)
-	const verifySessionData = getVerifySessionData(verifySessionCookie)
+	const verifySessionData = getOrSetVerifySessionData(
+		verifySessionCookie,
+		cookies,
+	)
 	if (!verifySessionData || typeof verifySessionData !== 'string')
 		redirect(303, '/signup')
 	return verifySessionData

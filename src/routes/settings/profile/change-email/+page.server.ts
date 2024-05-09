@@ -8,6 +8,14 @@ import { z } from 'zod'
 import { prepareVerification } from '$lib/auth/verify.server'
 import { sendEmail } from '$lib/server/email'
 import { redirect } from '@sveltejs/kit'
+import {
+	getOrSetVerifySessionData,
+	verifySessionCookieName,
+} from '$lib/server/sessions/verifySession'
+import {
+	emailChangeEmail,
+	newEmailAddressSessionKey,
+} from '$lib/auth/changeEmail.server'
 
 export const load = (async ({ locals, request }) => {
 	void requireUserId(locals.userId, request)
@@ -16,8 +24,8 @@ export const load = (async ({ locals, request }) => {
 }) satisfies PageServerLoad
 
 export const actions = {
-	default: async ({ request, locals }) => {
-		const userId = requireUserId(locals.userId, request)
+	default: async ({ request, locals, cookies }) => {
+		void requireUserId(locals.userId, request)
 
 		const form = await superValidate(request, zod(ChangeEmailSchema))
 		if (!form.valid) return { form }
@@ -40,38 +48,26 @@ export const actions = {
 		const response = await sendEmail({
 			to: email,
 			subject: `Email change request verification from Doot Notes`,
-			html: _emailChangeEmail({ emailChangeUrl: verifyUrl.toString(), otp }),
+			html: emailChangeEmail({ emailChangeUrl: verifyUrl.toString(), otp }),
 			text: 'Whats this also?',
 		})
 
 		if (response.status === 'success') {
+			// TODO: cookies.get should really be encapsulated in getOrSetVerifySessionData
+			const verifySessionCookie = cookies.get(verifySessionCookieName)
+			const verifySession = await getOrSetVerifySessionData(
+				verifySessionCookie,
+				cookies,
+			)
+			verifySession[newEmailAddressSessionKey] = form.data.email
+
 			return redirect(303, redirectTo.toString())
 		} else {
-			return message(form, response.error.message, { status: 500 })
+			return message(
+				form,
+				{ type: 'error', text: response.error.message },
+				{ status: 500 },
+			)
 		}
 	},
-}
-
-export function _emailChangeEmail({
-	emailChangeUrl,
-	otp,
-}: {
-	emailChangeUrl: string
-	otp: string
-}) {
-	return `
-	<!DOCTYPE PUBLIC “-//W3C//DTD XHTML 1.0 Transitional//EN” “https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd”>
-	<html lang="en" dir="ltr" xmlns="http://www.w3.org/1999/xhtml">
-		<head>
-			<meta charset="UTF-8" />
-			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		</head>
-		<body>
-			<h1>Doot doot! Here's the code to change your e-mail address</h1>
-			<p>Use this verification code: <strong>${otp}</strong></p>
-			<p>Or click the link to get started:</p>
-			<p><a href="${emailChangeUrl}">${emailChangeUrl}</a></p>
-		</body>
-	</html>
-	`
 }

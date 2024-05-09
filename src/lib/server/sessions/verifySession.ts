@@ -41,8 +41,16 @@ export async function handleNewVerification({
 	throw redirect(303, safeRedirect(redirectTo))
 }
 
-export function getVerifySessionData(sessionCookie: string | undefined) {
-	if (!sessionCookie) return null
+export function getOrSetVerifySessionData(
+	sessionCookie: string | undefined,
+	cookies: Cookies,
+) {
+	if (!sessionCookie) {
+		const newVerifySessionValue = {}
+		void encryptAndSignCookieValue(newVerifySessionValue)
+		return newVerifySessionValue
+	}
 	const decryptedSessionValue = decryptCookie(sessionCookie) // TODO: Need to stop this being any (I tried safeParse but it returned expected string but got undefined error)
+	console.log({ decryptedSessionValue })
 	return decryptedSessionValue[onboardingEmailSessionKey] ?? null
 }

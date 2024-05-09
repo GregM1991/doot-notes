@@ -1,28 +1,25 @@
 <script script="ts">
-	import { enhance } from '$app/forms'
 	import { Input, Button } from '$lib/components'
-	import { page } from '$app/stores'
+	import SuperDebug, { superForm } from 'sveltekit-superforms'
 
+	export let data
+
+	const { form, errors, enhance, message } = superForm(data.verifyForm)
 	const label = 'Enter Code'
-	export let form
-	$: searchParams = {
-		type: $page.url.searchParams.get('type'),
-		target: $page.url.searchParams.get('target'),
-		redirectTo: $page.url.searchParams.get('redirectTo'),
-	}
 </script>
 
-<h1>Have a geez' at your email</h1>
+<SuperDebug {form} />
+<h1>Have a geez at your email</h1>
 <span>We've sent you a little prezzie to verify your email address</span>
 <form method="POST" use:enhance>
 	<div>
-		<Input name="code" {label} errors={form?.result.error?.code} />
+		<Input name="code" value={$form.code} {label} errors={$errors.code || $message?.text} />
 	</div>
-	<Input name="type" value={searchParams?.type ?? ''} type="hidden" />
-	<Input name="target" value={searchParams?.target ?? ''} type="hidden" />
+	<Input name="type" value={$form.type} type="hidden" />
+	<Input name="target" value={$form.target} type="hidden" />
 	<Input
 		name="redirectTo"
-		value={searchParams.redirectTo ?? ''}
+		value={$form.redirectTo}
 		type="hidden"
 	/>
 	<Button fluid secondary type="submit">Submit</Button>
