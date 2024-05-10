@@ -8,7 +8,6 @@
 	const label = 'Enter Code'
 </script>
 
-<SuperDebug {form} />
 <h1>Have a geez at your email</h1>
 <span>We've sent you a little prezzie to verify your email address</span>
 <form method="POST" use:enhance>

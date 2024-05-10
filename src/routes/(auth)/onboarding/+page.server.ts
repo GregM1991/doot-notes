@@ -4,9 +4,10 @@ import { fail, redirect, type Actions, type Cookies } from '@sveltejs/kit'
 import {
 	SignupFormSchema,
 	SignupFormInitialValueSchema,
+	onboardingEmailSessionKey,
 } from '$lib/auth/onboarding'
 import {
-	getOrSetVerifySessionData,
+	getVerifySessionData,
 	verifySessionCookieName,
 	verifySessionCookieOptions,
 } from '$lib/server/sessions/verifySession'
@@ -25,11 +26,9 @@ export const load = (async ({ locals, cookies }) => {
 async function requireOnboardingEmail(userId: string | null, cookies: Cookies) {
 	await requireAnonymous(userId)
 	const verifySessionCookie = cookies.get(verifySessionCookieName)
-	const verifySessionData = getOrSetVerifySessionData(
-		verifySessionCookie,
-		cookies,
-	)
-	if (!verifySessionData || typeof verifySessionData !== 'string')
+	const verifySessionData = getVerifySessionData(verifySessionCookie)
+	const onBoardingEmail = verifySessionData[onboardingEmailSessionKey]
+	if (!onBoardingEmail || typeof onBoardingEmail !== 'string')
 		redirect(303, '/signup')
 	return verifySessionData
 }

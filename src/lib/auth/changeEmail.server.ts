@@ -1,5 +1,5 @@
 import {
-	getOrSetVerifySessionData,
+	getVerifySessionData,
 	handleNewVerification,
 	verifySessionCookieName,
 } from '$lib/server/sessions/verifySession'
@@ -9,6 +9,8 @@ import { message } from 'sveltekit-superforms'
 import { prisma } from '$lib/utils/db.server'
 import { sendEmail } from '$lib/server/email'
 import { requireRecentVerification } from './verify.server'
+import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
+import { redirect } from '@sveltejs/kit'
 
 export const newEmailAddressSessionKey = 'new-email-address'
 
@@ -20,13 +22,10 @@ export async function handleVerification({
 }: VerifyFunctionArgs) {
 	await requireRecentVerification(userId ?? null, request)
 	invariant(form.valid, 'Form should be successful by now')
-	// TODO: cookies.get should really be encapsulated in getOrSetVerifySessionData
+	// TODO: cookies.get should really be encapsulated in getVerifySessionData
 	const verifySessionCookie = cookies.get(verifySessionCookieName)
-	const verifySession = await getOrSetVerifySessionData(
-		verifySessionCookie,
-		cookies,
-	)
-	const newEmail = verifySession[newEmailAddressSessionKey] //TODO: PICKUP this is undefined so it's returning the error below, SORTIT
+	const verifySession = await getVerifySessionData(verifySessionCookie)
+	const newEmail = verifySession[newEmailAddressSessionKey]
 
 	if (!newEmail) {
 		return message(
@@ -38,7 +37,6 @@ export async function handleVerification({
 			{ status: 400 },
 		)
 	}
-
 	const preUpdatedUser = await prisma.user.findFirstOrThrow({
 		select: { email: true },
 		where: { id: form.data.target },
@@ -56,11 +54,12 @@ export async function handleVerification({
 		text: 'Whats this also?',
 	})
 
-	return handleNewVerification({
-		cookies,
-		target: form.data.target,
-		redirectTo: '/onboarding',
+	setToastDataToCookie(cookies, {
+		title: 'Success',
+		description: 'Email successfully updated',
+		type: 'success',
 	})
+	return redirect(302, '/settings/profile')
 }
 
 export function emailChangeEmail({

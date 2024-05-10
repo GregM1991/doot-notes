@@ -1,17 +1,12 @@
 import { requireUserId } from '$lib/utils/auth.server'
-import { fail, message, setError, superValidate } from 'sveltekit-superforms'
+import { message, setError, superValidate } from 'sveltekit-superforms'
 import type { PageServerLoad } from './$types'
 import { zod } from 'sveltekit-superforms/adapters'
 import { ChangeEmailSchema } from '$lib/profile/schemas'
 import { prisma } from '$lib/utils/db.server'
-import { z } from 'zod'
 import { prepareVerification } from '$lib/auth/verify.server'
 import { sendEmail } from '$lib/server/email'
-import { redirect } from '@sveltejs/kit'
-import {
-	getOrSetVerifySessionData,
-	verifySessionCookieName,
-} from '$lib/server/sessions/verifySession'
+import { handleNewVerification } from '$lib/server/sessions/verifySession'
 import {
 	emailChangeEmail,
 	newEmailAddressSessionKey,
@@ -25,7 +20,7 @@ export const load = (async ({ locals, request }) => {
 
 export const actions = {
 	default: async ({ request, locals, cookies }) => {
-		void requireUserId(locals.userId, request)
+		const userId = requireUserId(locals.userId, request)
 
 		const form = await superValidate(request, zod(ChangeEmailSchema))
 		if (!form.valid) return { form }
@@ -42,7 +37,7 @@ export const actions = {
 			period: 10 * 60,
 			request,
 			type: 'change-email',
-			target: email,
+			target: userId,
 		})
 
 		const response = await sendEmail({
@@ -53,15 +48,12 @@ export const actions = {
 		})
 
 		if (response.status === 'success') {
-			// TODO: cookies.get should really be encapsulated in getOrSetVerifySessionData
-			const verifySessionCookie = cookies.get(verifySessionCookieName)
-			const verifySession = await getOrSetVerifySessionData(
-				verifySessionCookie,
+			return handleNewVerification({
 				cookies,
-			)
-			verifySession[newEmailAddressSessionKey] = form.data.email
-
-			return redirect(303, redirectTo.toString())
+				target: form.data.email,
+				redirectTo: `${redirectTo.pathname}${redirectTo.search}`,
+				type: newEmailAddressSessionKey,
+			})
 		} else {
 			return message(
 				form,

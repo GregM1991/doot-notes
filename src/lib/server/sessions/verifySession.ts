@@ -6,15 +6,22 @@ import {
 import { onboardingEmailSessionKey } from '$lib/auth/onboarding'
 import { safeRedirect } from '$lib/utils/misc'
 import { z } from 'zod'
+import { newEmailAddressSessionKey } from '$lib/auth/changeEmail.server'
+
+type VerificationType =
+	| typeof onboardingEmailSessionKey
+	| typeof newEmailAddressSessionKey
 
 interface HandleNewVerificationArgs {
 	cookies: Cookies
 	target: string
+	type: VerificationType
 	redirectTo: string
 }
 
 export const VerifySessionSchema = z.object({
 	[onboardingEmailSessionKey]: z.string().nullable(),
+	[newEmailAddressSessionKey]: z.string().nullable(),
 })
 
 export const verifySessionCookieName = 'dn_verification'
@@ -29,10 +36,11 @@ export const verifySessionCookieOptions = {
 export async function handleNewVerification({
 	cookies,
 	target,
+	type,
 	redirectTo,
 }: HandleNewVerificationArgs) {
 	const encryptedCookieString = encryptAndSignCookieValue({
-		[onboardingEmailSessionKey]: target,
+		[type]: target,
 	})
 	cookies.set(verifySessionCookieName, encryptedCookieString, {
 		...verifySessionCookieOptions,
@@ -41,16 +49,8 @@ export async function handleNewVerification({
 	throw redirect(303, safeRedirect(redirectTo))
 }
 
-export function getOrSetVerifySessionData(
-	sessionCookie: string | undefined,
-	cookies: Cookies,
-) {
-	if (!sessionCookie) {
-		const newVerifySessionValue = {}
-		void encryptAndSignCookieValue(newVerifySessionValue)
-		return newVerifySessionValue
-	}
+export function getVerifySessionData(sessionCookie: string | undefined) {
+	if (!sessionCookie) return null
 	const decryptedSessionValue = decryptCookie(sessionCookie) // TODO: Need to stop this being any (I tried safeParse but it returned expected string but got undefined error)
-	console.log({ decryptedSessionValue })
-	return decryptedSessionValue[onboardingEmailSessionKey] ?? null
+	return decryptedSessionValue ?? null
 }
