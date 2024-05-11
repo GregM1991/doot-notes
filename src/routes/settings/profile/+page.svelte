@@ -8,7 +8,7 @@
 	import EnvelopeClosed from 'virtual:icons/radix-icons/envelopeClosed'
 
 	export let data
-	const { form } = superForm(data.editProfileForm)
+	const { form, enhance, errors } = superForm(data.editProfileForm)
 	const profileSrc = getUserImgSrc(data.user?.image?.id)
 </script>
 
@@ -21,14 +21,24 @@
 			<Camera />
 		</a>
 	</div>
-	<form class="form">
+	<form class="form" use:enhance>
 		<div class="inputs">
 			<!-- TODO: Should really incorporate this form group class into the input -->
 			<div class="form-group">
-				<Input name="username" type="text" bind:value={$form.username} />
+				<Input
+					name="username"
+					type="text"
+					bind:value={$form.username}
+					errors={$errors.username}
+				/>
 			</div>
 			<div class="form-group">
-				<Input name="name" type="text" bind:value={$form.name} />
+				<Input
+					name="name"
+					type="text"
+					bind:value={$form.name}
+					errors={$errors.name}
+				/>
 			</div>
 		</div>
 		<Button
@@ -36,12 +46,18 @@
 			fluid
 			name="intent"
 			value={profileUpdateActionIntent}
-			type="submit">Save changes</Button
+			type="submit"
 		>
+			Save changes
+		</Button>
 	</form>
 	<div class="profile-links">
-		<a class="link" href="profile/password"><DotsHorizontal /> Change password</a>
-		<a class="link" href="profile/change-email"><EnvelopeClosed /> Change email from {data.user.email}</a>
+		<a class="link" href="profile/password">
+			<DotsHorizontal /> Change password
+		</a>
+		<a class="link" href="profile/change-email">
+			<EnvelopeClosed /> Change email from {data.user.email}
+		</a>
 	</div>
 </div>
 
@@ -121,6 +137,6 @@
 	.link {
 		display: flex;
 		align-items: center;
-		gap: var(--space-3xs)
+		gap: var(--space-3xs);
 	}
 </style>

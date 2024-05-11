@@ -3,16 +3,12 @@ import { prisma } from '$lib/utils/db.server'
 import { invariantResponse } from '$lib/utils/misc'
 import { superValidate } from 'sveltekit-superforms'
 import type { Actions, PageServerLoad } from './$types'
-import { z } from 'zod'
-import { NameSchema, UsernameSchema } from '$lib/utils/userValidation'
 import { zod } from 'sveltekit-superforms/adapters'
 import { profileUpdateActionIntent } from '$lib/profile/consts'
-import { profileUpdateAction } from '$lib/profile/profileActions.server'
-
-const ProfileFormSchema = z.object({
-	name: NameSchema.optional(),
-	username: UsernameSchema,
-})
+import {
+	ProfileFormSchema,
+	profileUpdateAction,
+} from '$lib/profile/profileActions.server'
 
 export const load = (async ({ request, locals, parent }) => {
 	const userId = requireUserId(locals.userId, request)
@@ -52,7 +48,7 @@ export const actions = {
 
 		switch (intent) {
 			case profileUpdateActionIntent: {
-				return profileUpdateAction(request, userId, formData)
+				return profileUpdateAction(userId, formData)
 			}
 		}
 	},
