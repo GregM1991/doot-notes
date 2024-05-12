@@ -2,13 +2,13 @@
 	import { Input, Button } from '$lib/components'
 	import { profileUpdateActionIntent } from '$lib/profile/consts.js'
 	import { getUserImgSrc } from '$lib/utils/misc'
-	import { superForm } from 'sveltekit-superforms'
+	import SuperDebug, { superForm } from 'sveltekit-superforms'
 	import Camera from 'virtual:icons/radix-icons/camera'
 	import DotsHorizontal from 'virtual:icons/radix-icons/dotsHorizontal'
 	import EnvelopeClosed from 'virtual:icons/radix-icons/envelopeClosed'
 
 	export let data
-	const { form, enhance, errors } = superForm(data.editProfileForm)
+	const { form, enhance, errors } = superForm(data.form)
 	const profileSrc = getUserImgSrc(data.user?.image?.id)
 </script>
 
@@ -21,11 +21,12 @@
 			<Camera />
 		</a>
 	</div>
-	<form class="form" use:enhance>
+	<form method="POST" class="form" use:enhance>
 		<div class="inputs">
 			<!-- TODO: Should really incorporate this form group class into the input -->
 			<div class="form-group">
 				<Input
+					label="Username"
 					name="username"
 					type="text"
 					bind:value={$form.username}
@@ -34,6 +35,7 @@
 			</div>
 			<div class="form-group">
 				<Input
+					label="Name"
 					name="name"
 					type="text"
 					bind:value={$form.name}

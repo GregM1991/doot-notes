@@ -1,7 +1,7 @@
 import { requireUserId } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
 import { invariantResponse } from '$lib/utils/misc'
-import { superValidate } from 'sveltekit-superforms'
+import { setError, superValidate } from 'sveltekit-superforms'
 import type { Actions, PageServerLoad } from './$types'
 import { zod } from 'sveltekit-superforms/adapters'
 import { profileUpdateActionIntent } from '$lib/profile/consts'
@@ -10,7 +10,7 @@ import {
 	profileUpdateAction,
 } from '$lib/profile/profileActions.server'
 
-export const load = (async ({ request, locals, parent }) => {
+export const load = (async ({ request, locals }) => {
 	const userId = requireUserId(locals.userId, request)
 	const user = await prisma.user.findUnique({
 		where: { id: userId },
@@ -35,8 +35,8 @@ export const load = (async ({ request, locals, parent }) => {
 		},
 	})
 	invariantResponse(user, 'User not found', 404)
-	const editProfileForm = await superValidate(user, zod(ProfileFormSchema))
-	return { editProfileForm, user }
+	const form = await superValidate(user, zod(ProfileFormSchema))
+	return { form, user }
 }) satisfies PageServerLoad
 
 export const actions = {
@@ -46,9 +46,14 @@ export const actions = {
 		const formData = await request.formData()
 		const intent = formData.get('intent')
 
+		const form = await superValidate(formData, zod(ProfileFormSchema))
+
 		switch (intent) {
 			case profileUpdateActionIntent: {
-				return profileUpdateAction(userId, formData)
+				return profileUpdateAction(userId, form)
+			}
+			default: {
+				setError(form, `Invalid intent "${intent}"`, { status: 400 })
 			}
 		}
 	},

@@ -1,24 +1,30 @@
 import { z } from 'zod'
-import { fail, setError, superValidate } from 'sveltekit-superforms'
-import { zod } from 'sveltekit-superforms/adapters'
+import { fail, setError, type SuperValidated } from 'sveltekit-superforms'
 import { NameSchema, UsernameSchema } from '$lib/utils/userValidation'
 import { prisma } from '$lib/utils/db.server'
+import type { Message } from '$lib/types'
 
 export const ProfileFormSchema = z.object({
 	name: NameSchema.optional(),
 	username: UsernameSchema,
 })
 
-export async function profileUpdateAction(userId: string, formData: FormData) {
-	const form = await superValidate(formData, zod(ProfileFormSchema))
+type Form = SuperValidated<
+	z.input<typeof ProfileFormSchema>,
+	Message,
+	z.output<typeof ProfileFormSchema>
+>
+
+export async function profileUpdateAction(userId: string, form: Form) {
 	if (!form.valid) return fail(400, { form })
+
 	const existingUser = await prisma.user.findUnique({
 		where: { username: form.data.username },
 		select: { id: true },
 	})
 
 	if (existingUser && existingUser.id !== userId) {
-		return setError(form, 'username', 'E-mail already exists')
+		return setError(form, 'username', 'Username already exists')
 	}
 
 	await prisma.user.update({
