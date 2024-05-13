@@ -8,8 +8,8 @@
 	import EnvelopeClosed from 'virtual:icons/radix-icons/envelopeClosed'
 
 	export let data
-	const { form, enhance, errors } = superForm(data.form)
-	const profileSrc = getUserImgSrc(data.user?.image?.id)
+	const { form, enhance, errors } = superForm(data.form, { resetForm: false })
+	const profileSrc = getUserImgSrc(data.user.image?.id)
 </script>
 
 <div class="wrapper">

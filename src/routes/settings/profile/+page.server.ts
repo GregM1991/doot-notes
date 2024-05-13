@@ -36,11 +36,12 @@ export const load = (async ({ request, locals }) => {
 	})
 	invariantResponse(user, 'User not found', 404)
 	const form = await superValidate(user, zod(ProfileFormSchema))
+
 	return { form, user }
 }) satisfies PageServerLoad
 
 export const actions = {
-	default: async ({ locals, request }) => {
+	default: async ({ locals, request, cookies }) => {
 		const userId = requireUserId(locals.userId, request)
 
 		const formData = await request.formData()
@@ -50,7 +51,7 @@ export const actions = {
 
 		switch (intent) {
 			case profileUpdateActionIntent: {
-				return profileUpdateAction(userId, form)
+				return profileUpdateAction(userId, form, cookies)
 			}
 			default: {
 				setError(form, `Invalid intent "${intent}"`, { status: 400 })
