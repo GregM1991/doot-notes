@@ -1,12 +1,17 @@
 <script lang="ts">
 	import { Input, Button } from '$lib/components'
-	import { profileUpdateActionIntent, signOutOfSessionsActionIntent } from '$lib/profile/consts.js'
+	import {
+		profileUpdateActionIntent,
+		signOutOfSessionsActionIntent,
+	} from '$lib/profile/consts.js'
 	import { getUserImgSrc } from '$lib/utils/misc'
 	import { superForm } from 'sveltekit-superforms'
 	import Camera from 'virtual:icons/radix-icons/camera'
 	import DotsHorizontal from 'virtual:icons/radix-icons/dotsHorizontal'
 	import EnvelopeClosed from 'virtual:icons/radix-icons/envelopeClosed'
 	import Person from 'virtual:icons/radix-icons/person'
+	import LockClosed from 'virtual:icons/radix-icons/lockClosed'
+	import LockOpened from 'virtual:icons/radix-icons/lockOpen1'
 
 	export let data
 	const { form, enhance, errors } = superForm(data.form, { resetForm: false })
@@ -66,9 +71,24 @@
 				<EnvelopeClosed /> Change email from {data.user.email}
 			</a>
 		</li>
+		<li>
+			<a class="link" href="profile/change-email">
+				{#if data.isTwoFactorEnabled}
+					<LockClosed /> 2FA is enabled
+				{:else}
+					<LockOpened />	Enable 2FA
+				{/if} 
+			</a>
+		</li>
 		<li class="link">
-			{#if (otherSessions)}
-				<Button small form="profile" name="intent" value={signOutOfSessionsActionIntent} type="submit">Sign out other sessions</Button>
+			{#if otherSessions}
+				<Button
+					small
+					form="profile"
+					name="intent"
+					value={signOutOfSessionsActionIntent}
+					type="submit">Sign out other sessions</Button
+				>
 			{:else}
 				<Person /> This is your only session
 			{/if}

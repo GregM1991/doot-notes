@@ -7,6 +7,7 @@ import { zod } from 'sveltekit-superforms/adapters'
 import {
 	profileUpdateActionIntent,
 	signOutOfSessionsActionIntent,
+	twoFAVerificationType,
 } from '$lib/profile/consts'
 import {
 	ProfileFormSchema,
@@ -39,9 +40,13 @@ export const load = (async ({ request, locals }) => {
 		},
 	})
 	invariantResponse(user, 'User not found', 404)
+	const twoFactorVerification = await prisma.verification.findUnique({
+		select: { id: true },
+		where: { target_type: { type: twoFAVerificationType, target: userId } },
+	})
 	const form = await superValidate(user, zod(ProfileFormSchema))
 
-	return { form, user }
+	return { form, user, isTwoFactorEnabled: Boolean(twoFactorVerification) }
 }) satisfies PageServerLoad
 
 export const actions = {
