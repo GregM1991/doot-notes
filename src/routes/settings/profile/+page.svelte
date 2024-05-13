@@ -1,15 +1,17 @@
 <script lang="ts">
 	import { Input, Button } from '$lib/components'
-	import { profileUpdateActionIntent } from '$lib/profile/consts.js'
+	import { profileUpdateActionIntent, signOutOfSessionsActionIntent } from '$lib/profile/consts.js'
 	import { getUserImgSrc } from '$lib/utils/misc'
-	import SuperDebug, { superForm } from 'sveltekit-superforms'
+	import { superForm } from 'sveltekit-superforms'
 	import Camera from 'virtual:icons/radix-icons/camera'
 	import DotsHorizontal from 'virtual:icons/radix-icons/dotsHorizontal'
 	import EnvelopeClosed from 'virtual:icons/radix-icons/envelopeClosed'
+	import Person from 'virtual:icons/radix-icons/person'
 
 	export let data
 	const { form, enhance, errors } = superForm(data.form, { resetForm: false })
 	const profileSrc = getUserImgSrc(data.user.image?.id)
+	$: otherSessions = data.user._count.sessions - 1
 </script>
 
 <div class="wrapper">
@@ -21,7 +23,7 @@
 			<Camera />
 		</a>
 	</div>
-	<form method="POST" class="form" use:enhance>
+	<form id="profile" method="POST" class="form" use:enhance>
 		<div class="inputs">
 			<!-- TODO: Should really incorporate this form group class into the input -->
 			<div class="form-group">
@@ -53,14 +55,25 @@
 			Save changes
 		</Button>
 	</form>
-	<div class="profile-links">
-		<a class="link" href="profile/password">
-			<DotsHorizontal /> Change password
-		</a>
-		<a class="link" href="profile/change-email">
-			<EnvelopeClosed /> Change email from {data.user.email}
-		</a>
-	</div>
+	<ul class="profile-links">
+		<li>
+			<a class="link" href="profile/password">
+				<DotsHorizontal /> Change password
+			</a>
+		</li>
+		<li>
+			<a class="link" href="profile/change-email">
+				<EnvelopeClosed /> Change email from {data.user.email}
+			</a>
+		</li>
+		<li class="link">
+			{#if (otherSessions)}
+				<Button small form="profile" name="intent" value={signOutOfSessionsActionIntent} type="submit">Sign out other sessions</Button>
+			{:else}
+				<Person /> This is your only session
+			{/if}
+		</li>
+	</ul>
 </div>
 
 <style>
@@ -132,8 +145,9 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		gap: var(--space-2xs);
+		gap: var(--space-s);
 		width: 48rem;
+		list-style: none;
 	}
 
 	.link {

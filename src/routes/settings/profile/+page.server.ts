@@ -4,10 +4,14 @@ import { invariantResponse } from '$lib/utils/misc'
 import { setError, superValidate } from 'sveltekit-superforms'
 import type { Actions, PageServerLoad } from './$types'
 import { zod } from 'sveltekit-superforms/adapters'
-import { profileUpdateActionIntent } from '$lib/profile/consts'
+import {
+	profileUpdateActionIntent,
+	signOutOfSessionsActionIntent,
+} from '$lib/profile/consts'
 import {
 	ProfileFormSchema,
 	profileUpdateAction,
+	signOutOfSessionsAction,
 } from '$lib/profile/profileActions.server'
 
 export const load = (async ({ request, locals }) => {
@@ -23,15 +27,15 @@ export const load = (async ({ request, locals }) => {
 				select: { id: true },
 			},
 			// TODO: Bring in session count
-			// _count: {
-			// 	select: {
-			// 		sessions: {
-			// 			where: {
-			// 				expirationDate: { gt: new Date() },
-			// 			},
-			// 		},
-			// 	},
-			// },
+			_count: {
+				select: {
+					sessions: {
+						where: {
+							expirationDate: { gt: new Date() },
+						},
+					},
+				},
+			},
 		},
 	})
 	invariantResponse(user, 'User not found', 404)
@@ -52,6 +56,9 @@ export const actions = {
 		switch (intent) {
 			case profileUpdateActionIntent: {
 				return profileUpdateAction(userId, form, cookies)
+			}
+			case signOutOfSessionsActionIntent: {
+				return signOutOfSessionsAction(userId, form, cookies)
 			}
 			default: {
 				setError(form, `Invalid intent "${intent}"`, { status: 400 })

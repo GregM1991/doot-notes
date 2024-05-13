@@ -19,7 +19,7 @@ model User {
   image UserImage?
   notes Note[]
   password Password?
-  session Session[]
+  sessions Session[]
 }
 
 model Password {
