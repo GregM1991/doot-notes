@@ -11,7 +11,7 @@
 	import EnvelopeClosed from 'virtual:icons/radix-icons/envelopeClosed'
 	import Person from 'virtual:icons/radix-icons/person'
 	import LockClosed from 'virtual:icons/radix-icons/lockClosed'
-	import LockOpened from 'virtual:icons/radix-icons/lockOpen1'
+	import LockOpened from 'virtual:icons/radix-icons/lock-open-1'
 
 	export let data
 	const { form, enhance, errors } = superForm(data.form, { resetForm: false })
@@ -72,7 +72,7 @@
 			</a>
 		</li>
 		<li>
-			<a class="link" href="profile/change-email">
+			<a class="link" href="profile/two-factor">
 				{#if data.isTwoFactorEnabled}
 					<LockClosed /> 2FA is enabled
 				{:else}
