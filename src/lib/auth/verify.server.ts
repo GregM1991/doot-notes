@@ -1,4 +1,4 @@
-import { type Cookies } from '@sveltejs/kit'
+import { redirect, type Cookies } from '@sveltejs/kit'
 import { handleVerification as handleOnboardingVerification } from '$lib/auth/onboarding.server'
 import { handleVerification as handleChangeEmailVerification } from '$lib/auth/changeEmail.server'
 import {
@@ -16,6 +16,8 @@ import { getDomainUrl } from '$lib/utils/misc'
 import { message, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import { requireUserId } from '$lib/utils/auth.server'
+import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
+import { twoFAVerificationType } from '$lib/profile/consts'
 
 type PrepareVerificatinParams = {
 	period: number
@@ -52,24 +54,25 @@ export function getRedirectToUrl({
 }
 
 export async function requireRecentVerification(
-	userId: string | null,
+	userIdArg: string | null,
 	request: Request,
+	cookies: Cookies,
 ) {
-	void requireUserId(userId, request)
+	const userId = requireUserId(userIdArg, request)
 	const shouldReverify = false // await shouldRequestTwoFA(request)
 	if (shouldReverify) {
-		// TODO: When 2FA is implementd
-		// const reqUrl = new URL(request.url)
-		// const redirectUrl = getRedirectToUrl({
-		// 	request,
-		// 	target: userId,
-		// 	type: twoFAVerificationType,
-		// 	redirectTo: reqUrl.pathname + reqUrl.search,
-		// })
-		// throw await redirectWithToast(redirectUrl.toString(), {
-		// 	title: 'Please Reverify',
-		// 	description: 'Please reverify your account before proceeding',
-		// })
+		const reqUrl = new URL(request.url)
+		const redirectUrl = getRedirectToUrl({
+			request,
+			target: userId,
+			type: twoFAVerificationType,
+			redirectTo: reqUrl.pathname + reqUrl.search,
+		})
+		setToastDataToCookie(cookies, {
+			title: 'Please Reverify',
+			description: 'Please reverify your account before proceeding',
+		})
+		throw redirect(303, redirectUrl.toString())
 	}
 }
 
