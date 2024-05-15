@@ -5,12 +5,14 @@ import { setError, superValidate } from 'sveltekit-superforms'
 import type { Actions, PageServerLoad } from './$types'
 import { zod } from 'sveltekit-superforms/adapters'
 import {
+	deleteDataActionIntent,
 	profileUpdateActionIntent,
 	signOutOfSessionsActionIntent,
 	twoFAVerificationType,
 } from '$lib/profile/consts'
 import {
 	ProfileFormSchema,
+	deleteDataAction,
 	profileUpdateAction,
 	signOutOfSessionsAction,
 } from '$lib/profile/profileActions.server'
@@ -64,6 +66,9 @@ export const actions = {
 			}
 			case signOutOfSessionsActionIntent: {
 				return signOutOfSessionsAction(userId, form, cookies)
+			}
+			case deleteDataActionIntent: {
+				return deleteDataAction(userId, cookies)
 			}
 			default: {
 				setError(form, `Invalid intent "${intent}"`, { status: 400 })

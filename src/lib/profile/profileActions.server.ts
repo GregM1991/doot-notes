@@ -4,7 +4,7 @@ import { NameSchema, UsernameSchema } from '$lib/utils/userValidation'
 import { prisma } from '$lib/utils/db.server'
 import type { Message } from '$lib/types'
 import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
-import type { Cookies } from '@sveltejs/kit'
+import { redirect, type Cookies } from '@sveltejs/kit'
 import {
 	authSessionCookieName,
 	getAuthSessionData,
@@ -73,4 +73,14 @@ export async function signOutOfSessionsAction(
 		},
 	})
 	return { form }
+}
+
+export async function deleteDataAction(userId: string, cookies: Cookies) {
+	await prisma.user.delete({ where: { id: userId } })
+	setToastDataToCookie(cookies, {
+		type: 'success',
+		title: 'Data Deleted',
+		description: 'All of your data has been deleted',
+	})
+	return redirect(303, '/')
 }

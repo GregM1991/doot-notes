@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Input, Button } from '$lib/components'
 	import {
+	deleteDataActionIntent,
 		profileUpdateActionIntent,
 		signOutOfSessionsActionIntent,
 	} from '$lib/profile/consts.js'
@@ -12,6 +13,7 @@
 	import Person from 'virtual:icons/radix-icons/person'
 	import LockClosed from 'virtual:icons/radix-icons/lockClosed'
 	import LockOpened from 'virtual:icons/radix-icons/lock-open-1'
+	import Download from 'virtual:icons/radix-icons/download'
 
 	export let data
 	const { form, enhance, errors } = superForm(data.form, { resetForm: false })
@@ -77,7 +79,7 @@
 					<LockClosed /> 2FA is enabled
 				{:else}
 					<LockOpened /> Enable 2FA
-				{/if} 
+				{/if}
 			</a>
 		</li>
 		<li class="link">
@@ -92,6 +94,28 @@
 			{:else}
 				<Person /> This is your only session
 			{/if}
+		</li>
+		<li>
+			<a
+				download="my-doot-notes-data.json"
+				class="link"
+				href="/api/resources/download-user-data"
+			>
+				<Download /> Download your data
+			</a>
+		</li>
+		<li>
+			<Button
+				form="profile"
+				danger
+				type="submit"
+				small
+				style="font-size: var(--type-step-0)"
+				name="intent"
+				value="{deleteDataActionIntent}"
+			>
+				<Download /> Delete your account and data
+			</Button>
 		</li>
 	</ul>
 </div>
