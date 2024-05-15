@@ -76,7 +76,7 @@
 				{#if data.isTwoFactorEnabled}
 					<LockClosed /> 2FA is enabled
 				{:else}
-					<LockOpened />	Enable 2FA
+					<LockOpened /> Enable 2FA
 				{/if} 
 			</a>
 		</li>

@@ -187,20 +187,19 @@ export async function validateRequest(
 	if there's no verification found, or if there is one found but the code isn't
 	valid (those nasty h4cker$).
 */
-async function isCodeValid({ code, type, target }: IsCodeValidParams) {
+export async function isCodeValid({ code, type, target }: IsCodeValidParams) {
 	const verification = await prisma.verification.findUnique({
 		where: {
 			target_type: { target, type },
 			OR: [{ expiresAt: { gt: new Date() } }, { expiresAt: null }],
 		},
+		select: { algorithm: true, secret: true, period: true, charSet: true },
 	})
-
 	if (!verification) return false
 	const result = verifyTOTP({
 		otp: code,
 		...verification,
 	})
-
 	if (!result) return false
 
 	return true

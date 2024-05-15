@@ -12,12 +12,22 @@
 		<p class="flex">
 			<LockClosed /> Two Factor Authentication is enabled.
 		</p>
-		<Button href="disable" secondary>Disable 2FA</Button>
+		<Button href="two-factor/disable" secondary>Disable 2FA</Button>
 	{:else}
-		<p class="flex">
-			<LockOpened /> You haven't dooted on two-factor authentiaction yet.
-		</p>
-		<Button href="verify" secondary>Enable 2FA</Button>
+		<form class="form" method="POST">
+			<p class="flex">
+				<LockOpened /> You haven't dooted on two-factor authentiaction yet.
+			</p>
+			<p>
+				Two factor authentication is a great way to doot another level of
+				security to your account. For this extra layer you will need an app like <a
+					href="https://1password.com">1Password</a
+				> to generate a code to use when logging in.
+			</p>
+			<Button type="submit" secondary>
+				Enable 2FA
+			</Button>
+		</form>
 	{/if}
 </main>
 
@@ -27,6 +37,7 @@
 		flex-direction: column;
 		align-items: center;
 		gap: var(--space-s);
+		text-align: center;
 	}
 
 	h1 {

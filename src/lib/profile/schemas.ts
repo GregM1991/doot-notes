@@ -29,3 +29,9 @@ export const ChangePasswordForm = z
 export const ChangeEmailSchema = z.object({
 	email: EmailSchema,
 })
+
+export const CancelSchema = z.object({ intent: z.literal('cancel') })
+export const VerifySchema = z.object({
+	intent: z.union([z.literal('verify'), z.literal('cancel')]),
+	code: z.string().min(6).max(6),
+})

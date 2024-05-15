@@ -2,6 +2,7 @@ import { z } from 'zod'
 import type { Cookies } from '@sveltejs/kit'
 import type { SuperValidated } from 'sveltekit-superforms'
 import type { Message } from '$lib/types'
+import type { twoFAVerifyVerificationType } from '$lib/profile/consts'
 
 export const codeQueryParam = 'code'
 export const targetQueryParam = 'target'
@@ -31,6 +32,6 @@ export type VerifyFunctionArgs = {
 }
 export type IsCodeValidParams = {
 	code: string
-	type: VerificationTypes
+	type: VerificationTypes | typeof twoFAVerifyVerificationType
 	target: string
 }
