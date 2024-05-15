@@ -6,7 +6,6 @@ import { zod } from 'sveltekit-superforms/adapters'
 import { VerifySchema } from '$lib/auth/verify'
 
 export const load = (async ({ url }) => {
-	console.log('verify page load')
 	const verifyForm = await superValidate(url.searchParams, zod(VerifySchema), {
 		errors: false,
 	})

@@ -27,7 +27,7 @@ export const actions = {
 
 		const form = await superValidate(request, zod(LoginFormSchema))
 		if (!form.valid)
-			return fail(400, { ...form, data: { ...form.data, password: '' } })
+			return { form: { ...form, data: { ...form.data, password: '' } } }
 
 		const session = await login(form.data)
 		if (!session) {

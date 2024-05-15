@@ -1,69 +1,63 @@
 <script lang="ts">
-	import { enhance } from '$app/forms'
 	import { Input, Button, ValidationErrors } from '$lib/components'
+	import { superForm } from 'sveltekit-superforms'
 
 	export let data
-	export let form
-
-	const username = 'username'
-	const name = 'name'
-	const password = 'password'
-	const confirm = 'confirm'
-	const formId = 'signup'
+	const { form, formId, errors, enhance } = superForm(data.form)
 </script>
 
 <h1>Great to have you <br /> {data.email}</h1>
 <span>Go ahead and enter your details for us</span>
-<form id={formId} method="POST" use:enhance>
+<form id={$formId} method="POST" use:enhance>
 	<div class="field-group">
 		<Input
 			label="Username"
-			name={username}
-			value={form?.result?.initialValue?.username ?? ''}
-			errors={form?.result?.error?.username}
+			name="username"
+			value={$form.username}
+			errors={$errors.username}
 		/>
 	</div>
 	<div class="field-group">
 		<Input
 			label="Name"
-			{name}
-			value={form?.result?.initialValue?.name ?? ''}
-			errors={form?.result?.error?.name}
+			name="name"
+			value={$form.name}
+			errors={$errors.name}
 		/>
 	</div>
 	<div class="field-group">
 		<Input
 			type="password"
 			label="Password"
-			name={password}
-			value={form?.result?.initialValue?.password ?? ''}
-			errors={form?.result?.error?.password}
+			name="password"
+			value={$form.password}
+			errors={$errors.password}
 		/>
 	</div>
 	<div class="field-group">
 		<Input
 			type="password"
 			label="Confirm Password"
-			name={confirm}
-			value={form?.result?.initialValue?.confirm ?? ''}
-			errors={form?.result?.error?.confirm}
+			name="confirm"
+			value={$form.confirm}
+			errors={$errors.confirm}
 		/>
 	</div>
 	<label>
 		<input name="agreeToTermsOfServiceAndPrivacyPolicy" type="checkbox" />
 		Do you agree to our Terms of Service and Privacy Policy?
 		<ValidationErrors
-			errors={form?.result?.error?.agreeToTermsOfServiceAndPrivacyPolicy}
+			errors={$errors.agreeToTermsOfServiceAndPrivacyPolicy}
 			errorId="agreeToTermsOfServiceAndPrivacyPolicy"
 		/>
 	</label>
 	<label>
-		<input name="remember" type="checkbox" />
+		<input value={$form.remember} name="remember" type="checkbox" />
 		Remember me?
 	</label>
-	<Input name="redirectTo" type="hidden" />
-	<Button secondary fluid>Submit</Button>
-	<ValidationErrors errorId={formId} errors={form?.result.error?.['']} />
+	<Input value={$form.redirectTo} name="redirectTo" type="hidden" />
+	<Button type="submit" secondary fluid>Submit</Button>
+	<ValidationErrors errorId={$formId} errors={$errors._errors} />
 </form>
 
 <style>

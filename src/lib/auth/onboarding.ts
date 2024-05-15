@@ -5,7 +5,7 @@ import {
 } from '$lib/utils/userValidation'
 import { z } from 'zod'
 
-export const onboardingEmailSessionKey = 'onboardingEmail'
+export const onboardingEmailSessionKey = 'onboarding-email'
 
 export const SignupFormSchema = z
 	.object({

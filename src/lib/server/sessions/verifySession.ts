@@ -20,8 +20,8 @@ interface HandleNewVerificationArgs {
 }
 
 export const VerifySessionSchema = z.object({
-	[onboardingEmailSessionKey]: z.string().nullable(),
-	[newEmailAddressSessionKey]: z.string().nullable(),
+	[onboardingEmailSessionKey]: z.string().nullable().default(null),
+	[newEmailAddressSessionKey]: z.string().nullable().default(null),
 })
 
 export const verifySessionCookieName = 'dn_verification'
@@ -45,12 +45,13 @@ export async function handleNewVerification({
 	cookies.set(verifySessionCookieName, encryptedCookieString, {
 		...verifySessionCookieOptions,
 	})
-
 	throw redirect(303, safeRedirect(redirectTo))
 }
 
 export function getVerifySessionData(sessionCookie: string | undefined) {
 	if (!sessionCookie) return null
-	const decryptedSessionValue = decryptCookie(sessionCookie) // TODO: Need to stop this being any (I tried safeParse but it returned expected string but got undefined error)
-	return decryptedSessionValue ?? null
+	const decryptedSessionValue = decryptCookie(sessionCookie)
+	const result = VerifySessionSchema.safeParse(decryptedSessionValue)
+	if (!result.success) return null
+	return result.data
 }

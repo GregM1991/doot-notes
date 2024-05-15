@@ -6,7 +6,6 @@
 	export let data
 	const { form, errors, constraints, enhance, message } = superForm(data.form)
 	const formId = 'login-form'
-
 	// TODO: create a auth form component to reduce styling repeats 😎
 </script>
 

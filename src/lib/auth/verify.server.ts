@@ -13,7 +13,7 @@ import {
 import { generateTOTP, verifyTOTP } from '$lib/server/totp'
 import { prisma } from '$lib/utils/db.server'
 import { getDomainUrl } from '$lib/utils/misc'
-import { message, superValidate } from 'sveltekit-superforms'
+import { message, setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import { requireUserId } from '$lib/utils/auth.server'
 import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
@@ -130,11 +130,7 @@ export async function validateRequest(
 		target: form.data[targetQueryParam],
 	})
 	if (!codeIsValid) {
-		return message(
-			form,
-			{ type: 'error', text: 'Invalid code' },
-			{ status: 400 },
-		)
+		return setError(form, 'code', 'Invalid code')
 	}
 
 	// ensurePrimary ~~~ This has to do with caching with fly.io I believe 🤷🏻
