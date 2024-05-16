@@ -6,6 +6,7 @@ export { default as ImageEditor } from '$lib/components/ImageEditor/ImageEditor.
 export { Input, TextArea } from '$lib/components/FormElements'
 export { default as Navbar } from '$lib/components/Navbar/Navbar.svelte'
 export { default as NoteInfoBar } from '$lib/components/NoteInfoBar/NoteInfoBar.svelte'
+export { default as ProviderConnectionForm } from '$lib/components/ProviderConnectionForm/ProviderConnectionForm.svelte'
 export { default as Searchbar } from '$lib/components/Search/Searchbar.svelte'
 export { default as Toast } from '$lib/components/Toast/Toast.svelte'
 export { default as ValidationErrors } from '$lib/components/ValidationErrors/ValidationErrors.svelte'
