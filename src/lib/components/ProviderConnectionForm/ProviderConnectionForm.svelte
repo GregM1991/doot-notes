@@ -5,9 +5,9 @@
 		providerLabels,
 		type ProviderName,
 	} from '$lib/utils/connections'
-	import { SvelteComponent, onMount } from 'svelte'
+	// import { SvelteComponent, onMount } from 'svelte'
 	import Button from '../Button/Button.svelte'
-	import type { SvelteHTMLElements } from 'svelte/elements'
+	// import type { SvelteHTMLElements } from 'svelte/elements'
 
 	export let redirectTo: string | null
 	export let type: 'Connect' | 'Login' | 'Signup'
@@ -17,10 +17,10 @@
 	const formAction = `/auth/${providerName}`
 	// $: isPending = $page.form TODO: figure out how to hook this up with superforms
 
-	let lazyIcon: Promise<SvelteComponent<SvelteHTMLElements['svg']>> =
-		 import(
-			`virtual:icons/radix-icons/${providerIconNamesMap.get(providerName)}`
-		).then(module => module.default)
+	// let lazyIcon: Promise<SvelteComponent<SvelteHTMLElements['svg']>> =
+	// 	 import(
+	// 		`virtual:icons/radix-icons/${providerIconNamesMap.get(providerName)}`
+	// 	).then(module => module.default)
 
 </script>
 
@@ -30,11 +30,11 @@
 	{/if}
 	<Button fluid type="submit" secondary>
 		<span class="flex">
-			{#if lazyIcon}
+			<!-- {#if lazyIcon}
 				{#await lazyIcon then { default: ProviderIcon }}
 					<ProviderIcon />
 				{/await}
-			{/if}
+			{/if} -->
 			<span>
 				{type} with {label}
 			</span>
