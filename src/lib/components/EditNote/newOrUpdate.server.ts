@@ -3,10 +3,7 @@ import { redirect, type Action } from '@sveltejs/kit'
 import { requireUserId } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
 import { MAX_UPLOAD_SIZE, NoteEditorSchema, type ImageFieldset } from './types'
-import {
-	unstable_createMemoryUploadHandler as createMemoryUploadHandler,
-	unstable_parseMultipartFormData as parseMultipartFormData,
-} from '@remix-run/node'
+
 import { fail, message, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 
@@ -24,11 +21,6 @@ function imageHasId(
 
 export const newOrUpdate: Action = async ({ request, locals }) => {
 	const userId = requireUserId(locals.userId, request)
-	// const formData = await parseMultipartFormData(
-	// 	request,
-	// 	createMemoryUploadHandler({ maxPartSize: MAX_UPLOAD_SIZE }),
-	// )
-	// const formDataEntries = Array.from(formData.entries())
 	const form = await superValidate(request, zod(NoteEditorSchema))
 	if (!form.valid) return fail(400, { form })
 
