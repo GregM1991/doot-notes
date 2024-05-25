@@ -11,13 +11,13 @@ import {
 	type CreateReporter,
 } from '@epic-web/cachified'
 import { remember } from '@epic-web/remember'
+import Database from 'better-sqlite3'
 
 import { LRUCache } from 'lru-cache'
 import { z } from 'zod'
 import { getInstanceInfo, getInstanceInfoSync } from './litefs.server.ts'
 import { updatePrimaryCacheValue } from '$lib/server/cache_.sqlite.server.ts'
-
-const CACHE_DATABASE_PATH = process.env.CACHE_DATABASE_PATH
+import { CACHE_DATABASE_PATH } from '$env/static/private'
 
 const cacheDb = remember('cacheDb', createDatabase)
 
@@ -167,16 +167,8 @@ export async function searchCacheKeys(search: string, limit: number) {
 }
 
 export async function cachified<Value>(
-	{
-		timings,
-		...options
-	}: CachifiedOptions<Value> & {
-		timings?: Timings
-	},
+	{ ...options }: CachifiedOptions<Value> & {},
 	reporter: CreateReporter<Value> = verboseReporter<Value>(),
 ): Promise<Value> {
-	return baseCachified(
-		options,
-		mergeReporters(cachifiedTimingReporter(timings), reporter),
-	)
+	return baseCachified(options, reporter)
 }

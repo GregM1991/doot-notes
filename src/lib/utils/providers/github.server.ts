@@ -3,9 +3,12 @@ import { env } from '$env/dynamic/private'
 import { GitHubStrategy } from 'remix-auth-github'
 import { z } from 'zod'
 import { cache, cachified } from '../cache.server.ts'
-import { connectionSessionStorage } from '../connections.server.ts'
 import { type AuthProvider } from './provider.ts'
-import { redirect } from '@sveltejs/kit'
+import { redirect, type Cookies } from '@sveltejs/kit'
+import {
+	connectionCookieName,
+	getConnectionData,
+} from '$lib/server/sessions/connections.server.ts'
 
 const GitHubUserSchema = z.object({ login: z.string() })
 const GitHubUserParseResult = z
@@ -72,21 +75,17 @@ export class GitHubProvider implements AuthProvider {
 		} as const
 	}
 
-	async handleMockAction(request: Request) {
+	async handleMockAction(request: Request, cookies: Cookies) {
 		if (!shouldMock) return
 
-		const connectionSession = await connectionSessionStorage.getSession(
-			request.headers.get('cookie'),
-		)
+		const connectionCookie = cookies.get(connectionCookieName)
+		if (connectionCookie) {
+			const connection = getConnectionData(connectionCookie)
+		}
 		const state = cuid()
 		connectionSession.set('oauth2:state', state)
 		const code = 'MOCK_CODE_GITHUB_KODY'
 		const searchParams = new URLSearchParams({ code, state })
-		throw redirect(303, `/auth/github/callback?${searchParams}`, {
-			headers: {
-				'set-cookie':
-					await connectionSessionStorage.commitSession(connectionSession),
-			},
-		})
+		throw redirect(303, `/auth/github/callback?${searchParams}`)
 	}
 }

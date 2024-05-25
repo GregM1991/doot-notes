@@ -1,10 +1,6 @@
 import closeWithGrace from 'close-with-grace'
-import { dev, building } from '$app/environment'
+import { dev } from '$app/environment'
 import { getUserId } from '$lib/utils/auth.server'
-import { getEnv, init } from '$lib/utils/env.server'
-
-init()
-getEnv()
 
 if (dev) {
 	const { server } = await import('$msw/server.server')
