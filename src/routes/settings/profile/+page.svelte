@@ -14,6 +14,7 @@
 	import LockClosed from 'virtual:icons/radix-icons/lockClosed'
 	import LockOpened from 'virtual:icons/radix-icons/lock-open-1'
 	import Download from 'virtual:icons/radix-icons/download'
+	import Link2 from 'virtual:icons/radix-icons/link-2'
 
 	export let data
 	const { form, enhance, errors } = superForm(data.form, { resetForm: false })
@@ -94,6 +95,14 @@
 			{:else}
 				<Person /> This is your only session
 			{/if}
+		</li>
+		<li>
+			<a
+				class="link"
+				href="/settings/profile/connections"
+			>
+				<Link2 /> Manage connections
+			</a>
 		</li>
 		<li>
 			<a

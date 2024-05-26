@@ -1,3 +1,4 @@
+import { resolveConnectionData } from '$lib/server/sessions/connections.server'
 import { requireUserId } from '$lib/utils/auth.server'
 import { ProviderNameSchema, type ProviderName } from '$lib/utils/connections'
 import { prisma } from '$lib/utils/db.server'
@@ -24,7 +25,6 @@ export const load = (async ({ request, locals }) => {
 		const connectionData = await resolveConnectionData(
 			providerName,
 			connection.providerId,
-			{ timings },
 		)
 		connections.push({
 			...connectionData,
