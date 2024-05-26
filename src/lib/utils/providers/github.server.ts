@@ -5,10 +5,7 @@ import { z } from 'zod'
 import { cache, cachified } from '../cache.server.ts'
 import { type AuthProvider } from './provider.ts'
 import { redirect, type Cookies } from '@sveltejs/kit'
-import {
-	connectionCookieName,
-	getConnectionData,
-} from '$lib/server/sessions/connections.server.ts'
+import { setConnectionDataToCookie } from '$lib/server/sessions/connections.server.ts'
 
 const GitHubUserSchema = z.object({ login: z.string() })
 const GitHubUserParseResult = z
@@ -75,15 +72,10 @@ export class GitHubProvider implements AuthProvider {
 		} as const
 	}
 
-	async handleMockAction(request: Request, cookies: Cookies) {
+	async handleMockAction(cookies: Cookies) {
 		if (!shouldMock) return
-
-		const connectionCookie = cookies.get(connectionCookieName)
-		if (connectionCookie) {
-			const connection = getConnectionData(connectionCookie)
-		}
 		const state = cuid()
-		connectionSession.set('oauth2:state', state)
+		setConnectionDataToCookie(cookies, state)
 		const code = 'MOCK_CODE_GITHUB_KODY'
 		const searchParams = new URLSearchParams({ code, state })
 		throw redirect(303, `/auth/github/callback?${searchParams}`)
