@@ -2,7 +2,24 @@ import { resolveConnectionData } from '$lib/server/sessions/connections.server'
 import { requireUserId } from '$lib/utils/auth.server'
 import { ProviderNameSchema, type ProviderName } from '$lib/utils/connections'
 import { prisma } from '$lib/utils/db.server'
+import type { Actions } from '@sveltejs/kit'
 import type { PageServerLoad } from './$types'
+import { invariantResponse } from '$lib/utils/misc'
+import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
+
+async function userCanDeleteConnections(userId: string) {
+	const user = await prisma.user.findUnique({
+		select: {
+			password: { select: { userId: true } },
+			_count: { select: { connections: true } },
+		},
+		where: { id: userId },
+	})
+	// user can delete their connections if they have a password
+	if (user?.password) return true
+	// users have to have more than one remaining connection to delete one
+	return Boolean(user?._count.connections && user?._count.connections > 1)
+}
 
 export const load = (async ({ request, locals }) => {
 	const userId = requireUserId(locals.userId, request)
@@ -33,4 +50,39 @@ export const load = (async ({ request, locals }) => {
 			createdAtFormatted: connection.createdAt.toLocaleString(),
 		})
 	}
+
+	return {
+		connections,
+		canDeleteConnections: await userCanDeleteConnections(userId),
+	}
 }) satisfies PageServerLoad
+
+export const actions = {
+	default: async ({ request, locals, cookies }) => {
+		const userId = requireUserId(locals.userId, request)
+		const formData = await request.formData()
+		invariantResponse(
+			formData.get('intent') === 'delete-connection',
+			'Invalid intent',
+		)
+		invariantResponse(
+			await userCanDeleteConnections(userId),
+			'You cannot delete your last connection unless you have a password.',
+		)
+		const connectionId = formData.get('connectionId')
+		invariantResponse(typeof connectionId === 'string', 'Invalid connectionId')
+		await prisma.connection.delete({
+			where: {
+				id: connectionId,
+				userId: userId,
+			},
+		})
+		setToastDataToCookie(cookies, {
+			title: 'Deleted',
+			description: 'Your connection has been deleted.',
+		})
+		return {
+			status: 'success',
+		}
+	},
+} satisfies Actions

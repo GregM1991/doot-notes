@@ -9,7 +9,7 @@
 	import Button from '../Button/Button.svelte'
 	// import type { SvelteHTMLElements } from 'svelte/elements'
 
-	export let redirectTo: string | null
+	export let redirectTo: string | null = null
 	export let type: 'Connect' | 'Login' | 'Signup'
 	export let providerName: ProviderName
 
