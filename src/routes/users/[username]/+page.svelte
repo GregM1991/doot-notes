@@ -14,7 +14,7 @@
 	</div>
 	<div class="buttons">
 		<Button href={`${username}/notes`}>View {name}'s notes</Button>
-		<Button href={`/settings/profile`}>View {name}'s profile</Button>
+		<Button href={`/settings/profile`}>Edit {name}'s profile</Button>
 	</div>
 </main>
 

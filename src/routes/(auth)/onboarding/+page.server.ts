@@ -1,9 +1,7 @@
-import { z } from 'zod'
-import { parseWithZod } from '@conform-to/zod'
-import { fail, redirect, type Actions, type Cookies } from '@sveltejs/kit'
+import { redirect, type Actions, type Cookies } from '@sveltejs/kit'
 import {
 	SignupFormSchema,
-	SignupFormInitialValueSchema,
+	onboardingEmailSessionKey,
 } from '$lib/auth/onboarding'
 import {
 	getVerifySessionData,
@@ -16,67 +14,49 @@ import { signup, requireAnonymous } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
 import { safeRedirect } from '$lib/utils/misc'
 import type { PageServerLoad } from './$types'
-
-export const load = (async ({ locals, cookies }) => {
-	const email = await requireOnboardingEmail(locals.userId, cookies)
-	return { email }
-}) satisfies PageServerLoad
+import { setError, superValidate } from 'sveltekit-superforms'
+import { zod } from 'sveltekit-superforms/adapters'
 
 async function requireOnboardingEmail(userId: string | null, cookies: Cookies) {
 	await requireAnonymous(userId)
 	const verifySessionCookie = cookies.get(verifySessionCookieName)
 	const verifySessionData = getVerifySessionData(verifySessionCookie)
-	if (!verifySessionData || typeof verifySessionData !== 'string')
+	const onBoardingEmail = verifySessionData
+		? verifySessionData[onboardingEmailSessionKey]
+		: null
+	if (!onBoardingEmail || typeof onBoardingEmail !== 'string')
 		redirect(303, '/signup')
-	return verifySessionData
+	return onBoardingEmail
 }
+
+export const load = (async ({ locals, cookies }) => {
+	const email = await requireOnboardingEmail(locals.userId, cookies)
+	const form = await superValidate(zod(SignupFormSchema))
+	return { email, form }
+}) satisfies PageServerLoad
 
 export const actions = {
 	default: async ({ locals, cookies, request }) => {
 		const email = await requireOnboardingEmail(locals.userId, cookies)
-		const formData = await request.formData()
 		// TODO: check honeypot
-
-		const submission = await parseWithZod(formData, {
-			schema: intent =>
-				SignupFormSchema.superRefine(async (data, ctx) => {
-					const user = await prisma.user.findUnique({
-						where: { username: data.username },
-						select: { id: true },
-					})
-					if (user) {
-						ctx.addIssue({
-							path: ['username'],
-							code: z.ZodIssueCode.custom,
-							message: 'A user already exists with this username',
-						})
-						return
-					}
-				}).transform(async data => {
-					if (intent !== null) return { ...data, session: null }
-
-					const session = await signup({ ...data, email })
-					return { ...data, session }
-				}),
-			async: true,
+		const form = await superValidate(request, zod(SignupFormSchema)) // Why isn't this giving data. Check the signupFormSchema, try a simpler thing?
+		console.dir({ form }, { depth: 8 })
+		if (!form.valid) return { form }
+		const user = await prisma.user.findUnique({
+			where: { username: form.data.username },
+			select: { id: true },
 		})
-		if (submission.status !== 'success' || !submission.value.session) {
-			const submissionInitialValue = submission.reply().initialValue
-			// TODO: Can a reply util be created to generate types for the reply method?
-			const initialValue = SignupFormInitialValueSchema.safeParse(
-				submissionInitialValue ?? {},
+		if (user) {
+			return setError(
+				form,
+				'username',
+				'A user already exists with this username',
 			)
-
-			// TODO: Can this be extracted to util?
-			return fail(submission.status === 'error' ? 400 : 200, {
-				result: {
-					...submission.reply(),
-					initialValue: initialValue.success ? initialValue.data : {},
-				},
-			})
 		}
+		const session = await signup({ ...form.data, email })
+		if (!session) return { form }
 
-		const { session, remember, redirectTo } = submission.value
+		const { remember, redirectTo } = form.data
 
 		// destroy the verify session
 		cookies.delete(verifySessionCookieName, verifySessionCookieOptions)

@@ -14,6 +14,7 @@ export const actions = {
 		const formData = await request.formData()
 		// TODO: Create honeypot
 
+		// TODO: Parse forms with SuperForm
 		const submission = await parseWithZod(formData, {
 			schema: SignupFormSchema.superRefine(async (data, ctx) => {
 				const existingUser = await prisma.user.findUnique({
@@ -63,6 +64,7 @@ export const actions = {
 	},
 }
 
+// TODO: move this to relevant server file
 export function _signupEmail({
 	onboardingUrl,
 	otp,

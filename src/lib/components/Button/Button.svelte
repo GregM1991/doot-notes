@@ -10,6 +10,10 @@
 	export let style = ''
 	export let small = false
 	export let danger = false
+	export let name: string | null = null
+	export let value: string | null = null
+	export let id: string | null = null
+	export let form: string | null = null
 
 	const element = href ? 'a' : 'button'
 	const role = element === 'a' ? 'link' : 'button'
@@ -26,6 +30,10 @@
 	{href}
 	{role}
 	{style}
+	{name}
+	{value}
+	{id}
+	{form}
 	class="base"
 	class:primary
 	class:fluid

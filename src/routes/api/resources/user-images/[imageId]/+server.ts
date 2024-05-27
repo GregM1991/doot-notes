@@ -1,5 +1,6 @@
 import { prisma } from '$lib/utils/db.server.js'
 import { invariantResponse } from '$lib/utils/misc.js'
+
 export async function GET({ params }) {
 	invariantResponse(params.imageId, 'Image ID is required', 400)
 

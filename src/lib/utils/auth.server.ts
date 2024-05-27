@@ -45,21 +45,29 @@ export async function getUserId(cookies: Cookies) {
 	return session.user.id
 }
 
+export function createLoginWithRedirectUrl(
+	request: Request,
+	redirectTo: string | null = null,
+) {
+	const requestUrl = new URL(request.url)
+	redirectTo =
+		redirectTo === null
+			? null
+			: redirectTo ?? `${requestUrl.pathname}${requestUrl.search}`
+	const loginParams = redirectTo ? new URLSearchParams({ redirectTo }) : null
+	const loginRedirect = ['/login', loginParams?.toString()]
+		.filter(Boolean)
+		.join('?')
+	return loginRedirect
+}
+
 export function requireUserId(
 	userId: string | null,
 	request: Request,
 	redirectTo: string | null = null,
 ) {
 	if (!userId) {
-		const requestUrl = new URL(request.url)
-		redirectTo =
-			redirectTo === null
-				? null
-				: redirectTo ?? `${requestUrl.pathname}${requestUrl.search}`
-		const loginParams = redirectTo ? new URLSearchParams({ redirectTo }) : null
-		const loginRedirect = ['/login', loginParams?.toString()]
-			.filter(Boolean)
-			.join('?')
+		const loginRedirect = createLoginWithRedirectUrl(request, redirectTo)
 		throw redirect(303, loginRedirect)
 	}
 	return userId
@@ -95,7 +103,7 @@ export async function logout(cookies: Cookies, redirectTo = '/') {
 	redirect(303, safeRedirect(redirectTo))
 }
 
-async function verifyUserPassword(
+export async function verifyUserPassword(
 	where: Pick<User, 'username'> | Pick<User, 'id'>,
 	password: Password['hash'],
 ) {
@@ -121,6 +129,7 @@ async function verifyUserPassword(
 */
 export async function signup({ email, username, password, name }: SignupArgs) {
 	const hashedPassword = await getPasswordHash(password)
+	console.log({ email })
 	const session = await prisma.session.create({
 		data: {
 			expirationDate: getSessionExpirationDate(),

@@ -6,7 +6,6 @@
 	export let data
 	const { form, errors, constraints, enhance, message } = superForm(data.form)
 	const formId = 'login-form'
-
 	// TODO: create a auth form component to reduce styling repeats 😎
 </script>
 
@@ -50,7 +49,7 @@
 	{#if $message}
 		<ValidationErrors errorId={formId} errors={[$message]} />
 	{/if}
-	<span>
+	<span class='signup'>
 		New here? <a href="/signup" class="link">Create an account</a>
 	</span>
 </form>
@@ -94,5 +93,9 @@
 
 	.link {
 		color: var(--palette-pop);
+	}
+
+	.signup {
+		margin-top: var(--space-s);
 	}
 </style>

@@ -1,11 +1,11 @@
 import {
 	NameSchema,
-	PasswordAndConfirmPasswordSchema,
+	PasswordSchema,
 	UsernameSchema,
 } from '$lib/utils/userValidation'
 import { z } from 'zod'
 
-export const onboardingEmailSessionKey = 'onboardingEmail'
+export const onboardingEmailSessionKey = 'onboarding-email'
 
 export const SignupFormSchema = z
 	.object({
@@ -17,12 +17,15 @@ export const SignupFormSchema = z
 		}),
 		remember: z.boolean().optional(),
 		redirectTo: z.string().optional(),
+		password: PasswordSchema,
+		confirm: PasswordSchema,
 	})
-	.and(PasswordAndConfirmPasswordSchema)
-
-export const SignupFormInitialValueSchema = z.object({
-	confirm: z.string().optional(),
-	name: z.string().optional(),
-	password: z.string().optional(),
-	username: z.string().optional(),
-})
+	.superRefine(({ confirm, password }, ctx) => {
+		if (confirm !== password) {
+			ctx.addIssue({
+				path: ['confirm'],
+				code: 'custom',
+				message: 'The passwords must match',
+			})
+		}
+	})

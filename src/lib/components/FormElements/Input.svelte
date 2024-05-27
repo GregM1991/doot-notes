@@ -12,6 +12,7 @@
 	export let autofocus = false
 	export let secondary = false
 	export let required = false
+	export let fluid = false
 
 	const id = name
 
@@ -34,6 +35,7 @@
 	{style}
 	{required}
 	{value}
+	class:fluid
 	class:secondary
 	class="base"
 	on:input={handleInput}
@@ -54,6 +56,7 @@
 		border-radius: 1rem;
 		outline: none;
 		filter: var(--border-drop-shadow-black);
+		width: var(--width);
 
 		transition: var(--animation-quick);
 	}
@@ -71,5 +74,10 @@
 	.secondary {
 		--background-color: var(--palette-base);
 		--background-color-light: var(--palette-base-light);
+	}
+
+	.fluid {
+		--width: 100%;
+		justify-content: center;
 	}
 </style>
