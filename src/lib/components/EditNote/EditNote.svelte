@@ -7,7 +7,6 @@
 		type SuperValidated,
 		type Infer,
 		superForm,
-		filesFieldProxy,
 	} from 'sveltekit-superforms'
 	import Check from 'virtual:icons/radix-icons/check'
 	import Cross from 'virtual:icons/radix-icons/cross2'
@@ -19,30 +18,24 @@
 		ImageEditor,
 		NoteInfoBar,
 	} from '$lib/components'
-	import { NoteEditorSchema } from './types'
+	import { NoteEditorSchema, type ImageFieldset } from './types'
 
-	export let data: SuperValidated<Infer<typeof NoteEditorSchema>>
+	export let data: SuperValidated<Infer<typeof NoteEditorSchema>> & {
+		images?: ImageFieldset[]
+	}
 	export let action: string
 
-	const { form, errors, enhance, constraints } = superForm(data, {
-		dataType: 'json',
-	})
-
-	// consts
-	$: imageList = $form.images ?? [{}]
-
+	const { form, errors, enhance } = superForm(data)
 	const header = $form.id ? `Edit ${$form.title}` : 'Doot a new note 📯'
-	const buttonText = $form.id ? 'Save changes' : 'Create $form'
+	const buttonText = $form.id ? 'Save changes' : 'Create note'
 	const Icon = $form.id ? Check : Plus
 
+	$: imageList = data?.images ?? []
 	function addEmptyImage() {
-		const formImages = $form.images ?? []
-		form.update(
-			$form => {
-				$form.images = [...formImages, {}]
-				return $form
-			}
-		)
+		imageList = [
+			...imageList,
+			{ id: undefined, file: undefined, altText: undefined },
+		]
 	}
 </script>
 
@@ -54,14 +47,13 @@
 	{/if}
 	<div class="form-group">
 		<Input
-			errors={$errors._errors}
+			errors={$errors.title}
 			label="Title"
 			secondary
 			name="title"
 			type="text"
 			value={$form.title}
 			required
-			{...$constraints}
 		/>
 	</div>
 	<div class="form-group full-height">
@@ -71,16 +63,15 @@
 			secondary
 			required
 			value={$form.content}
-			errors={$errors._errors}
-			{...$constraints}
+			errors={$errors.content}
 		/>
 	</div>
-	<!-- <span>Images</span> -->
-	<!-- <ul> -->
-		<!-- {#each imageList as image, index} -->
-			<!-- <li> -->
+	<span>Images</span>
+	<ul>
+		{#each imageList as image, index (index)}
+			<li>
 				<!-- TODO: //create formaction for delete later -->
-				<!-- <button
+				<button
 					formaction="?/delete"
 					class="remove-image-button"
 					name="id"
@@ -92,18 +83,15 @@
 						<Cross />
 					</span>
 					<span class="sr-only">Remove image {index}</span>
-				</button> -->
-				<!-- <ImageEditor {image} /> -->
-			<!-- </li> -->
-		<!-- {/each} -->
-	<!-- </ul> -->
-	<!-- <Button
-		type="button"
-		on:click={addEmptyImage}
-	>
+				</button>
+				<ImageEditor {image} {index} />
+			</li>
+		{/each}
+	</ul>
+	<Button secondary type="button" on:click={addEmptyImage}>
 		<Plus />
 		Add another image
-	</Button> -->
+	</Button>
 	<NoteInfoBar>
 		<div class="info-bar-buttons">
 			<Button danger type="reset">Reset</Button>

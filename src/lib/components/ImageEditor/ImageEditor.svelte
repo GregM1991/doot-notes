@@ -2,42 +2,30 @@
 	import { Input } from '$lib/components'
 	import { getNoteImgSrc } from '$lib/utils/misc'
 	import Plus from 'virtual:icons/radix-icons/plus'
-	// import type {
-	// 	ImageFieldset,
-	// 	NoteEditorSchema,
-	// } from '$lib/components/EditNote/types'
-	// import type { Infer, SuperValidated } from 'sveltekit-superforms'
+	import type { ImageFieldset } from '$lib/components/EditNote/types'
 
-	// export let image: ImageFieldset | undefined
-	export let id: string | null = null
-	export let fileValue: File | null = null
-	export let altTextValue: string | null = null
-	// const file = fileProxy(form.data.images[index], 'file')
-	// TODO: Errors
-	// export let errors: {
-	// 	file: string[] | undefined
-	// 	altText: string[] | undefined
-	// } | null = null
+	export let image: ImageFieldset | undefined
+	export let index: number
 
-	let previewImage: string | null = id ? getNoteImgSrc(id) : null
+	let previewImage: string | null = image?.id ? getNoteImgSrc(image?.id) : null
+	const existingImage = Boolean(image?.id)
 
-	const existingImage = Boolean(id)
-
-	// function handleFileChange(event: Event) {
-	// 	const file = (event.target as HTMLInputElement).files?.[0]
-	// 	if (file) {
-	// 		const reader = new FileReader()
-	// 		reader.onload = () => {
-	// 			previewImage = reader.result as string
-	// 		}
-	// 		reader.readAsDataURL(file)
-	// 	} else {
-	// 		previewImage = null
-	// 	}
-	// }
+	const fileGroupPrefix = `note-editor-images[${index}]`
+	function handleFileChange(event: Event) {
+		const file = (event.target as HTMLInputElement).files?.[0]
+		if (file) {
+			const reader = new FileReader()
+			reader.onload = () => {
+				previewImage = reader.result as string
+			}
+			reader.readAsDataURL(file)
+		} else {
+			previewImage = null
+		}
+	}
 </script>
 
-<fieldset class="container">
+<fieldset id={fileGroupPrefix} class="container">
 	<legend class="sr-only">Select an image to upload</legend>
 
 	<!-- TODO: fix focus for file input -->
@@ -47,28 +35,41 @@
 				<img
 					class="preview-image absolute"
 					src={previewImage}
-					alt={altTextValue ?? ''}
+					alt={image?.altText ?? ''}
 				/>
 			{:else}
 				<div class="plus">
 					<Plus />
 				</div>
 			{/if}
-			<!-- <input
-				bind:files={fileValue}
+			<input
+				on:change={handleFileChange}
+				id="{fileGroupPrefix}.file"
+				name="images[{index}].file"
+				value={image?.file}
 				class="file absolute"
 				type="file"
 				accept="image/*"
 				aria-label="Image"
-			/> -->
+			/>
 		</label>
 		<!-- <ValidationErrors {errors} errorId={fileId} /> -->
-		{#if existingImage && id}
-			<input type="hidden" value={id} />
+		{#if existingImage && image?.id}
+			<input
+				type="hidden"
+				id="{fileGroupPrefix}.id"
+				name="images[{index}].id"
+				value={image?.id}
+			/>
 		{/if}
 	</div>
 	<div class="alt-input">
-		<Input label="Alt text" name="" value={altTextValue} />
+		<Input
+			label="Alt text"
+			id="{fileGroupPrefix}.altText"
+			name="images[{index}].altText"
+			value={image?.altText}
+		/>
 	</div>
 </fieldset>
 

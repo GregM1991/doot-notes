@@ -2,9 +2,8 @@
 	import { Navbar, Toast } from '$lib/components'
 	import '$lib/styles/app.css'
 	import { onDestroy } from 'svelte'
-	import type { LayoutData } from './$types'
 
-	export let data: LayoutData
+	export let data
 	let timeoutId: ReturnType<typeof setTimeout>
 	$: showToast = data.toast ? true : false
 

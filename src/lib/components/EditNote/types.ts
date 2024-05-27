@@ -12,18 +12,19 @@ export const ImageFieldsetSchema = z.object({
 	altText: z.string().optional().nullable(),
 })
 
-export const NoteEditorSchema = z
-	.object({
-		id: z.string().optional(),
-		title: z.string().min(titleMinLength).max(titleMaxLength),
-		content: z.string().min(contentMinLength).max(contentMaxLength),
-		images: z.array(ImageFieldsetSchema).max(5).optional(),
-	})
+export const NoteEditorSchema = z.object({
+	id: z.string().optional(),
+	title: z.string().min(titleMinLength).max(titleMaxLength),
+	content: z.string().min(contentMinLength).max(contentMaxLength),
+})
+
+export const NoteEditorImagesSchema = z
+	.array(ImageFieldsetSchema)
+	.max(5)
+	.optional()
 	.refine(
-		data =>
-			data.images?.map(
-				image => !image.file || image.file.size <= MAX_UPLOAD_SIZE,
-			),
+		images =>
+			images?.map(image => !image.file || image.file.size <= MAX_UPLOAD_SIZE),
 		{
 			message: 'Please doot down the file size to less than 3MB',
 			path: ['images', 'file'],
