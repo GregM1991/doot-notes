@@ -129,7 +129,6 @@ export async function verifyUserPassword(
 */
 export async function signup({ email, username, password, name }: SignupArgs) {
 	const hashedPassword = await getPasswordHash(password)
-	console.log({ email })
 	const session = await prisma.session.create({
 		data: {
 			expirationDate: getSessionExpirationDate(),

@@ -68,7 +68,7 @@
 			label="Alt text"
 			id="{fileGroupPrefix}.altText"
 			name="images[{index}].altText"
-			value={image?.altText}
+			value={image?.altText ?? ''}
 		/>
 	</div>
 </fieldset>

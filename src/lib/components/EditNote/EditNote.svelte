@@ -20,9 +20,8 @@
 	} from '$lib/components'
 	import { NoteEditorSchema, type ImageFieldset } from './types'
 
-	export let data: SuperValidated<Infer<typeof NoteEditorSchema>> & {
-		images?: ImageFieldset[]
-	}
+	export let data: SuperValidated<Infer<typeof NoteEditorSchema>>
+	export let images: Array<ImageFieldset> = []
 	export let action: string
 
 	const { form, errors, enhance } = superForm(data)
@@ -30,7 +29,8 @@
 	const buttonText = $form.id ? 'Save changes' : 'Create note'
 	const Icon = $form.id ? Check : Plus
 
-	$: imageList = data?.images ?? []
+	$: imageList = images
+	
 	function addEmptyImage() {
 		imageList = [
 			...imageList,
@@ -43,7 +43,7 @@
 	<button type="submit" class="hidden" />
 	<h3>{header}</h3>
 	{#if $form.id}
-		<input type="hidden" value={$form.id} />
+		<input type="hidden" value={$form.id} name="id" />
 	{/if}
 	<!-- TODO: Focus first input -->
 	<div class="form-group">
@@ -68,10 +68,10 @@
 		/>
 	</div>
 	<span>Images</span>
-	<ul>
+	<ul class="image-list">
 		{#each imageList as image, index (index)}
-			<li>
-				<!-- TODO: //create formaction for delete later -->
+			<li class="image-list-item">
+				<!-- TODO: //create form action for delete later -->
 				<button
 					formaction="?/delete"
 					class="remove-image-button"
@@ -134,9 +134,10 @@
 		flex: 1;
 	}
 
-	li {
+	.image-list-item {
 		list-style: none;
 		position: relative;
+		padding-bottom: var(--space-xs);
 	}
 
 	.remove-image-button {

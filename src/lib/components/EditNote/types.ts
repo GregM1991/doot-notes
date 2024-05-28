@@ -25,17 +25,4 @@ export const FullNoteEditorSchema = z.object({
 	images: z.array(ImageFieldsetSchema).max(5).optional(),
 })
 
-export const NoteEditorImagesSchema = z
-	.array(ImageFieldsetSchema)
-	.max(5)
-	.optional()
-	.refine(
-		images =>
-			images?.map(image => !image.file || image.file.size <= MAX_UPLOAD_SIZE),
-		{
-			message: 'Please doot down the file size to less than 3MB',
-			path: ['images', 'file'],
-		},
-	)
-
 export type ImageFieldset = z.infer<typeof ImageFieldsetSchema>

@@ -5,7 +5,6 @@ import { prisma } from '$lib/utils/db.server'
 import {
 	FullNoteEditorSchema,
 	MAX_UPLOAD_SIZE,
-	NoteEditorImagesSchema,
 	NoteEditorSchema,
 	type ImageFieldset,
 } from './types'
