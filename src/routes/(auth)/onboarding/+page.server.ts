@@ -39,8 +39,7 @@ export const actions = {
 	default: async ({ locals, cookies, request }) => {
 		const email = await requireOnboardingEmail(locals.userId, cookies)
 		// TODO: check honeypot
-		const form = await superValidate(request, zod(SignupFormSchema)) // Why isn't this giving data. Check the signupFormSchema, try a simpler thing?
-		console.dir({ form }, { depth: 8 })
+		const form = await superValidate(request, zod(SignupFormSchema)) // TODO: Why isn't this giving data. Check the signupFormSchema, try a simpler thing?
 		if (!form.valid) return { form }
 		const user = await prisma.user.findUnique({
 			where: { username: form.data.username },

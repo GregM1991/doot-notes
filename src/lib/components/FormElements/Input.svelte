@@ -4,6 +4,7 @@
 
 	export let placeholder = ''
 	export let name: string
+	export let id: string = name
 	export let type: 'text' | 'password' | 'search' | 'hidden' | null = 'text'
 	export let value: string | null = ''
 	export let label = ''
@@ -13,8 +14,6 @@
 	export let secondary = false
 	export let required = false
 	export let fluid = false
-
-	const id = name
 
 	const dispatch = createEventDispatcher()
 	function handleInput() {

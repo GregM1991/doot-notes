@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores'
 	import { Button } from '$lib/components'
-	import type { LayoutServerData } from './$types'
 	import Pencil1 from 'virtual:icons/radix-icons/pencil1'
 
-	export let data: LayoutServerData
+	export let data
 	const hrefBase = `/users/${$page.params.username}/notes`
 	$: isOwner = $page.data?.user?.id === data.owner.id
 </script>
