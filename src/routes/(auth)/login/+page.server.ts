@@ -1,10 +1,10 @@
-import { z } from 'zod'
-import { superValidate, message, fail } from 'sveltekit-superforms'
+import { superValidate, message } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
+import { z } from 'zod'
 import { type Actions, redirect } from '@sveltejs/kit'
-import { login } from '$lib/utils/auth.server'
 import { handleNewSessionWithRedirect } from '$lib/server/sessions/authSession'
 import { PasswordSchema, UsernameSchema } from '$lib/utils/userValidation'
+import { login } from '$lib/utils/auth.server'
 import type { PageServerLoad } from './$types'
 
 const LoginFormSchema = z.object({
@@ -16,9 +16,9 @@ const LoginFormSchema = z.object({
 
 export const load = (async ({ locals }) => {
 	if (locals.userId) throw redirect(303, '/')
-	const form = await superValidate(zod(LoginFormSchema))
+	const loginForm = await superValidate(zod(LoginFormSchema))
 
-	return { form }
+	return { loginForm }
 }) satisfies PageServerLoad
 
 export const actions = {

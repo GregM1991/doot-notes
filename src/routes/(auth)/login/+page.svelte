@@ -4,7 +4,7 @@
 	import { Button, Input, ValidationErrors } from '$lib/components'
 	
 	export let data
-	const { form, errors, constraints, enhance, message } = superForm(data.form)
+	const { form, errors, constraints, enhance, message } = superForm(data.loginForm)
 	const formId = 'login-form'
 	// TODO: create a auth form component to reduce styling repeats 😎
 </script>
