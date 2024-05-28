@@ -45,6 +45,7 @@
 	{#if $form.id}
 		<input type="hidden" value={$form.id} />
 	{/if}
+	<!-- TODO: Focus first input -->
 	<div class="form-group">
 		<Input
 			errors={$errors.title}
@@ -95,6 +96,7 @@
 	<NoteInfoBar>
 		<div class="info-bar-buttons">
 			<Button danger type="reset">Reset</Button>
+			<!-- TODO: confirmation on note deletion -->
 			<Button secondary type="submit">
 				<Icon />
 				{buttonText}
