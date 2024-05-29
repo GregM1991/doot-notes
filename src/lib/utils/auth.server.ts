@@ -74,7 +74,7 @@ export function requireUserId(
 }
 
 // A simple function to redirect a logged in user (eg if they somehow get to login we take them back to homepage)
-export async function requireAnonymous(userId: string | null) {
+export function requireAnonymous(userId: string | null) {
 	if (userId) throw redirect(302, '/')
 }
 
@@ -90,6 +90,26 @@ export async function login({ username, password }: LoginParams) {
 		},
 	})
 	return session
+}
+
+export async function resetUserPassword({
+	username,
+	password,
+}: {
+	username: User['username']
+	password: string
+}) {
+	const hashedPassword = await getPasswordHash(password)
+	return prisma.user.update({
+		where: { username },
+		data: {
+			password: {
+				update: {
+					hash: hashedPassword,
+				},
+			},
+		},
+	})
 }
 
 export async function logout(cookies: Cookies, redirectTo = '/') {

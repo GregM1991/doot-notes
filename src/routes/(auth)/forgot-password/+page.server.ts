@@ -6,17 +6,17 @@ import { prepareVerification } from '$lib/auth/verify.server'
 import { forgotPasswordEmail } from '$lib/auth/recoverPassword.server'
 import { sendEmail } from '$lib/server/email'
 import { prisma } from '$lib/utils/db.server'
-import { EmailSchema, UsernameSchema } from '$lib/utils/userValidation'
+import { UserNameOrEmailSchema } from '$lib/utils/userValidation'
 
 const ForgotPasswordSchema = z.object({
-	usernameOrEmail: z.union([EmailSchema, UsernameSchema]),
+	usernameOrEmail: UserNameOrEmailSchema,
 })
 
 export const load = async ({ locals }) => {
 	if (locals.userId) throw redirect(303, '/')
-	const loginForm = await superValidate(zod(ForgotPasswordSchema))
+	const forgotPasswordForm = await superValidate(zod(ForgotPasswordSchema))
 
-	return { loginForm }
+	return { forgotPasswordForm }
 }
 
 export const actions = {

@@ -18,9 +18,8 @@ import { setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 
 async function requireOnboardingEmail(userId: string | null, cookies: Cookies) {
-	await requireAnonymous(userId)
-	const verifySessionCookie = cookies.get(verifySessionCookieName)
-	const verifySessionData = getVerifySessionData(verifySessionCookie)
+	requireAnonymous(userId)
+	const verifySessionData = getVerifySessionData(cookies)
 	const onBoardingEmail = verifySessionData
 		? verifySessionData[onboardingEmailSessionKey]
 		: null

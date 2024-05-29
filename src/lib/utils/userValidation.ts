@@ -31,3 +31,13 @@ export const EmailSchema = z
 	.max(100, { message: 'Email is too long' })
 	// make sure to map email to lowercase
 	.transform(value => value.toLowerCase())
+
+export const UserNameOrEmailSchema = z
+	.string({ required_error: 'Username/Email is required' })
+	.min(3, { message: 'Username/Email is too short' })
+	.max(100, { message: 'Username/Email is too long' })
+	.regex(/^[a-zA-Z0-9_]+$/, {
+		message:
+			'Username/Email can only include letters, numbers, and underscores',
+	})
+	.transform(value => value.toLowerCase())
