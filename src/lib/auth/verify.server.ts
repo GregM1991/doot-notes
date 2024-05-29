@@ -1,6 +1,7 @@
 import { redirect, type Cookies } from '@sveltejs/kit'
 import { handleVerification as handleOnboardingVerification } from '$lib/auth/onboarding.server'
 import { handleVerification as handleChangeEmailVerification } from '$lib/auth/changeEmail.server'
+import { handleVerification as handleResetPasswordVerification } from '$lib/auth/resetPassword.server'
 import {
 	codeQueryParam,
 	redirectToQueryParam,
@@ -13,7 +14,7 @@ import {
 import { generateTOTP, verifyTOTP } from '$lib/server/totp'
 import { prisma } from '$lib/utils/db.server'
 import { getDomainUrl } from '$lib/utils/misc'
-import { message, setError, superValidate } from 'sveltekit-superforms'
+import { setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import { requireUserId } from '$lib/utils/auth.server'
 import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
@@ -149,18 +150,13 @@ export async function validateRequest(
 	}
 
 	switch (formValue[typeQueryParam]) {
-		// case 'reset-password': {
-		//   await deleteVerification()
-		//   return handleResetPasswordVerification({ request, body, form })
-		// }
+		case 'reset-password': {
+			await deleteVerification()
+			return handleResetPasswordVerification({ cookies, request, body, form })
+		}
 		case 'onboarding': {
 			await deleteVerification()
-			return handleOnboardingVerification({
-				cookies,
-				request,
-				body,
-				form,
-			})
+			return handleOnboardingVerification({ cookies, request, body, form })
 		}
 		case 'change-email': {
 			await deleteVerification()

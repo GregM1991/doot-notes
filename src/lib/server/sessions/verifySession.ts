@@ -1,16 +1,18 @@
+import { z } from 'zod'
 import { redirect, type Cookies } from '@sveltejs/kit'
+import { newEmailAddressSessionKey } from '$lib/auth/changeEmail.server'
+import { onboardingEmailSessionKey } from '$lib/auth/onboarding'
+import { resetPasswordUsernameSessionKey } from '$lib/auth/resetPassword.server'
 import {
 	decryptCookie,
 	encryptAndSignCookieValue,
 } from '$lib/server/sessions/secureCookie'
-import { onboardingEmailSessionKey } from '$lib/auth/onboarding'
 import { safeRedirect } from '$lib/utils/misc'
-import { z } from 'zod'
-import { newEmailAddressSessionKey } from '$lib/auth/changeEmail.server'
 
 type VerificationType =
 	| typeof onboardingEmailSessionKey
 	| typeof newEmailAddressSessionKey
+	| typeof resetPasswordUsernameSessionKey
 
 interface HandleNewVerificationArgs {
 	cookies: Cookies
@@ -22,6 +24,7 @@ interface HandleNewVerificationArgs {
 export const VerifySessionSchema = z.object({
 	[onboardingEmailSessionKey]: z.string().nullable().default(null),
 	[newEmailAddressSessionKey]: z.string().nullable().default(null),
+	[resetPasswordUsernameSessionKey]: z.string().nullable().default(null),
 })
 
 export const verifySessionCookieName = 'dn_verification'
@@ -48,7 +51,21 @@ export async function handleNewVerification({
 	throw redirect(303, safeRedirect(redirectTo))
 }
 
-export function getVerifySessionData(sessionCookie: string | undefined) {
+export function setVerificationCookieData(
+	key: string,
+	value: string,
+	cookies: Cookies,
+) {
+	const encryptedCookieString = encryptAndSignCookieValue({
+		[key]: value,
+	})
+	cookies.set(verifySessionCookieName, encryptedCookieString, {
+		...verifySessionCookieOptions,
+	})
+}
+
+export function getVerifySessionData(cookies: Cookies) {
+	const sessionCookie = cookies.get(verifySessionCookieName)
 	if (!sessionCookie) return null
 	const decryptedSessionValue = decryptCookie(sessionCookie)
 	const result = VerifySessionSchema.safeParse(decryptedSessionValue)

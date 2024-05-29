@@ -1,7 +1,4 @@
-import {
-	getVerifySessionData,
-	verifySessionCookieName,
-} from '$lib/server/sessions/verifySession'
+import { getVerifySessionData } from '$lib/server/sessions/verifySession'
 import { invariant } from '$lib/utils/misc'
 import type { VerifyFunctionArgs } from '$lib/auth/verify'
 import { message } from 'sveltekit-superforms'
@@ -21,9 +18,7 @@ export async function handleVerification({
 }: VerifyFunctionArgs) {
 	await requireRecentVerification(userId ?? null, request, cookies)
 	invariant(form.valid, 'Form should be successful by now')
-	// TODO: cookies.get should really be encapsulated in getVerifySessionData
-	const verifySessionCookie = cookies.get(verifySessionCookieName)
-	const verifySession = getVerifySessionData(verifySessionCookie)
+	const verifySession = getVerifySessionData(cookies)
 	const newEmail = verifySession
 		? verifySession[newEmailAddressSessionKey]
 		: null
