@@ -1,5 +1,5 @@
 import CryptoJS from 'crypto-js'
-// TODO: PICKUP
+// I have taken this honeypot code from remix/utils: https://github.com/sergiodxa/remix-utils/blob/main/src/server/honeypot.ts
 export interface HoneypotInputProps {
 	/**
 	 * The name expected to be used by the honeypot input field.

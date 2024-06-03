@@ -16,6 +16,7 @@ import { safeRedirect } from '$lib/utils/misc'
 import type { PageServerLoad } from './$types'
 import { setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
+import { checkHoneypot } from '$lib/utils/honeypot.server'
 
 async function requireOnboardingEmail(userId: string | null, cookies: Cookies) {
 	requireAnonymous(userId)
@@ -37,8 +38,9 @@ export const load = (async ({ locals, cookies }) => {
 export const actions = {
 	default: async ({ locals, cookies, request }) => {
 		const email = await requireOnboardingEmail(locals.userId, cookies)
-		// TODO: check honeypot
-		const form = await superValidate(request, zod(SignupFormSchema)) // TODO: Why isn't this giving data. Check the signupFormSchema, try a simpler thing?
+		const formData = await request.formData()
+		const form = await superValidate(formData, zod(SignupFormSchema)) // TODO: Why isn't this giving data. Check the signupFormSchema, try a simpler thing?
+		checkHoneypot(formData, form)
 		if (!form.valid) return { form }
 		const user = await prisma.user.findUnique({
 			where: { username: form.data.username },

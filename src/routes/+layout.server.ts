@@ -5,6 +5,7 @@ import {
 } from '$lib/server/sessions/toastSession'
 import { logout } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
+import { honeypot } from '$lib/utils/honeypot.server'
 
 export async function load({ cookies, locals }) {
 	const toastCookieString = cookies.get(toastCookieName)
@@ -36,6 +37,7 @@ export async function load({ cookies, locals }) {
 		console.info('User drift')
 		await logout(cookies, '/')
 	}
+	const honeyProps = honeypot.getInputProps()
 
-	return { toast, user }
+	return { toast, user, honeyProps }
 }

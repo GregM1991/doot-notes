@@ -7,6 +7,7 @@ import { forgotPasswordEmail } from '$lib/auth/recoverPassword.server'
 import { sendEmail } from '$lib/server/email'
 import { prisma } from '$lib/utils/db.server'
 import { UserNameOrEmailSchema } from '$lib/utils/userValidation'
+import { checkHoneypot } from '$lib/utils/honeypot.server.js'
 
 const ForgotPasswordSchema = z.object({
 	usernameOrEmail: UserNameOrEmailSchema,
@@ -22,8 +23,10 @@ export const load = async ({ locals }) => {
 export const actions = {
 	default: async ({ request, cookies }) => {
 		// TODO: Create honeypot
-		const form = await superValidate(request, zod(ForgotPasswordSchema))
+		const formData = await request.formData()
+		const form = await superValidate(formData, zod(ForgotPasswordSchema))
 		if (!form.valid) return fail(400, { form })
+		checkHoneypot(formData, form)
 
 		const user = await prisma.user.findFirst({
 			where: {

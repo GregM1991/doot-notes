@@ -1,5 +1,5 @@
 <script script="ts">
-	import { Input, Button } from '$lib/components'
+	import { Input, Button, HoneypotInputs } from '$lib/components'
 	import SuperDebug, { superForm } from 'sveltekit-superforms'
 
 	export let data
@@ -11,6 +11,7 @@
 <h1>Have a geez at your email</h1>
 <span>We've sent you a little prezzie to verify your email address</span>
 <form method="POST" use:enhance>
+	<HoneypotInputs />
 	<div>
 		<Input name="code" value={$form.code} {label} errors={$errors.code || $message?.text} />
 	</div>

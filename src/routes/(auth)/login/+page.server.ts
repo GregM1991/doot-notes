@@ -6,6 +6,7 @@ import { handleNewSessionWithRedirect } from '$lib/server/sessions/authSession'
 import { PasswordSchema, UsernameSchema } from '$lib/utils/userValidation'
 import { login } from '$lib/utils/auth.server'
 import type { PageServerLoad } from './$types'
+import { checkHoneypot } from '$lib/utils/honeypot.server'
 
 const LoginFormSchema = z.object({
 	username: UsernameSchema,
@@ -23,11 +24,11 @@ export const load = (async ({ locals }) => {
 
 export const actions = {
 	default: async ({ request, cookies }) => {
-		// TODO: Create honeypot
-
-		const form = await superValidate(request, zod(LoginFormSchema))
+		const formData = await request.formData()
+		const form = await superValidate(formData, zod(LoginFormSchema))
 		if (!form.valid)
 			return { form: { ...form, data: { ...form.data, password: '' } } }
+		checkHoneypot(formData, form)
 
 		const session = await login(form.data)
 		if (!session) {

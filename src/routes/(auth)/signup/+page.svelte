@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { enhance } from '$app/forms'
-	import { Button, Input, ValidationErrors } from '$lib/components'
+	import { Button, HoneypotInputs, Input, ValidationErrors } from '$lib/components'
+	import { superForm } from 'sveltekit-superforms'
 
-	export let form
-	const formId = 'sigup-form'
+	export let data
+	const { form, formId, errors, enhance } = superForm(data.form)
 </script>
 
 <svelte:head>
@@ -12,17 +12,17 @@
 
 <h1>Let's get you Dootin!</h1>
 <form method="POST" use:enhance>
+	<HoneypotInputs />
 	<div class="field-group">
 		<Input
 			label="Enter your email"
 			name="email"
-			value=""
-			errors={form?.result.error?.username}
+			value={$form.email}
+			errors={$errors.email}
 		/>
 	</div>
 	<Button fluid type="submit" secondary>Submit</Button>
-	<ValidationErrors errorId={formId} errors={form?.result.error?.['']} />
-	<!-- TODO: this is a bit stinky -->
+	<ValidationErrors errorId={$formId} errors={$errors._errors} />
 </form>
 
 <style>
