@@ -19,6 +19,7 @@ import { zod } from 'sveltekit-superforms/adapters'
 import { requireUserId } from '$lib/utils/auth.server'
 import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 import { twoFAVerificationType } from '$lib/profile/consts'
+import { checkHoneypot } from '$lib/utils/honeypot.server'
 
 type PrepareVerificatinParams = {
 	period: number
@@ -125,6 +126,9 @@ export async function validateRequest(
 ) {
 	const form = await superValidate(body, zod(VerifySchema))
 	if (!form.valid) return { form }
+	if (body instanceof FormData) {
+		checkHoneypot(body, form)
+	}
 	const codeIsValid = await isCodeValid({
 		code: form.data[codeQueryParam],
 		type: form.data[typeQueryParam],

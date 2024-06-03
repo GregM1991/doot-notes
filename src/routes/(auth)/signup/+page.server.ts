@@ -7,6 +7,7 @@ import { z } from 'zod'
 import { setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import type { PageServerLoad } from './$types'
+import { checkHoneypot } from '$lib/utils/honeypot.server'
 
 const SignupFormSchema = z.object({
 	email: z.string(),
@@ -20,13 +21,11 @@ export const load = (async () => {
 export const actions = {
 	default: async ({ request }) => {
 		const formData = await request.formData()
-		// checkHoneypot(formData, form)
-
-		// TODO: Parse forms with SuperForm
 		const form = await superValidate(formData, zod(SignupFormSchema))
 		if (!form.valid) {
 			return { form }
 		}
+		checkHoneypot(formData, form)
 		const existingUser = await prisma.user.findUnique({
 			where: { email: form.data.email },
 			select: { id: true },

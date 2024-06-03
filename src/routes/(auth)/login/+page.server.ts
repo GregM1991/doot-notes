@@ -25,6 +25,7 @@ export const load = (async ({ locals }) => {
 export const actions = {
 	default: async ({ request, cookies }) => {
 		const formData = await request.formData()
+		const formDataEntries = Array.from(formData.entries())
 		const form = await superValidate(formData, zod(LoginFormSchema))
 		if (!form.valid)
 			return { form: { ...form, data: { ...form.data, password: '' } } }

@@ -14,10 +14,11 @@ export function checkHoneypot<T extends ZodType<any, any>>(
 	form: SuperValidated<z.input<T>, Message, z.output<T>>,
 ) {
 	try {
+		console.log({ formData: Array.from(formData.entries()), form, honeypot })
 		honeypot.check(formData)
 	} catch (error) {
 		if (error instanceof SpamError) {
-			setError(form, '', 'Form not submitted properly')
+			return setError(form, '', 'Form not submitted properly')
 		}
 		throw error
 	}
