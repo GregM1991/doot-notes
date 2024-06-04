@@ -79,6 +79,7 @@ export class Honeypot {
 
 	public check(formData: FormData) {
 		let nameFieldName = this.config.nameFieldName ?? DEFAULT_NAME_FIELD_NAME
+		console.log({ nameFieldName })
 		if (this.config.randomizeNameFieldName) {
 			let actualName = this.getRandomizedNameFieldName(nameFieldName, formData)
 			if (actualName) nameFieldName = actualName
@@ -91,11 +92,14 @@ export class Honeypot {
 		}
 
 		let honeypotValue = formData.get(nameFieldName)
+		console.log({ honeypotValue })
 
 		if (honeypotValue !== '') throw new SpamError('Honeypot input not empty')
+		console.log({ thisValidFrom: this.validFromFieldName })
 		if (!this.validFromFieldName) return
 
 		let validFrom = formData.get(this.validFromFieldName)
+		console.log({ validFrom })
 
 		if (!validFrom) throw new SpamError('Missing honeypot valid from input')
 

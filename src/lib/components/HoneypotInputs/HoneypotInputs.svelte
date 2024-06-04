@@ -9,7 +9,6 @@
 		validFromFieldName = 'from__confirm',
 		encryptedValidFrom,
 	} = getContext<HoneypotInputProps>('honeyProps')
-	console.log({ nameFieldName, validFromFieldName, encryptedValidFrom })
 </script>
 
 <div
