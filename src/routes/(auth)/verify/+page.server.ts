@@ -15,7 +15,6 @@ export const load = (async ({ url }) => {
 export const actions = {
 	default: async ({ cookies, request, locals }) => {
 		const formData = await request.formData()
-		// TODO: check honeypot
 		return validateRequest(cookies, request, formData, locals?.userId)
 	},
 } satisfies Actions

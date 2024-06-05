@@ -1,16 +1,24 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms'
 	import { page } from '$app/stores'
-	import { Button, Input, ValidationErrors } from '$lib/components'
-	
+	import {
+		Button,
+		Input,
+		ValidationErrors,
+		HoneypotInputs,
+	} from '$lib/components'
+
 	export let data
-	const { form, errors, constraints, enhance, message } = superForm(data.loginForm)
+	const { form, errors, constraints, enhance, message } = superForm(
+		data.loginForm,
+	)
 	const formId = 'login-form'
 	// TODO: create a auth form component to reduce styling repeats 😎
 </script>
 
 <h1>Hello again!</h1>
 <form method="POST" use:enhance id={formId}>
+	<HoneypotInputs />
 	<div class="field-group">
 		<Input
 			label="Enter username"
@@ -49,7 +57,7 @@
 	{#if $message}
 		<ValidationErrors errorId={formId} errors={[$message]} />
 	{/if}
-	<span class='signup'>
+	<span class="signup">
 		New here? <a href="/signup" class="link">Create an account</a>
 	</span>
 </form>

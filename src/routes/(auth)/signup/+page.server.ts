@@ -4,42 +4,37 @@ import { prisma } from '$lib/utils/db.server.js'
 import { parseWithZod } from '@conform-to/zod'
 import { fail, redirect } from '@sveltejs/kit'
 import { z } from 'zod'
+import { setError, superValidate } from 'sveltekit-superforms'
+import { zod } from 'sveltekit-superforms/adapters'
+import type { PageServerLoad } from './$types'
+import { checkHoneypot } from '$lib/utils/honeypot.server'
 
 const SignupFormSchema = z.object({
 	email: z.string(),
 })
 
+export const load = (async () => {
+	const form = await superValidate(zod(SignupFormSchema))
+	return { form }
+}) satisfies PageServerLoad
+
 export const actions = {
 	default: async ({ request }) => {
 		const formData = await request.formData()
-		// TODO: Create honeypot
-
-		// TODO: Parse forms with SuperForm
-		const submission = await parseWithZod(formData, {
-			schema: SignupFormSchema.superRefine(async (data, ctx) => {
-				const existingUser = await prisma.user.findUnique({
-					where: { email: data.email },
-					select: { id: true },
-				})
-				if (existingUser) {
-					ctx.addIssue({
-						path: ['email'],
-						code: z.ZodIssueCode.custom,
-						message: 'A user already exists with this email',
-					})
-					return
-				}
-			}),
-			async: true,
+		const form = await superValidate(formData, zod(SignupFormSchema))
+		if (!form.valid) {
+			return { form }
+		}
+		checkHoneypot(formData, form)
+		const existingUser = await prisma.user.findUnique({
+			where: { email: form.data.email },
+			select: { id: true },
 		})
-
-		if (submission.status !== 'success') {
-			return fail(submission.status === 'error' ? 400 : 200, {
-				result: submission.reply(),
-			})
+		if (existingUser) {
+			return setError(form, 'email', 'A user already exists with this email')
 		}
 
-		const { email } = submission.value
+		const { email } = form.data
 		const { verifyUrl, redirectTo, otp } = await prepareVerification({
 			period: 10 * 60,
 			request,
@@ -57,9 +52,7 @@ export const actions = {
 		if (response.status === 'success') {
 			return redirect(303, redirectTo.toString())
 		} else {
-			fail(500, {
-				result: submission.reply({ formErrors: [response.error.message] }),
-			})
+			return setError(form, '', response.error.message)
 		}
 	},
 }
