@@ -37,7 +37,7 @@ export const authSessionCookieOptions: CookieSerializeOptions & {
 	secure: process.env.NODE_ENV === 'production',
 }
 
-// TODO: Research way to create function that parses different schemas correctly (getToastData)
+// TODO: Research way to create function that parses different schemas correctly
 export function getAuthSessionData(sessionCookie: string | undefined) {
 	if (!sessionCookie) return null
 	const decryptedSessionValue = decryptCookie(sessionCookie)

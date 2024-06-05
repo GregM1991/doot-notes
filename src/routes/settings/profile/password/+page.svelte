@@ -37,7 +37,7 @@
 			/>
 		</div>
 		<div class="button-wrapper">
-			<a class="link-button" href="..">Cancel</a>
+			<a class="link-button" href="/settings/profile">Cancel</a>
 			<Button type="submit">Change Password</Button>
 		</div>
 	</form>

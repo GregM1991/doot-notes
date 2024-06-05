@@ -21,6 +21,7 @@ export const VerifySchema = z.object({
 export type VerificationTypes = z.infer<typeof VerificationTypeSchema>
 export type VerifyFunctionArgs = {
 	cookies: Cookies
+	locals: App.Locals
 	request: Request
 	userId?: string | null
 	form: SuperValidated<

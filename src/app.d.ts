@@ -1,6 +1,6 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
-import { Message } from '$lib/types'
+import { Message, Toast } from '$lib/types'
 import type { HoneypotInputProps } from '$lib/server/honeypot'
 
 declare module 'svelte' {
@@ -17,6 +17,7 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			userId: string | null
+			toast: Toast | null
 		}
 		// interface PageData {}
 		// interface PageState {}

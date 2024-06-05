@@ -9,10 +9,9 @@ import {
 	verifySessionCookieOptions,
 } from '$lib/server/sessions/verifySession'
 import { handleNewSession } from '$lib/server/sessions/authSession'
-import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 import { signup, requireAnonymous } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
-import { safeRedirect } from '$lib/utils/misc'
+import { safeRedirect, setToast } from '$lib/utils/misc'
 import type { PageServerLoad } from './$types'
 import { setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
@@ -67,7 +66,7 @@ export const actions = {
 			remember: remember ?? null,
 		})
 		// redirect with toast
-		setToastDataToCookie(cookies, {
+		locals.toast = setToast({
 			title: 'Welcome',
 			description: 'Thanks for signing up!',
 		})

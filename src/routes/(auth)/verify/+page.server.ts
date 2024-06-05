@@ -15,6 +15,6 @@ export const load = (async ({ url }) => {
 export const actions = {
 	default: async ({ cookies, request, locals }) => {
 		const formData = await request.formData()
-		return validateRequest(cookies, request, formData, locals?.userId)
+		return validateRequest(cookies, locals, request, formData)
 	},
 } satisfies Actions

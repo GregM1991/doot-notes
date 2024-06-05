@@ -13,11 +13,10 @@ import {
 } from '$lib/auth/verify'
 import { generateTOTP, verifyTOTP } from '$lib/server/totp'
 import { prisma } from '$lib/utils/db.server'
-import { getDomainUrl } from '$lib/utils/misc'
+import { getDomainUrl, setToast } from '$lib/utils/misc'
 import { setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import { requireUserId } from '$lib/utils/auth.server'
-import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 import { twoFAVerificationType } from '$lib/profile/consts'
 import { checkHoneypot } from '$lib/utils/honeypot.server'
 
@@ -55,12 +54,8 @@ export function getRedirectToUrl({
 	return redirectToUrl
 }
 
-export async function requireRecentVerification(
-	userIdArg: string | null,
-	request: Request,
-	cookies: Cookies,
-) {
-	const userId = requireUserId(userIdArg, request)
+export async function requireRecentVerification(request: Request, locals: App.Locals) {
+	const userId = requireUserId(locals.userId, request)
 	const shouldReverify = false // await shouldRequestTwoFA(request)
 	if (shouldReverify) {
 		const reqUrl = new URL(request.url)
@@ -70,7 +65,7 @@ export async function requireRecentVerification(
 			type: twoFAVerificationType,
 			redirectTo: reqUrl.pathname + reqUrl.search,
 		})
-		setToastDataToCookie(cookies, {
+		setToast({
 			title: 'Please Reverify',
 			description: 'Please reverify your account before proceeding',
 		})
@@ -120,10 +115,11 @@ export async function prepareVerification({
 
 export async function validateRequest(
 	cookies: Cookies,
+	locals: App.Locals,
 	request: Request,
 	body: FormData | URLSearchParams,
-	userId: string | null,
 ) {
+	const { userId } = locals
 	const form = await superValidate(body, zod(VerifySchema))
 	if (!form.valid) return { form }
 	if (body instanceof FormData) {
@@ -156,16 +152,29 @@ export async function validateRequest(
 	switch (formValue[typeQueryParam]) {
 		case 'reset-password': {
 			await deleteVerification()
-			return handleResetPasswordVerification({ cookies, request, body, form })
+			return handleResetPasswordVerification({
+				cookies,
+				locals,
+				request,
+				body,
+				form,
+			})
 		}
 		case 'onboarding': {
 			await deleteVerification()
-			return handleOnboardingVerification({ cookies, request, body, form })
+			return handleOnboardingVerification({
+				cookies,
+				locals,
+				request,
+				body,
+				form,
+			})
 		}
 		case 'change-email': {
 			await deleteVerification()
 			return handleChangeEmailVerification({
 				cookies,
+				locals,
 				request,
 				body,
 				form,

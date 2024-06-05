@@ -5,18 +5,18 @@ import { message } from 'sveltekit-superforms'
 import { prisma } from '$lib/utils/db.server'
 import { sendEmail } from '$lib/server/email'
 import { requireRecentVerification } from './verify.server'
-import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 import { redirect } from '@sveltejs/kit'
+import { setToast } from '$lib/stores/toast'
 
 export const newEmailAddressSessionKey = 'new-email-address'
 
 export async function handleVerification({
 	cookies,
+	locals,
 	request,
 	form,
-	userId,
 }: VerifyFunctionArgs) {
-	await requireRecentVerification(userId ?? null, request, cookies)
+	await requireRecentVerification(request, locals)
 	invariant(form.valid, 'Form should be successful by now')
 	const verifySession = getVerifySessionData(cookies)
 	const newEmail = verifySession
@@ -50,7 +50,7 @@ export async function handleVerification({
 		text: 'Whats this also?',
 	})
 
-	setToastDataToCookie(cookies, {
+	locals.toast = setToast({
 		title: 'Success',
 		description: 'Email successfully updated',
 		type: 'success',

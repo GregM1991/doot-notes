@@ -7,13 +7,12 @@ import {
 	twoFAVerificationType,
 	twoFAVerifyVerificationType,
 } from '$lib/profile/consts'
-import { getDomainUrl } from '$lib/utils/misc'
+import { getDomainUrl, setToast } from '$lib/utils/misc'
 import type { PageServerLoad } from './$types'
 import { zod } from 'sveltekit-superforms/adapters'
 import { setError, superValidate } from 'sveltekit-superforms'
 import { VerifySchema } from '$lib/profile/schemas'
 import { isCodeValid } from '$lib/auth/verify.server'
-import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 
 export const load = (async ({ request, locals }) => {
 	const userId = requireUserId(locals.userId, request)
@@ -49,7 +48,7 @@ export const load = (async ({ request, locals }) => {
 }) satisfies PageServerLoad
 
 export const actions = {
-	default: async ({ request, locals, cookies }) => {
+	default: async ({ request, locals }) => {
 		const userId = requireUserId(locals.userId, request)
 
 		const form = await superValidate(request, zod(VerifySchema))
@@ -79,7 +78,7 @@ export const actions = {
 					},
 					data: { type: twoFAVerificationType },
 				})
-				setToastDataToCookie(cookies, {
+				locals.toast = setToast({
 					title: 'Enabled',
 					description: 'Two-factor authentication has been enabled.',
 					type: 'success',

@@ -1,22 +1,8 @@
-import {
-	getToastData,
-	toastCookieName,
-	toastOptionValues,
-} from '$lib/server/sessions/toastSession'
 import { logout } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
 import { honeypot } from '$lib/utils/honeypot.server'
 
 export async function load({ cookies, locals }) {
-	const toastCookieString = cookies.get(toastCookieName)
-	const toast = toastCookieString ? getToastData(toastCookieString) : undefined
-	// This essentially flashes the cookie. Not sure if this is the best way to
-	// do this, but I couldn't find a flash method in the sveltekit cookies object
-	// (I don't think the cookie package which SK wraps actually has a flash method)
-	if (toast) {
-		cookies.delete(toastCookieName, toastOptionValues)
-	}
-
 	const user = locals.userId
 		? await prisma.user.findUnique({
 				where: { id: locals.userId },
@@ -39,5 +25,5 @@ export async function load({ cookies, locals }) {
 	}
 	const honeyProps = honeypot.getInputProps()
 
-	return { toast, user, honeyProps }
+	return { user, honeyProps }
 }

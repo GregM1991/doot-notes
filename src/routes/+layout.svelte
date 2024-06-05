@@ -1,30 +1,16 @@
 <script lang="ts">
 	import { Navbar, Toast } from '$lib/components'
 	import type { HoneypotInputProps } from '$lib/server/honeypot.js'
+	import { dismissToast, toasts } from '$lib/stores/toast.js'
 	import '$lib/styles/app.css'
-	import { onDestroy, setContext } from 'svelte'
-	import { readable, type Readable } from 'svelte/store';
+	import { setContext } from 'svelte'
+	import { readable, type Readable } from 'svelte/store'
 
 	export let data
-	let timeoutId: ReturnType<typeof setTimeout>
-	$: showToast = data.toast ? true : false
-
-	// TODO: Clean this up
-	function dismissToast() {
-		showToast = false
-	}
-
-	$: if (data.toast) {
-		if (timeoutId) clearTimeout(timeoutId)
-
-		timeoutId = setTimeout(() => {
-			dismissToast()
-		}, 5000)
-	}
-	onDestroy(() => timeoutId && clearTimeout(timeoutId))
 
 	const honeyProps = readable(data.honeyProps)
 	setContext<Readable<HoneypotInputProps>>('honeyProps', honeyProps)
+	$: console.log({ toasts: $toasts })
 </script>
 
 <svelte:head>
@@ -36,14 +22,14 @@
 </svelte:head>
 
 <div class="content">
-	{#if showToast && data.toast}
+	{#each $toasts as toast}
 		<Toast
-			title={data.toast.title}
-			description={data.toast.description}
-			type={data.toast.type}
-			on:close={dismissToast}
+			title={toast.title}
+			description={toast.description}
+			type={toast.type}
+			on:close={() => dismissToast(toast.id)}
 		/>
-	{/if}
+	{/each}
 	<header>
 		<Navbar user={data.user} />
 	</header>

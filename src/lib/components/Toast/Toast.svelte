@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { Type } from '$lib/server/sessions/toastSession'
+	import type { Type } from '$lib/stores/toast'
 	import { createEventDispatcher } from 'svelte'
-	import { fade, fly } from 'svelte/transition'
+	import { fly } from 'svelte/transition'
 	import Cross from 'virtual:icons/radix-icons/cross1'
 
 	export let title: string | undefined

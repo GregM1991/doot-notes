@@ -1,8 +1,7 @@
 import { redirect, type Actions, fail } from '@sveltejs/kit'
-import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 import { requireUserId } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
-import { invariantResponse } from '$lib/utils/misc'
+import { invariantResponse, setToast } from '$lib/utils/misc'
 
 export const actions = {
 	default: async ({ params, cookies, locals, request }) => {
@@ -23,7 +22,7 @@ export const actions = {
 			throw fail(403, {
 				error: 'Unauthorized',
 			})
-		setToastDataToCookie(cookies, {
+		locals.toast = setToast({
 			title: 'Success',
 			description: 'Note successfully deleted',
 			type: 'success',

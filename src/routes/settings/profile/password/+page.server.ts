@@ -11,7 +11,7 @@ import { superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import { ChangePasswordForm } from '$lib/profile/schemas'
 import { requirePassword } from '$lib/utils/misc.server'
-import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
+import { setToast } from '$lib/utils/misc'
 
 export const load = (async ({ request, locals }) => {
 	const userId = requireUserId(locals.userId, request)
@@ -21,7 +21,7 @@ export const load = (async ({ request, locals }) => {
 }) satisfies PageServerLoad
 
 export const actions = {
-	default: async ({ locals, request, cookies }) => {
+	default: async ({ locals, request }) => {
 		const userId = requireUserId(locals.userId, request)
 		await requirePassword(userId)
 		const form = await superValidate(
@@ -72,7 +72,7 @@ export const actions = {
 				},
 			},
 		})
-		setToastDataToCookie(cookies, {
+		locals.toast = setToast({
 			title: 'Success',
 			description: 'Note successfully deleted',
 			type: 'success',

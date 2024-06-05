@@ -3,13 +3,12 @@ import { fail, setError, type SuperValidated } from 'sveltekit-superforms'
 import { NameSchema, UsernameSchema } from '$lib/utils/userValidation'
 import { prisma } from '$lib/utils/db.server'
 import type { Message } from '$lib/types'
-import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 import { redirect, type Cookies } from '@sveltejs/kit'
 import {
 	authSessionCookieName,
 	getAuthSessionData,
 } from '$lib/server/sessions/authSession'
-import { invariantResponse } from '$lib/utils/misc'
+import { invariantResponse, setToast } from '$lib/utils/misc'
 
 export const ProfileFormSchema = z.object({
 	name: NameSchema.optional(),
@@ -25,7 +24,7 @@ type Form = SuperValidated<
 export async function profileUpdateAction(
 	userId: string,
 	form: Form,
-	cookies: Cookies,
+	locals: App.Locals,
 ) {
 	if (!form.valid) return fail(400, { form })
 
@@ -45,7 +44,7 @@ export async function profileUpdateAction(
 			username: form.data.username,
 		},
 	})
-	setToastDataToCookie(cookies, {
+	locals.toast = setToast({
 		title: 'Success',
 		description: 'Username/name successfully updated',
 		type: 'success',
@@ -75,9 +74,9 @@ export async function signOutOfSessionsAction(
 	return { form }
 }
 
-export async function deleteDataAction(userId: string, cookies: Cookies) {
+export async function deleteDataAction(userId: string, locals: App.Locals) {
 	await prisma.user.delete({ where: { id: userId } })
-	setToastDataToCookie(cookies, {
+	locals.toast = setToast({
 		type: 'success',
 		title: 'Data Deleted',
 		description: 'All of your data has been deleted',

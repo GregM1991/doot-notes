@@ -62,13 +62,13 @@ export const actions = {
 
 		switch (intent) {
 			case profileUpdateActionIntent: {
-				return profileUpdateAction(userId, form, cookies)
+				return profileUpdateAction(userId, form, locals)
 			}
 			case signOutOfSessionsActionIntent: {
 				return signOutOfSessionsAction(userId, form, cookies)
 			}
 			case deleteDataActionIntent: {
-				return deleteDataAction(userId, cookies)
+				return deleteDataAction(userId, locals)
 			}
 			default: {
 				setError(form, `Invalid intent "${intent}"`, { status: 400 })

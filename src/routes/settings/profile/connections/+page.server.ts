@@ -4,8 +4,7 @@ import { ProviderNameSchema, type ProviderName } from '$lib/utils/connections'
 import { prisma } from '$lib/utils/db.server'
 import type { Actions } from '@sveltejs/kit'
 import type { PageServerLoad } from './$types'
-import { invariantResponse } from '$lib/utils/misc'
-import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
+import { invariantResponse, setToast } from '$lib/utils/misc'
 
 async function userCanDeleteConnections(userId: string) {
 	const user = await prisma.user.findUnique({
@@ -58,7 +57,7 @@ export const load = (async ({ request, locals }) => {
 }) satisfies PageServerLoad
 
 export const actions = {
-	default: async ({ request, locals, cookies }) => {
+	default: async ({ request, locals }) => {
 		const userId = requireUserId(locals.userId, request)
 		const formData = await request.formData()
 		invariantResponse(
@@ -77,7 +76,7 @@ export const actions = {
 				userId: userId,
 			},
 		})
-		setToastDataToCookie(cookies, {
+		locals.toast = setToast({
 			title: 'Deleted',
 			description: 'Your connection has been deleted.',
 		})
