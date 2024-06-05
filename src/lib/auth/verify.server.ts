@@ -125,7 +125,6 @@ export async function validateRequest(
 	userId: string | null,
 ) {
 	const form = await superValidate(body, zod(VerifySchema))
-	console.log({ form })
 	if (!form.valid) return { form }
 	if (body instanceof FormData) {
 		checkHoneypot(body, form)
