@@ -8,6 +8,7 @@
 	$: isOwner = $page.data?.user?.id === data.owner.id
 </script>
 
+<!-- TODO: Find out why the notes layout isn't rendering 🙄 -->
 <div class="wrapper" data-layout="grid">
 	<div class="sidebar">
 		<h1>{data.owner.name}'s notes</h1>

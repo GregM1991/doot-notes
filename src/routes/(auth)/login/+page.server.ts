@@ -1,4 +1,4 @@
-import { superValidate, message } from 'sveltekit-superforms'
+import { superValidate, setError } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import { z } from 'zod'
 import { type Actions, redirect } from '@sveltejs/kit'
@@ -33,10 +33,10 @@ export const actions = {
 
 		const session = await login(form.data)
 		if (!session) {
-			return message(
+			return setError(
 				{ ...form, data: { ...form.data, password: '' } },
+				'',
 				'Invalid username or password',
-				{ status: 400 },
 			)
 		}
 

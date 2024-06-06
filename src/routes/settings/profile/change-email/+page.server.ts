@@ -1,5 +1,5 @@
 import { requireUserId } from '$lib/utils/auth.server'
-import { message, setError, superValidate } from 'sveltekit-superforms'
+import { setError, superValidate } from 'sveltekit-superforms'
 import type { PageServerLoad } from './$types'
 import { zod } from 'sveltekit-superforms/adapters'
 import { ChangeEmailSchema } from '$lib/profile/schemas'
@@ -55,11 +55,7 @@ export const actions = {
 				type: newEmailAddressSessionKey,
 			})
 		} else {
-			return message(
-				form,
-				{ type: 'error', text: response.error.message },
-				{ status: 500 },
-			)
+			return setError(form, '', response.error.message)
 		}
 	},
 }

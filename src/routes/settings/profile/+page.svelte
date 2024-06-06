@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { Input, Button } from '$lib/components'
+	import { Input, Button, FormGroup } from '$lib/components'
 	import {
-	deleteDataActionIntent,
+		deleteDataActionIntent,
 		profileUpdateActionIntent,
 		signOutOfSessionsActionIntent,
 	} from '$lib/profile/consts.js'
@@ -22,129 +22,109 @@
 	$: otherSessions = data.user._count.sessions - 1
 </script>
 
-<div class="wrapper">
-	<h1 class="header">Let's make some changes to your profile</h1>
-	<!-- TODO: Make component, use in photo/+page.svelte -->
-	<div class="avatar-wrapper">
-		<img class="avatar" src={profileSrc} alt="{data.user?.name}'s avatar" />
-		<a href="/settings/profile/photo" class="update-photo-link">
-			<Camera />
-		</a>
-	</div>
-	<form id="profile" method="POST" class="form" use:enhance>
-		<div class="inputs">
-			<!-- TODO: Should really incorporate this form group class into the input -->
-			<div class="form-group">
-				<Input
-					label="Username"
-					name="username"
-					type="text"
-					bind:value={$form.username}
-					errors={$errors.username}
-				/>
-			</div>
-			<div class="form-group">
-				<Input
-					label="Name"
-					name="name"
-					type="text"
-					bind:value={$form.name}
-					errors={$errors.name}
-				/>
-			</div>
-		</div>
-		<Button
-			secondary
-			fluid
-			name="intent"
-			value={profileUpdateActionIntent}
-			type="submit"
-		>
-			Save changes
-		</Button>
-	</form>
-	<ul class="profile-links">
-		<li>
-			<a class="link" href="profile/password">
-				<DotsHorizontal /> Change password
-			</a>
-		</li>
-		<li>
-			<a class="link" href="profile/change-email">
-				<EnvelopeClosed /> Change email from {data.user.email}
-			</a>
-		</li>
-		<li>
-			<a class="link" href="profile/two-factor">
-				{#if data.isTwoFactorEnabled}
-					<LockClosed /> 2FA is enabled
-				{:else}
-					<LockOpened /> Enable 2FA
-				{/if}
-			</a>
-		</li>
-		<li class="link">
-			{#if otherSessions}
-				<Button
-					small
-					form="profile"
-					name="intent"
-					value={signOutOfSessionsActionIntent}
-					type="submit">Sign out other sessions</Button
-				>
-			{:else}
-				<Person /> This is your only session
-			{/if}
-		</li>
-		<li>
-			<a
-				class="link"
-				href="/settings/profile/connections"
-			>
-				<Link2 /> Manage connections
-			</a>
-		</li>
-		<li>
-			<a
-				download="my-doot-notes-data.json"
-				class="link"
-				href="/api/resources/download-user-data"
-			>
-				<Download /> Download your data
-			</a>
-		</li>
-		<li>
-			<Button
-				form="profile"
-				danger
-				type="submit"
-				small
-				style="font-size: var(--type-step-0)"
-				name="intent"
-				value="{deleteDataActionIntent}"
-			>
-				<Download /> Delete your account and data
-			</Button>
-		</li>
-	</ul>
+<h1 class="header">Let's make some changes to your profile</h1>
+<!-- TODO: Make component, use in photo/+page.svelte -->
+<div class="avatar-wrapper">
+	<img class="avatar" src={profileSrc} alt="{data.user?.name}'s avatar" />
+	<a href="/settings/profile/photo" class="update-photo-link">
+		<Camera />
+	</a>
 </div>
+<form id="profile" method="POST" use:enhance>
+	<div class="inputs">
+		<!-- TODO: Should really incorporate this form group class into the input -->
+		<FormGroup>
+			<Input
+				label="Username"
+				name="username"
+				type="text"
+				bind:value={$form.username}
+				errors={$errors.username}
+			/>
+		</FormGroup>
+		<FormGroup>
+			<Input
+				label="Name"
+				name="name"
+				type="text"
+				bind:value={$form.name}
+				errors={$errors.name}
+			/>
+		</FormGroup>
+	</div>
+	<Button
+		secondary
+		fluid
+		name="intent"
+		value={profileUpdateActionIntent}
+		type="submit"
+	>
+		Save changes
+	</Button>
+</form>
+<ul class="profile-links">
+	<li>
+		<a class="link" href="profile/password">
+			<DotsHorizontal /> Change password
+		</a>
+	</li>
+	<li>
+		<a class="link" href="profile/change-email">
+			<EnvelopeClosed /> Change email from {data.user.email}
+		</a>
+	</li>
+	<li>
+		<a class="link" href="profile/two-factor">
+			{#if data.isTwoFactorEnabled}
+				<LockClosed /> 2FA is enabled
+			{:else}
+				<LockOpened /> Enable 2FA
+			{/if}
+		</a>
+	</li>
+	<li class="link">
+		{#if otherSessions}
+			<Button
+				small
+				form="profile"
+				name="intent"
+				value={signOutOfSessionsActionIntent}
+				type="submit">Sign out other sessions</Button
+			>
+		{:else}
+			<Person /> This is your only session
+		{/if}
+	</li>
+	<li>
+		<a class="link" href="/settings/profile/connections">
+			<Link2 /> Manage connections
+		</a>
+	</li>
+	<li>
+		<a
+			download="my-doot-notes-data.json"
+			class="link"
+			href="/api/resources/download-user-data"
+		>
+			<Download /> Download your data
+		</a>
+	</li>
+	<li>
+		<Button
+			form="profile"
+			danger
+			type="submit"
+			small
+			style="font-size: var(--type-step-0)"
+			name="intent"
+			value={deleteDataActionIntent}
+		>
+			<Download /> Delete your account and data
+		</Button>
+	</li>
+</ul>
 
 <style>
-	.wrapper {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: var(--space-l);
-	}
-
-	.form {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: var(--space-3xs);
-		max-width: 48rem;
-	}
-
 	.header {
 		font-size: var(--type-step-4);
 		color: var(--palette-pop);
@@ -186,12 +166,6 @@
 		display: flex;
 		gap: var(--space-xs);
 		width: 100%;
-	}
-
-	.form-group {
-		display: flex;
-		flex-direction: column;
-		flex: 1;
 	}
 
 	.profile-links {

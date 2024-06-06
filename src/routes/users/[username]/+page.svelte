@@ -45,6 +45,6 @@
 
 	.buttons {
 		display: flex;
-		gap: var(--space-s)
+		gap: var(--space-s);
 	}
 </style>

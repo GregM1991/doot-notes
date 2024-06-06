@@ -16,7 +16,7 @@
 		border-radius: var(--border-radius);
 		z-index: 1;
 		backdrop-filter: blur(3px);
-		background: hsl(0, 0%, 100%, .4);
+		background: hsl(0, 0%, 100%, 0.4);
 		border: 2px solid white;
 	}
 </style>

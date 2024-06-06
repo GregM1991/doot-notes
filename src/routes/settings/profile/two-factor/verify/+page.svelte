@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/components/Button/Button.svelte'
-	import { Input } from '$lib/components/index.js'
+	import { FormGroup, Input } from '$lib/components/index.js'
 	import { superForm } from 'sveltekit-superforms'
 
 	export let data
@@ -26,14 +26,14 @@
 		you will unfortunately lose access to this account 😢.
 	</p>
 	<form method="POST">
-		<div class="form-group">
+		<FormGroup>
 			<Input
 				label="Verification Code"
 				name="code"
 				value={$form.code}
 				type="text"
 			/>
-		</div>
+		</FormGroup>
 		<Button secondary name="intent" value="verify" type="submit">Submit</Button>
 		<Button secondary name="intent" value="cancel" type="submit">Cancel</Button>
 	</form>
@@ -61,13 +61,5 @@
 
 	pre {
 		text-wrap: auto;
-	}
-
-	.form-group {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		gap: var(--space-3xs);
-		width: 100%;
 	}
 </style>

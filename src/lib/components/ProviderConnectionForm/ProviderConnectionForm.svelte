@@ -21,7 +21,6 @@
 	// 	 import(
 	// 		`virtual:icons/radix-icons/${providerIconNamesMap.get(providerName)}`
 	// 	).then(module => module.default)
-
 </script>
 
 <form action={formAction} method="POST" class="wrapper">

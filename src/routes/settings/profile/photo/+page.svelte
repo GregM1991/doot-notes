@@ -28,71 +28,68 @@
 	}
 </script>
 
-<div class="photo-change-wrapper">
-	<div class="avatar-wrapper">
-		<img
-			class="avatar"
-			src={newImageSrc ?? (data.user ? getUserImgSrc(data.user.image?.id) : '')}
-			alt="{data.user.name}'s avatar"
+<div class="avatar-wrapper">
+	<img
+		class="avatar"
+		src={newImageSrc ?? (data.user ? getUserImgSrc(data.user.image?.id) : '')}
+		alt="{data.user.name}'s avatar"
+	/>
+</div>
+<ValidationErrors errorId="photo-file" errors={$errors._errors} />
+<form id="delete-image" action="?/delete" method="POST" />
+<form
+	action="?/add-or-update-avatar"
+	method="POST"
+	enctype="multipart/form-data"
+	use:enhance
+>
+	<div class="button-wrapper">
+		<input
+			id="photo-file"
+			accept="image/*"
+			class="sr-only"
+			required
+			tabIndex={$file ? -1 : 0}
+			type="file"
+			name="photoFile"
+			bind:files={$file}
+			on:change={handleFileChange}
 		/>
-	</div>
-	<ValidationErrors errorId="photo-file" errors={$errors._errors} />
-	<form id="delete-image" action="?/delete" method="POST" />
-	<form
-		action="?/add-or-update-avatar"
-		method="POST"
-		enctype="multipart/form-data"
-		use:enhance
-	>
-		<div class="button-wrapper">
-			<input
-				id="photo-file"
-				accept="image/*"
-				class="sr-only"
-				required
-				tabIndex={$file ? -1 : 0}
-				type="file"
-				name="photoFile"
-				bind:files={$file}
-				on:change={handleFileChange}
-			/>
-			<label id="change-button" for="photo-file" class="label-button">
-				<Pencil />Change
-			</label>
-			<Button name="intent" value="submit" type="submit" id="save-photo-button">
-				Save Photo
-			</Button>
+		<label id="change-button" for="photo-file" class="label-button">
+			<Pencil />Change
+		</label>
+		<Button
+			secondary
+			name="intent"
+			value="submit"
+			type="submit"
+			id="save-photo-button"
+		>
+			Save Photo
+		</Button>
+		<Button
+			on:click={() => (newImageSrc = null)}
+			type="reset"
+			id="reset-button"
+			danger
+		>
+			Reset
+		</Button>
+		{#if data.user?.image?.id}
 			<Button
-				on:click={() => (newImageSrc = null)}
-				type="reset"
-				id="reset-button"
+				id="delete-button"
+				form="delete-image"
+				name="intent"
+				value="delete"
 				danger
 			>
-				Reset
+				<Trash />Delete
 			</Button>
-			{#if data.user?.image?.id}
-				<Button
-					id="delete-button"
-					form="delete-image"
-					name="intent"
-					value="delete"
-					danger
-				>
-					<Trash />Delete
-				</Button>
-			{/if}
-		</div>
-	</form>
-</div>
+		{/if}
+	</div>
+</form>
 
 <style>
-	.photo-change-wrapper {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: var(--space-s);
-	}
-
 	.avatar-wrapper {
 		justify-self: center;
 		position: relative;

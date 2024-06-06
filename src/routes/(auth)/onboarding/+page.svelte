@@ -1,5 +1,11 @@
 <script lang="ts">
-	import { Input, Button, ValidationErrors, HoneypotInputs } from '$lib/components'
+	import {
+		Input,
+		Button,
+		ValidationErrors,
+		HoneypotInputs,
+		FormGroup,
+	} from '$lib/components'
 	import { superForm } from 'sveltekit-superforms'
 
 	export let data
@@ -10,23 +16,18 @@
 <span>Go ahead and enter your details for us</span>
 <form id={$formId} method="POST" use:enhance>
 	<HoneypotInputs />
-	<div class="field-group">
+	<FormGroup>
 		<Input
 			label="Username"
 			name="username"
 			value={$form.username}
 			errors={$errors.username}
 		/>
-	</div>
-	<div class="field-group">
-		<Input
-			label="Name"
-			name="name"
-			value={$form.name}
-			errors={$errors.name}
-		/>
-	</div>
-	<div class="field-group">
+	</FormGroup>
+	<FormGroup>
+		<Input label="Name" name="name" value={$form.name} errors={$errors.name} />
+	</FormGroup>
+	<FormGroup>
 		<Input
 			type="password"
 			label="Password"
@@ -34,8 +35,8 @@
 			value={$form.password}
 			errors={$errors.password}
 		/>
-	</div>
-	<div class="field-group">
+	</FormGroup>
+	<FormGroup>
 		<Input
 			type="password"
 			label="Confirm Password"
@@ -43,7 +44,7 @@
 			value={$form.confirm}
 			errors={$errors.confirm}
 		/>
-	</div>
+	</FormGroup>
 	<label>
 		<input name="agreeToTermsOfServiceAndPrivacyPolicy" type="checkbox" />
 		Do you agree to our Terms of Service and Privacy Policy?
@@ -71,22 +72,5 @@
 	span {
 		text-align: center;
 		display: block;
-	}
-
-	form {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		height: 100%;
-		margin: 0 auto;
-		width: 30vw;
-		padding-top: var(--space-2xl);
-	}
-
-	.field-group {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-3xs);
-		width: 30vw;
 	}
 </style>
