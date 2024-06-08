@@ -1,13 +1,11 @@
 <script lang="ts">
-	import { Button, Input, ValidationErrors } from '$lib/components'
+	import { Button, FormGroup, Input, ValidationErrors } from '$lib/components'
 	import { superForm } from 'sveltekit-superforms'
 	export let data
 
-	const { form, errors, constraints, enhance, message } = superForm(
+	const { form, errors, constraints, enhance, formId } = superForm(
 		data.resetPasswordForm,
 	)
-	const formId = 'forgot-password-form'
-	// TODO: create a auth form component to reduce styling repeats 😎
 </script>
 
 <h1>Reset Password</h1>
@@ -15,8 +13,8 @@
 	Don't worry, I forget my password all the time {data.resetPasswordUsername},
 	let's get you sorted out by dooting a new one.
 </p>
-<form method="POST" use:enhance id={formId}>
-	<div class="field-group">
+<form method="POST" use:enhance id={$formId}>
+	<FormGroup>
 		<Input
 			label="New password"
 			name="password"
@@ -25,8 +23,8 @@
 			errors={$errors.password}
 			{...$constraints}
 		/>
-	</div>
-	<div class="field-group">
+	</FormGroup>
+	<FormGroup>
 		<Input
 			label="Confirm password"
 			name="confirm"
@@ -35,11 +33,9 @@
 			errors={$errors.confirm}
 			{...$constraints}
 		/>
-	</div>
+	</FormGroup>
 	<Button fluid type="submit" secondary>Submit</Button>
-	{#if $message}
-		<ValidationErrors errorId={formId} errors={[$message]} />
-	{/if}
+	<ValidationErrors errorId={$formId} errors={$errors._errors} />
 </form>
 
 <style>
@@ -67,12 +63,5 @@
 		h1 {
 			font-size: var(--type-step-6);
 		}
-	}
-
-	.field-group {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-3xs);
-		width: 100%;
 	}
 </style>

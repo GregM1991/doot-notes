@@ -12,6 +12,7 @@
 	export let secondary = false
 	export let required = false
 	export let hidden = false
+	export let fluid = false
 
 	const id = name
 
@@ -32,8 +33,9 @@
 	{autofocus}
 	{style}
 	{required}
-	bind:value={value}
+	bind:value
 	class:secondary
+	class:fluid
 	on:input={handleInput}
 	class="base"
 	aria-invalid={errors ? 'true' : undefined}
@@ -45,6 +47,7 @@
 
 <style>
 	.base {
+		--stretch: var(--stretch);
 		--background-color: var(--palette-secondary);
 		--background-color-light: var(--palette-secondary-light);
 		padding: var(--space-xs);
@@ -53,6 +56,8 @@
 		border-radius: 1rem;
 		outline: none;
 		filter: var(--border-drop-shadow-black);
+		justify-self: var(--stretch);
+		flex: 1;
 
 		transition: var(--animation-quick);
 	}

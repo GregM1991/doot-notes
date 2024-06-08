@@ -1,5 +1,11 @@
 <script lang="ts">
-	import { Button, HoneypotInputs, Input, ValidationErrors } from '$lib/components'
+	import {
+		Button,
+		FormGroup,
+		HoneypotInputs,
+		Input,
+		ValidationErrors,
+	} from '$lib/components'
 	import { superForm } from 'sveltekit-superforms'
 
 	export let data
@@ -13,14 +19,14 @@
 <h1>Let's get you Dootin!</h1>
 <form method="POST" use:enhance>
 	<HoneypotInputs />
-	<div class="field-group">
+	<FormGroup>
 		<Input
 			label="Enter your email"
 			name="email"
 			value={$form.email}
 			errors={$errors.email}
 		/>
-	</div>
+	</FormGroup>
 	<Button fluid type="submit" secondary>Submit</Button>
 	<ValidationErrors errorId={$formId} errors={$errors._errors} />
 </form>
@@ -34,13 +40,6 @@
 		margin: 0 auto;
 		width: 30vw;
 		padding-top: var(--space-2xl);
-	}
-
-	.field-group {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-3xs);
-		width: 30vw;
 	}
 
 	h1 {

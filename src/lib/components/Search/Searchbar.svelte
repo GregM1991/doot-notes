@@ -13,7 +13,7 @@
 	}
 </script>
 
-<form bind:this={form} on:submit|preventDefault={onSearch}>
+<form class="form" bind:this={form} on:submit|preventDefault={onSearch}>
 	<label class="sr-only" for="search">Search</label>
 	<Input
 		on:input={onSearch}
@@ -21,6 +21,7 @@
 		name="search"
 		type="search"
 		value={searchQuery.toString()}
+		fluid
 	/>
 	<!-- TODO: Extract to icon button -->
 	<button type="submit">
@@ -29,10 +30,8 @@
 </form>
 
 <style>
-	form {
-		display: flex;
-		align-items: center;
-		gap: var(--space-2xs);
+	.form {
+		flex-direction: row;
 	}
 
 	button {

@@ -1,7 +1,7 @@
 import { getVerifySessionData } from '$lib/server/sessions/verifySession'
 import { invariant } from '$lib/utils/misc'
 import type { VerifyFunctionArgs } from '$lib/auth/verify'
-import { message } from 'sveltekit-superforms'
+import { setError } from 'sveltekit-superforms'
 import { prisma } from '$lib/utils/db.server'
 import { sendEmail } from '$lib/server/email'
 import { requireRecentVerification } from './verify.server'
@@ -24,13 +24,10 @@ export async function handleVerification({
 		: null
 
 	if (!newEmail) {
-		return message(
+		return setError(
 			form,
-			{
-				type: 'error',
-				text: 'You must submit the code on the same device that requested the email change.',
-			},
-			{ status: 400 },
+			'',
+			'You must submit the code on the same device that requested the email change.',
 		)
 	}
 	const preUpdatedUser = await prisma.user.findFirstOrThrow({

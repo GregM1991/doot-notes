@@ -1,187 +1,192 @@
 /* Color Theme Swatches in HSLA */
 :root {
-  /* Color palette declaration */
-  /* Primary */
-  --base-orange: 14, 77%;
-  /* --color-orange-10: var(--base-orange), 10%;
+	/* Color palette declaration */
+	/* Primary */
+	--base-orange: 14, 77%;
+	/* --color-orange-10: var(--base-orange), 10%;
   --color-orange-20: var(--base-orange), 20%;
   --color-orange-30: var(--base-orange), 30%;
   --color-orange-40: var(--base-orange), 40%; */
-  --color-orange-50: var(--base-orange), 50%;
-  /* --color-orange-60: var(--base-orange), 60%;
+	--color-orange-50: var(--base-orange), 50%;
+	/* --color-orange-60: var(--base-orange), 60%;
   --color-orange-70: var(--base-orange), 70%;
   --color-orange-80: var(--base-orange), 80%; */
-  --color-orange-90: var(--base-orange), 90%;
+	--color-orange-90: var(--base-orange), 90%;
 
-  /* Secondary */
-  --base-pink: 358, 83%;
-  /* --color-pink-10: var(--base-pink), 10%;
+	/* Secondary */
+	--base-pink: 358, 83%;
+	/* --color-pink-10: var(--base-pink), 10%;
   --color-pink-20: var(--base-pink), 20%;
   --color-pink-30: var(--base-pink), 30%;
   --color-pink-40: var(--base-pink), 40%;
   --color-pink-50: var(--base-pink), 50%;
   --color-pink-60: var(--base-pink), 60%;
   --color-pink-70: var(--base-pink), 70%; */
-  --color-pink-80: var(--base-pink), 80%;
-  --color-pink-85: var(--base-pink), 85%;
-  /* --color-pink-90: var(--base-pink), 90%; */
+	--color-pink-80: var(--base-pink), 80%;
+	--color-pink-85: var(--base-pink), 85%;
+	/* --color-pink-90: var(--base-pink), 90%; */
 
-  /* Tertiary */
-  --base-yellow: 41, 81%;
-  /* --color-yellow-10: var(--base-yellow), 10%;
+	/* Tertiary */
+	--base-yellow: 41, 81%;
+	/* --color-yellow-10: var(--base-yellow), 10%;
   --color-yellow-20: var(--base-yellow), 20%;
   --color-yellow-30: var(--base-yellow), 30%;
   --color-yellow-40: var(--base-yellow), 40%;
   --color-yellow-50: var(--base-yellow), 50%; */
-  --color-yellow-60: var(--base-yellow), 60%;
-  /* --color-yellow-70: var(--base-yellow), 70%;
+	--color-yellow-60: var(--base-yellow), 60%;
+	/* --color-yellow-70: var(--base-yellow), 70%;
   --color-yellow-80: var(--base-yellow), 80%;
   --color-yellow-90: var(--base-yellow), 90%; */
 
-  /* Pop */
-  --base-blue: 201, 95%;
-  /* --color-blue-10: var(--base-blue), 10%;
+	/* Pop */
+	--base-blue: 201, 95%;
+	/* --color-blue-10: var(--base-blue), 10%;
   --color-blue-20: var(--base-blue), 20%;
   --color-blue-30: var(--base-blue), 30%; */
-  --color-blue-40: var(--base-blue), 40%;
-  /* --color-blue-50: var(--base-blue), 50%;
+	--color-blue-40: var(--base-blue), 40%;
+	/* --color-blue-50: var(--base-blue), 50%;
   --color-blue-60: var(--base-blue), 60%; */
-  --color-blue-70: var(--base-blue), 70%;
-  /* --color-blue-80: var(--base-blue), 80%; */
-  --color-blue-90: var(--base-blue), 90%;
+	--color-blue-70: var(--base-blue), 70%;
+	/* --color-blue-80: var(--base-blue), 80%; */
+	--color-blue-90: var(--base-blue), 90%;
 
-  /* Pop Secondary */
-  --base-green: 106, 32%;
-  /* --color-green-10: var(--base-green), 10%;
+	/* Pop Secondary */
+	--base-green: 106, 32%;
+	/* --color-green-10: var(--base-green), 10%;
   --color-green-20: var(--base-green), 20%;
   --color-green-30: var(--base-green), 30%; */
-  --color-green-40: var(--base-green), 40%;
-  /* --color-green-50: var(--base-green), 50%;
+	--color-green-40: var(--base-green), 40%;
+	/* --color-green-50: var(--base-green), 50%;
   --color-green-60: var(--base-green), 60%;
   --color-green-70: var(--base-green), 70%;
   --color-green-80: var(--base-green), 80%;
   --color-green-90: var(--base-green), 90%; */
 
-  /* Base */
-  --base-cream: 28, 27%;
-  /* --color-cream-10: var(--base-cream), 10%;
+	/* Base */
+	--base-cream: 28, 27%;
+	/* --color-cream-10: var(--base-cream), 10%;
   --color-cream-20: var(--base-cream), 20%;
   --color-cream-30: var(--base-cream), 30%;
   --color-cream-40: var(--base-cream), 40%;
   --color-cream-50: var(--base-cream), 50%;
   --color-cream-60: var(--base-cream), 60%;
   --color-cream-70: var(--base-cream), 70%;*/
-  --color-cream-80: var(--base-cream), 80%;
-  /* --color-cream-90: var(--base-cream), 90%; */
-  --color-cream-95: var(--base-cream), 95%;
-  --color-cream-98: var(--base-cream), 98%;
+	--color-cream-80: var(--base-cream), 80%;
+	/* --color-cream-90: var(--base-cream), 90%; */
+	--color-cream-95: var(--base-cream), 95%;
+	--color-cream-98: var(--base-cream), 98%;
 
-  /* Grey */
-  --base-grey: 28, 10%;
-  --color-grey-10: hsl(var(--base-grey), 10%);
-  --color-grey-20: hsl(var(--base-grey), 20%);
-  --color-grey-30: hsl(var(--base-grey), 30%);
-  --color-grey-40: hsl(var(--base-grey), 40%);
-  --color-grey-50: hsl(var(--base-grey), 50%);
-  --color-grey-60: hsl(var(--base-grey), 60%);
-  --color-grey-70: hsl(var(--base-grey), 70%);
-  --color-grey-80: hsl(var(--base-grey), 80%);
-  --color-grey-90: hsl(var(--base-grey), 90%);
+	/* Grey */
+	--base-grey: 28, 10%;
+	--color-grey-10: hsl(var(--base-grey), 10%);
+	--color-grey-20: hsl(var(--base-grey), 20%);
+	--color-grey-30: hsl(var(--base-grey), 30%);
+	--color-grey-40: hsl(var(--base-grey), 40%);
+	--color-grey-50: hsl(var(--base-grey), 50%);
+	--color-grey-60: hsl(var(--base-grey), 60%);
+	--color-grey-70: hsl(var(--base-grey), 70%);
+	--color-grey-80: hsl(var(--base-grey), 80%);
+	--color-grey-90: hsl(var(--base-grey), 90%);
 
-  /* Color palette declaration */
-  --palette-primary: hsla(var(--color-orange-50), 100%);
-  --palette-primary-ultra-light: hsla(var(--color-orange-90), 100%);
-  --palette-secondary: hsla(var(--color-pink-80), 100%);
-  --palette-secondary-dark: hsla(var(--color-pink-40), 100%);
-  --palette-secondary-light: hsla(var(--color-pink-85), 100%);
-  --palette-tertiary: hsla(var(--color-yellow-60), 100%);
-  --palette-pop: hsla(var(--color-blue-40), 100%);
-  --palette-pop-light: hsla(var(--color-blue-70), 100%);
-  --palette-pop-extra-light: hsla(var(--color-blue-90), 100%);
-  --palette-pop-secondary: hsla(var(--color-green-40), 100%);
-  --palette-base: hsla(var(--color-cream-95), 100%);
-  --palette-base-medium: hsla(var(--color-cream-80), 100%);
-  --palette-base-light: hsla(var(--color-cream-98), 100%);
+	/* Color palette declaration */
+	--palette-primary: hsla(var(--color-orange-50), 100%);
+	--palette-primary-ultra-light: hsla(var(--color-orange-90), 100%);
+	--palette-secondary: hsla(var(--color-pink-80), 100%);
+	--palette-secondary-dark: hsla(var(--color-pink-40), 100%);
+	--palette-secondary-light: hsla(var(--color-pink-85), 100%);
+	--palette-tertiary: hsla(var(--color-yellow-60), 100%);
+	--palette-pop: hsla(var(--color-blue-40), 100%);
+	--palette-pop-light: hsla(var(--color-blue-70), 100%);
+	--palette-pop-extra-light: hsla(var(--color-blue-90), 100%);
+	--palette-pop-secondary: hsla(var(--color-green-40), 100%);
+	--palette-base: hsla(var(--color-cream-95), 100%);
+	--palette-base-medium: hsla(var(--color-cream-80), 100%);
+	--palette-base-light: hsla(var(--color-cream-98), 100%);
 
+	/* Typography */
+	/* @link https://utopia.fyi/type/calculator?c=320,16,1.2,1240,18,1.333,6,1,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+	--type-step--2: clamp(0.6944rem, 0.7344rem + 0.0135vi, 0.7033rem);
+	--type-step--1: clamp(0.8333rem, 0.8296rem + 0.0185vi, 0.844rem);
+	--type-step-0: clamp(1rem, 0.9565rem + 0.2174vi, 1.125rem);
+	--type-step-1: clamp(1.2rem, 1.0958rem + 0.5211vi, 1.4996rem);
+	--type-step-2: clamp(1.44rem, 1.2456rem + 0.9722vi, 1.999rem);
+	--type-step-3: clamp(1.728rem, 1.4022rem + 1.629vi, 2.6647rem);
+	--type-step-4: clamp(2.0736rem, 1.5594rem + 2.5711vi, 3.552rem);
+	--type-step-5: clamp(2.4883rem, 1.7069rem + 3.907vi, 4.7348rem);
+	--type-step-6: clamp(2.986rem, 1.8293rem + 5.7835vi, 6.3115rem);
+	--type-primary: 'Nunito', sans-serif;
+	--type-weight-bold: 700;
+	--type-weight-standard: 400;
 
-  /* Typography */
-  /* @link https://utopia.fyi/type/calculator?c=320,16,1.2,1240,18,1.333,6,1,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
-  --type-step--2: clamp(0.6944rem, 0.7344rem + 0.0135vi, 0.7033rem);
-  --type-step--1: clamp(0.8333rem, 0.8296rem + 0.0185vi, 0.844rem);
-  --type-step-0: clamp(1rem, 0.9565rem + 0.2174vi, 1.125rem);
-  --type-step-1: clamp(1.2rem, 1.0958rem + 0.5211vi, 1.4996rem);
-  --type-step-2: clamp(1.44rem, 1.2456rem + 0.9722vi, 1.999rem);
-  --type-step-3: clamp(1.728rem, 1.4022rem + 1.629vi, 2.6647rem);
-  --type-step-4: clamp(2.0736rem, 1.5594rem + 2.5711vi, 3.552rem);
-  --type-step-5: clamp(2.4883rem, 1.7069rem + 3.907vi, 4.7348rem);
-  --type-step-6: clamp(2.986rem, 1.8293rem + 5.7835vi, 6.3115rem);
-  --type-primary: 'Nunito', sans-serif;
-  --type-weight-bold: 700;
-  --type-weight-standard: 400;
+	/* Layout */
+	/* @link https://utopia.fyi/space/calculator?c=320,14,1.333,1240,20,1.414,5,1,&s=0.75|0.5|0.25,1.5|2|3|4|6,xl-3xl|3xl-xl|s-l&g=s,l,xl,12 */
+	--space-3xs: clamp(0.25rem, 0.2283rem + 0.1087vi, 0.3125rem);
+	--space-2xs: clamp(0.4375rem, 0.3723rem + 0.3261vi, 0.625rem);
+	--space-xs: clamp(0.6875rem, 0.6005rem + 0.4348vi, 0.9375rem);
+	--space-s: clamp(0.875rem, 0.7446rem + 0.6522vi, 1.25rem);
+	--space-m: clamp(1.3125rem, 1.1168rem + 0.9783vi, 1.875rem);
+	--space-l: clamp(1.75rem, 1.4891rem + 1.3043vi, 2.5rem);
+	--space-xl: clamp(2.625rem, 2.2337rem + 1.9565vi, 3.75rem);
+	--space-2xl: clamp(3.5rem, 2.9783rem + 2.6087vi, 5rem);
+	--space-3xl: clamp(5.25rem, 4.4674rem + 3.913vi, 7.5rem);
 
-  /* Layout */
-  /* @link https://utopia.fyi/space/calculator?c=320,14,1.333,1240,20,1.414,5,1,&s=0.75|0.5|0.25,1.5|2|3|4|6,xl-3xl|3xl-xl|s-l&g=s,l,xl,12 */
-  --space-3xs: clamp(0.25rem, 0.2283rem + 0.1087vi, 0.3125rem);
-  --space-2xs: clamp(0.4375rem, 0.3723rem + 0.3261vi, 0.625rem);
-  --space-xs: clamp(0.6875rem, 0.6005rem + 0.4348vi, 0.9375rem);
-  --space-s: clamp(0.875rem, 0.7446rem + 0.6522vi, 1.25rem);
-  --space-m: clamp(1.3125rem, 1.1168rem + 0.9783vi, 1.875rem);
-  --space-l: clamp(1.75rem, 1.4891rem + 1.3043vi, 2.5rem);
-  --space-xl: clamp(2.625rem, 2.2337rem + 1.9565vi, 3.75rem);
-  --space-2xl: clamp(3.5rem, 2.9783rem + 2.6087vi, 5rem);
-  --space-3xl: clamp(5.25rem, 4.4674rem + 3.913vi, 7.5rem);
+	/* One-up pairs */
+	--space-3xs-2xs: clamp(0.25rem, 0.1196rem + 0.6522vi, 0.625rem);
+	--space-2xs-xs: clamp(0.4375rem, 0.2636rem + 0.8696vi, 0.9375rem);
+	--space-xs-s: clamp(0.6875rem, 0.4918rem + 0.9783vi, 1.25rem);
+	--space-s-m: clamp(0.875rem, 0.5272rem + 1.7391vi, 1.875rem);
+	--space-m-l: clamp(1.3125rem, 0.8995rem + 2.0652vi, 2.5rem);
+	--space-l-xl: clamp(1.75rem, 1.0543rem + 3.4783vi, 3.75rem);
+	--space-xl-2xl: clamp(2.625rem, 1.7989rem + 4.1304vi, 5rem);
+	--space-2xl-3xl: clamp(3.5rem, 2.1087rem + 6.9565vi, 7.5rem);
+	--space-xl-3exl: clamp(2.625rem, 0.9293rem + 8.4783vi, 7.5rem);
 
-  /* One-up pairs */
-  --space-3xs-2xs: clamp(0.25rem, 0.1196rem + 0.6522vi, 0.625rem);
-  --space-2xs-xs: clamp(0.4375rem, 0.2636rem + 0.8696vi, 0.9375rem);
-  --space-xs-s: clamp(0.6875rem, 0.4918rem + 0.9783vi, 1.25rem);
-  --space-s-m: clamp(0.875rem, 0.5272rem + 1.7391vi, 1.875rem);
-  --space-m-l: clamp(1.3125rem, 0.8995rem + 2.0652vi, 2.5rem);
-  --space-l-xl: clamp(1.75rem, 1.0543rem + 3.4783vi, 3.75rem);
-  --space-xl-2xl: clamp(2.625rem, 1.7989rem + 4.1304vi, 5rem);
-  --space-2xl-3xl: clamp(3.5rem, 2.1087rem + 6.9565vi, 7.5rem);
-  --space-xl-3exl: clamp(2.625rem, 0.9293rem + 8.4783vi, 7.5rem);
+	/* Custom pairs */
+	--space-xl-3xl: clamp(2.625rem, 0.9293rem + 8.4783vi, 7.5rem);
+	--space-3xl-xl: clamp(3.75rem, 5.7717rem + -2.6087vi, 5.25rem);
+	--space-s-l: clamp(0.875rem, 0.3098rem + 2.8261vi, 2.5rem);
 
-  /* Custom pairs */
-  --space-xl-3xl: clamp(2.625rem, 0.9293rem + 8.4783vi, 7.5rem);
-  --space-3xl-xl: clamp(3.75rem, 5.7717rem + -2.6087vi, 5.25rem);
-  --space-s-l: clamp(0.875rem, 0.3098rem + 2.8261vi, 2.5rem);
+	/* Animations */
+	--animation-quick: 0.1s ease-in;
 
-  /* Animations */
-  --animation-quick: 0.1s ease-in;
-
-  /* Other */
-  --border-radius-small: 0.7rem;
-  --border-radius: 1rem;
-  --border-radius-large: 2rem;
-  --border-radius-circle: 9999px;
-  --border: 2px solid var(--color-grey-20);
-  --border-drop-shadow: 3px 3px 0px;
-  --border-drop-shadow-black: drop-shadow(var(--border-drop-shadow) var(--color-grey-20));
-  --border-drop-shadow-black-focus: drop-shadow(1px 1px 0px var(--color-grey-20));
-  --border-drop-shadow-black-hover: drop-shadow(5px 5px 0px var(--color-grey-20));
-  --border-primary: 2px solid var(--palette-primary);
+	/* Other */
+	--border-radius-small: 0.7rem;
+	--border-radius: 1rem;
+	--border-radius-large: 2rem;
+	--border-radius-circle: 9999px;
+	--border: 2px solid var(--color-grey-20);
+	--border-drop-shadow: 3px 3px 0px;
+	--border-drop-shadow-black: drop-shadow(
+		var(--border-drop-shadow) var(--color-grey-20)
+	);
+	--border-drop-shadow-black-focus: drop-shadow(
+		1px 1px 0px var(--color-grey-20)
+	);
+	--border-drop-shadow-black-hover: drop-shadow(
+		5px 5px 0px var(--color-grey-20)
+	);
+	--border-primary: 2px solid var(--palette-primary);
 }
 
 @font-face {
-  font-family: 'Nunito';
-  src: url('/fonts/Nunito-Italic-VariableFont_wght.ttf') format('truetype');
-  font-weight: 400 700;
-  font-style: italic;
-  font-display: swap;
+	font-family: 'Nunito';
+	src: url('/fonts/Nunito-Italic-VariableFont_wght.ttf') format('truetype');
+	font-weight: 400 700;
+	font-style: italic;
+	font-display: swap;
 }
 
 @font-face {
-  font-family: 'Nunito';
-  src: url('/fonts/Nunito-VariableFont_wght.ttf') format('truetype');
-  font-weight: 400 700;
-  font-style: italic;
-  font-display: swap;
+	font-family: 'Nunito';
+	src: url('/fonts/Nunito-VariableFont_wght.ttf') format('truetype');
+	font-weight: 400 700;
+	font-style: italic;
+	font-display: swap;
 }
 
 #root,
 #__next {
-  isolation: isolate;
+	isolation: isolate;
 }
 
 /* ----- reset ----- */
@@ -189,9 +194,9 @@
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
 }
 
 /* Remove default margin */
@@ -207,54 +212,54 @@ figure,
 blockquote,
 dl,
 dd {
-  margin: 0;
+	margin: 0;
 }
 
 /* Remove list styles on ul, ol elements with a list role, which suggests 
    default styling will be removed */
 ul[role='list'],
 ol[role='list'] {
-  list-style: none;
+	list-style: none;
 }
 
 /* Set core root defaults */
 html:focus-within {
-  scroll-behavior: smooth;
+	scroll-behavior: smooth;
 }
 
 html {
-  height: 100%;
-  overflow-x: hidden;
+	height: 100%;
+	overflow-x: hidden;
 }
 
 /* Set core body defaults */
 body {
-  text-rendering: geometricPrecision;
-  font-family: 'Nunito', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  font-size: var(--type-step-0);
-  color: var(--color-grey-20);
+	text-rendering: geometricPrecision;
+	font-family: 'Nunito', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	font-size: var(--type-step-0);
+	color: var(--color-grey-20);
 }
 
 /* A elements that don't have a class get default styles */
 a:not([class]) {
-  text-decoration-skip-ink: auto;
+	text-decoration-skip-ink: auto;
 }
 
 a {
-  color: inherit;
-  text-decoration: inherit;
+	color: inherit;
+	text-decoration: inherit;
 }
 
 /* Make images easier to work with */
 img,
 picture {
-  max-width: 100%;
-  display: block;
+	max-width: 100%;
+	display: block;
 }
 
 img {
-  object-fit: cover;
+	object-fit: cover;
 }
 
 /* Inherit fonts for inputs and buttons */
@@ -262,33 +267,42 @@ input,
 button,
 textarea,
 select {
-  font: inherit;
+	font: inherit;
 }
 
 .sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
 }
 
 /* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
 @media (prefers-reduced-motion: reduce) {
-  html:focus-within {
-    scroll-behavior: auto;
-  }
+	html:focus-within {
+		scroll-behavior: auto;
+	}
 
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-xs);
+	width: 100%;
+	max-width: 48rem;
 }

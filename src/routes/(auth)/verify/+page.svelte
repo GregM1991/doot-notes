@@ -1,28 +1,34 @@
 <script script="ts">
-	import { Input, Button, HoneypotInputs } from '$lib/components'
-	import SuperDebug, { superForm } from 'sveltekit-superforms'
+	import {
+		Input,
+		Button,
+		HoneypotInputs,
+		FormGroup,
+		ValidationErrors,
+	} from '$lib/components'
+	import { superForm } from 'sveltekit-superforms'
 
 	export let data
 
-	const { form, errors, enhance, message } = superForm(data.verifyForm)
+	const { form, errors, enhance } = superForm(data.verifyForm)
 	const label = 'Enter Code'
 </script>
 
 <h1>Have a geez at your email</h1>
-<span>We've sent you a little prezzie to verify your email address</span>
+<span>
+	We've sent you a little prezzie to your email address to verify it's really
+	you 😉
+</span>
 <form method="POST" use:enhance>
 	<HoneypotInputs />
-	<div>
-		<Input name="code" value={$form.code} {label} errors={$errors.code || $message?.text} />
-	</div>
+	<FormGroup>
+		<Input name="code" value={$form.code} {label} errors={$errors.code} />
+	</FormGroup>
 	<Input name="type" value={$form.type} type="hidden" />
 	<Input name="target" value={$form.target} type="hidden" />
-	<Input
-		name="redirectTo"
-		value={$form.redirectTo}
-		type="hidden"
-	/>
+	<Input name="redirectTo" value={$form.redirectTo} type="hidden" />
 	<Button fluid secondary type="submit">Submit</Button>
+	<ValidationErrors errors={$errors._errors} />
 </form>
 
 <style>
@@ -35,16 +41,6 @@
 	span {
 		text-align: center;
 		display: block;
-	}
-
-	form {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		height: 100%;
-		margin: 0 auto;
-		width: 30vw;
-		padding-top: var(--space-2xl);
 	}
 
 	div {

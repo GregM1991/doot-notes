@@ -17,6 +17,7 @@
 		Button,
 		ImageEditor,
 		NoteInfoBar,
+		FormGroup,
 	} from '$lib/components'
 	import { NoteEditorSchema, type ImageFieldset } from './types'
 
@@ -30,7 +31,7 @@
 	const Icon = $form.id ? Check : Plus
 
 	$: imageList = images
-	
+
 	function addEmptyImage() {
 		imageList = [
 			...imageList,
@@ -46,7 +47,7 @@
 		<input type="hidden" value={$form.id} name="id" />
 	{/if}
 	<!-- TODO: Focus first input -->
-	<div class="form-group">
+	<FormGroup flex="0">
 		<Input
 			errors={$errors.title}
 			label="Title"
@@ -56,8 +57,8 @@
 			value={$form.title}
 			required
 		/>
-	</div>
-	<div class="form-group full-height">
+	</FormGroup>
+	<FormGroup flex="1 0 0">
 		<TextArea
 			name="content"
 			label="Content"
@@ -65,8 +66,9 @@
 			required
 			value={$form.content}
 			errors={$errors.content}
+			fluid
 		/>
-	</div>
+	</FormGroup>
 	<span>Images</span>
 	<ul class="image-list">
 		{#each imageList as image, index (index)}
@@ -123,15 +125,6 @@
 		font-size: var(--type-step-3);
 		margin-bottom: var(--space-3xs);
 		line-height: 2.8rem;
-	}
-
-	.form-group {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.full-height {
-		flex: 1;
 	}
 
 	.image-list-item {

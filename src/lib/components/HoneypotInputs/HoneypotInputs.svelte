@@ -11,11 +11,7 @@
 	} = getContext<HoneypotInputProps>('honeyProps')
 </script>
 
-<div
-	id={`${nameFieldName}_wrap`}
-	aria-hidden="true"
-  class="hidden"
->
+<div id={`${nameFieldName}_wrap`} aria-hidden="true" class="hidden">
 	<label for={nameFieldName}>{label}</label>
 	<input
 		id={nameFieldName}
@@ -40,7 +36,7 @@
 </div>
 
 <style>
-  .hidden {
-    display: none;
-  }
+	.hidden {
+		display: none;
+	}
 </style>

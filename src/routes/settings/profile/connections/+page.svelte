@@ -5,32 +5,18 @@
 	export let data
 </script>
 
-<div class="wrapper">
-	<h1 class="header">Manage your connections</h1>
-	{#if data.connections.length > 0}
-		{#each data.connections as connection}
-			<div>
-				<p>{connection.providerName}</p>
-			</div>
-		{/each}
-	{:else}
-		<p>No connections yet</p>
+<h1 class="header">Manage your connections</h1>
+{#if data.connections.length > 0}
+	{#each data.connections as connection}
 		<div>
-			{#each providerNames as providerName (providerName)}
-				<ProviderConnectionForm
-					type="Connect"
-					providerName={providerName}
-				/>
-			{/each}
+			<p>{connection.providerName}</p>
 		</div>
-	{/if}
-</div>
-
-<style>
-	.wrapper {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: var(--space-l);
-	}
-</style>
+	{/each}
+{:else}
+	<p>No connections yet</p>
+	<div>
+		{#each providerNames as providerName (providerName)}
+			<ProviderConnectionForm type="Connect" {providerName} />
+		{/each}
+	</div>
+{/if}
