@@ -6,11 +6,18 @@ export const contentMaxLength = 10000
 export const contentMinLength = 1
 export const MAX_UPLOAD_SIZE = 1024 * 1024 * 3 // 3MB
 
-export const ImageFieldsetSchema = z.object({
-	id: z.string().optional(),
-	file: z.instanceof(File).optional(),
-	altText: z.string().optional().nullable(),
-})
+export const ImageFieldsetSchema = z
+	.object({
+		id: z.string().optional(),
+		file: z.instanceof(File).optional(),
+		altText: z.string().optional().nullable(),
+	})
+	.refine(({ file }) => {
+		return !file || file.size <= MAX_UPLOAD_SIZE
+	}, 'File size must be less than 3MB')
+
+export const ImageFieldsetListSchema = z.array(ImageFieldsetSchema)
+export type ImageFieldsetList = z.infer<typeof ImageFieldsetListSchema>
 
 export const NoteEditorSchema = z.object({
 	id: z.string().optional(),

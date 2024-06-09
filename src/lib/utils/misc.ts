@@ -91,3 +91,17 @@ export function getUserInitials(name: string) {
 		(initials.shift()?.[1] || '') + (initials.pop()?.[1] || '')
 	).toUpperCase()
 }
+
+export function extractImageGroup(formData: FormData) {
+	const imageMap = new Map()
+	Array.from(formData.entries())
+		.filter(([key, _]) => key.includes('images'))
+		.forEach(([key, value]) => {
+			const [currKey, field] = key.split('.')
+			const image = imageMap.get(currKey)
+			image
+				? imageMap.set(currKey, { ...image, [field]: value })
+				: imageMap.set(currKey, { [field]: value })
+		})
+	return Array.from(imageMap.values())
+}

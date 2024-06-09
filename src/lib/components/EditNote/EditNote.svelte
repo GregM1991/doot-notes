@@ -3,7 +3,7 @@
 	// https://www.npmjs.com/package/parse-nested-form-data
 	// https://svelte.dev/repl/d8916d45012241dab5962c1323604fe9?version=4.2.0
 	// https://github.com/ciscoheat/sveltekit-superforms/issues/186
-	import {
+	import SuperDebug, {
 		type SuperValidated,
 		type Infer,
 		superForm,
@@ -18,6 +18,7 @@
 		ImageEditor,
 		NoteInfoBar,
 		FormGroup,
+		ValidationErrors,
 	} from '$lib/components'
 	import { NoteEditorSchema, type ImageFieldset } from './types'
 
@@ -25,7 +26,7 @@
 	export let images: Array<ImageFieldset> = []
 	export let action: string
 
-	const { form, errors, enhance } = superForm(data)
+	const { form, errors, enhance, formId } = superForm(data)
 	const header = $form.id ? `Edit ${$form.title}` : 'Doot a new note 📯'
 	const buttonText = $form.id ? 'Save changes' : 'Create note'
 	const Icon = $form.id ? Check : Plus
@@ -40,7 +41,13 @@
 	}
 </script>
 
-<form method="POST" {action} use:enhance enctype="multipart/form-data">
+<form
+	class="edit-form"
+	method="POST"
+	{action}
+	use:enhance
+	enctype="multipart/form-data"
+>
 	<button type="submit" class="hidden" />
 	<h3>{header}</h3>
 	{#if $form.id}
@@ -105,6 +112,7 @@
 			</Button>
 		</div>
 	</NoteInfoBar>
+	<ValidationErrors errorId={$formId} errors={$errors._errors} />
 </form>
 
 <style>
@@ -112,12 +120,13 @@
 		display: none;
 	}
 
-	form {
+	.edit-form {
 		grid-row: 1 / span 2;
 		grid-column: 2 / 3;
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-xs);
+		align-items: stretch;
 	}
 
 	h3 {
