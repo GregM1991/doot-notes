@@ -9,7 +9,7 @@
 	import { superForm } from 'sveltekit-superforms'
 
 	export let data
-	const { form, formId, errors, enhance } = superForm(data.form)
+	const { form, formId, errors, enhance, constraints } = superForm(data.form)
 </script>
 
 <h1>Great to have you <br /> {data.email}</h1>
@@ -22,6 +22,7 @@
 			name="username"
 			value={$form.username}
 			errors={$errors.username}
+			constraints={$constraints.username}
 		/>
 	</FormGroup>
 	<FormGroup>
@@ -34,6 +35,7 @@
 			name="password"
 			value={$form.password}
 			errors={$errors.password}
+			constraints={$constraints.password}
 		/>
 	</FormGroup>
 	<FormGroup>
@@ -43,18 +45,34 @@
 			name="confirm"
 			value={$form.confirm}
 			errors={$errors.confirm}
+			constraints={$constraints.confirm}
 		/>
 	</FormGroup>
 	<label>
-		<input name="agreeToTermsOfServiceAndPrivacyPolicy" type="checkbox" />
 		Do you agree to our Terms of Service and Privacy Policy?
+		<input
+			aria-invalid={$errors.agreeToTermsOfServiceAndPrivacyPolicy
+				? 'true'
+				: undefined}
+			name="agreeToTermsOfServiceAndPrivacyPolicy"
+			type="checkbox"
+			{...$constraints.agreeToTermsOfServiceAndPrivacyPolicy}
+		/>
 		<ValidationErrors
 			errors={$errors.agreeToTermsOfServiceAndPrivacyPolicy}
 			errorId="agreeToTermsOfServiceAndPrivacyPolicy"
 		/>
 	</label>
 	<label>
-		<input value={$form.remember} name="remember" type="checkbox" />
+		<input
+			aria-invalid={$errors.agreeToTermsOfServiceAndPrivacyPolicy
+				? 'true'
+				: undefined}
+			value={$form.remember}
+			name="remember"
+			type="checkbox"
+			{...$constraints.remember}
+		/>
 		Remember me?
 	</label>
 	<Input value={$form.redirectTo} name="redirectTo" type="hidden" />

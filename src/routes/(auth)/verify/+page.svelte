@@ -10,7 +10,7 @@
 
 	export let data
 
-	const { form, errors, enhance } = superForm(data.verifyForm)
+	const { form, errors, enhance, constraints } = superForm(data.verifyForm)
 	const label = 'Enter Code'
 </script>
 
@@ -22,7 +22,13 @@
 <form method="POST" use:enhance>
 	<HoneypotInputs />
 	<FormGroup>
-		<Input name="code" value={$form.code} {label} errors={$errors.code} />
+		<Input
+			name="code"
+			value={$form.code}
+			{label}
+			errors={$errors.code}
+			constraints={$constraints.code}
+		/>
 	</FormGroup>
 	<Input name="type" value={$form.type} type="hidden" />
 	<Input name="target" value={$form.target} type="hidden" />

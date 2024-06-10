@@ -2,33 +2,10 @@ import { createId as cuid } from '@paralleldrive/cuid2'
 import { redirect, type Action } from '@sveltejs/kit'
 import { requireUserId } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
-import {
-	ImageFieldsetListSchema,
-	MAX_UPLOAD_SIZE,
-	NoteEditorSchema,
-	type ImageFieldset,
-	type ImageFieldsetList,
-} from './types'
-// TODO: Delve into the wild world of file uploads
-import {
-	unstable_createMemoryUploadHandler as createMemoryUploadHandler,
-	unstable_parseMultipartFormData as parseMultipartFormData,
-} from '@remix-run/node'
+import { ImageFieldsetListSchema, NoteEditorSchema } from './types'
 import { fail, message, setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
-import { extractImageGroup } from '$lib/utils/misc'
-
-function imageHasFile(
-	image: ImageFieldset,
-): image is ImageFieldset & { file: NonNullable<ImageFieldset['file']> } {
-	return Boolean(image.file?.size && image.file?.size > 0)
-}
-
-function imageHasId(
-	image: ImageFieldset,
-): image is ImageFieldset & { id: NonNullable<ImageFieldset['id']> } {
-	return image.id != null
-}
+import { extractImageGroup, transformImageData } from '$lib/utils/misc'
 
 export const newOrUpdate: Action = async ({ request, locals }) => {
 	const userId = requireUserId(locals.userId, request)
@@ -58,6 +35,10 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 	}
 
 	const { id: noteId, title, content } = transformedFormData
+	let formattedContent = content
+	if (Array.isArray(content)) {
+		formattedContent = content.join('&#13;&#10;')
+	}
 
 	const updatedNote = await prisma.note.upsert({
 		select: { id: true, owner: { select: { username: true } } },
@@ -65,12 +46,12 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 		create: {
 			ownerId: userId,
 			title,
-			content,
+			content: formattedContent,
 			images: { create: newImages },
 		},
 		update: {
 			title,
-			content,
+			content: formattedContent,
 			images: {
 				deleteMany: { id: { notIn: imageUpdates.map(image => image.id) } },
 				updateMany: imageUpdates.map(updates => ({
@@ -86,39 +67,4 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 		303,
 		`/users/${updatedNote.owner.username}/notes/${updatedNote.id}`,
 	)
-}
-
-async function transformImageData(images: ImageFieldsetList = []) {
-	const imageUpdates = {
-		imageUpdates: await Promise.all(
-			images.filter(imageHasId).map(async i => {
-				if (imageHasFile(i)) {
-					return {
-						id: i.id,
-						altText: i.altText,
-						contentType: i.file.type,
-						blob: Buffer.from(await i.file.arrayBuffer()),
-					}
-				} else {
-					return {
-						id: i.id,
-						altText: i.altText,
-					}
-				}
-			}),
-		),
-		newImages: await Promise.all(
-			images
-				.filter(imageHasFile)
-				.filter(i => !i.id)
-				.map(async image => {
-					return {
-						altText: image.altText,
-						contentType: image.file.type,
-						blob: Buffer.from(await image.file.arrayBuffer()),
-					}
-				}),
-		),
-	}
-	return imageUpdates
 }

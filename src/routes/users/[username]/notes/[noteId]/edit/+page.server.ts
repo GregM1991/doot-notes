@@ -7,7 +7,11 @@ import { NoteEditorSchema } from '$lib/components/EditNote/types'
 export const load = async ({ parent }) => {
 	const { note } = await parent()
 	const { images } = note
-	const editNoteForm = await superValidate(note, zod(NoteEditorSchema))
+	const formattedNote = {
+		...note,
+		content: note.content.join('\n'),
+	}
+	const editNoteForm = await superValidate(formattedNote, zod(NoteEditorSchema))
 	return { editNoteForm, images }
 }
 

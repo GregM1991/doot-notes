@@ -4,7 +4,7 @@
 	import type { PageData } from './$types'
 
 	export let data: PageData
-	const { form, errors, enhance } = superForm(data.changeEmailForm)
+	const { form, errors, enhance, constraints } = superForm(data.changeEmailForm)
 </script>
 
 <div class="copy">
@@ -23,6 +23,7 @@
 			type="text"
 			bind:value={$form.email}
 			errors={$errors.email}
+			constraints={$constraints.email}
 		/>
 	</FormGroup>
 	<div class="button-wrapper">

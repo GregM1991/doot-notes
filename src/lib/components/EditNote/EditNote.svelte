@@ -3,11 +3,12 @@
 	// https://www.npmjs.com/package/parse-nested-form-data
 	// https://svelte.dev/repl/d8916d45012241dab5962c1323604fe9?version=4.2.0
 	// https://github.com/ciscoheat/sveltekit-superforms/issues/186
-	import SuperDebug, {
+	import {
 		type SuperValidated,
 		type Infer,
 		superForm,
 	} from 'sveltekit-superforms'
+	import { valibotClient } from 'sveltekit-superforms/adapters'
 	import Check from 'virtual:icons/radix-icons/check'
 	import Cross from 'virtual:icons/radix-icons/cross2'
 	import Plus from 'virtual:icons/radix-icons/plus'
@@ -26,12 +27,16 @@
 	export let images: Array<ImageFieldset> = []
 	export let action: string
 
-	const { form, errors, enhance, formId } = superForm(data)
+	const { form, errors, enhance, formId, constraints } = superForm(data, {
+		validators: valibotClient(NoteEditorSchema) // TODO: Pickup
+	})
 	const header = $form.id ? `Edit ${$form.title}` : 'Doot a new note 📯'
 	const buttonText = $form.id ? 'Save changes' : 'Create note'
 	const Icon = $form.id ? Check : Plus
 
-	$: imageList = images
+	$: imageList = Boolean(images.length)
+		? images
+		: [{ id: undefined, file: undefined, altText: undefined }]
 
 	function addEmptyImage() {
 		imageList = [
@@ -62,6 +67,7 @@
 			name="title"
 			type="text"
 			value={$form.title}
+			constraints={$constraints.title}
 			required
 		/>
 	</FormGroup>
@@ -74,6 +80,7 @@
 			value={$form.content}
 			errors={$errors.content}
 			fluid
+			constraints={$constraints.content}
 		/>
 	</FormGroup>
 	<span>Images</span>

@@ -24,7 +24,7 @@
 			name="username"
 			bind:value={$form.username}
 			errors={$errors.username}
-			{...$constraints}
+			constraints={$constraints.username}
 		/>
 	</FormGroup>
 	<FormGroup>
@@ -34,7 +34,7 @@
 			type="password"
 			bind:value={$form.password}
 			errors={$errors.password}
-			{...$constraints}
+			constraints={$constraints.password}
 		/>
 	</FormGroup>
 	<div class="remember-forgot">
@@ -44,6 +44,8 @@
 				name="remember"
 				id="remember"
 				type="checkbox"
+				aria-invalid={$errors.remember ? 'true' : undefined}
+				{...$constraints.remember}
 			/>
 			<label for="remember">Remember me</label>
 		</div>

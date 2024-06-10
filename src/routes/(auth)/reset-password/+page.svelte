@@ -21,7 +21,7 @@
 			type="password"
 			bind:value={$form.password}
 			errors={$errors.password}
-			{...$constraints}
+			constraints={$constraints.password}
 		/>
 	</FormGroup>
 	<FormGroup>
@@ -31,7 +31,7 @@
 			type="password"
 			bind:value={$form.confirm}
 			errors={$errors.confirm}
-			{...$constraints}
+			constraints={$constraints.confirm}
 		/>
 	</FormGroup>
 	<Button fluid type="submit" secondary>Submit</Button>

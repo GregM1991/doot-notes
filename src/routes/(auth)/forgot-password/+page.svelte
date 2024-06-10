@@ -25,7 +25,7 @@
 			name="usernameOrEmail"
 			bind:value={$form.usernameOrEmail}
 			errors={$errors.usernameOrEmail}
-			{...$constraints}
+			constraints={$constraints.usernameOrEmail}
 		/>
 	</FormGroup>
 	<Button fluid type="submit" secondary>Submit</Button>

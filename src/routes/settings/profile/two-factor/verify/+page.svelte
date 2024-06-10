@@ -4,7 +4,9 @@
 	import { superForm } from 'sveltekit-superforms'
 
 	export let data
-	const { form } = superForm(data.verifyTwoFactorForm)
+	const { form, errors, constraints, enhance } = superForm(
+		data.verifyTwoFactorForm,
+	)
 </script>
 
 <div class="wrapper">
@@ -25,13 +27,15 @@
 		perform important actions. Do not lose access to your authenticator app, or
 		you will unfortunately lose access to this account 😢.
 	</p>
-	<form method="POST">
+	<form method="POST" use:enhance>
 		<FormGroup>
 			<Input
 				label="Verification Code"
 				name="code"
 				value={$form.code}
 				type="text"
+				errors={$errors.code}
+				constraints={$constraints.code}
 			/>
 		</FormGroup>
 		<Button secondary name="intent" value="verify" type="submit">Submit</Button>

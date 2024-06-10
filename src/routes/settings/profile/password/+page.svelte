@@ -3,7 +3,9 @@
 	import { superForm } from 'sveltekit-superforms'
 
 	export let data
-	const { form, errors, enhance } = superForm(data.editPasswordForm)
+	const { form, errors, enhance, constraints } = superForm(
+		data.editPasswordForm,
+	)
 </script>
 
 <h1 class="header">Let's make some changes to your profile</h1>
@@ -16,6 +18,7 @@
 			type="password"
 			bind:value={$form.currentPassword}
 			errors={$errors.currentPassword}
+			constraints={$constraints.currentPassword}
 		/>
 	</FormGroup>
 	<FormGroup>
@@ -26,6 +29,7 @@
 			type="password"
 			bind:value={$form.newPassword}
 			errors={$errors.newPassword}
+			constraints={$constraints.newPassword}
 		/>
 	</FormGroup>
 	<FormGroup>
@@ -36,6 +40,7 @@
 			type="password"
 			bind:value={$form.confirmNewPassword}
 			errors={$errors.confirmNewPassword}
+			constraints={$constraints.confirmNewPassword}
 		/>
 	</FormGroup>
 	<div class="button-wrapper">

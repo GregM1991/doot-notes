@@ -10,7 +10,7 @@
 	import ValidationErrors from '$lib/components/ValidationErrors/ValidationErrors.svelte'
 
 	export let data: PageData
-	const { form, enhance, errors } = superForm(data.form, {
+	const { form, enhance, errors, constraints } = superForm(data.form, {
 		validators: zodClient(PhotoFormSchema),
 	})
 
@@ -54,6 +54,8 @@
 			name="photoFile"
 			bind:files={$file}
 			on:change={handleFileChange}
+			aria-invalid={$errors.photoFile ? 'true' : undefined}
+			{...$constraints.photoFile}
 		/>
 		<label id="change-button" for="photo-file" class="label-button">
 			<Pencil />Change

@@ -9,7 +9,7 @@
 	import { superForm } from 'sveltekit-superforms'
 
 	export let data
-	const { form, formId, errors, enhance } = superForm(data.form)
+	const { form, formId, errors, enhance, constraints } = superForm(data.form)
 </script>
 
 <svelte:head>
@@ -25,6 +25,7 @@
 			name="email"
 			value={$form.email}
 			errors={$errors.email}
+			constraints={$constraints.email}
 		/>
 	</FormGroup>
 	<Button fluid type="submit" secondary>Submit</Button>

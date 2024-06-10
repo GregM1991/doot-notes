@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { ValidationErrors } from '$lib/components'
 	import { createEventDispatcher } from 'svelte'
+	import type { InputConstraint } from 'sveltekit-superforms'
 
 	export let placeholder = ''
 	export let name: string
@@ -10,6 +11,7 @@
 	export let label = ''
 	export let style = ''
 	export let errors: string[] | null = null
+	export let constraints: InputConstraint | undefined = undefined
 	export let autofocus = false
 	export let secondary = false
 	export let required = false
@@ -34,6 +36,7 @@
 	{style}
 	{required}
 	{value}
+	{...constraints}
 	class:fluid
 	class:secondary
 	class="base"

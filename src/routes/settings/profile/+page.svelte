@@ -17,7 +17,9 @@
 	import Link2 from 'virtual:icons/radix-icons/link-2'
 
 	export let data
-	const { form, enhance, errors } = superForm(data.form, { resetForm: false })
+	const { form, enhance, errors, constraints } = superForm(data.form, {
+		resetForm: false,
+	})
 	const profileSrc = getUserImgSrc(data.user.image?.id)
 	$: otherSessions = data.user._count.sessions - 1
 </script>
@@ -40,6 +42,7 @@
 				type="text"
 				bind:value={$form.username}
 				errors={$errors.username}
+				constraints={$constraints.username}
 			/>
 		</FormGroup>
 		<FormGroup>
@@ -49,6 +52,7 @@
 				type="text"
 				bind:value={$form.name}
 				errors={$errors.name}
+				constraints={$constraints.name}
 			/>
 		</FormGroup>
 	</div>
