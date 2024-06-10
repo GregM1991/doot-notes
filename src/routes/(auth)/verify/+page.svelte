@@ -14,8 +14,8 @@
 	const label = 'Enter Code'
 </script>
 
-<h1>Have a geez at your email</h1>
-<span>
+<h1 class="header">Have a geez at your email</h1>
+<span class="copy">
 	We've sent you a little prezzie to your email address to verify it's really
 	you 😉
 </span>
@@ -38,20 +38,14 @@
 </form>
 
 <style>
-	h1 {
+	.header {
 		font-size: var(--type-step-4);
 		color: var(--palette-pop);
 		text-align: center;
 	}
 
-	span {
+	.copy {
 		text-align: center;
 		display: block;
-	}
-
-	div {
-		display: flex;
-		flex-direction: column;
-		width: 100%;
 	}
 </style>

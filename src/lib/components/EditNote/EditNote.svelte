@@ -8,7 +8,7 @@
 		type Infer,
 		superForm,
 	} from 'sveltekit-superforms'
-	import { valibotClient } from 'sveltekit-superforms/adapters'
+	import { zodClient } from 'sveltekit-superforms/adapters'
 	import Check from 'virtual:icons/radix-icons/check'
 	import Cross from 'virtual:icons/radix-icons/cross2'
 	import Plus from 'virtual:icons/radix-icons/plus'
@@ -28,7 +28,7 @@
 	export let action: string
 
 	const { form, errors, enhance, formId, constraints } = superForm(data, {
-		validators: valibotClient(NoteEditorSchema) // TODO: Pickup
+		validators: zodClient(NoteEditorSchema),
 	})
 	const header = $form.id ? `Edit ${$form.title}` : 'Doot a new note 📯'
 	const buttonText = $form.id ? 'Save changes' : 'Create note'
