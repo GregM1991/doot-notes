@@ -25,6 +25,7 @@
 			bind:value={$form.username}
 			errors={$errors.username}
 			constraints={$constraints.username}
+			type="text"
 		/>
 	</FormGroup>
 	<FormGroup>
@@ -53,7 +54,7 @@
 			<a href="/forgot-password">Forgot password?</a>
 		</div>
 	</div>
-	<Input name="redirectTo" type="hidden" value={$page.params.redirectTo} />
+	<Input type="text" name="redirectTo" hidden value={$page.params.redirectTo} />
 	<Button fluid type="submit" secondary>Submit</Button>
 	<ValidationErrors errorId={formId} errors={$errors._errors} />
 	<span class="signup">

@@ -23,10 +23,17 @@
 			value={$form.username}
 			errors={$errors.username}
 			constraints={$constraints.username}
+			type="text"
 		/>
 	</FormGroup>
 	<FormGroup>
-		<Input label="Name" name="name" value={$form.name} errors={$errors.name} />
+		<Input
+			label="Name"
+			name="name"
+			value={$form.name}
+			errors={$errors.name}
+			type="text"
+		/>
 	</FormGroup>
 	<FormGroup>
 		<Input
@@ -75,7 +82,7 @@
 		/>
 		Remember me?
 	</label>
-	<Input value={$form.redirectTo} name="redirectTo" type="hidden" />
+	<Input value={$form.redirectTo} name="redirectTo" hidden />
 	<Button type="submit" secondary fluid>Submit</Button>
 	<ValidationErrors errorId={$formId} errors={$errors._errors} />
 </form>

@@ -42,6 +42,7 @@
 	on:input={handleInput}
 	class="base"
 	aria-invalid={errors ? 'true' : undefined}
+	{...$$restProps} 
 />
 
 {#if !hidden}

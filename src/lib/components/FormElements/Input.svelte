@@ -6,7 +6,7 @@
 	export let placeholder = ''
 	export let name: string
 	export let id: string = name
-	export let type: 'text' | 'password' | 'search' | 'hidden' | null = 'text'
+	export let hidden = false
 	export let value: string | null = ''
 	export let label = ''
 	export let style = ''
@@ -31,20 +31,20 @@
 	{id}
 	{placeholder}
 	{name}
-	{type}
 	{autofocus}
 	{style}
 	{required}
-	{value}
+	bind:value
 	{...constraints}
 	class:fluid
 	class:secondary
 	class="base"
 	on:input={handleInput}
 	aria-invalid={errors ? 'true' : undefined}
+	{...$$restProps} 
 />
 
-{#if type !== 'hidden'}
+{#if !hidden}
 	<ValidationErrors {errors} errorId={id} />
 {/if}
 

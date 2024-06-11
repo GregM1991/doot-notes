@@ -26,6 +26,7 @@
 			value={$form.email}
 			errors={$errors.email}
 			constraints={$constraints.email}
+			type="text"
 		/>
 	</FormGroup>
 	<Button fluid type="submit" secondary>Submit</Button>

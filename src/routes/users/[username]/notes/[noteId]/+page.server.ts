@@ -15,10 +15,11 @@ export const actions = {
 			},
 			where: { id: params.noteId, ownerId: userId },
 		})
-
+		await new Promise(fulfil => setTimeout(fulfil, 3000))
 		invariantResponse(note, 'Not found', 404)
 		const isOwner = note.ownerId === userId
 		// TODO: Check if user has permissions
+		// TODO: PICKUP get a optomistic UI cranking here
 		if (!isOwner)
 			throw fail(403, {
 				error: 'Unauthorized',

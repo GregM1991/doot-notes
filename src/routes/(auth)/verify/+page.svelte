@@ -28,11 +28,12 @@
 			{label}
 			errors={$errors.code}
 			constraints={$constraints.code}
+			type="text"
 		/>
 	</FormGroup>
-	<Input name="type" value={$form.type} type="hidden" />
-	<Input name="target" value={$form.target} type="hidden" />
-	<Input name="redirectTo" value={$form.redirectTo} type="hidden" />
+	<Input name="type" value={$form.type} hidden/>
+	<Input name="target" value={$form.target} hidden/>
+	<Input name="redirectTo" value={$form.redirectTo} hidden/>
 	<Button fluid secondary type="submit">Submit</Button>
 	<ValidationErrors errors={$errors._errors} />
 </form>
