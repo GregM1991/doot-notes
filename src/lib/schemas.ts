@@ -216,3 +216,5 @@ export const LoginFormSchema = z.object({
 export const SignupFormSchema = z.object({
 	email: z.string(),
 })
+
+export const ResetPasswordSchema = PasswordAndConfirmPasswordSchema

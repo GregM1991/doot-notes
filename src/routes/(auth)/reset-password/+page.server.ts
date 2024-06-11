@@ -8,9 +8,7 @@ import {
 	verifySessionCookieName,
 	verifySessionCookieOptions,
 } from '$lib/server/sessions/verifySession.js'
-import { PasswordAndConfirmPasswordSchema } from '$lib/schemas'
-
-const ResetPasswordSchema = PasswordAndConfirmPasswordSchema
+import { ResetPasswordSchema } from '$lib/schemas'
 
 function requireResetPasswordUsername(userId: string | null, cookies: Cookies) {
 	requireAnonymous(userId)
