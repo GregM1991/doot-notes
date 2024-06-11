@@ -19,7 +19,6 @@ export const actions = {
 		invariantResponse(note, 'Not found', 404)
 		const isOwner = note.ownerId === userId
 		// TODO: Check if user has permissions
-		// TODO: PICKUP get a optomistic UI cranking here
 		if (!isOwner)
 			throw fail(403, {
 				error: 'Unauthorized',

@@ -1,4 +1,3 @@
-import { z } from 'zod'
 import { redirect, type Cookies } from '@sveltejs/kit'
 import { newEmailAddressSessionKey } from '$lib/auth/changeEmail.server'
 import { onboardingEmailSessionKey } from '$lib/auth/onboarding'
@@ -8,6 +7,7 @@ import {
 	encryptAndSignCookieValue,
 } from '$lib/server/sessions/secureCookie'
 import { safeRedirect } from '$lib/utils/misc'
+import { VerifySessionSchema } from '$lib/schemas'
 
 type VerificationType =
 	| typeof onboardingEmailSessionKey
@@ -20,12 +20,6 @@ interface HandleNewVerificationArgs {
 	type: VerificationType
 	redirectTo: string
 }
-
-export const VerifySessionSchema = z.object({
-	[onboardingEmailSessionKey]: z.string().nullable().default(null),
-	[newEmailAddressSessionKey]: z.string().nullable().default(null),
-	[resetPasswordUsernameSessionKey]: z.string().nullable().default(null),
-})
 
 export const verifySessionCookieName = 'dn_verification'
 export const verifySessionCookieOptions = {

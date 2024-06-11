@@ -3,20 +3,12 @@ import type { Cookies } from '@sveltejs/kit'
 import type { SuperValidated } from 'sveltekit-superforms'
 import type { Message } from '$lib/types'
 import type { twoFAVerifyVerificationType } from '$lib/profile/consts'
+import type { VerificationTypeSchema, VerifySchema } from '$lib/schemas'
 
 export const codeQueryParam = 'code'
 export const targetQueryParam = 'target'
 export const typeQueryParam = 'type'
 export const redirectToQueryParam = 'redirectTo'
-const types = ['onboarding', 'reset-password', 'change-email', '2fa'] as const
-const VerificationTypeSchema = z.enum(types)
-
-export const VerifySchema = z.object({
-	[codeQueryParam]: z.string().min(6).max(6),
-	[typeQueryParam]: VerificationTypeSchema,
-	[targetQueryParam]: z.string(),
-	[redirectToQueryParam]: z.string().optional(),
-})
 
 export type VerificationTypes = z.infer<typeof VerificationTypeSchema>
 export type VerifyFunctionArgs = {

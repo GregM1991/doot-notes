@@ -6,8 +6,8 @@
 	import Pencil from 'virtual:icons/radix-icons/pencil2'
 	import Trash from 'virtual:icons/radix-icons/trash'
 	import { zodClient } from 'sveltekit-superforms/adapters'
-	import { PhotoFormSchema } from '$lib/profile/schemas'
 	import ValidationErrors from '$lib/components/ValidationErrors/ValidationErrors.svelte'
+	import { PhotoFormSchema } from '$lib/schemas'
 
 	export let data: PageData
 	const { form, enhance, errors, constraints } = superForm(data.form, {

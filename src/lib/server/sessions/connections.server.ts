@@ -2,13 +2,9 @@ import type { CookieSerializeOptions } from 'cookie'
 import type { ProviderName } from '../../utils/connections'
 import { GitHubProvider } from '../../utils/providers/github.server'
 import type { AuthProvider } from '../../utils/providers/provider'
-import { z } from 'zod'
 import { decryptCookie, encryptAndSignCookieValue } from './secureCookie'
 import type { Cookies } from '@sveltejs/kit'
-
-export const ConnectionSchema = z.object({
-	'oauth2:state': z.string(),
-})
+import { ConnectionSchema } from '$lib/schemas'
 
 export const connectionCookieName = 'dn_connection'
 export const connectionOptionValues: CookieSerializeOptions & {

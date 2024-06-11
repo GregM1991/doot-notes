@@ -21,7 +21,8 @@
 		FormGroup,
 		ValidationErrors,
 	} from '$lib/components'
-	import { NoteEditorSchema, type ImageFieldset } from './types'
+	import type { ImageFieldset } from './types'
+	import { NoteEditorSchema } from '$lib/schemas'
 
 	export let data: SuperValidated<Infer<typeof NoteEditorSchema>>
 	export let images: Array<ImageFieldset> = []
@@ -29,6 +30,7 @@
 
 	const { form, errors, enhance, formId, constraints } = superForm(data, {
 		validators: zodClient(NoteEditorSchema),
+		customValidity: false
 	})
 	const header = $form.id ? `Edit ${$form.title}` : 'Doot a new note 📯'
 	const buttonText = $form.id ? 'Save changes' : 'Create note'
@@ -68,7 +70,6 @@
 			type="text"
 			value={$form.title}
 			constraints={$constraints.title}
-			required
 		/>
 	</FormGroup>
 	<FormGroup flex="1 0 0">

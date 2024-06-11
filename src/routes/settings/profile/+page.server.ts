@@ -11,11 +11,11 @@ import {
 	twoFAVerificationType,
 } from '$lib/profile/consts'
 import {
-	ProfileFormSchema,
 	deleteDataAction,
 	profileUpdateAction,
 	signOutOfSessionsAction,
 } from '$lib/profile/profileActions.server'
+import { ProfileFormSchema } from '$lib/schemas'
 
 export const load = (async ({ request, locals }) => {
 	const userId = requireUserId(locals.userId, request)

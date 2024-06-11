@@ -1,8 +1,5 @@
 import { redirect, type Actions, type Cookies } from '@sveltejs/kit'
-import {
-	SignupFormSchema,
-	onboardingEmailSessionKey,
-} from '$lib/auth/onboarding'
+import { onboardingEmailSessionKey } from '$lib/auth/onboarding'
 import {
 	getVerifySessionData,
 	verifySessionCookieName,
@@ -17,6 +14,7 @@ import type { PageServerLoad } from './$types'
 import { setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import { checkHoneypot } from '$lib/utils/honeypot.server'
+import { SignupFormSchema } from '$lib/schemas'
 
 async function requireOnboardingEmail(userId: string | null, cookies: Cookies) {
 	requireAnonymous(userId)

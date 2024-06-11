@@ -11,9 +11,9 @@ import { getDomainUrl } from '$lib/utils/misc'
 import type { PageServerLoad } from './$types'
 import { zod } from 'sveltekit-superforms/adapters'
 import { setError, superValidate } from 'sveltekit-superforms'
-import { VerifySchema } from '$lib/profile/schemas'
 import { isCodeValid } from '$lib/auth/verify.server'
 import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
+import { TwoFactorVerifySchema } from '$lib/schemas'
 
 export const load = (async ({ request, locals }) => {
 	const userId = requireUserId(locals.userId, request)
@@ -44,7 +44,7 @@ export const load = (async ({ request, locals }) => {
 		issuer,
 	})
 	const qrCode = await QRCode.toDataURL(otpUri)
-	const verifyTwoFactorForm = await superValidate(zod(VerifySchema))
+	const verifyTwoFactorForm = await superValidate(zod(TwoFactorVerifySchema))
 	return { otpUri, qrCode, verifyTwoFactorForm }
 }) satisfies PageServerLoad
 
@@ -52,7 +52,7 @@ export const actions = {
 	default: async ({ request, locals, cookies }) => {
 		const userId = requireUserId(locals.userId, request)
 
-		const form = await superValidate(request, zod(VerifySchema))
+		const form = await superValidate(request, zod(TwoFactorVerifySchema))
 		if (!form.valid) return { form }
 		if (form.data.intent === 'verify') {
 			const codeIsValid = isCodeValid({

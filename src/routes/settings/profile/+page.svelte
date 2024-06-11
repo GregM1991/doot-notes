@@ -15,9 +15,12 @@
 	import LockOpened from 'virtual:icons/radix-icons/lock-open-1'
 	import Download from 'virtual:icons/radix-icons/download'
 	import Link2 from 'virtual:icons/radix-icons/link-2'
+	import { zodClient } from 'sveltekit-superforms/adapters'
+	import { ProfileFormSchema } from '$lib/schemas.js'
 
 	export let data
 	const { form, enhance, errors, constraints } = superForm(data.form, {
+		validators: zodClient(ProfileFormSchema),
 		resetForm: false,
 	})
 	const profileSrc = getUserImgSrc(data.user.image?.id)

@@ -2,10 +2,10 @@ import { createId as cuid } from '@paralleldrive/cuid2'
 import { redirect, type Action } from '@sveltejs/kit'
 import { requireUserId } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
-import { ImageFieldsetListSchema, NoteEditorSchema } from './types'
 import { fail, message, setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import { extractImageGroup, transformImageData } from '$lib/utils/misc'
+import { ImageFieldsetListSchema, NoteEditorSchema } from '$lib/schemas'
 
 export const newOrUpdate: Action = async ({ request, locals }) => {
 	const userId = requireUserId(locals.userId, request)

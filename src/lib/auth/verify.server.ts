@@ -9,7 +9,6 @@ import {
 	typeQueryParam,
 	type IsCodeValidParams,
 	type VerificationTypes,
-	VerifySchema,
 } from '$lib/auth/verify'
 import { generateTOTP, verifyTOTP } from '$lib/server/totp'
 import { prisma } from '$lib/utils/db.server'
@@ -20,6 +19,7 @@ import { requireUserId } from '$lib/utils/auth.server'
 import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 import { twoFAVerificationType } from '$lib/profile/consts'
 import { checkHoneypot } from '$lib/utils/honeypot.server'
+import { VerifySchema } from '$lib/schemas'
 
 type PrepareVerificatinParams = {
 	period: number

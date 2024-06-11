@@ -6,16 +6,12 @@ import { prepareVerification } from '$lib/auth/verify.server'
 import { forgotPasswordEmail } from '$lib/auth/recoverPassword.server'
 import { sendEmail } from '$lib/server/email'
 import { prisma } from '$lib/utils/db.server'
-import { UserNameOrEmailSchema } from '$lib/utils/userValidation'
 import { checkHoneypot } from '$lib/utils/honeypot.server.js'
-
-export const _ForgotPasswordSchema = z.object({
-	usernameOrEmail: UserNameOrEmailSchema,
-})
+import { ForgotPasswordSchema } from '$lib/schemas'
 
 export const load = async ({ locals }) => {
 	if (locals.userId) throw redirect(303, '/')
-	const forgotPasswordForm = await superValidate(zod(_ForgotPasswordSchema))
+	const forgotPasswordForm = await superValidate(zod(ForgotPasswordSchema))
 
 	return { forgotPasswordForm }
 }
@@ -24,7 +20,7 @@ export const actions = {
 	default: async ({ request, cookies }) => {
 		// TODO: Create honeypot
 		const formData = await request.formData()
-		const form = await superValidate(formData, zod(_ForgotPasswordSchema))
+		const form = await superValidate(formData, zod(ForgotPasswordSchema))
 		if (!form.valid) return fail(400, { form })
 		checkHoneypot(formData, form)
 

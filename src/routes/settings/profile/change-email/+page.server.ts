@@ -2,7 +2,6 @@ import { requireUserId } from '$lib/utils/auth.server'
 import { setError, superValidate } from 'sveltekit-superforms'
 import type { PageServerLoad } from './$types'
 import { zod } from 'sveltekit-superforms/adapters'
-import { ChangeEmailSchema } from '$lib/profile/schemas'
 import { prisma } from '$lib/utils/db.server'
 import { prepareVerification } from '$lib/auth/verify.server'
 import { sendEmail } from '$lib/server/email'
@@ -11,6 +10,7 @@ import {
 	emailChangeEmail,
 	newEmailAddressSessionKey,
 } from '$lib/auth/changeEmail.server'
+import { ChangeEmailSchema } from '$lib/schemas'
 
 export const load = (async ({ locals, request }) => {
 	void requireUserId(locals.userId, request)

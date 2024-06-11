@@ -8,6 +8,7 @@ import {
 } from '$lib/server/sessions/secureCookie'
 import { sessionKey } from '$lib/utils/auth.server'
 import { safeRedirect } from '$lib/utils/misc'
+import { AuthSessionSchema } from '$lib/schemas'
 
 type SessionType = {
 	id: Session['id']
@@ -20,10 +21,6 @@ interface HandleNewSessionParams {
 	session: SessionType
 	remember: boolean | null
 }
-
-export const AuthSessionSchema = z.object({
-	sessionId: z.string(),
-})
 
 export type Auth = z.infer<typeof AuthSessionSchema>
 

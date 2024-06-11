@@ -1,19 +1,11 @@
 import { superValidate, setError } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
-import { z } from 'zod'
 import { type Actions, redirect } from '@sveltejs/kit'
 import { handleNewSessionWithRedirect } from '$lib/server/sessions/authSession'
-import { PasswordSchema, UsernameSchema } from '$lib/utils/userValidation'
 import { login } from '$lib/utils/auth.server'
 import type { PageServerLoad } from './$types'
 import { checkHoneypot } from '$lib/utils/honeypot.server'
-
-const LoginFormSchema = z.object({
-	username: UsernameSchema,
-	password: PasswordSchema,
-	remember: z.boolean().optional(),
-	redirectTo: z.string().optional(),
-})
+import { LoginFormSchema } from '$lib/schemas'
 
 export const load = (async ({ locals }) => {
 	if (locals.userId) throw redirect(303, '/')
