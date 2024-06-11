@@ -7,10 +7,12 @@
 		ValidationErrors,
 	} from '$lib/components'
 	import { superForm } from 'sveltekit-superforms'
+	import { VerifySchema } from '$lib/schemas'
+	import { zodClient } from 'sveltekit-superforms/adapters'
 
-	export let data
-
-	const { form, errors, enhance, constraints } = superForm(data.verifyForm)
+	const { form, errors, enhance, constraints } = superForm(data.verifyForm, {
+		validators: zodClient(VerifySchema),
+	})
 	const label = 'Enter Code'
 </script>
 

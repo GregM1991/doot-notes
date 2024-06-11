@@ -14,7 +14,7 @@ import type { PageServerLoad } from './$types'
 import { setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import { checkHoneypot } from '$lib/utils/honeypot.server'
-import { SignupFormSchema } from '$lib/schemas'
+import { OnboardingSchema } from '$lib/schemas'
 
 async function requireOnboardingEmail(userId: string | null, cookies: Cookies) {
 	requireAnonymous(userId)
@@ -29,7 +29,7 @@ async function requireOnboardingEmail(userId: string | null, cookies: Cookies) {
 
 export const load = (async ({ locals, cookies }) => {
 	const email = await requireOnboardingEmail(locals.userId, cookies)
-	const form = await superValidate(zod(SignupFormSchema))
+	const form = await superValidate(zod(OnboardingSchema))
 	return { email, form }
 }) satisfies PageServerLoad
 
@@ -37,7 +37,7 @@ export const actions = {
 	default: async ({ locals, cookies, request }) => {
 		const email = await requireOnboardingEmail(locals.userId, cookies)
 		const formData = await request.formData()
-		const form = await superValidate(formData, zod(SignupFormSchema)) // TODO: Why isn't this giving data. Check the signupFormSchema, try a simpler thing?
+		const form = await superValidate(formData, zod(OnboardingSchema)) // TODO: Why isn't this giving data. Check the signupFormSchema, try a simpler thing?
 		checkHoneypot(formData, form)
 		if (!form.valid) return { form }
 		const user = await prisma.user.findUnique({

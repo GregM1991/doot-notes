@@ -1,10 +1,15 @@
 <script lang="ts">
 	import { Button, FormGroup, Input, ValidationErrors } from '$lib/components'
+	import { LoginFormSchema } from '$lib/schemas.js'
 	import { superForm } from 'sveltekit-superforms'
-	export let data
+	import { zodClient } from 'sveltekit-superforms/adapters'
 
+	export let data
 	const { form, errors, constraints, enhance, formId } = superForm(
 		data.resetPasswordForm,
+		{
+		validators: zodClient(LoginFormSchema),
+	}
 	)
 </script>
 

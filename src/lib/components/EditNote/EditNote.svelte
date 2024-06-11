@@ -30,7 +30,6 @@
 
 	const { form, errors, enhance, formId, constraints } = superForm(data, {
 		validators: zodClient(NoteEditorSchema),
-		customValidity: false
 	})
 	const header = $form.id ? `Edit ${$form.title}` : 'Doot a new note 📯'
 	const buttonText = $form.id ? 'Save changes' : 'Create note'

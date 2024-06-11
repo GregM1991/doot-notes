@@ -54,7 +54,7 @@ export const ProfileFormSchema = z.object({
 	username: UsernameSchema,
 })
 
-export const SignupFormSchema = z
+export const OnboardingSchema = z
 	.object({
 		username: UsernameSchema,
 		name: NameSchema,
@@ -211,4 +211,8 @@ export const LoginFormSchema = z.object({
 	password: PasswordSchema,
 	remember: z.boolean().optional(),
 	redirectTo: z.string().optional(),
+})
+
+export const SignupFormSchema = z.object({
+	email: z.string(),
 })

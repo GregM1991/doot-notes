@@ -6,10 +6,14 @@
 		Input,
 		ValidationErrors,
 	} from '$lib/components'
+	import { SignupFormSchema } from '$lib/schemas.js'
 	import { superForm } from 'sveltekit-superforms'
+	import { zodClient } from 'sveltekit-superforms/adapters'
 
 	export let data
-	const { form, formId, errors, enhance, constraints } = superForm(data.form)
+	const { form, formId, errors, enhance, constraints } = superForm(data.form, {
+		validators: zodClient(SignupFormSchema),
+	})
 </script>
 
 <svelte:head>

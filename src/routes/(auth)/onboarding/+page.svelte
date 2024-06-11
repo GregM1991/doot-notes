@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { superForm } from 'sveltekit-superforms'
+	import { zodClient } from 'sveltekit-superforms/adapters'
 	import {
 		Input,
 		Button,
@@ -6,10 +8,12 @@
 		HoneypotInputs,
 		FormGroup,
 	} from '$lib/components'
-	import { superForm } from 'sveltekit-superforms'
+	import { OnboardingSchema } from '$lib/schemas.js'
 
 	export let data
-	const { form, formId, errors, enhance, constraints } = superForm(data.form)
+	const { form, formId, errors, enhance, constraints } = superForm(data.form, {
+		validators: zodClient(OnboardingSchema),
+	})
 </script>
 
 <h1>Great to have you <br /> {data.email}</h1>

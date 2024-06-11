@@ -8,9 +8,13 @@
 		HoneypotInputs,
 		FormGroup,
 	} from '$lib/components'
+	import { zodClient } from 'sveltekit-superforms/adapters'
+	import { LoginFormSchema } from '$lib/schemas.js'
 
 	export let data
-	const { form, errors, constraints, enhance } = superForm(data.loginForm)
+	const { form, errors, constraints, enhance } = superForm(data.loginForm, {
+		validators: zodClient(LoginFormSchema),
+	})
 	const formId = 'login-form'
 	// TODO: create a auth form component to reduce styling repeats 😎
 </script>
