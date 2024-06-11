@@ -6,9 +6,6 @@ import {
 	typeQueryParam,
 } from './auth/verify'
 import { createId as cuid } from '@paralleldrive/cuid2'
-import { onboardingEmailSessionKey } from './auth/onboarding'
-import { newEmailAddressSessionKey } from './auth/changeEmail.server'
-import { resetPasswordUsernameSessionKey } from './auth/resetPassword.server'
 
 export const UsernameSchema = z
 	.string({ required_error: 'Username is required' })
@@ -194,12 +191,6 @@ export const ToastSchema = z.object({
 	id: z.string().default(() => cuid()),
 	title: z.string().optional(),
 	type: z.enum(toastTypes).default('message'),
-})
-
-export const VerifySessionSchema = z.object({
-	[onboardingEmailSessionKey]: z.string().nullable().default(null),
-	[newEmailAddressSessionKey]: z.string().nullable().default(null),
-	[resetPasswordUsernameSessionKey]: z.string().nullable().default(null),
 })
 
 export const ForgotPasswordSchema = z.object({

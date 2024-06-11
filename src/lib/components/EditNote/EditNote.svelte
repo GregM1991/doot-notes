@@ -68,7 +68,7 @@
 			secondary
 			name="title"
 			type="text"
-			value={$form.title}
+			bind:value={$form.title}
 			constraints={$constraints.title}
 		/>
 	</FormGroup>
@@ -78,7 +78,7 @@
 			label="Content"
 			secondary
 			required
-			value={$form.content}
+			bind:value={$form.content}
 			errors={$errors.content}
 			fluid
 			constraints={$constraints.content}

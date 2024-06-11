@@ -7,7 +7,7 @@ import {
 	encryptAndSignCookieValue,
 } from '$lib/server/sessions/secureCookie'
 import { safeRedirect } from '$lib/utils/misc'
-import { VerifySessionSchema } from '$lib/schemas'
+import { VerifySessionSchema } from '$lib/schemas.server'
 
 type VerificationType =
 	| typeof onboardingEmailSessionKey

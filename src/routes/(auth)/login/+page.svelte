@@ -22,7 +22,7 @@
 		<Input
 			label="Enter username"
 			name="username"
-			value={$form.username}
+			bind:value={$form.username}
 			errors={$errors.username}
 			constraints={$constraints.username}
 			type="text"
@@ -33,7 +33,7 @@
 			label="Enter password"
 			name="password"
 			type="password"
-			value={$form.password}
+			bind:value={$form.password}
 			errors={$errors.password}
 			constraints={$constraints.password}
 		/>

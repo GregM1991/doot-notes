@@ -6,7 +6,7 @@
 		signOutOfSessionsActionIntent,
 	} from '$lib/profile/consts.js'
 	import { getUserImgSrc } from '$lib/utils/misc'
-	import { superForm } from 'sveltekit-superforms'
+	import SuperDebug, { superForm } from 'sveltekit-superforms'
 	import Camera from 'virtual:icons/radix-icons/camera'
 	import DotsHorizontal from 'virtual:icons/radix-icons/dotsHorizontal'
 	import EnvelopeClosed from 'virtual:icons/radix-icons/envelopeClosed'
@@ -16,7 +16,7 @@
 	import Download from 'virtual:icons/radix-icons/download'
 	import Link2 from 'virtual:icons/radix-icons/link-2'
 	import { zodClient } from 'sveltekit-superforms/adapters'
-	import { ProfileFormSchema } from '$lib/schemas.js'
+	import { ProfileFormSchema } from '$lib/schemas'
 
 	export let data
 	const { form, enhance, errors, constraints } = superForm(data.form, {

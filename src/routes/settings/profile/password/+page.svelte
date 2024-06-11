@@ -44,7 +44,7 @@
 		/>
 	</FormGroup>
 	<div class="button-wrapper">
-		<a class="link-button" href="..">Cancel</a>
+		<a class="link-button" href=".">Cancel</a>
 		<Button secondary type="submit">Change Password</Button>
 	</div>
 </form>

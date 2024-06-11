@@ -32,7 +32,7 @@
 			<Input
 				label="Verification Code"
 				name="code"
-				value={$form.code}
+				bind:value={$form.code}
 				type="text"
 				errors={$errors.code}
 				constraints={$constraints.code}

@@ -20,7 +20,7 @@
 		<Input
 			label="Username"
 			name="username"
-			value={$form.username}
+			bind:value={$form.username}
 			errors={$errors.username}
 			constraints={$constraints.username}
 			type="text"
@@ -30,7 +30,7 @@
 		<Input
 			label="Name"
 			name="name"
-			value={$form.name}
+			bind:value={$form.name}
 			errors={$errors.name}
 			type="text"
 		/>
@@ -40,7 +40,7 @@
 			type="password"
 			label="Password"
 			name="password"
-			value={$form.password}
+			bind:value={$form.password}
 			errors={$errors.password}
 			constraints={$constraints.password}
 		/>
@@ -50,7 +50,7 @@
 			type="password"
 			label="Confirm Password"
 			name="confirm"
-			value={$form.confirm}
+			bind:value={$form.confirm}
 			errors={$errors.confirm}
 			constraints={$constraints.confirm}
 		/>
@@ -75,14 +75,14 @@
 			aria-invalid={$errors.agreeToTermsOfServiceAndPrivacyPolicy
 				? 'true'
 				: undefined}
-			value={$form.remember}
+			bind:value={$form.remember}
 			name="remember"
 			type="checkbox"
 			{...$constraints.remember}
 		/>
 		Remember me?
 	</label>
-	<Input value={$form.redirectTo} name="redirectTo" hidden />
+	<Input bind:value={$form.redirectTo} name="redirectTo" hidden />
 	<Button type="submit" secondary fluid>Submit</Button>
 	<ValidationErrors errorId={$formId} errors={$errors._errors} />
 </form>

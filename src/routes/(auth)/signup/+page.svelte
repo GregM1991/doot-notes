@@ -23,7 +23,7 @@
 		<Input
 			label="Enter your email"
 			name="email"
-			value={$form.email}
+			bind:value={$form.email}
 			errors={$errors.email}
 			constraints={$constraints.email}
 			type="text"

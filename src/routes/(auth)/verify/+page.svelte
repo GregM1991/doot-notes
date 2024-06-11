@@ -24,16 +24,16 @@
 	<FormGroup>
 		<Input
 			name="code"
-			value={$form.code}
+			bind:value={$form.code}
 			{label}
 			errors={$errors.code}
 			constraints={$constraints.code}
 			type="text"
 		/>
 	</FormGroup>
-	<Input name="type" value={$form.type} hidden/>
-	<Input name="target" value={$form.target} hidden/>
-	<Input name="redirectTo" value={$form.redirectTo} hidden/>
+	<Input name="type" bind:value={$form.type} hidden />
+	<Input name="target" bind:value={$form.target} hidden />
+	<Input name="redirectTo" bind:value={$form.redirectTo} hidden />
 	<Button fluid secondary type="submit">Submit</Button>
 	<ValidationErrors errors={$errors._errors} />
 </form>

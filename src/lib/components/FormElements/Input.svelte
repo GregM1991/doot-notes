@@ -12,7 +12,6 @@
 	export let style = ''
 	export let errors: string[] | null = null
 	export let constraints: InputConstraint | undefined = undefined
-	export let autofocus = false
 	export let secondary = false
 	export let required = false
 	export let fluid = false
@@ -26,21 +25,17 @@
 {#if label}
 	<label for={id}>{label}</label>
 {/if}
-<!-- svelte-ignore a11y-autofocus -->
 <input
 	{id}
 	{placeholder}
 	{name}
-	{autofocus}
 	{style}
 	{required}
 	bind:value
-	{...constraints}
-	class:fluid
-	class:secondary
-	class="base"
+	class="base {fluid ? 'fluid' : ''} {secondary ? 'secondary' : ''}"
 	on:input={handleInput}
 	aria-invalid={errors ? 'true' : undefined}
+	{...constraints}
 	{...$$restProps} 
 />
 
