@@ -8,6 +8,7 @@
 		type Infer,
 		superForm,
 	} from 'sveltekit-superforms'
+	import { zodClient } from 'sveltekit-superforms/adapters'
 	import Check from 'virtual:icons/radix-icons/check'
 	import Cross from 'virtual:icons/radix-icons/cross2'
 	import Plus from 'virtual:icons/radix-icons/plus'
@@ -18,19 +19,25 @@
 		ImageEditor,
 		NoteInfoBar,
 		FormGroup,
+		ValidationErrors,
 	} from '$lib/components'
-	import { NoteEditorSchema, type ImageFieldset } from './types'
+	import type { ImageFieldset } from './types'
+	import { NoteEditorSchema } from '$lib/schemas'
 
 	export let data: SuperValidated<Infer<typeof NoteEditorSchema>>
 	export let images: Array<ImageFieldset> = []
 	export let action: string
 
-	const { form, errors, enhance } = superForm(data)
+	const { form, errors, enhance, formId, constraints } = superForm(data, {
+		validators: zodClient(NoteEditorSchema),
+	})
 	const header = $form.id ? `Edit ${$form.title}` : 'Doot a new note 📯'
 	const buttonText = $form.id ? 'Save changes' : 'Create note'
 	const Icon = $form.id ? Check : Plus
 
-	$: imageList = images
+	$: imageList = Boolean(images.length)
+		? images
+		: [{ id: undefined, file: undefined, altText: undefined }]
 
 	function addEmptyImage() {
 		imageList = [
@@ -40,7 +47,13 @@
 	}
 </script>
 
-<form method="POST" {action} use:enhance enctype="multipart/form-data">
+<form
+	class="edit-form"
+	method="POST"
+	{action}
+	use:enhance
+	enctype="multipart/form-data"
+>
 	<button type="submit" class="hidden" />
 	<h3>{header}</h3>
 	{#if $form.id}
@@ -54,8 +67,8 @@
 			secondary
 			name="title"
 			type="text"
-			value={$form.title}
-			required
+			bind:value={$form.title}
+			constraints={$constraints.title}
 		/>
 	</FormGroup>
 	<FormGroup flex="1 0 0">
@@ -64,9 +77,10 @@
 			label="Content"
 			secondary
 			required
-			value={$form.content}
+			bind:value={$form.content}
 			errors={$errors.content}
 			fluid
+			constraints={$constraints.content}
 		/>
 	</FormGroup>
 	<span>Images</span>
@@ -105,6 +119,7 @@
 			</Button>
 		</div>
 	</NoteInfoBar>
+	<ValidationErrors errorId={$formId} errors={$errors._errors} />
 </form>
 
 <style>
@@ -112,12 +127,13 @@
 		display: none;
 	}
 
-	form {
+	.edit-form {
 		grid-row: 1 / span 2;
 		grid-column: 2 / 3;
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-xs);
+		align-items: stretch;
 	}
 
 	h3 {

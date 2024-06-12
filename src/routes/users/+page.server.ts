@@ -1,15 +1,6 @@
+import { UserSearchResultsSchema } from '$lib/schemas'
 import { prisma } from '$lib/utils/db.server'
-import { z } from 'zod'
 import type { PageServerLoad } from './$types'
-
-const UserSearchResultSchema = z.object({
-	id: z.string(),
-	username: z.string(),
-	name: z.string().nullable(),
-	imageId: z.string().nullable(),
-})
-
-const UserSearchResultsSchema = z.array(UserSearchResultSchema)
 
 export const load = (async ({ url }) => {
 	const searchQuery = url.searchParams.get('search') ?? ''

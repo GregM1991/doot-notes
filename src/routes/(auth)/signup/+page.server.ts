@@ -1,17 +1,12 @@
 import { sendEmail } from '$lib/server/email'
 import { prepareVerification } from '$lib/auth/verify.server'
 import { prisma } from '$lib/utils/db.server.js'
-import { parseWithZod } from '@conform-to/zod'
-import { fail, redirect } from '@sveltejs/kit'
-import { z } from 'zod'
+import { redirect } from '@sveltejs/kit'
 import { setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import type { PageServerLoad } from './$types'
 import { checkHoneypot } from '$lib/utils/honeypot.server'
-
-const SignupFormSchema = z.object({
-	email: z.string(),
-})
+import { SignupFormSchema } from '$lib/schemas'
 
 export const load = (async () => {
 	const form = await superValidate(zod(SignupFormSchema))

@@ -1,6 +1,5 @@
 import { z } from 'zod'
 import { fail, setError, type SuperValidated } from 'sveltekit-superforms'
-import { NameSchema, UsernameSchema } from '$lib/utils/userValidation'
 import { prisma } from '$lib/utils/db.server'
 import type { Message } from '$lib/types'
 import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
@@ -10,11 +9,7 @@ import {
 	getAuthSessionData,
 } from '$lib/server/sessions/authSession'
 import { invariantResponse } from '$lib/utils/misc'
-
-export const ProfileFormSchema = z.object({
-	name: NameSchema.optional(),
-	username: UsernameSchema,
-})
+import type { ProfileFormSchema } from '$lib/schemas'
 
 type Form = SuperValidated<
 	z.input<typeof ProfileFormSchema>,

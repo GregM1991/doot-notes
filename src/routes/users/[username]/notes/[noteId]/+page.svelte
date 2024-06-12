@@ -9,10 +9,6 @@
 	import { getNoteImgSrc } from '$lib/utils/misc.js'
 
 	export let data
-	// TODO: Move this to the backend
-	$: paragraphs = data.note.content
-		.split('\n')
-		.filter(para => para.trim().length > 0)
 </script>
 
 <article class="article">
@@ -27,7 +23,7 @@
 		{/each}
 	</ul>
 
-	{#each paragraphs as paragraph}
+	{#each data.note.content as paragraph}
 		<p>{paragraph}</p>
 	{/each}
 </article>

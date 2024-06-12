@@ -3,9 +3,9 @@ import { invariantResponse } from '$lib/utils/misc'
 import { fail, superValidate, withFiles } from 'sveltekit-superforms'
 import type { Actions, PageServerLoad } from './$types'
 import { zod } from 'sveltekit-superforms/adapters'
-import { PhotoFormSchema } from '$lib/profile/schemas'
 import { prisma } from '$lib/utils/db.server'
 import { redirect } from '@sveltejs/kit'
+import { PhotoFormSchema } from '$lib/schemas'
 
 export const load = (async ({ locals, request, parent }) => {
 	void requireUserId(locals.userId, request)

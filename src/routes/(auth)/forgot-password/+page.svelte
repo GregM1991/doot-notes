@@ -7,10 +7,15 @@
 		HoneypotInputs,
 		FormGroup,
 	} from '$lib/components'
+	import { zodClient } from 'sveltekit-superforms/adapters'
+	import { ForgotPasswordSchema } from '$lib/schemas'
 
 	export let data
 	const { form, errors, constraints, enhance } = superForm(
 		data.forgotPasswordForm,
+		{
+			validators: zodClient(ForgotPasswordSchema),
+		},
 	)
 	const formId = 'forgot-password-form'
 	// TODO: create a auth form component to reduce styling repeats 😎
@@ -25,7 +30,8 @@
 			name="usernameOrEmail"
 			bind:value={$form.usernameOrEmail}
 			errors={$errors.usernameOrEmail}
-			{...$constraints}
+			constraints={$constraints.usernameOrEmail}
+			type="text"
 		/>
 	</FormGroup>
 	<Button fluid type="submit" secondary>Submit</Button>

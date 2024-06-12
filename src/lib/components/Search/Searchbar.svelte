@@ -24,7 +24,7 @@
 		fluid
 	/>
 	<!-- TODO: Extract to icon button -->
-	<button type="submit">
+	<button class="search-button" type="submit">
 		<MagnifyingGlass />
 	</button>
 </form>
@@ -34,7 +34,7 @@
 		flex-direction: row;
 	}
 
-	button {
+	.search-button {
 		display: inline-grid;
 		place-items: center;
 		padding: var(--space-xs);

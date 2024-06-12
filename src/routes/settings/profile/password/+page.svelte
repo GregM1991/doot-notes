@@ -1,9 +1,15 @@
 <script lang="ts">
 	import { Button, FormGroup, Input } from '$lib/components'
+	import { ChangePasswordFormSchema } from '$lib/schemas.js'
 	import { superForm } from 'sveltekit-superforms'
+	import { zodClient } from 'sveltekit-superforms/adapters'
 
 	export let data
-	const { form, errors, enhance } = superForm(data.editPasswordForm)
+	const { form, errors, enhance, constraints } = superForm(
+		data.editPasswordForm, {
+			validators: zodClient(ChangePasswordFormSchema),
+		},
+	)
 </script>
 
 <h1 class="header">Let's make some changes to your profile</h1>
@@ -16,6 +22,7 @@
 			type="password"
 			bind:value={$form.currentPassword}
 			errors={$errors.currentPassword}
+			constraints={$constraints.currentPassword}
 		/>
 	</FormGroup>
 	<FormGroup>
@@ -26,6 +33,7 @@
 			type="password"
 			bind:value={$form.newPassword}
 			errors={$errors.newPassword}
+			constraints={$constraints.newPassword}
 		/>
 	</FormGroup>
 	<FormGroup>
@@ -36,10 +44,11 @@
 			type="password"
 			bind:value={$form.confirmNewPassword}
 			errors={$errors.confirmNewPassword}
+			constraints={$constraints.confirmNewPassword}
 		/>
 	</FormGroup>
 	<div class="button-wrapper">
-		<a class="link-button" href="..">Cancel</a>
+		<a class="link-button" href=".">Cancel</a>
 		<Button secondary type="submit">Change Password</Button>
 	</div>
 </form>

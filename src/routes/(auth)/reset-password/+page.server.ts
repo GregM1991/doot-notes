@@ -2,15 +2,13 @@ import { redirect, type Cookies } from '@sveltejs/kit'
 import type { PageServerLoad } from './$types'
 import { superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
-import { PasswordAndConfirmPasswordSchema } from '$lib/utils/userValidation'
 import { requireAnonymous, resetUserPassword } from '$lib/utils/auth.server'
 import {
 	getVerifySessionData,
 	verifySessionCookieName,
 	verifySessionCookieOptions,
 } from '$lib/server/sessions/verifySession.js'
-
-const ResetPasswordSchema = PasswordAndConfirmPasswordSchema
+import { ResetPasswordSchema } from '$lib/schemas'
 
 function requireResetPasswordUsername(userId: string | null, cookies: Cookies) {
 	requireAnonymous(userId)

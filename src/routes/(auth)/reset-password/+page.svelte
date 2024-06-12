@@ -1,10 +1,15 @@
 <script lang="ts">
 	import { Button, FormGroup, Input, ValidationErrors } from '$lib/components'
+	import { ResetPasswordSchema } from '$lib/schemas.js'
 	import { superForm } from 'sveltekit-superforms'
-	export let data
+	import { zodClient } from 'sveltekit-superforms/adapters'
 
+	export let data
 	const { form, errors, constraints, enhance, formId } = superForm(
 		data.resetPasswordForm,
+		{
+			validators: zodClient(ResetPasswordSchema),
+		},
 	)
 </script>
 
@@ -21,7 +26,7 @@
 			type="password"
 			bind:value={$form.password}
 			errors={$errors.password}
-			{...$constraints}
+			constraints={$constraints.password}
 		/>
 	</FormGroup>
 	<FormGroup>
@@ -31,7 +36,7 @@
 			type="password"
 			bind:value={$form.confirm}
 			errors={$errors.confirm}
-			{...$constraints}
+			constraints={$constraints.confirm}
 		/>
 	</FormGroup>
 	<Button fluid type="submit" secondary>Submit</Button>

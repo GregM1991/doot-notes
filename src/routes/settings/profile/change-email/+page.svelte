@@ -2,9 +2,16 @@
 	import { Button, FormGroup, Input, ValidationErrors } from '$lib/components'
 	import { superForm } from 'sveltekit-superforms'
 	import type { PageData } from './$types'
+	import { zodClient } from 'sveltekit-superforms/adapters'
+	import { ChangeEmailSchema } from '$lib/schemas'
 
 	export let data: PageData
-	const { form, errors, enhance } = superForm(data.changeEmailForm)
+	const { form, errors, enhance, constraints } = superForm(
+		data.changeEmailForm,
+		{
+			validators: zodClient(ChangeEmailSchema),
+		},
+	)
 </script>
 
 <div class="copy">
@@ -23,6 +30,7 @@
 			type="text"
 			bind:value={$form.email}
 			errors={$errors.email}
+			constraints={$constraints.email}
 		/>
 	</FormGroup>
 	<div class="button-wrapper">

@@ -7,45 +7,48 @@
 		ValidationErrors,
 	} from '$lib/components'
 	import { superForm } from 'sveltekit-superforms'
+	import { VerifySchema } from '$lib/schemas'
+	import { zodClient } from 'sveltekit-superforms/adapters'
 
-	export let data
-
-	const { form, errors, enhance } = superForm(data.verifyForm)
+	const { form, errors, enhance, constraints } = superForm(data.verifyForm, {
+		validators: zodClient(VerifySchema),
+	})
 	const label = 'Enter Code'
 </script>
 
-<h1>Have a geez at your email</h1>
-<span>
+<h1 class="header">Have a geez at your email</h1>
+<span class="copy">
 	We've sent you a little prezzie to your email address to verify it's really
 	you 😉
 </span>
 <form method="POST" use:enhance>
 	<HoneypotInputs />
 	<FormGroup>
-		<Input name="code" value={$form.code} {label} errors={$errors.code} />
+		<Input
+			name="code"
+			bind:value={$form.code}
+			{label}
+			errors={$errors.code}
+			constraints={$constraints.code}
+			type="text"
+		/>
 	</FormGroup>
-	<Input name="type" value={$form.type} type="hidden" />
-	<Input name="target" value={$form.target} type="hidden" />
-	<Input name="redirectTo" value={$form.redirectTo} type="hidden" />
+	<Input name="type" bind:value={$form.type} hidden />
+	<Input name="target" bind:value={$form.target} hidden />
+	<Input name="redirectTo" bind:value={$form.redirectTo} hidden />
 	<Button fluid secondary type="submit">Submit</Button>
 	<ValidationErrors errors={$errors._errors} />
 </form>
 
 <style>
-	h1 {
+	.header {
 		font-size: var(--type-step-4);
 		color: var(--palette-pop);
 		text-align: center;
 	}
 
-	span {
+	.copy {
 		text-align: center;
 		display: block;
-	}
-
-	div {
-		display: flex;
-		flex-direction: column;
-		width: 100%;
 	}
 </style>

@@ -33,6 +33,13 @@ export const load = async ({ params, locals }) => {
 	const date = new Date(note.updatedAt)
 	const timeSinceUpdate = formatDistanceToNow(date)
 	const isOwner = locals.userId === note.owner.id
+	const paragraphs = note.content
+		.split('\n')
+		.filter(para => para.trim().length > 0)
+	const formattedNote = {
+		...note,
+		content: paragraphs,
+	}
 
-	return { note, timeSinceUpdate, isOwner }
+	return { note: formattedNote, timeSinceUpdate, isOwner }
 }

@@ -3,11 +3,7 @@ import { SESSION_SECRET } from '$env/static/private'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import { z } from 'zod'
-
-const EncryptedAndSignedCookieSchema = z.object({
-	iv: z.string().length(32),
-	cookieVal: z.string(),
-})
+import { EncryptedAndSignedCookieSchema } from '$lib/schemas'
 
 const algorithm = 'aes-256-cbc'
 const secret = SESSION_SECRET.split(',')[0]
@@ -36,7 +32,6 @@ export function encryptAndSignCookieValue<T>(
 	})
 }
 
-// TODO: Accept Schema so we can have type saftey when getting value from cookie string
 export function decryptCookie(encryptedCookieValue: string) {
 	try {
 		const encryptedAndSignedCookieObj =

@@ -8,9 +8,13 @@
 		HoneypotInputs,
 		FormGroup,
 	} from '$lib/components'
+	import { zodClient } from 'sveltekit-superforms/adapters'
+	import { LoginFormSchema } from '$lib/schemas.js'
 
 	export let data
-	const { form, errors, constraints, enhance } = superForm(data.loginForm)
+	const { form, errors, constraints, enhance } = superForm(data.loginForm, {
+		validators: zodClient(LoginFormSchema),
+	})
 	const formId = 'login-form'
 	// TODO: create a auth form component to reduce styling repeats 😎
 </script>
@@ -24,7 +28,8 @@
 			name="username"
 			bind:value={$form.username}
 			errors={$errors.username}
-			{...$constraints}
+			constraints={$constraints.username}
+			type="text"
 		/>
 	</FormGroup>
 	<FormGroup>
@@ -34,7 +39,7 @@
 			type="password"
 			bind:value={$form.password}
 			errors={$errors.password}
-			{...$constraints}
+			constraints={$constraints.password}
 		/>
 	</FormGroup>
 	<div class="remember-forgot">
@@ -44,6 +49,8 @@
 				name="remember"
 				id="remember"
 				type="checkbox"
+				aria-invalid={$errors.remember ? 'true' : undefined}
+				{...$constraints.remember}
 			/>
 			<label for="remember">Remember me</label>
 		</div>
@@ -51,7 +58,7 @@
 			<a href="/forgot-password">Forgot password?</a>
 		</div>
 	</div>
-	<Input name="redirectTo" type="hidden" value={$page.params.redirectTo} />
+	<Input type="text" name="redirectTo" hidden value={$page.params.redirectTo} />
 	<Button fluid type="submit" secondary>Submit</Button>
 	<ValidationErrors errorId={formId} errors={$errors._errors} />
 	<span class="signup">

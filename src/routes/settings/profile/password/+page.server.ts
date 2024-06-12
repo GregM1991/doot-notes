@@ -9,14 +9,14 @@ import { prisma } from '$lib/utils/db.server'
 import { redirect } from '@sveltejs/kit'
 import { superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
-import { ChangePasswordForm } from '$lib/profile/schemas'
 import { requirePassword } from '$lib/utils/misc.server'
 import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
+import { ChangePasswordFormSchema } from '$lib/schemas'
 
 export const load = (async ({ request, locals }) => {
 	const userId = requireUserId(locals.userId, request)
 	await requirePassword(userId)
-	const editPasswordForm = await superValidate(zod(ChangePasswordForm))
+	const editPasswordForm = await superValidate(zod(ChangePasswordFormSchema))
 	return { editPasswordForm }
 }) satisfies PageServerLoad
 
@@ -27,7 +27,7 @@ export const actions = {
 		const form = await superValidate(
 			request,
 			zod(
-				ChangePasswordForm.superRefine(
+				ChangePasswordFormSchema.superRefine(
 					async ({ currentPassword, newPassword }, ctx) => {
 						if (currentPassword && newPassword) {
 							const user = await verifyUserPassword(

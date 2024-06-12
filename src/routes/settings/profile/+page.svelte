@@ -6,7 +6,7 @@
 		signOutOfSessionsActionIntent,
 	} from '$lib/profile/consts.js'
 	import { getUserImgSrc } from '$lib/utils/misc'
-	import { superForm } from 'sveltekit-superforms'
+	import SuperDebug, { superForm } from 'sveltekit-superforms'
 	import Camera from 'virtual:icons/radix-icons/camera'
 	import DotsHorizontal from 'virtual:icons/radix-icons/dotsHorizontal'
 	import EnvelopeClosed from 'virtual:icons/radix-icons/envelopeClosed'
@@ -15,9 +15,14 @@
 	import LockOpened from 'virtual:icons/radix-icons/lock-open-1'
 	import Download from 'virtual:icons/radix-icons/download'
 	import Link2 from 'virtual:icons/radix-icons/link-2'
+	import { zodClient } from 'sveltekit-superforms/adapters'
+	import { ProfileFormSchema } from '$lib/schemas'
 
 	export let data
-	const { form, enhance, errors } = superForm(data.form, { resetForm: false })
+	const { form, enhance, errors, constraints } = superForm(data.form, {
+		validators: zodClient(ProfileFormSchema),
+		resetForm: false,
+	})
 	const profileSrc = getUserImgSrc(data.user.image?.id)
 	$: otherSessions = data.user._count.sessions - 1
 </script>
@@ -40,6 +45,7 @@
 				type="text"
 				bind:value={$form.username}
 				errors={$errors.username}
+				constraints={$constraints.username}
 			/>
 		</FormGroup>
 		<FormGroup>
@@ -49,6 +55,7 @@
 				type="text"
 				bind:value={$form.name}
 				errors={$errors.name}
+				constraints={$constraints.name}
 			/>
 		</FormGroup>
 	</div>

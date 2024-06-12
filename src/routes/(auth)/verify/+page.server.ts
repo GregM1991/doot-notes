@@ -3,7 +3,7 @@ import { type Actions } from '@sveltejs/kit'
 import type { PageServerLoad } from './$types'
 import { superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
-import { VerifySchema } from '$lib/auth/verify'
+import { VerifySchema } from '$lib/schemas'
 
 export const load = (async ({ url }) => {
 	const verifyForm = await superValidate(url.searchParams, zod(VerifySchema), {

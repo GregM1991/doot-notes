@@ -1,5 +1,9 @@
 import { error } from '@sveltejs/kit'
 import userImg from '$lib/images/user.png'
+import type {
+	ImageFieldset,
+	ImageFieldsetList,
+} from '$lib/components/EditNote/types'
 
 export function getUserImgSrc(imageId?: string | null) {
 	return imageId ? `/api/resources/user-images/${imageId}` : userImg
@@ -90,4 +94,65 @@ export function getUserInitials(name: string) {
 	return (
 		(initials.shift()?.[1] || '') + (initials.pop()?.[1] || '')
 	).toUpperCase()
+}
+
+export function extractImageGroup(formData: FormData) {
+	const imageMap = new Map()
+	Array.from(formData.entries())
+		.filter(([key, _]) => key.includes('images'))
+		.forEach(([key, value]) => {
+			const [currKey, field] = key.split('.')
+			const image = imageMap.get(currKey)
+			image
+				? imageMap.set(currKey, { ...image, [field]: value })
+				: imageMap.set(currKey, { [field]: value })
+		})
+	return Array.from(imageMap.values())
+}
+
+function imageHasFile(
+	image: ImageFieldset,
+): image is ImageFieldset & { file: NonNullable<ImageFieldset['file']> } {
+	return Boolean(image.file?.size && image.file?.size > 0)
+}
+
+function imageHasId(
+	image: ImageFieldset,
+): image is ImageFieldset & { id: NonNullable<ImageFieldset['id']> } {
+	return image.id != null
+}
+
+export async function transformImageData(images: ImageFieldsetList = []) {
+	const imageUpdates = {
+		imageUpdates: await Promise.all(
+			images.filter(imageHasId).map(async i => {
+				if (imageHasFile(i)) {
+					return {
+						id: i.id,
+						altText: i.altText,
+						contentType: i.file.type,
+						blob: Buffer.from(await i.file.arrayBuffer()),
+					}
+				} else {
+					return {
+						id: i.id,
+						altText: i.altText,
+					}
+				}
+			}),
+		),
+		newImages: await Promise.all(
+			images
+				.filter(imageHasFile)
+				.filter(i => !i.id)
+				.map(async image => {
+					return {
+						altText: image.altText,
+						contentType: image.file.type,
+						blob: Buffer.from(await image.file.arrayBuffer()),
+					}
+				}),
+		),
+	}
+	return imageUpdates
 }

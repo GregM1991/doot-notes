@@ -46,9 +46,9 @@
 		</li>
 		<li>
 			<form action="/logout" method="POST">
-				<button type="submit" use:melt={$item} class="menu-item"
-					><Exit /> Logout</button
-				>
+				<button type="submit" use:melt={$item} class="menu-item">
+					<Exit /> Logout
+				</button>
 			</form>
 		</li>
 	</ul>

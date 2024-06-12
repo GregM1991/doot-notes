@@ -1,16 +1,17 @@
 <script lang="ts">
 	import { ValidationErrors } from '$lib/components'
 	import { createEventDispatcher } from 'svelte'
+	import type { InputConstraint } from 'sveltekit-superforms'
 
 	export let placeholder = ''
 	export let name: string
 	export let id: string = name
-	export let type: 'text' | 'password' | 'search' | 'hidden' | null = 'text'
+	export let hidden = false
 	export let value: string | null = ''
 	export let label = ''
 	export let style = ''
 	export let errors: string[] | null = null
-	export let autofocus = false
+	export let constraints: InputConstraint | undefined = undefined
 	export let secondary = false
 	export let required = false
 	export let fluid = false
@@ -24,24 +25,21 @@
 {#if label}
 	<label for={id}>{label}</label>
 {/if}
-<!-- svelte-ignore a11y-autofocus -->
 <input
 	{id}
 	{placeholder}
 	{name}
-	{type}
-	{autofocus}
 	{style}
 	{required}
-	{value}
-	class:fluid
-	class:secondary
-	class="base"
+	bind:value
+	class="base {fluid ? 'fluid' : ''} {secondary ? 'secondary' : ''}"
 	on:input={handleInput}
 	aria-invalid={errors ? 'true' : undefined}
+	{...constraints}
+	{...$$restProps} 
 />
 
-{#if type !== 'hidden'}
+{#if !hidden}
 	<ValidationErrors {errors} errorId={id} />
 {/if}
 
