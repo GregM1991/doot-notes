@@ -36,7 +36,7 @@
 	on:input={handleInput}
 	aria-invalid={errors ? 'true' : undefined}
 	{...constraints}
-	{...$$restProps} 
+	{...$$restProps}
 />
 
 {#if !hidden}

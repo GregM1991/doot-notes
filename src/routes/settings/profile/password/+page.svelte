@@ -6,7 +6,8 @@
 
 	export let data
 	const { form, errors, enhance, constraints } = superForm(
-		data.editPasswordForm, {
+		data.editPasswordForm,
+		{
 			validators: zodClient(ChangePasswordFormSchema),
 		},
 	)
