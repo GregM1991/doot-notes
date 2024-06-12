@@ -33,9 +33,9 @@
 			type="text"
 		/>
 	</FormGroup>
-	<Input name="type" bind:value={$form.type} hidden />
-	<Input name="target" bind:value={$form.target} hidden />
-	<Input name="redirectTo" bind:value={$form.redirectTo} hidden />
+	<Input type="hidden" name="type" bind:value={$form.type} hidden />
+	<Input type="hidden" name="target" bind:value={$form.target} hidden />
+	<Input type="hidden" name="redirectTo" bind:value={$form.redirectTo} hidden />
 	<Button fluid secondary type="submit">Submit</Button>
 	<ValidationErrors errors={$errors._errors} />
 </form>
