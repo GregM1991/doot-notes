@@ -156,3 +156,16 @@ export async function transformImageData(images: ImageFieldsetList = []) {
 	}
 	return imageUpdates
 }
+
+// TODO: PICKUP, can I give these an id on the server perhaps?
+// That way I can target them for removal?
+export function initialiseImageList(
+	images: Array<{
+		id: string
+		altText: string | null
+	}> | null,
+) {
+	return images
+		? images
+		: [{ id: undefined, file: undefined, altText: undefined }]
+}

@@ -1,8 +1,4 @@
 <script lang="ts">
-	// TODO: If I feel like it, I can revisit this to cater to non-js users
-	// https://www.npmjs.com/package/parse-nested-form-data
-	// https://svelte.dev/repl/d8916d45012241dab5962c1323604fe9?version=4.2.0
-	// https://github.com/ciscoheat/sveltekit-superforms/issues/186
 	import {
 		type SuperValidated,
 		type Infer,
@@ -35,9 +31,7 @@
 	const buttonText = $form.id ? 'Save changes' : 'Create note'
 	const Icon = $form.id ? Check : Plus
 
-	$: imageList = Boolean(images.length)
-		? images
-		: [{ id: undefined, file: undefined, altText: undefined }]
+	$: imageList = images
 
 	function addEmptyImage() {
 		imageList = [
@@ -87,7 +81,6 @@
 	<ul class="image-list">
 		{#each imageList as image, index (index)}
 			<li class="image-list-item">
-				<!-- TODO: //create form action for delete later -->
 				<button
 					formaction="?/delete"
 					class="remove-image-button"

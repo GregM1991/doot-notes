@@ -7,4 +7,4 @@
 	const action = `/users/${$page.params.username}/notes/new-note?/newOrUpdate`
 </script>
 
-<EditNote {action} data={data.newNoteForm} />
+<EditNote {action} data={data.newNoteForm} images={data.images} />
