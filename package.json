@@ -25,7 +25,7 @@
     "@remix-run/eslint-config": "2.9.2",
     "@sveltejs/adapter-auto": "^3.0.0",
     "@sveltejs/kit": "^2.0.0",
-    "@sveltejs/vite-plugin-svelte": "^3.0.0",
+    "@sveltejs/vite-plugin-svelte": "^3.1.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/bun": "^1.1.4",
     "@types/cookie": "^0.6.0",
@@ -54,7 +54,7 @@
     "typescript": "^5.0.0",
     "unplugin-icons": "^0.18.5",
     "vite": "^5.0.3",
-    "vitest": "^1.2.0"
+    "vitest": "^1.6.0"
   },
   "type": "module",
   "dependencies": {
@@ -64,6 +64,8 @@
     "@faker-js/faker": "^8.4.1",
     "@paralleldrive/cuid2": "^2.2.2",
     "@prisma/client": "latest",
+    "@testing-library/jest-dom": "^6.4.6",
+    "@testing-library/svelte": "^5.1.0",
     "@types/better-sqlite3": "^7.6.10",
     "@types/crypto-js": "^4.2.2",
     "@types/fs-extra": "^11.0.4",

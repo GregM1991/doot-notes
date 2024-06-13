@@ -159,8 +159,6 @@ export async function transformImageData(images: ImageFieldsetList = []) {
 	}
 	return imageUpdates
 }
-<<<<<<< Updated upstream
-=======
 
 // That way I can target them for removal?
 export function initialiseImageList(
@@ -173,4 +171,3 @@ export function initialiseImageList(
 		? images
 		: [{ id: undefined, file: undefined, altText: undefined }]
 }
->>>>>>> Stashed changes

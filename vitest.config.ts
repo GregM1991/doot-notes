@@ -1,11 +1,11 @@
 // <reference types="vitest" />
 
-import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
+import { svelte } from '@sveltejs/vite-plugin-svelte'
+import { svelteTesting } from '@testing-library/svelte/vite'
 
 export default defineConfig({
-	plugins: [react()],
-	css: { postcss: { plugins: [] } },
+	plugins: [svelte(), svelteTesting()],
 	test: {
 		include: ['./app/**/*.test.{ts,tsx}'],
 		setupFiles: ['./tests/setup/setup-test-env.ts'],
