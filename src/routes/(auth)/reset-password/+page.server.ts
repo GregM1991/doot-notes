@@ -1,6 +1,6 @@
 import { redirect, type Cookies } from '@sveltejs/kit'
 import type { PageServerLoad } from './$types'
-import { superValidate } from 'sveltekit-superforms'
+import { fail, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import { requireAnonymous, resetUserPassword } from '$lib/utils/auth.server'
 import {
@@ -38,7 +38,7 @@ export const actions = {
 		)
 		const form = await superValidate(request, zod(ResetPasswordSchema))
 		if (!form.valid) {
-			return { form }
+			return fail(400, { form })
 		}
 		const { password } = form.data
 

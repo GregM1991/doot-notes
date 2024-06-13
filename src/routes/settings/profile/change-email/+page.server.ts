@@ -1,5 +1,5 @@
 import { requireUserId } from '$lib/utils/auth.server'
-import { setError, superValidate } from 'sveltekit-superforms'
+import { fail, setError, superValidate } from 'sveltekit-superforms'
 import type { PageServerLoad } from './$types'
 import { zod } from 'sveltekit-superforms/adapters'
 import { prisma } from '$lib/utils/db.server'
@@ -23,7 +23,7 @@ export const actions = {
 		const userId = requireUserId(locals.userId, request)
 
 		const form = await superValidate(request, zod(ChangeEmailSchema))
-		if (!form.valid) return { form }
+		if (!form.valid) return fail(400, { form })
 		const existingUser = await prisma.user.findUnique({
 			where: { email: form.data.email },
 			select: { id: true },

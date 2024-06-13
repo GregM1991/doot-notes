@@ -10,7 +10,7 @@ import {
 import { getDomainUrl } from '$lib/utils/misc'
 import type { PageServerLoad } from './$types'
 import { zod } from 'sveltekit-superforms/adapters'
-import { setError, superValidate } from 'sveltekit-superforms'
+import { fail, setError, superValidate } from 'sveltekit-superforms'
 import { isCodeValid } from '$lib/auth/verify.server'
 import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 import { TwoFactorVerifySchema } from '$lib/schemas'
@@ -53,7 +53,7 @@ export const actions = {
 		const userId = requireUserId(locals.userId, request)
 
 		const form = await superValidate(request, zod(TwoFactorVerifySchema))
-		if (!form.valid) return { form }
+		if (!form.valid) return fail(400, { form })
 		if (form.data.intent === 'verify') {
 			const codeIsValid = isCodeValid({
 				code: form.data.code,

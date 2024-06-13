@@ -2,7 +2,7 @@ import { sendEmail } from '$lib/server/email'
 import { prepareVerification } from '$lib/auth/verify.server'
 import { prisma } from '$lib/utils/db.server.js'
 import { redirect } from '@sveltejs/kit'
-import { setError, superValidate } from 'sveltekit-superforms'
+import { fail, setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import type { PageServerLoad } from './$types'
 import { checkHoneypot } from '$lib/utils/honeypot.server'
@@ -18,7 +18,7 @@ export const actions = {
 		const formData = await request.formData()
 		const form = await superValidate(formData, zod(SignupFormSchema))
 		if (!form.valid) {
-			return { form }
+			return fail(400, { form })
 		}
 		checkHoneypot(formData, form)
 		const existingUser = await prisma.user.findUnique({

@@ -7,7 +7,7 @@ import { z } from 'zod'
 import type { Actions, PageServerLoad } from './$types'
 import { prisma } from '$lib/utils/db.server'
 import { redirect } from '@sveltejs/kit'
-import { superValidate } from 'sveltekit-superforms'
+import { fail, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import { requirePassword } from '$lib/utils/misc.server'
 import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
@@ -47,7 +47,7 @@ export const actions = {
 			),
 		)
 		if (!form.valid) {
-			return {
+			return fail(400, {
 				form: {
 					...form,
 					data: {
@@ -57,7 +57,7 @@ export const actions = {
 						confirmNewPassword: '',
 					},
 				},
-			}
+			})
 		}
 		const { newPassword } = form.data
 

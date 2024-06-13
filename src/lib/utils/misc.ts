@@ -4,6 +4,7 @@ import type {
 	ImageFieldset,
 	ImageFieldsetList,
 } from '$lib/components/EditNote/types'
+import type { ImageMap } from '$lib/types'
 
 export function getUserImgSrc(imageId?: string | null) {
 	return imageId ? `/api/resources/user-images/${imageId}` : userImg
@@ -97,15 +98,17 @@ export function getUserInitials(name: string) {
 }
 
 export function extractImageGroup(formData: FormData) {
-	const imageMap = new Map()
+	const imageMap = new Map<any, ImageMap>()
 	Array.from(formData.entries())
 		.filter(([key, _]) => key.includes('images'))
 		.forEach(([key, value]) => {
 			const [currKey, field] = key.split('.')
+			const match = currKey.match(/\[(\d+)\]/)
+			const index = match ? match[1] : null
 			const image = imageMap.get(currKey)
 			image
-				? imageMap.set(currKey, { ...image, [field]: value })
-				: imageMap.set(currKey, { [field]: value })
+				? imageMap.set(currKey, { ...image, [field]: value, index })
+				: imageMap.set(currKey, { [field]: value, index })
 		})
 	return Array.from(imageMap.values())
 }
@@ -156,3 +159,18 @@ export async function transformImageData(images: ImageFieldsetList = []) {
 	}
 	return imageUpdates
 }
+<<<<<<< Updated upstream
+=======
+
+// That way I can target them for removal?
+export function initialiseImageList(
+	images: Array<{
+		id: string
+		altText: string | null
+	}> | null,
+) {
+	return images
+		? images
+		: [{ id: undefined, file: undefined, altText: undefined }]
+}
+>>>>>>> Stashed changes

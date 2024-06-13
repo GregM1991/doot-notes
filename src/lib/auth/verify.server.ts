@@ -13,7 +13,7 @@ import {
 import { generateTOTP, verifyTOTP } from '$lib/server/totp'
 import { prisma } from '$lib/utils/db.server'
 import { getDomainUrl } from '$lib/utils/misc'
-import { setError, superValidate } from 'sveltekit-superforms'
+import { fail, setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import { requireUserId } from '$lib/utils/auth.server'
 import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
@@ -125,7 +125,7 @@ export async function validateRequest(
 	userId: string | null,
 ) {
 	const form = await superValidate(body, zod(VerifySchema))
-	if (!form.valid) return { form }
+	if (!form.valid) return fail(400, { form })
 	if (body instanceof FormData) {
 		checkHoneypot(body, form)
 	}

@@ -1,4 +1,4 @@
-import { superValidate, setError } from 'sveltekit-superforms'
+import { superValidate, setError, fail } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import { type Actions, redirect } from '@sveltejs/kit'
 import { handleNewSessionWithRedirect } from '$lib/server/sessions/authSession'
@@ -17,10 +17,11 @@ export const load = (async ({ locals }) => {
 export const actions = {
 	default: async ({ request, cookies }) => {
 		const formData = await request.formData()
-		const formDataEntries = Array.from(formData.entries())
 		const form = await superValidate(formData, zod(LoginFormSchema))
 		if (!form.valid)
-			return { form: { ...form, data: { ...form.data, password: '' } } }
+			return fail(400, {
+				form: { ...form, data: { ...form.data, password: '' } },
+			})
 		checkHoneypot(formData, form)
 
 		const session = await login(form.data)
