@@ -32,6 +32,9 @@
 	const Icon = $form.id ? Check : Plus
 
 	$: imageList = images
+	$: (
+		console.log('client',{imageList})
+	)
 
 	function addEmptyImage() {
 		imageList = [
@@ -82,10 +85,10 @@
 		{#each imageList as image, index (index)}
 			<li class="image-list-item">
 				<button
-					formaction="?/delete"
+					type="submit"
 					class="remove-image-button"
-					name="id"
-					value={image.id ?? index}
+					name="intent"
+					value="remove-{index}"
 					on:click|preventDefault={() =>
 						(imageList = imageList.filter((_, i) => i !== index))}
 				>
