@@ -1,25 +1,44 @@
 import { render, screen } from '@testing-library/svelte'
-import userEvent from '@testing-library/svelteuser-event'
-import { expect, test } from 'vitest'
-import { AvatarMenu } from '$lib/components'
+import userEvent from '@testing-library/user-event'
+import { beforeEach, expect, test } from 'vitest'
+import AvatarMenu from './AvatarMenu.svelte'
 
-test('no initial greeting', () => {
-	render(AvatarMenu)
+let name: string
+let username: string
 
-	const button = screen.getByRole('button', { name: 'Greet' })
-	const greeting = screen.queryByText(/hello/iu)
-
-	expect(button).toBeInTheDocument()
-	expect(greeting).not.toBeInTheDocument()
+beforeEach(() => {
+	name = 'Test Name'
+	username = 'test-username'
 })
 
-test('greeting appears on click', async () => {
+test('Img shows default image without userImageId given', () => {
+	render(AvatarMenu, { username, name })
+
+	const button = screen.getByRole('link', { name: `${name} ${name}` })
+
+	expect(button).toBeInTheDocument()
+})
+
+test('Menu shows when clicked', async () => {
 	const user = userEvent.setup()
-	render(AvatarMenu)
+	render(AvatarMenu, { username, name })
 
-	const button = screen.getByRole('button')
+	const button = screen.getByRole('link', { name: `${name} ${name}` })
+
+	expect(button).toBeInTheDocument()
 	await user.click(button)
-	const greeting = screen.getByText(/hello world/iu)
+	const menu = screen.getByRole('menu', { name: `${name} ${name}` })
+	expect(menu).toBeInTheDocument()
+})
 
-	expect(greeting).toBeInTheDocument()
+test('Profile link takes you to the correct profile', async () => {
+	const user = userEvent.setup()
+	render(AvatarMenu, { username, name })
+
+	const button = screen.getByRole('link', { name: `${name} ${name}` })
+
+	expect(button).toBeInTheDocument()
+	await user.click(button)
+	const profileLink = screen.getByRole('menuitem', { name: 'Profile' })
+	expect(profileLink).toHaveAttribute('href', `/users/${username}`)
 })

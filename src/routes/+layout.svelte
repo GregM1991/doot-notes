@@ -2,6 +2,7 @@
 	import { Navbar, Toast } from '$lib/components'
 	import type { HoneypotInputProps } from '$lib/server/honeypot.js'
 	import '$lib/styles/app.css'
+	import { createDropdownMenu, melt } from '@melt-ui/svelte'
 	import { onDestroy, setContext } from 'svelte'
 	import { readable, type Readable } from 'svelte/store'
 
@@ -25,6 +26,14 @@
 
 	const honeyProps = readable(data.honeyProps)
 	setContext<Readable<HoneypotInputProps>>('honeyProps', honeyProps)
+
+	const {
+		elements: { menu, item, trigger, overlay },
+	} = createDropdownMenu({
+		positioning: {
+			placement: 'bottom-start',
+		},
+	})
 </script>
 
 <svelte:head>
