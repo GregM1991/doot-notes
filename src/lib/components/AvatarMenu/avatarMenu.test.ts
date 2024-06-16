@@ -42,3 +42,27 @@ test('Profile link takes you to the correct profile', async () => {
 	const profileLink = screen.getByRole('menuitem', { name: 'Profile' })
 	expect(profileLink).toHaveAttribute('href', `/users/${username}`)
 })
+
+test('Notes link takes you to the correct notes page', async () => {
+	const user = userEvent.setup()
+	render(AvatarMenu, { username, name })
+
+	const button = screen.getByRole('link', { name: `${name} ${name}` })
+	expect(button).toBeInTheDocument()
+
+	await user.click(button)
+	const notesLink = screen.getByRole('menuitem', { name: 'Notes' })
+	expect(notesLink).toHaveAttribute('href', `/users/${username}/notes`)
+})
+
+test('Logout button triggers the logout action', async () => {
+	const user = userEvent.setup()
+	render(AvatarMenu, { username, name })
+
+	const button = screen.getByRole('link', { name: `${name} ${name}` })
+	expect(button).toBeInTheDocument()
+
+	await user.click(button)
+	const logoutButton = screen.getByText('Logout')
+	expect(logoutButton).toBeInTheDocument()
+})
