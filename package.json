@@ -13,7 +13,9 @@
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
     "test:integration": "playwright test",
-    "test:unit": "vitest",
+    "test:unit": "vitest run",
+    "test:ui": "vitest run --ui",
+    "test:watch": "vitest run --watch",
     "prisma:studio": "prisma studio",
     "seed": "bun run ./prisma/seed.ts"
   },
@@ -70,6 +72,7 @@
     "@types/crypto-js": "^4.2.2",
     "@types/fs-extra": "^11.0.4",
     "@types/qrcode": "^1.5.5",
+    "@vitest/ui": "^1.6.0",
     "bcryptjs": "^2.4.3",
     "better-sqlite3": "^9.3.0",
     "close-with-grace": "^1.3.0",
