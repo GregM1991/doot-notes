@@ -1,6 +1,5 @@
 import { render, screen, within } from '@testing-library/svelte'
-import userEvent from '@testing-library/user-event'
-import { expect, test, vi } from 'vitest'
+import { expect, test } from 'vitest'
 import EditNote from './EditNote.svelte'
 import { superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
@@ -20,6 +19,8 @@ test('If no form data is passed, it shows new note content', async () => {
 	const actionButton = screen.getByRole('button', { name: /create note/i })
 	const imageList = screen.getByTestId(imageListTestId)
 	const id = screen.queryByTestId(idTestId)
+	const title = screen.getByRole('textbox', { name: /title/i })
+	const content = screen.getByRole('textbox', { name: /content/i })
 	const { getAllByRole } = within(imageList)
 	const items = getAllByRole('listitem')
 
@@ -28,6 +29,8 @@ test('If no form data is passed, it shows new note content', async () => {
 	expect(actionButton).toBeInTheDocument()
 	expect(imageList).toBeInTheDocument()
 	expect(id).not.toBeInTheDocument()
+	expect(title).toHaveValue('')
+	expect(content).toHaveValue('')
 	expect(items).toHaveLength(1)
 })
 
@@ -47,6 +50,8 @@ test('If form data is passed, it shows edit note content', async () => {
 	const actionButton = screen.getByRole('button', { name: /save changes/i })
 	const imageList = screen.getByTestId(imageListTestId)
 	const id = screen.queryByTestId(idTestId)
+	const title = screen.getByRole('textbox', { name: /title/i })
+	const content = screen.getByRole('textbox', { name: /content/i })
 	const { getAllByRole } = within(imageList)
 	const items = getAllByRole('listitem')
 
@@ -56,5 +61,7 @@ test('If form data is passed, it shows edit note content', async () => {
 	expect(imageList).toBeInTheDocument()
 	expect(id).toBeInTheDocument()
 	expect(id).toHaveValue(testNote.id)
+	expect(title).toHaveValue(testNote.title)
+	expect(content).toHaveValue(testNote.content)
 	expect(items).toHaveLength(1)
 })

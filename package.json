@@ -10,12 +10,12 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --check . && eslint .",
+    "setup": "npm run build && prisma generate && prisma migrate deploy && prisma db seed && playwright install",
     "format": "prettier --write .",
     "prisma:studio": "prisma studio",
     "seed": "bun run ./prisma/seed.ts",
-    "test": "vitest run",
-    "test:ui": "vitest --ui",
-    "test:watch": "vitest"
+    "test": "vitest",
+    "test:ui": "vitest --ui"
   },
   "devDependencies": {
     "@iconify/json": "^2.2.190",
@@ -34,6 +34,7 @@
     "@types/cookie": "^0.6.0",
     "@types/eslint": "^8.56.7",
     "@types/jsonwebtoken": "^9.0.6",
+    "@types/lru-cache": "^7.10.10",
     "@types/otp-generator": "^4.0.2",
     "@typescript-eslint/eslint-plugin": "^7.13.0",
     "@typescript-eslint/parser": "^7.13.0",
