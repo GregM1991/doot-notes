@@ -2,16 +2,13 @@
 	import { ValidationErrors } from '$lib/components'
 	import type { InputConstraint } from 'sveltekit-superforms'
 
-	export let placeholder: string | null = null
 	export let name: string
 	export let value = ''
 	export let label: string | null = null
 	export let style: string | null = null
 	export let errors: string[] | null = null
 	export let constraints: InputConstraint | undefined = undefined
-	export let autofocus = false
 	export let secondary = false
-	export let required = false
 	export let hidden = false
 	export let fluid = false
 
@@ -24,11 +21,8 @@
 <!-- svelte-ignore a11y-autofocus -->
 <textarea
 	{id}
-	{placeholder}
 	{name}
-	{autofocus}
 	{style}
-	{required}
 	{...constraints}
 	bind:value
 	class:secondary
