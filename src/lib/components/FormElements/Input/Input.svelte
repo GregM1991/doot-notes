@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ValidationErrors } from '$lib/components'
 	import type { InputConstraint } from 'sveltekit-superforms'
-	import { inputLabelTestId, validationTest } from './consts.input'
+	import { inputLabelTestId, validationTest } from '../formElements.consts'
 
 	export let name: string
 	export let id: string = name
@@ -32,7 +32,7 @@
 
 {#if type !== 'hidden'}
 	<ValidationErrors dataTestid={validationTest} {errors} errorId={id} />
-2{/if}
+{/if}
 
 <style>
 	.base {

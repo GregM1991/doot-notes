@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { ValidationErrors } from '$lib/components'
 	import type { InputConstraint } from 'sveltekit-superforms'
+	import { inputLabelTestId, validationTest } from '../formElements.consts'
 
 	export let name: string
 	export let value = ''
@@ -15,8 +16,8 @@
 	const id = name
 </script>
 
-{#if label}
-	<label for={id}>{label}</label>
+{#if label && !hidden}
+	<label data-testid={inputLabelTestId} for={id}>{label}</label>
 {/if}
 <!-- svelte-ignore a11y-autofocus -->
 <textarea
@@ -33,7 +34,7 @@
 />
 
 {#if !hidden}
-	<ValidationErrors {errors} errorId={id} />
+	<ValidationErrors dataTestid={validationTest} {errors} errorId={id} />
 {/if}
 
 <style>

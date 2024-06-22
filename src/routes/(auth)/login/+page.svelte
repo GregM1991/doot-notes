@@ -14,6 +14,7 @@
 	export let data
 	const { form, errors, constraints, enhance } = superForm(data.loginForm, {
 		validators: zodClient(LoginFormSchema),
+		validationMethod: 'auto',
 	})
 	const formId = 'login-form'
 	// TODO: create a auth form component to reduce styling repeats 😎
