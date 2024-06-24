@@ -86,7 +86,7 @@
 		/>
 		Remember me?
 	</label>
-	<Input bind:value={$form.redirectTo} name="redirectTo" hidden />
+	<Input bind:value={$form.redirectTo} name="redirectTo" hidden type="hidden" />
 	<Button type="submit" secondary fluid>Submit</Button>
 	<ValidationErrors errorId={$formId} errors={$errors._errors} />
 </form>

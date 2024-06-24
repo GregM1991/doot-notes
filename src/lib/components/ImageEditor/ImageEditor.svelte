@@ -38,9 +38,9 @@
 					alt={image?.altText ?? ''}
 				/>
 			{:else}
-				<div class="plus">
+				<button class="plus">
 					<Plus />
-				</div>
+				</button>
 			{/if}
 			<input
 				on:change={handleFileChange}
@@ -126,7 +126,10 @@
 		display: grid;
 		place-items: center;
 		height: 100%;
+		width: 100%;
 		font-size: var(--type-step-1);
+		border: none;
+		background: none;
 	}
 
 	.alt-input {

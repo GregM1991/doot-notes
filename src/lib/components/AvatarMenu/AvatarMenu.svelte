@@ -29,29 +29,21 @@
 		alt={name ?? username}
 		class="avatar-image"
 	/>
-	{name}
+	{name ?? username}
 </a>
 <div use:melt={$overlay} />
 <div use:melt={$menu} class="dropdown">
-	<ul>
-		<li>
-			<a href="/users/{username}" use:melt={$item} class="menu-item">
-				<Person /> Profile
-			</a>
-		</li>
-		<li>
-			<a href="/users/{username}/notes" use:melt={$item} class="menu-item">
-				<Pencil /> Notes
-			</a>
-		</li>
-		<li>
-			<form action="/logout" method="POST">
-				<button type="submit" use:melt={$item} class="menu-item">
-					<Exit /> Logout
-				</button>
-			</form>
-		</li>
-	</ul>
+	<a href="/users/{username}" use:melt={$item} class="menu-item">
+		<Person /> Profile
+	</a>
+	<a href="/users/{username}/notes" use:melt={$item} class="menu-item">
+		<Pencil /> Notes
+	</a>
+	<form action="/logout" method="POST">
+		<button type="submit" use:melt={$item} class="menu-item">
+			<Exit /> Logout
+		</button>
+	</form>
 </div>
 
 <style>
@@ -79,12 +71,10 @@
 		border-radius: var(--border-radius-small);
 	}
 
-	.dropdown ul {
+	.dropdown {
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-2xs);
-		list-style: none;
-		padding: 0;
 	}
 
 	.dropdown button {

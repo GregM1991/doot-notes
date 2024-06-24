@@ -1,8 +1,4 @@
 <script lang="ts">
-	// TODO: If I feel like it, I can revisit this to cater to non-js users
-	// https://www.npmjs.com/package/parse-nested-form-data
-	// https://svelte.dev/repl/d8916d45012241dab5962c1323604fe9?version=4.2.0
-	// https://github.com/ciscoheat/sveltekit-superforms/issues/186
 	import {
 		type SuperValidated,
 		type Infer,
@@ -23,6 +19,8 @@
 	} from '$lib/components'
 	import type { ImageFieldset } from './types'
 	import { NoteEditorSchema } from '$lib/schemas'
+	import { generateCopy } from './editNote.helpers'
+	import { idTestId, imageListTestId } from './consts.editNote'
 
 	export let data: SuperValidated<Infer<typeof NoteEditorSchema>>
 	export let images: Array<ImageFieldset> = []
@@ -31,8 +29,7 @@
 	const { form, errors, enhance, formId, constraints } = superForm(data, {
 		validators: zodClient(NoteEditorSchema),
 	})
-	const header = $form.id ? `Edit ${$form.title}` : 'Doot a new note 📯'
-	const buttonText = $form.id ? 'Save changes' : 'Create note'
+	const { header, buttonText } = generateCopy($form.id, $form.title)
 	const Icon = $form.id ? Check : Plus
 
 	$: imageList = Boolean(images.length)
@@ -57,7 +54,7 @@
 	<button type="submit" class="hidden" />
 	<h3>{header}</h3>
 	{#if $form.id}
-		<input type="hidden" value={$form.id} name="id" />
+		<input type="hidden" value={$form.id} name="id" data-testid={idTestId}/>
 	{/if}
 	<!-- TODO: Focus first input -->
 	<FormGroup flex="0">
@@ -84,7 +81,7 @@
 		/>
 	</FormGroup>
 	<span>Images</span>
-	<ul class="image-list">
+	<ul class="image-list" data-testid={imageListTestId}>
 		{#each imageList as image, index (index)}
 			<li class="image-list-item">
 				<!-- TODO: //create form action for delete later -->
