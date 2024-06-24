@@ -27,7 +27,7 @@
 	{#if redirectTo}
 		<input type="hidden" name="redirectTo" value={redirectTo} />
 	{/if}
-	<Button fluid type="submit" secondary>
+	<Button fluid type="submit" variant="secondary">
 		<span class="flex">
 			<!-- {#if lazyIcon}
 				{#await lazyIcon then { default: ProviderIcon }}

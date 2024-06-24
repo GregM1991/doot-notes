@@ -102,7 +102,7 @@
 			</li>
 		{/each}
 	</ul>
-	<Button secondary type="button" on:click={addEmptyImage}>
+	<Button variant="secondary" type="button" on:click={addEmptyImage}>
 		<Plus />
 		Add another image
 	</Button>
@@ -110,7 +110,7 @@
 		<div class="info-bar-buttons">
 			<Button danger type="reset">Reset</Button>
 			<!-- TODO: confirmation on note deletion -->
-			<Button secondary type="submit">
+			<Button variant="secondary" type="submit">
 				<Icon />
 				{buttonText}
 			</Button>

@@ -8,5 +8,5 @@
 	want to please click here:
 </p>
 <form method="POST">
-	<Button danger secondary type="submit">Disable</Button>
+	<Button danger variant="secondary" type="submit">Disable</Button>
 </form>
