@@ -1,6 +1,6 @@
 <script lang="ts">
-	export let color = "var(--palette-secondary)"
-	export let size = "1.5rem"
+	export let color = 'var(--palette-secondary)'
+	export let size = '1.5rem'
 </script>
 
 <svg

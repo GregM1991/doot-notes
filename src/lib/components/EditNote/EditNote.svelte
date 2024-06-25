@@ -54,7 +54,7 @@
 	<button type="submit" class="hidden" />
 	<h3>{header}</h3>
 	{#if $form.id}
-		<input type="hidden" value={$form.id} name="id" data-testid={idTestId}/>
+		<input type="hidden" value={$form.id} name="id" data-testid={idTestId} />
 	{/if}
 	<!-- TODO: Focus first input -->
 	<FormGroup flex="0">

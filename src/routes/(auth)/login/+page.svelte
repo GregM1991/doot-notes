@@ -59,7 +59,12 @@
 			<a href="/forgot-password">Forgot password?</a>
 		</div>
 	</div>
-	<Input type="hidden" name="redirectTo" hidden value={$page.params.redirectTo} />
+	<Input
+		type="hidden"
+		name="redirectTo"
+		hidden
+		value={$page.params.redirectTo}
+	/>
 	<Button fluid type="submit" variant="secondary">Submit</Button>
 	<ValidationErrors errorId={formId} errors={$errors._errors} />
 	<span class="signup">

@@ -11,9 +11,12 @@
 	import { zodClient } from 'sveltekit-superforms/adapters'
 
 	export let data
-	const { form, errors, enhance, constraints, formId } = superForm(data.verifyForm, {
-		validators: zodClient(VerifySchema),
-	})
+	const { form, errors, enhance, constraints, formId } = superForm(
+		data.verifyForm,
+		{
+			validators: zodClient(VerifySchema),
+		},
+	)
 	const label = 'Enter Code'
 </script>
 
