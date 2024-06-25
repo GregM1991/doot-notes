@@ -3,10 +3,10 @@
 	import classnames from 'classnames'
 	import { Spinner } from '$lib/components'
 	import { fly } from 'svelte/transition'
+	import { elasticOut } from 'svelte/easing'
 
 	export let type: 'submit' | 'button' | 'reset' | undefined = undefined
 	export let href: string | undefined = undefined
-	// TODO: Need to make primary and secondary one prop as they can't be both
 	export let variant: 'primary' | 'secondary' = 'primary'
 	export let fluid = false
 	export let style = ''
@@ -28,6 +28,7 @@
 	})
 	const element = href ? 'a' : 'button'
 	const role = element === 'a' ? 'link' : 'button'
+	let status = 'idle'
 
 	const dispatch = createEventDispatcher()
 	function onClick() {
@@ -44,22 +45,25 @@
 	{id}
 	{form}
 	{type}
+	{href}
 	class="base {classes}"
 	on:click={onClick}
 	disabled={delayed}
 	aria-disabled={delayed ? 'true' : undefined}
 >
 	{#if delayed}
-		<span transition:fly={{ y: 40, duration: 300 }} class="delayed-text">
-			{delayedReason}
+		<span class="delayed-text">
 			<Spinner
 				color={variant === 'primary'
 					? 'var(--palette-primary)'
 					: 'var(--palette-secondary)'}
 			/>
+			{delayedReason}
 		</span>
 	{:else}
-		<slot />
+		<span class="delayed-text">
+			<slot />
+		</span>
 	{/if}
 </svelte:element>
 
@@ -69,8 +73,6 @@
 		--font-size: var(--type-step-0);
 		--gap: var(--space-3xs);
 		display: inline-flex;
-		align-items: center;
-		gap: var(--gap);
 		padding: var(--padding);
 		background: var(--background);
 		border-radius: var(--border-radius);
@@ -80,6 +82,12 @@
 		font-size: var(--font-size);
 
 		transition: var(--animation-quick);
+	}
+
+	.delayed-text {
+		display: flex;
+		align-items: center;
+		gap: var(--space-2xs);
 	}
 
 	.base:hover {
@@ -119,7 +127,6 @@
 	}
 
 	.disabled {
-		--gap: var(--space-2xs);
 		cursor: not-allowed;
 	}
 </style>

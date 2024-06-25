@@ -26,10 +26,14 @@
 	export let images: Array<ImageFieldset> = []
 	export let action: string
 
-	const { form, errors, enhance, formId, constraints } = superForm(data, {
-		validators: zodClient(NoteEditorSchema),
-	})
-	const { header, buttonText } = generateCopy($form.id, $form.title)
+	const { form, errors, enhance, formId, constraints, delayed, timeout } =
+		superForm(data, {
+			validators: zodClient(NoteEditorSchema),
+		})
+	const { header, buttonText, delayedReason } = generateCopy(
+		$form.id,
+		$form.title,
+	)
 	const Icon = $form.id ? Check : Plus
 
 	$: imageList = Boolean(images.length)
@@ -110,7 +114,12 @@
 		<div class="info-bar-buttons">
 			<Button danger type="reset">Reset</Button>
 			<!-- TODO: confirmation on note deletion -->
-			<Button variant="secondary" type="submit">
+			<Button
+				variant="secondary"
+				type="submit"
+				delayed={$delayed || $timeout}
+				{delayedReason}
+			>
 				<Icon />
 				{buttonText}
 			</Button>

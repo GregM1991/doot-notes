@@ -12,10 +12,14 @@
 	import { LoginFormSchema } from '$lib/schemas.js'
 
 	export let data
-	const { form, errors, constraints, enhance } = superForm(data.loginForm, {
-		validators: zodClient(LoginFormSchema),
-		validationMethod: 'auto',
-	})
+	const { form, errors, constraints, enhance, delayed, timeout } = superForm(
+		data.loginForm,
+		{
+			validators: zodClient(LoginFormSchema),
+			validationMethod: 'auto',
+			delayMs: 300,
+		},
+	)
 	const formId = 'login-form'
 	// TODO: create a auth form component to reduce styling repeats 😎
 </script>
@@ -65,7 +69,15 @@
 		hidden
 		value={$page.params.redirectTo}
 	/>
-	<Button fluid type="submit" variant="secondary">Submit</Button>
+	<Button
+		fluid
+		type="submit"
+		variant="secondary"
+		delayed={$delayed || $timeout}
+		delayedReason="Logging in"
+	>
+		Submit
+	</Button>
 	<ValidationErrors errorId={formId} errors={$errors._errors} />
 	<span class="signup">
 		New here? <a href="/signup" class="link">Create an account</a>
