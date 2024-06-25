@@ -12,11 +12,12 @@
 	import { LoginFormSchema } from '$lib/schemas.js'
 
 	export let data
-	const { form, errors, constraints, enhance, delayed } = superForm(
+	const { form, errors, constraints, enhance, delayed, timeout } = superForm(
 		data.loginForm,
 		{
 			validators: zodClient(LoginFormSchema),
 			validationMethod: 'auto',
+			delayMs: 300,
 		},
 	)
 	const formId = 'login-form'
@@ -68,7 +69,13 @@
 		hidden
 		value={$page.params.redirectTo}
 	/>
-	<Button fluid type="submit" variant="secondary" disabled={delayed}>
+	<Button
+		fluid
+		type="submit"
+		variant="secondary"
+		delayed={$delayed || $timeout}
+		delayedReason="Logging in"
+	>
 		Submit
 	</Button>
 	<ValidationErrors errorId={formId} errors={$errors._errors} />

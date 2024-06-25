@@ -15,7 +15,7 @@
 		{#if isOwner}
 			<Button
 				href="{hrefBase}/new-note"
-				secondary
+				variant="secondary"
 				style="margin-bottom: var(--space-xs)"
 			>
 				<Pencil1 /> Doot new note
