@@ -32,7 +32,7 @@
 	<NoteInfoBar>
 		<span class="time-since-update"><Timer />{data.timeSinceUpdate}</span>
 		<div class="buttons">
-			<Button small secondary href="{$page.params.noteId}/edit">
+			<Button small variant="secondary" href="{$page.params.noteId}/edit">
 				<Pencil2 /> Edit
 			</Button>
 			<form method="POST" use:enhance>
