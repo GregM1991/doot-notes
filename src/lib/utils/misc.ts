@@ -88,7 +88,7 @@ class InvariantError extends Error {
 	}
 }
 
-const nameRgx = new RegExp(/(\p{L}{1})\p{L}+/, 'gu')
+const nameRgx = new RegExp(/(\p{L}{1})\p{L}+/u, 'gu')
 export function getUserInitials(name: string) {
 	const initials = [...name.matchAll(nameRgx)] || []
 

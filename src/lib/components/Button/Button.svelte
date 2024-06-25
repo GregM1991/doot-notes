@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte'
+	import classnames from 'classnames'
 
 	export let type: 'submit' | 'button' | 'reset' | undefined = undefined
 	export let href: string | undefined = undefined
 	// TODO: Need to make primary and secondary one prop as they can't be both
-	export let primary = true
-	export let secondary = false
+	export let variant: 'primary' | 'secondary' = 'primary'
 	export let fluid = false
 	export let style = ''
 	export let small = false
@@ -15,6 +15,13 @@
 	export let id: string | null = null
 	export let form: string | null = null
 
+	const classes = classnames({
+		primary: variant === 'primary',
+		secondary: variant === 'secondary',
+		fluid,
+		small,
+		danger,
+	})
 	const element = href ? 'a' : 'button'
 	const role = element === 'a' ? 'link' : 'button'
 
@@ -34,12 +41,7 @@
 	{value}
 	{id}
 	{form}
-	class="base"
-	class:primary
-	class:fluid
-	class:secondary
-	class:small
-	class:danger
+	class="base {classes}"
 	on:click={onClick}
 >
 	<slot />
