@@ -1,10 +1,7 @@
 <script lang="ts">
 	import { getUserImgSrc } from '$lib/utils/misc'
 	import { createDropdownMenu, melt } from '@melt-ui/svelte'
-	import Person from 'virtual:icons/radix-icons/person'
-	import Pencil from 'virtual:icons/radix-icons/pencil2'
-	import Exit from 'virtual:icons/radix-icons/exit'
-
+	import { Exit, Pencil2, Person } from '$lib/components'
 	export let userImageId: string | null = null
 	export let username: string
 	export let name: string
@@ -37,7 +34,7 @@
 		<Person /> Profile
 	</a>
 	<a href="/users/{username}/notes" use:melt={$item} class="menu-item">
-		<Pencil /> Notes
+		<Pencil2 /> Notes
 	</a>
 	<form action="/logout" method="POST">
 		<button type="submit" use:melt={$item} class="menu-item">

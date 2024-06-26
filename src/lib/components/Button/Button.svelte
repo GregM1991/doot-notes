@@ -3,7 +3,6 @@
 	import classnames from 'classnames'
 	import { Spinner } from '$lib/components'
 	import { fly } from 'svelte/transition'
-	import { elasticOut } from 'svelte/easing'
 
 	export let type: 'submit' | 'button' | 'reset' | undefined = undefined
 	export let href: string | undefined = undefined
@@ -28,7 +27,6 @@
 	})
 	const element = href ? 'a' : 'button'
 	const role = element === 'a' ? 'link' : 'button'
-	let status = 'idle'
 
 	const dispatch = createEventDispatcher()
 	function onClick() {
@@ -52,7 +50,7 @@
 	aria-disabled={delayed ? 'true' : undefined}
 >
 	{#if delayed}
-		<span class="delayed-text">
+		<span transition:fly={{ y: 20, duration: 200 }} class="delayed-text">
 			<Spinner
 				color={variant === 'primary'
 					? 'var(--palette-primary)'
@@ -73,6 +71,8 @@
 		--font-size: var(--type-step-0);
 		--gap: var(--space-3xs);
 		display: inline-flex;
+		align-items: center;
+		gap: var(--gap);
 		padding: var(--padding);
 		background: var(--background);
 		border-radius: var(--border-radius);
@@ -82,12 +82,6 @@
 		font-size: var(--font-size);
 
 		transition: var(--animation-quick);
-	}
-
-	.delayed-text {
-		display: flex;
-		align-items: center;
-		gap: var(--space-2xs);
 	}
 
 	.base:hover {
@@ -128,5 +122,11 @@
 
 	.disabled {
 		cursor: not-allowed;
+	}
+
+	.delayed-text {
+		display: flex;
+		align-items: center;
+		gap: var(--space-2xs);
 	}
 </style>

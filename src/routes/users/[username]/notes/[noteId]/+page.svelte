@@ -1,11 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms'
-	import Button from '$lib/components/Button/Button.svelte'
-	import Timer from 'virtual:icons/radix-icons/timer'
-	import Eraser from 'virtual:icons/radix-icons/eraser'
-	import Pencil2 from 'virtual:icons/radix-icons/pencil2'
 	import { page } from '$app/stores'
-	import { NoteInfoBar } from '$lib/components'
+	import { Button, NoteInfoBar, Eraser, Pencil2, Timer } from '$lib/components'
 	import { getNoteImgSrc } from '$lib/utils/misc.js'
 
 	export let data
@@ -36,7 +32,13 @@
 				<Pencil2 /> Edit
 			</Button>
 			<form method="POST" use:enhance>
-				<Button small danger type="submit"><Eraser /> Delete</Button>
+				<Button
+					small
+					danger
+					type="submit"
+					delayed={true}
+					delayedReason="Deleting note"><Eraser /> Delete</Button
+				>
 			</form>
 		</div>
 	</NoteInfoBar>

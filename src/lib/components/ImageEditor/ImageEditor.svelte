@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { Input } from '$lib/components'
+	import { Input, Plus } from '$lib/components'
 	import { getNoteImgSrc } from '$lib/utils/misc'
-	import Plus from 'virtual:icons/radix-icons/plus'
 	import type { ImageFieldset } from '$lib/components/EditNote/types'
 
 	export let image: ImageFieldset | undefined

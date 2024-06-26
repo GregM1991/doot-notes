@@ -1,12 +1,9 @@
 <script lang="ts">
-	import { Button } from '$lib/components'
+	import { Button, Pencil2, Trash, ValidationErrors } from '$lib/components'
 	import { getUserImgSrc } from '$lib/utils/misc'
 	import { fileProxy, superForm } from 'sveltekit-superforms'
 	import type { PageData } from './$types'
-	import Pencil from 'virtual:icons/radix-icons/pencil2'
-	import Trash from 'virtual:icons/radix-icons/trash'
 	import { zodClient } from 'sveltekit-superforms/adapters'
-	import ValidationErrors from '$lib/components/ValidationErrors/ValidationErrors.svelte'
 	import { PhotoFormSchema } from '$lib/schemas'
 
 	export let data: PageData
@@ -58,10 +55,10 @@
 			{...$constraints.photoFile}
 		/>
 		<label id="change-button" for="photo-file" class="label-button">
-			<Pencil />Change
+			<Pencil2 />Change
 		</label>
 		<Button
-			secondary
+			variant="secondary"
 			name="intent"
 			value="submit"
 			type="submit"

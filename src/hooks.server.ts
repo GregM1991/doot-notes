@@ -15,7 +15,7 @@ if (dev) {
 
 export const handle = async ({ event, resolve }) => {
 	await checkRateLimit(event)
-
+	await new Promise(fulfil => setTimeout(fulfil, 2000)) //TODO: remove
 	const userId = await getUserId(event.cookies)
 	event.locals.userId = userId ? userId : null
 	const response = await resolve(event)

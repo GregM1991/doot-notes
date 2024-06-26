@@ -5,9 +5,6 @@
 		superForm,
 	} from 'sveltekit-superforms'
 	import { zodClient } from 'sveltekit-superforms/adapters'
-	import Check from 'virtual:icons/radix-icons/check'
-	import Cross from 'virtual:icons/radix-icons/cross2'
-	import Plus from 'virtual:icons/radix-icons/plus'
 	import {
 		Input,
 		TextArea,
@@ -16,6 +13,9 @@
 		NoteInfoBar,
 		FormGroup,
 		ValidationErrors,
+		Check,
+		Cross,
+		Plus,
 	} from '$lib/components'
 	import type { ImageFieldset } from './types'
 	import { NoteEditorSchema } from '$lib/schemas'
@@ -30,10 +30,8 @@
 		superForm(data, {
 			validators: zodClient(NoteEditorSchema),
 		})
-	const { header, buttonText, delayedReason } = generateCopy(
-		$form.id,
-		$form.title,
-	)
+	const { header, buttonText, submitDelayedReason } =
+		generateCopy($form.id, $form.title)
 	const Icon = $form.id ? Check : Plus
 
 	$: imageList = Boolean(images.length)
@@ -118,7 +116,7 @@
 				variant="secondary"
 				type="submit"
 				delayed={$delayed || $timeout}
-				{delayedReason}
+				delayedReason={submitDelayedReason}
 			>
 				<Icon />
 				{buttonText}

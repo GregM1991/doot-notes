@@ -8,7 +8,6 @@ import { extractImageGroup, transformImageData } from '$lib/utils/misc'
 import { ImageFieldsetListSchema, NoteEditorSchema } from '$lib/schemas'
 
 export const newOrUpdate: Action = async ({ request, locals }) => {
-	await new Promise(resolve => setTimeout(resolve, 2000)) // TODO: remove
 	const userId = requireUserId(locals.userId, request)
 	const formData = await request.formData()
 	const form = await superValidate(formData, zod(NoteEditorSchema))

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte'
-	import { Input, type OnSearch } from '$lib/components'
-	import MagnifyingGlass from 'virtual:icons/radix-icons/magnifying-glass'
+	import { Input, MagnifyingGlass, type OnSearch } from '$lib/components'
 
 	export let searchQuery: string
 

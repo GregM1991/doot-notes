@@ -1,7 +1,5 @@
 <script lang="ts">
-	import LockClosed from 'virtual:icons/radix-icons/lockClosed'
-	import LockOpened from 'virtual:icons/radix-icons/lock-open-1'
-	import { Button } from '$lib/components/index.js'
+	import { Button, LockClosed, LockOpened } from '$lib/components'
 
 	export let data
 </script>
