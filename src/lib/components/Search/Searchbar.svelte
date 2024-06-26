@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte'
-	import { Input, MagnifyingGlass, type OnSearch } from '$lib/components'
+	import { Input, MagnifyingGlass, Spinner, type OnSearch } from '$lib/components'
 
 	export let searchQuery: string
+	export let fetching = false
 
 	const dispatch = createEventDispatcher<{ search: OnSearch }>()
 	let form: HTMLFormElement
@@ -24,7 +25,11 @@
 	/>
 	<!-- TODO: Extract to icon button -->
 	<button class="search-button" type="submit">
-		<MagnifyingGlass />
+		{#if fetching}
+			<Spinner color="var(--palette-tertiary-light)" />
+		{:else}
+			<MagnifyingGlass />
+		{/if}
 	</button>
 </form>
 

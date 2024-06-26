@@ -6,10 +6,13 @@
 
 	export let data
 
+	$: fetching = Boolean(data.fetching)
+
 	const searchUsers = debounce(async (event: CustomEvent<OnSearch>) => {
 		const data = new FormData(event.detail.form)
 		const search = data.get('search')
 		goto(`?search=${search}`, { replaceState: true, keepFocus: true })
+		fetching = true
 	}, 400)
 	const search = $page.url.searchParams.get('search') ?? ''
 </script>
@@ -20,10 +23,11 @@
 		on:search={searchUsers}
 		on:submit={searchUsers}
 		searchQuery={search}
+		fetching={fetching}
 	/>
 	{#if data.status === 'error'}
 		<span>{data.error}</span>
-	{:else if data.users.length}
+	{:else if Boolean(data.users.length)}
 		<ul role="list">
 			{#each data.users as user}
 				<!-- TODO: Extract this to component -->
@@ -65,6 +69,7 @@
 		flex-direction: column;
 		align-items: center;
 		gap: var(--space-m);
+		text-align: center;
 	}
 
 	ul {

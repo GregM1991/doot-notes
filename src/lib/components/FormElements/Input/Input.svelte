@@ -2,32 +2,47 @@
 	import { ValidationErrors } from '$lib/components'
 	import type { InputConstraint } from 'sveltekit-superforms'
 	import { inputLabelTestId, validationTest } from '../formElements.consts'
+	import { createEventDispatcher } from 'svelte'
 
+	export let placeholder = ''
 	export let name: string
 	export let id: string = name
+	export let type: 'text' | 'password' | 'search' | 'hidden' | null = 'text'
 	export let value: string | null = ''
-	export let label: string | null = null
-	export let style: string | null = null
+	export let label = ''
+	export let style = ''
 	export let errors: string[] | null = null
 	export let constraints: InputConstraint | undefined = undefined
+	export let autofocus = false
 	export let secondary = false
+	export let required = false
 	export let fluid = false
 
-	const type = $$restProps.type
+	const dispatch = createEventDispatcher()
+	function handleInput() {
+		dispatch('input')
+	}
 </script>
 
 {#if label}
 	<label data-testid={inputLabelTestId} for={id}>{label}</label>
 {/if}
+<!-- svelte-ignore a11y-autofocus -->
 <input
 	{id}
+	{placeholder}
 	{name}
+	{type}
+	{autofocus}
 	{style}
-	bind:value
-	class="base {fluid ? 'fluid' : ''} {secondary ? 'secondary' : ''}"
-	aria-invalid={errors ? 'true' : undefined}
+	{required}
+	{value}
 	{...constraints}
-	{...$$restProps}
+	class:fluid
+	class:secondary
+	class="base"
+	on:input={handleInput}
+	aria-invalid={errors ? 'true' : undefined}
 />
 
 {#if type !== 'hidden'}

@@ -66,7 +66,6 @@
 	<Input
 		type="hidden"
 		name="redirectTo"
-		hidden
 		value={$page.params.redirectTo}
 	/>
 	<Button

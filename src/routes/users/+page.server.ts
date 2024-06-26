@@ -4,7 +4,7 @@ import type { PageServerLoad } from './$types'
 
 export const load = (async ({ url }) => {
 	const searchQuery = url.searchParams.get('search') ?? ''
-
+	await new Promise(fulfil => setTimeout(fulfil, 2000)) //TODO: remove
 	const like = `%${searchQuery ?? ''}%`
 
 	const rawUsers = await prisma.$queryRaw`
@@ -29,11 +29,13 @@ export const load = (async ({ url }) => {
 			status: 'error',
 			error: result.error.message,
 			statusCode: 400,
+			fetching: false,
 		} as const
 	}
 
 	return {
 		status: 'idle',
 		users: result.data,
+		fetching: false,
 	} as const
 }) satisfies PageServerLoad

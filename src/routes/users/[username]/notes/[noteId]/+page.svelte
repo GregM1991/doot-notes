@@ -4,7 +4,9 @@
 	import { Button, NoteInfoBar, Eraser, Pencil2, Timer } from '$lib/components'
 	import { getNoteImgSrc } from '$lib/utils/misc.js'
 
+	// export let form
 	export let data
+	let deleting = []
 </script>
 
 <article class="article">
@@ -32,13 +34,7 @@
 				<Pencil2 /> Edit
 			</Button>
 			<form method="POST" use:enhance>
-				<Button
-					small
-					danger
-					type="submit"
-					delayed={true}
-					delayedReason="Deleting note"><Eraser /> Delete</Button
-				>
+				<Button small danger type="submit"><Eraser /> Delete</Button>
 			</form>
 		</div>
 	</NoteInfoBar>
