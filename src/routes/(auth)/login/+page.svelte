@@ -50,7 +50,7 @@
 	<div class="remember-forgot">
 		<div>
 			<input
-				bind:value={$form.remember}
+				bind:checked={$form.remember}
 				name="remember"
 				id="remember"
 				type="checkbox"

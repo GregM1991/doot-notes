@@ -5,15 +5,13 @@
 	import type { InputProps } from './types.input'
 
 	let {
-		handleInput = () => {},
-		name,
-		id = name ?? null,
 		label,
 		errors = null,
 		constraints = undefined,
 		secondary = false,
 		fluid = false,
 		value = $bindable(''),
+		oninput,
 		...restProps
 	}: InputProps = $props()
 
@@ -22,17 +20,18 @@
 		secondary,
 		fluid,
 	})
+	const id = restProps.id ?? restProps.name
 </script>
 
 {#if label}
 	<label data-testid={inputLabelTestId} for={id}>{label}</label>
 {/if}
 <input
-	{name}
+	{id}
 	bind:value
 	class={classes}
 	aria-invalid={errors ? 'true' : undefined}
-	oninput={handleInput}
+	oninput={(event) => oninput ? oninput(event) : null}
 	{...constraints}
 	{...restProps}
 />

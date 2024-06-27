@@ -14,5 +14,7 @@ export type InputProps = {
 	fluid?: boolean
 	hidden?: boolean
 	type?: 'text' | 'password' | 'search' | 'hidden' | null
-	handleInput?: (e: Event) => void
+	oninput?: (
+		event: Event & { currentTarget: EventTarget & HTMLInputElement },
+	) => void
 }

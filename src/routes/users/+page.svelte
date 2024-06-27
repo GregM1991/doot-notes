@@ -1,30 +1,15 @@
 <script lang="ts">
-	import { Searchbar, type OnSearch } from '$lib/components/index'
-	import { debounce, getUserImgSrc } from '$lib/utils/misc'
-	import { goto } from '$app/navigation'
-	import { page } from '$app/stores'
+	import { Searchbar } from '$lib/components/index'
+	import { getUserImgSrc } from '$lib/utils/misc'
 
-	export let data
+	let { data } = $props()
 
-	$: fetching = Boolean(data.fetching)
-
-	const searchUsers = debounce(async (event: CustomEvent<OnSearch>) => {
-		const data = new FormData(event.detail.form)
-		const search = data.get('search')
-		goto(`?search=${search}`, { replaceState: true, keepFocus: true })
-		fetching = true
-	}, 400)
-	const search = $page.url.searchParams.get('search') ?? ''
+	let fetching = $state(Boolean(data.fetching))
 </script>
 
 <h1>Doot Notes User's</h1>
 <main>
-	<Searchbar
-		on:search={searchUsers}
-		on:submit={searchUsers}
-		searchQuery={search}
-		fetching={fetching}
-	/>
+	<Searchbar {fetching} />
 	{#if data.status === 'error'}
 		<span>{data.error}</span>
 	{:else if Boolean(data.users.length)}

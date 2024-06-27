@@ -1,26 +1,39 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte'
-	import { Input, MagnifyingGlass, Spinner, type OnSearch } from '$lib/components'
+	import { enhance } from '$app/forms'
+	import { page } from '$app/stores'
+	import { Input, MagnifyingGlass, Spinner } from '$lib/components'
+	import { debounce } from '$lib/utils/misc'
+	import type { SearchProps } from './types.search'
 
-	export let searchQuery: string
-	export let fetching = false
+	let { fetching }: SearchProps = $props()
 
-	const dispatch = createEventDispatcher<{ search: OnSearch }>()
+	const handleFormChange = debounce(
+		async (
+			event: Event & {
+				currentTarget: EventTarget & HTMLFormElement
+			},
+		) => {
+			console.log(event)
+			event.preventDefault()
+			// event.currentTarget.submit()
+			// const data = event.formData()
+			// const search = data.get('search')
+			// goto(`?search=${search}`, { replaceState: true, keepFocus: true })
+			// fetching = true
+		},
+		400,
+	)
+	let search = $state($page.url.searchParams.get('search') ?? '')
 	let form: HTMLFormElement
-
-	function onSearch() {
-		dispatch('search', { form })
-	}
 </script>
 
-<form class="form" bind:this={form} on:submit|preventDefault={onSearch}>
+<form class="form" bind:this={form} onchange={e => handleFormChange(e)}>
 	<label class="sr-only" for="search">Search</label>
 	<Input
-		on:input={onSearch}
 		placeholder="Search"
 		name="search"
 		type="search"
-		value={searchQuery.toString()}
+		bind:value={search}
 		fluid
 	/>
 	<!-- TODO: Extract to icon button -->

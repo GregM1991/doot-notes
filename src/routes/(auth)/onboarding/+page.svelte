@@ -66,6 +66,7 @@
 			aria-invalid={$errors.agreeToTermsOfServiceAndPrivacyPolicy
 				? 'true'
 				: undefined}
+			bind:checked={$form.agreeToTermsOfServiceAndPrivacyPolicy}
 			name="agreeToTermsOfServiceAndPrivacyPolicy"
 			type="checkbox"
 			{...$constraints.agreeToTermsOfServiceAndPrivacyPolicy}
@@ -80,7 +81,7 @@
 			aria-invalid={$errors.agreeToTermsOfServiceAndPrivacyPolicy
 				? 'true'
 				: undefined}
-			bind:value={$form.remember}
+			bind:checked={$form.remember}
 			name="remember"
 			type="checkbox"
 			{...$constraints.remember}
