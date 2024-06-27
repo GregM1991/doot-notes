@@ -33,7 +33,7 @@
 	/>
 </div>
 <ValidationErrors errorId="photo-file" errors={$errors._errors} />
-<form id="delete-image" action="?/delete" method="POST" />
+<form id="delete-image" action="?/delete" method="POST"></form>
 <form
 	action="?/add-or-update-avatar"
 	method="POST"

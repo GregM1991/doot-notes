@@ -10,10 +10,11 @@
 	} from '$lib/components'
 	import { OnboardingSchema } from '$lib/schemas.js'
 
-	export let data
+	const { data } = $props()
 	const { form, formId, errors, enhance, constraints } = superForm(data.form, {
 		validators: zodClient(OnboardingSchema),
 	})
+	let redirectTo = $state($form.redirectTo ?? '')
 </script>
 
 <h1>Great to have you <br /> {data.email}</h1>
@@ -86,7 +87,7 @@
 		/>
 		Remember me?
 	</label>
-	<Input bind:value={$form.redirectTo} name="redirectTo" type="hidden" />
+	<Input bind:value={redirectTo} name="redirectTo" type="hidden" />
 	<Button type="submit" variant="secondary" fluid>Submit</Button>
 	<ValidationErrors errorId={$formId} errors={$errors._errors} />
 </form>

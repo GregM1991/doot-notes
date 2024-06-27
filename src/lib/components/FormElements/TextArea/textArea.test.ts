@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/svelte'
+import { render, screen } from '@testing-library/svelte/svelte5'
 import TextArea from './TextArea.svelte'
 import { describe, expect, test } from 'vitest'
 import { inputLabelTestId, validationTest } from '../formElements.consts'

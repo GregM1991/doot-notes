@@ -1,7 +1,3 @@
-/*
-  TODO: will need:
-  - bcrypt
-*/
 import { faker } from '@faker-js/faker'
 import { type PrismaClient } from '@prisma/client'
 import { UniqueEnforcer } from 'enforce-unique'

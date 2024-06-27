@@ -53,10 +53,10 @@
 	use:enhance
 	enctype="multipart/form-data"
 >
-	<button type="submit" class="hidden" />
+	<button type="submit" class="hidden"></button>
 	<h3>{header}</h3>
 	{#if $form.id}
-		<input type="hidden" value={$form.id} name="id" data-testid={idTestId} />
+		<input hidden value={$form.id} name="id" data-testid={idTestId} />
 	{/if}
 	<!-- TODO: Focus first input -->
 	<FormGroup flex="0">
@@ -95,7 +95,7 @@
 					on:click|preventDefault={() =>
 						(imageList = imageList.filter((_, i) => i !== index))}
 				>
-					<span aria-hidden>
+					<span aria-hidden="true">
 						<Cross />
 					</span>
 					<span class="sr-only">Remove image {index}</span>

@@ -28,7 +28,7 @@
 	/>
 	{name ?? username}
 </a>
-<div use:melt={$overlay} />
+<div use:melt={$overlay}></div>
 <div use:melt={$menu} class="dropdown">
 	<a href="/users/{username}" use:melt={$item} class="menu-item">
 		<Person /> Profile

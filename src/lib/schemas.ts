@@ -50,7 +50,7 @@ export const UserNameOrEmailSchema = z
 	.transform(value => value.toLowerCase())
 
 export const ProfileFormSchema = z.object({
-	name: NameSchema.optional(),
+	name: NameSchema.optional().default(''),
 	username: UsernameSchema,
 })
 
@@ -92,7 +92,7 @@ export const VerifySchema = z.object({
 	[redirectToQueryParam]: z.string().optional(),
 })
 
-const titleMaxLength = 50
+const titleMaxLength = 100
 const titleMinLength = 1
 const contentMaxLength = 10000
 const contentMinLength = 1

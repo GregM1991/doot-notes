@@ -1,6 +1,7 @@
 import { sveltekit } from '@sveltejs/kit/vite'
 import { defineConfig } from 'vitest/config'
 import Icons from 'unplugin-icons/vite'
+import { svelteTesting } from '@testing-library/svelte/vite'
 
 const MODE = process.env.NODE_ENV
 
@@ -12,6 +13,7 @@ export default defineConfig({
 		},
 	},
 	plugins: [
+		svelteTesting(),
 		sveltekit(),
 		Icons({
 			compiler: 'svelte',

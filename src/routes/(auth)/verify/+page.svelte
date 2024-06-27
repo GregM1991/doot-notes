@@ -10,13 +10,14 @@
 	import { VerifySchema } from '$lib/schemas'
 	import { zodClient } from 'sveltekit-superforms/adapters'
 
-	export let data
+	let { data } = $props()
 	const { form, errors, enhance, constraints, formId } = superForm(
 		data.verifyForm,
 		{
 			validators: zodClient(VerifySchema),
 		},
 	)
+	let redirectTo = $state($form.redirectTo ?? '')
 	const label = 'Enter Code'
 </script>
 
@@ -39,7 +40,7 @@
 	</FormGroup>
 	<Input type="hidden" name="type" bind:value={$form.type} />
 	<Input type="hidden" name="target" bind:value={$form.target} />
-	<Input type="hidden" name="redirectTo" bind:value={$form.redirectTo} />
+	<Input type="hidden" name="redirectTo" bind:value={redirectTo} />
 	<Button fluid variant="secondary" type="submit">Submit</Button>
 	<ValidationErrors errorId={$formId} errors={$errors._errors} />
 </form>

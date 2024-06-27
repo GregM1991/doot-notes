@@ -1,51 +1,43 @@
 <script lang="ts">
 	import { ValidationErrors } from '$lib/components'
-	import type { InputConstraint } from 'sveltekit-superforms'
+	import classNames from 'classnames'
 	import { inputLabelTestId, validationTest } from '../formElements.consts'
-	import { createEventDispatcher } from 'svelte'
+	import type { InputProps } from './types.input'
 
-	export let placeholder = ''
-	export let name: string
-	export let id: string = name
-	export let type: 'text' | 'password' | 'search' | 'hidden' | null = 'text'
-	export let value: string | null = ''
-	export let label = ''
-	export let style = ''
-	export let errors: string[] | null = null
-	export let constraints: InputConstraint | undefined = undefined
-	export let autofocus = false
-	export let secondary = false
-	export let required = false
-	export let fluid = false
+	let {
+		handleInput = () => {},
+		name,
+		id = name ?? null,
+		label,
+		errors = null,
+		constraints = undefined,
+		secondary = false,
+		fluid = false,
+		value = $bindable(''),
+		...restProps
+	}: InputProps = $props()
 
-	const dispatch = createEventDispatcher()
-	function handleInput() {
-		dispatch('input')
-	}
+	const classes = classNames({
+		base: true,
+		secondary,
+		fluid,
+	})
 </script>
 
 {#if label}
 	<label data-testid={inputLabelTestId} for={id}>{label}</label>
 {/if}
-<!-- svelte-ignore a11y-autofocus -->
 <input
-	{id}
-	{placeholder}
 	{name}
-	{type}
-	{autofocus}
-	{style}
-	{required}
-	{value}
-	{...constraints}
-	class:fluid
-	class:secondary
-	class="base"
-	on:input={handleInput}
+	bind:value
+	class={classes}
 	aria-invalid={errors ? 'true' : undefined}
+	oninput={handleInput}
+	{...constraints}
+	{...restProps}
 />
 
-{#if type !== 'hidden'}
+{#if restProps.type !== 'hidden'}
 	<ValidationErrors dataTestid={validationTest} {errors} errorId={id} />
 {/if}
 
