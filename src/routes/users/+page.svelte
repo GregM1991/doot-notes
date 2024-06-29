@@ -1,15 +1,23 @@
 <script lang="ts">
 	import { Searchbar } from '$lib/components/index'
 	import { getUserImgSrc } from '$lib/utils/misc'
+	import { goto } from '$app/navigation'
+	import { debounce } from '$lib/utils/misc'
 
 	let { data } = $props()
-
 	let fetching = $state(Boolean(data.fetching))
+
+	const handleFormChange = debounce(async (form: HTMLFormElement) => {
+		const formData = new FormData(form)
+		const search = formData.get('search')
+		goto(`?search=${search}`, { replaceState: true, keepFocus: true })
+		fetching = false
+	}, 400)
 </script>
 
 <h1>Doot Notes User's</h1>
 <main>
-	<Searchbar {fetching} />
+	<Searchbar oninput={handleFormChange} {fetching} />
 	{#if data.status === 'error'}
 		<span>{data.error}</span>
 	{:else if Boolean(data.users.length)}
@@ -21,7 +29,6 @@
 						data-sveltekit-preload-data="hover"
 						href={`/users/${user.username}`}
 					>
-						<!-- TODO: put gravatar in -->
 						<span class="gravatar">
 							<img
 								src={getUserImgSrc(user.imageId)}

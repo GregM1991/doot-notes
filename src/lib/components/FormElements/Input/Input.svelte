@@ -11,7 +11,6 @@
 		secondary = false,
 		fluid = false,
 		value = $bindable(''),
-		oninput,
 		...restProps
 	}: InputProps = $props()
 
@@ -31,7 +30,6 @@
 	bind:value
 	class={classes}
 	aria-invalid={errors ? 'true' : undefined}
-	oninput={(event) => oninput ? oninput(event) : null}
 	{...constraints}
 	{...restProps}
 />

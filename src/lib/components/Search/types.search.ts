@@ -1,1 +1,4 @@
-export type SearchProps = { fetching: boolean }
+export type SearchProps = {
+	fetching: boolean
+	oninput: (form: HTMLFormElement) => void
+}

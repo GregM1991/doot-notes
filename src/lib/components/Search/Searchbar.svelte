@@ -1,39 +1,22 @@
 <script lang="ts">
-	import { enhance } from '$app/forms'
 	import { page } from '$app/stores'
 	import { Input, MagnifyingGlass, Spinner } from '$lib/components'
-	import { debounce } from '$lib/utils/misc'
 	import type { SearchProps } from './types.search'
 
-	let { fetching }: SearchProps = $props()
+	let { fetching, oninput }: SearchProps = $props()
 
-	const handleFormChange = debounce(
-		async (
-			event: Event & {
-				currentTarget: EventTarget & HTMLFormElement
-			},
-		) => {
-			console.log(event)
-			event.preventDefault()
-			// event.currentTarget.submit()
-			// const data = event.formData()
-			// const search = data.get('search')
-			// goto(`?search=${search}`, { replaceState: true, keepFocus: true })
-			// fetching = true
-		},
-		400,
-	)
 	let search = $state($page.url.searchParams.get('search') ?? '')
 	let form: HTMLFormElement
 </script>
 
-<form class="form" bind:this={form} onchange={e => handleFormChange(e)}>
+<form class="form" bind:this={form}>
 	<label class="sr-only" for="search">Search</label>
 	<Input
 		placeholder="Search"
 		name="search"
 		type="search"
 		bind:value={search}
+		oninput={() => oninput(form)}
 		fluid
 	/>
 	<!-- TODO: Extract to icon button -->

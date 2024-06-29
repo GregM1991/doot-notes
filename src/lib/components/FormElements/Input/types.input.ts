@@ -13,6 +13,7 @@ export type InputProps = {
 	required?: boolean
 	fluid?: boolean
 	hidden?: boolean
+	onchange?: () => void
 	type?: 'text' | 'password' | 'search' | 'hidden' | null
 	oninput?: (
 		event: Event & { currentTarget: EventTarget & HTMLInputElement },
