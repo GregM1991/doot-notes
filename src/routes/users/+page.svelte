@@ -3,6 +3,7 @@
 	import { getUserImgSrc } from '$lib/utils/misc'
 	import { goto } from '$app/navigation'
 	import { debounce } from '$lib/utils/misc'
+	import { navigating } from '$app/stores'
 
 	let { data } = $props()
 	let fetching = $state(Boolean(data.fetching))
@@ -11,13 +12,12 @@
 		const formData = new FormData(form)
 		const search = formData.get('search')
 		goto(`?search=${search}`, { replaceState: true, keepFocus: true })
-		fetching = false
 	}, 400)
 </script>
 
 <h1>Doot Notes User's</h1>
 <main>
-	<Searchbar oninput={handleFormChange} {fetching} />
+	<Searchbar oninput={handleFormChange} fetching={Boolean($navigating) || fetching} />
 	{#if data.status === 'error'}
 		<span>{data.error}</span>
 	{:else if Boolean(data.users.length)}

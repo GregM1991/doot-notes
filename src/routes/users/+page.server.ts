@@ -3,6 +3,7 @@ import { prisma } from '$lib/utils/db.server'
 import type { PageServerLoad } from './$types'
 
 export const load = (async ({ url }) => {
+	await new Promise(resolve => setTimeout(resolve, 1000))
 	const searchQuery = url.searchParams.get('search') ?? ''
 	const like = `%${searchQuery ?? ''}%`
 
