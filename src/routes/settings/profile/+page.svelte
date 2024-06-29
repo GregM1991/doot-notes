@@ -1,20 +1,24 @@
 <script lang="ts">
-	import { Input, Button, FormGroup } from '$lib/components'
+	import {
+		Input,
+		Button,
+		FormGroup,
+		Person,
+		Camera,
+		DotsHorizontal,
+		Download,
+		EnvelopeClosed,
+		Link2,
+		LockClosed,
+		LockOpened,
+	} from '$lib/components'
 	import {
 		deleteDataActionIntent,
 		profileUpdateActionIntent,
 		signOutOfSessionsActionIntent,
 	} from '$lib/profile/consts.js'
 	import { getUserImgSrc } from '$lib/utils/misc'
-	import SuperDebug, { superForm } from 'sveltekit-superforms'
-	import Camera from 'virtual:icons/radix-icons/camera'
-	import DotsHorizontal from 'virtual:icons/radix-icons/dotsHorizontal'
-	import EnvelopeClosed from 'virtual:icons/radix-icons/envelopeClosed'
-	import Person from 'virtual:icons/radix-icons/person'
-	import LockClosed from 'virtual:icons/radix-icons/lockClosed'
-	import LockOpened from 'virtual:icons/radix-icons/lock-open-1'
-	import Download from 'virtual:icons/radix-icons/download'
-	import Link2 from 'virtual:icons/radix-icons/link-2'
+	import { superForm } from 'sveltekit-superforms'
 	import { zodClient } from 'sveltekit-superforms/adapters'
 	import { ProfileFormSchema } from '$lib/schemas'
 
@@ -60,7 +64,7 @@
 		</FormGroup>
 	</div>
 	<Button
-		secondary
+		variant="secondary"
 		fluid
 		name="intent"
 		value={profileUpdateActionIntent}

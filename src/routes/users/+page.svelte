@@ -1,29 +1,26 @@
 <script lang="ts">
-	import { Searchbar, type OnSearch } from '$lib/components/index'
-	import { debounce, getUserImgSrc } from '$lib/utils/misc'
+	import { Searchbar } from '$lib/components/index'
+	import { getUserImgSrc } from '$lib/utils/misc'
 	import { goto } from '$app/navigation'
-	import { page } from '$app/stores'
+	import { debounce } from '$lib/utils/misc'
+	import { navigating } from '$app/stores'
 
-	export let data
+	let { data } = $props()
+	let fetching = $state(Boolean(data.fetching))
 
-	const searchUsers = debounce(async (event: CustomEvent<OnSearch>) => {
-		const data = new FormData(event.detail.form)
-		const search = data.get('search')
+	const handleFormChange = debounce(async (form: HTMLFormElement) => {
+		const formData = new FormData(form)
+		const search = formData.get('search')
 		goto(`?search=${search}`, { replaceState: true, keepFocus: true })
 	}, 400)
-	const search = $page.url.searchParams.get('search') ?? ''
 </script>
 
 <h1>Doot Notes User's</h1>
 <main>
-	<Searchbar
-		on:search={searchUsers}
-		on:submit={searchUsers}
-		searchQuery={search}
-	/>
+	<Searchbar oninput={handleFormChange} fetching={Boolean($navigating) || fetching} />
 	{#if data.status === 'error'}
 		<span>{data.error}</span>
-	{:else if data.users.length}
+	{:else if Boolean(data.users.length)}
 		<ul role="list">
 			{#each data.users as user}
 				<!-- TODO: Extract this to component -->
@@ -32,7 +29,6 @@
 						data-sveltekit-preload-data="hover"
 						href={`/users/${user.username}`}
 					>
-						<!-- TODO: put gravatar in -->
 						<span class="gravatar">
 							<img
 								src={getUserImgSrc(user.imageId)}
@@ -65,6 +61,7 @@
 		flex-direction: column;
 		align-items: center;
 		gap: var(--space-m);
+		text-align: center;
 	}
 
 	ul {

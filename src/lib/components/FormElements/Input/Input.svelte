@@ -1,19 +1,25 @@
 <script lang="ts">
 	import { ValidationErrors } from '$lib/components'
-	import type { InputConstraint } from 'sveltekit-superforms'
+	import classNames from 'classnames'
 	import { inputLabelTestId, validationTest } from '../formElements.consts'
+	import type { InputProps } from './types.input'
 
-	export let name: string
-	export let id: string = name
-	export let value: string | null = ''
-	export let label: string | null = null
-	export let style: string | null = null
-	export let errors: string[] | null = null
-	export let constraints: InputConstraint | undefined = undefined
-	export let secondary = false
-	export let fluid = false
+	let {
+		label,
+		errors = null,
+		constraints = undefined,
+		secondary = false,
+		fluid = false,
+		value = $bindable(''),
+		...restProps
+	}: InputProps = $props()
 
-	const type = $$restProps.type
+	const classes = classNames({
+		base: true,
+		secondary,
+		fluid,
+	})
+	const id = restProps.id ?? restProps.name
 </script>
 
 {#if label}
@@ -21,16 +27,14 @@
 {/if}
 <input
 	{id}
-	{name}
-	{style}
 	bind:value
-	class="base {fluid ? 'fluid' : ''} {secondary ? 'secondary' : ''}"
+	class={classes}
 	aria-invalid={errors ? 'true' : undefined}
 	{...constraints}
-	{...$$restProps}
+	{...restProps}
 />
 
-{#if type !== 'hidden'}
+{#if restProps.type !== 'hidden'}
 	<ValidationErrors dataTestid={validationTest} {errors} errorId={id} />
 {/if}
 

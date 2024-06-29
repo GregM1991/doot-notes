@@ -39,7 +39,7 @@
 			constraints={$constraints.confirm}
 		/>
 	</FormGroup>
-	<Button fluid type="submit" secondary>Submit</Button>
+	<Button fluid type="submit" variant="secondary">Submit</Button>
 	<ValidationErrors errorId={$formId} errors={$errors._errors} />
 </form>
 

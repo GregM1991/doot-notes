@@ -5,9 +5,6 @@
 		superForm,
 	} from 'sveltekit-superforms'
 	import { zodClient } from 'sveltekit-superforms/adapters'
-	import Check from 'virtual:icons/radix-icons/check'
-	import Cross from 'virtual:icons/radix-icons/cross2'
-	import Plus from 'virtual:icons/radix-icons/plus'
 	import {
 		Input,
 		TextArea,
@@ -16,6 +13,9 @@
 		NoteInfoBar,
 		FormGroup,
 		ValidationErrors,
+		Check,
+		Cross,
+		Plus,
 	} from '$lib/components'
 	import type { ImageFieldset } from './types'
 	import { NoteEditorSchema } from '$lib/schemas'
@@ -26,10 +26,12 @@
 	export let images: Array<ImageFieldset> = []
 	export let action: string
 
-	const { form, errors, enhance, formId, constraints } = superForm(data, {
-		validators: zodClient(NoteEditorSchema),
-	})
-	const { header, buttonText } = generateCopy($form.id, $form.title)
+	const { form, errors, enhance, formId, constraints, delayed, timeout } =
+		superForm(data, {
+			validators: zodClient(NoteEditorSchema),
+		})
+	const { header, buttonText, submitDelayedReason } =
+		generateCopy($form.id, $form.title)
 	const Icon = $form.id ? Check : Plus
 
 	$: imageList = Boolean(images.length)
@@ -51,10 +53,10 @@
 	use:enhance
 	enctype="multipart/form-data"
 >
-	<button type="submit" class="hidden" />
+	<button type="submit" class="hidden"></button>
 	<h3>{header}</h3>
 	{#if $form.id}
-		<input type="hidden" value={$form.id} name="id" data-testid={idTestId}/>
+		<input hidden value={$form.id} name="id" data-testid={idTestId} />
 	{/if}
 	<!-- TODO: Focus first input -->
 	<FormGroup flex="0">
@@ -93,7 +95,7 @@
 					on:click|preventDefault={() =>
 						(imageList = imageList.filter((_, i) => i !== index))}
 				>
-					<span aria-hidden>
+					<span aria-hidden="true">
 						<Cross />
 					</span>
 					<span class="sr-only">Remove image {index}</span>
@@ -102,7 +104,7 @@
 			</li>
 		{/each}
 	</ul>
-	<Button secondary type="button" on:click={addEmptyImage}>
+	<Button variant="secondary" type="button" on:click={addEmptyImage}>
 		<Plus />
 		Add another image
 	</Button>
@@ -110,7 +112,12 @@
 		<div class="info-bar-buttons">
 			<Button danger type="reset">Reset</Button>
 			<!-- TODO: confirmation on note deletion -->
-			<Button secondary type="submit">
+			<Button
+				variant="secondary"
+				type="submit"
+				delayed={$delayed || $timeout}
+				delayedReason={submitDelayedReason}
+			>
 				<Icon />
 				{buttonText}
 			</Button>

@@ -12,10 +12,14 @@
 	import { LoginFormSchema } from '$lib/schemas.js'
 
 	export let data
-	const { form, errors, constraints, enhance } = superForm(data.loginForm, {
-		validators: zodClient(LoginFormSchema),
-		validationMethod: 'auto',
-	})
+	const { form, errors, constraints, enhance, delayed, timeout } = superForm(
+		data.loginForm,
+		{
+			validators: zodClient(LoginFormSchema),
+			validationMethod: 'auto',
+			delayMs: 300,
+		},
+	)
 	const formId = 'login-form'
 	// TODO: create a auth form component to reduce styling repeats 😎
 </script>
@@ -46,7 +50,7 @@
 	<div class="remember-forgot">
 		<div>
 			<input
-				bind:value={$form.remember}
+				bind:checked={$form.remember}
 				name="remember"
 				id="remember"
 				type="checkbox"
@@ -59,8 +63,20 @@
 			<a href="/forgot-password">Forgot password?</a>
 		</div>
 	</div>
-	<Input type="hidden" name="redirectTo" hidden value={$page.params.redirectTo} />
-	<Button fluid type="submit" secondary>Submit</Button>
+	<Input
+		type="hidden"
+		name="redirectTo"
+		value={$page.params.redirectTo}
+	/>
+	<Button
+		fluid
+		type="submit"
+		variant="secondary"
+		delayed={$delayed || $timeout}
+		delayedReason="Logging in"
+	>
+		Submit
+	</Button>
 	<ValidationErrors errorId={formId} errors={$errors._errors} />
 	<span class="signup">
 		New here? <a href="/signup" class="link">Create an account</a>

@@ -1,7 +1,5 @@
 <script lang="ts">
-	import LockClosed from 'virtual:icons/radix-icons/lockClosed'
-	import LockOpened from 'virtual:icons/radix-icons/lock-open-1'
-	import { Button } from '$lib/components/index.js'
+	import { Button, LockClosed, LockOpened } from '$lib/components'
 
 	export let data
 </script>
@@ -11,7 +9,7 @@
 	<p class="flex">
 		<LockClosed /> Two Factor Authentication is enabled.
 	</p>
-	<Button href="two-factor/disable" secondary>Disable 2FA</Button>
+	<Button href="two-factor/disable" variant="secondary">Disable 2FA</Button>
 {:else}
 	<form method="POST">
 		<p class="flex">
@@ -23,7 +21,7 @@
 				href="https://1password.com">1Password</a
 			> to generate a code to use when logging in.
 		</p>
-		<Button type="submit" secondary>Enable 2FA</Button>
+		<Button type="submit" variant="secondary">Enable 2FA</Button>
 	</form>
 {/if}
 

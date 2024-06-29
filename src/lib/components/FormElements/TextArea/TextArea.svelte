@@ -31,7 +31,7 @@
 	class="base"
 	aria-invalid={errors ? 'true' : undefined}
 	{...$$restProps}
-/>
+></textarea>
 
 {#if !hidden}
 	<ValidationErrors dataTestid={validationTest} {errors} errorId={id} />

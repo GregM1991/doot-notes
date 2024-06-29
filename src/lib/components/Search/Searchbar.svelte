@@ -1,31 +1,31 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte'
-	import { Input, type OnSearch } from '$lib/components'
-	import MagnifyingGlass from 'virtual:icons/radix-icons/magnifying-glass'
+	import { page } from '$app/stores'
+	import { Input, MagnifyingGlass, Spinner } from '$lib/components'
+	import type { SearchProps } from './types.search'
 
-	export let searchQuery: string
+	let { fetching, oninput }: SearchProps = $props()
 
-	const dispatch = createEventDispatcher<{ search: OnSearch }>()
+	let search = $state($page.url.searchParams.get('search') ?? '')
 	let form: HTMLFormElement
-
-	function onSearch() {
-		dispatch('search', { form })
-	}
 </script>
 
-<form class="form" bind:this={form} on:submit|preventDefault={onSearch}>
+<form class="form" bind:this={form}>
 	<label class="sr-only" for="search">Search</label>
 	<Input
-		on:input={onSearch}
 		placeholder="Search"
 		name="search"
 		type="search"
-		value={searchQuery.toString()}
+		bind:value={search}
+		oninput={() => oninput(form)}
 		fluid
 	/>
 	<!-- TODO: Extract to icon button -->
 	<button class="search-button" type="submit">
-		<MagnifyingGlass />
+		{#if fetching}
+			<Spinner color="var(--palette-tertiary-light)" />
+		{:else}
+			<MagnifyingGlass />
+		{/if}
 	</button>
 </form>
 

@@ -35,8 +35,8 @@
   --color-yellow-50: var(--base-yellow), 50%; */
 	--color-yellow-60: var(--base-yellow), 60%;
 	/* --color-yellow-70: var(--base-yellow), 70%;
-  --color-yellow-80: var(--base-yellow), 80%;
-  --color-yellow-90: var(--base-yellow), 90%; */
+	--color-yellow-80: var(--base-yellow), 80%; */
+	--color-yellow-90: var(--base-yellow), 90%;
 
 	/* Pop */
 	--base-blue: 201, 95%;
@@ -95,6 +95,7 @@
 	--palette-secondary-dark: hsla(var(--color-pink-40), 100%);
 	--palette-secondary-light: hsla(var(--color-pink-85), 100%);
 	--palette-tertiary: hsla(var(--color-yellow-60), 100%);
+	--palette-tertiary-light: hsla(var(--color-yellow-90), 100%);
 	--palette-pop: hsla(var(--color-blue-40), 100%);
 	--palette-pop-light: hsla(var(--color-blue-70), 100%);
 	--palette-pop-extra-light: hsla(var(--color-blue-90), 100%);
@@ -156,15 +157,9 @@
 	--border-radius-circle: 9999px;
 	--border: 2px solid var(--color-grey-20);
 	--border-drop-shadow: 3px 3px 0px;
-	--border-drop-shadow-black: drop-shadow(
-		var(--border-drop-shadow) var(--color-grey-20)
-	);
-	--border-drop-shadow-black-focus: drop-shadow(
-		1px 1px 0px var(--color-grey-20)
-	);
-	--border-drop-shadow-black-hover: drop-shadow(
-		5px 5px 0px var(--color-grey-20)
-	);
+	--border-drop-shadow-black: drop-shadow(var(--border-drop-shadow) var(--color-grey-20));
+	--border-drop-shadow-black-focus: drop-shadow(1px 1px 0px var(--color-grey-20));
+	--border-drop-shadow-black-hover: drop-shadow(5px 5px 0px var(--color-grey-20));
 	--border-primary: 2px solid var(--palette-primary);
 }
 

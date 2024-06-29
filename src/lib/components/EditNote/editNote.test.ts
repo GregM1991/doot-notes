@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/svelte'
+import { render, screen, within } from '@testing-library/svelte/svelte5'
 import { expect, test } from 'vitest'
 import EditNote from './EditNote.svelte'
 import { superValidate } from 'sveltekit-superforms'

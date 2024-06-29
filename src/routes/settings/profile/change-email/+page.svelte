@@ -34,7 +34,7 @@
 		/>
 	</FormGroup>
 	<div class="button-wrapper">
-		<Button secondary type="submit">Change Password</Button>
+		<Button variant="secondary" type="submit">Change Password</Button>
 	</div>
 	<ValidationErrors errorId="change-email" errors={$errors._errors} />
 </form>

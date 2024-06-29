@@ -1,23 +1,81 @@
-<span class="loader"></span>
+<script lang="ts">
+	export let color = 'var(--palette-secondary)'
+	export let size = '1.5rem'
+</script>
 
-<style>
-	.loader {
-		width: 48px;
-		height: 48px;
-		border: 5px solid #fff;
-		border-bottom-color: #ff3d00;
-		border-radius: 50%;
-		display: inline-block;
-		box-sizing: border-box;
-		animation: rotation 1s linear infinite;
-	}
-
-	@keyframes rotation {
-		0% {
-			transform: rotate(0deg);
+<svg
+	width={size}
+	height={size}
+	viewBox="0 0 24 24"
+	xmlns="http://www.w3.org/2000/svg"
+>
+	<style>
+		.spinner_9y7u {
+			animation: spinner_fUkk 2.4s linear infinite;
+			animation-delay: -2.4s;
 		}
-		100% {
-			transform: rotate(360deg);
+		.spinner_DF2s {
+			animation-delay: -1.6s;
 		}
-	}
-</style>
+		.spinner_q27e {
+			animation-delay: -0.8s;
+		}
+		@keyframes spinner_fUkk {
+			8.33% {
+				x: 13px;
+				y: 1px;
+			}
+			25% {
+				x: 13px;
+				y: 1px;
+			}
+			33.3% {
+				x: 13px;
+				y: 13px;
+			}
+			50% {
+				x: 13px;
+				y: 13px;
+			}
+			58.33% {
+				x: 1px;
+				y: 13px;
+			}
+			75% {
+				x: 1px;
+				y: 13px;
+			}
+			83.33% {
+				x: 1px;
+				y: 1px;
+			}
+		}
+	</style>
+	<rect
+		class="spinner_9y7u"
+		x="1"
+		y="1"
+		rx="1"
+		width="10"
+		height="10"
+		fill={color}
+	/>
+	<rect
+		class="spinner_9y7u spinner_DF2s"
+		x="1"
+		y="1"
+		rx="1"
+		width="10"
+		height="10"
+		fill={color}
+	/>
+	<rect
+		class="spinner_9y7u spinner_q27e"
+		x="1"
+		y="1"
+		rx="1"
+		width="10"
+		height="10"
+		fill={color}
+	/>
+</svg>

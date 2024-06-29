@@ -43,8 +43,12 @@
 				constraints={$constraints.code}
 			/>
 		</FormGroup>
-		<Button secondary name="intent" value="verify" type="submit">Submit</Button>
-		<Button secondary name="intent" value="cancel" type="submit">Cancel</Button>
+		<Button variant="secondary" name="intent" value="verify" type="submit">
+			Submit
+		</Button>
+		<Button variant="secondary" name="intent" value="cancel" type="submit">
+			Cancel
+		</Button>
 	</form>
 </div>
 

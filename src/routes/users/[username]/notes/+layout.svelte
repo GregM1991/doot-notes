@@ -1,21 +1,19 @@
 <script lang="ts">
 	import { page } from '$app/stores'
-	import { Button } from '$lib/components'
-	import Pencil1 from 'virtual:icons/radix-icons/pencil1'
+	import { Button, Pencil1 } from '$lib/components'
 
 	export let data
 	const hrefBase = `/users/${$page.params.username}/notes`
 	$: isOwner = $page.data?.user?.id === data.owner.id
 </script>
 
-<!-- TODO: Find out why the notes layout isn't rendering 🙄 -->
 <div class="wrapper" data-layout="grid">
 	<div class="sidebar">
 		<h1>{data.owner.name}'s notes</h1>
 		{#if isOwner}
 			<Button
 				href="{hrefBase}/new-note"
-				secondary
+				variant="secondary"
 				style="margin-bottom: var(--space-xs)"
 			>
 				<Pencil1 /> Doot new note

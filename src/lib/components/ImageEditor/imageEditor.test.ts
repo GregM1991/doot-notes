@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/svelte'
+import { render, screen } from '@testing-library/svelte/svelte5'
 import { describe, expect, test, vi } from 'vitest'
 import ImageEditor from './ImageEditor.svelte'
 import testImage from './test-img.jpg'
