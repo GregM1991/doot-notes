@@ -19,6 +19,12 @@ export default defineConfig({
 			compiler: 'svelte',
 		}),
 	],
+	server: {
+		watch: {
+			usePolling: true,
+		},
+		host: true,
+	},
 	css: {
 		devSourcemap: MODE === 'development',
 	},
