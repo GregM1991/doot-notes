@@ -2,7 +2,6 @@ import fs from 'fs'
 import {
 	cachified as baseCachified,
 	verboseReporter,
-	mergeReporters,
 	type CacheEntry,
 	type Cache as CachifiedCache,
 	type CachifiedOptions,

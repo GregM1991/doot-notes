@@ -52,7 +52,7 @@ export const actions = {
 
 		const response = await sendEmail({
 			to: user.email,
-			subject: `Epic Notes Password Reset`,
+			subject: `Doot Notes Password Reset`,
 			html: forgotPasswordEmail({ verifyUrl: verifyUrl.toString(), otp }),
 			text: 'Whats this also?',
 		})
