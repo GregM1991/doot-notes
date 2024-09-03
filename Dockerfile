@@ -1,8 +1,8 @@
-# TODO: move to ./other folder
-# This file is moved to the root directory before building the image
-
 # base node image
-FROM node:20-bookworm-slim as base
+ARG NODE_VERSION=20.11.1
+FROM node:${NODE_VERSION}-slim AS base
+
+LABEL fly_launch_runtime="Node.js"
 
 # set for base and all layer that inherit from it
 ENV NODE_ENV=production
@@ -11,7 +11,7 @@ ENV NODE_ENV=production
 RUN apt-get update && apt-get install -y fuse3 openssl sqlite3 ca-certificates
 
 # Install all node_modules, including dev dependencies
-FROM base as deps
+FROM base AS deps
 
 WORKDIR /myapp
 
@@ -19,7 +19,7 @@ ADD package.json package-lock.json .npmrc ./
 RUN npm install --include=dev
 
 # Setup production node_modules
-FROM base as production-deps
+FROM base AS production-deps
 
 WORKDIR /myapp
 
@@ -28,7 +28,7 @@ ADD package.json package-lock.json .npmrc ./
 RUN npm prune --omit=dev
 
 # Build the app
-FROM base as build
+FROM base AS build
 
 WORKDIR /myapp
 
@@ -38,7 +38,6 @@ ADD prisma .
 RUN npx prisma generate
 
 ADD . .
-RUN npm run check
 RUN npm run build
 
 # Finally, build the production image with minimal footprint
@@ -49,10 +48,8 @@ ENV LITEFS_DIR="/litefs/data"
 ENV DATABASE_FILENAME="sqlite.db"
 ENV DATABASE_PATH="$LITEFS_DIR/$DATABASE_FILENAME"
 ENV DATABASE_URL="file:$DATABASE_PATH"
-ENV CACHE_DATABASE_FILENAME="cache.db"
-ENV CACHE_DATABASE_PATH="$LITEFS_DIR/$CACHE_DATABASE_FILENAME"
-ENV INTERNAL_PORT="8080"
-ENV PORT="8081"
+ENV INTERNAL_PORT="3001"
+ENV PORT="3000"
 ENV NODE_ENV="production"
 
 # add shortcut for connecting to database CLI
@@ -63,17 +60,18 @@ WORKDIR /myapp
 COPY --from=production-deps /myapp/node_modules /myapp/node_modules
 COPY --from=build /myapp/node_modules/.prisma /myapp/node_modules/.prisma
 
-COPY --from=build /myapp/server-build /myapp/server-build
+# COPY --from=build /myapp/server-build /myapp/server-build
 COPY --from=build /myapp/build /myapp/build
 COPY --from=build /myapp/package.json /myapp/package.json
 COPY --from=build /myapp/prisma /myapp/prisma
-COPY --from=build /myapp/app/components/ui/icons /myapp/app/components/ui/icons
 
 # prepare for litefs
+COPY --from=flyio/litefs:0.5 /usr/local/bin/litefs /usr/local/bin/litefs
+# prepare for litefs
 COPY --from=flyio/litefs:0.5.8 /usr/local/bin/litefs /usr/local/bin/litefs
-ADD other/litefs.yml /etc/litefs.yml
+ADD etc/litefs.yml /etc/litefs.yml
 RUN mkdir -p /data ${LITEFS_DIR}
 
 ADD . .
 
-CMD ["litefs", "mount"]
+ENTRYPOINT litefs mount

@@ -1,8 +1,9 @@
 {
-  "name": "note-app",
+  "name": "doot-notes",
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "start": "node build",
     "dev": "cross-env MOCKS=true vite dev",
     "build": "vite build",
     "build:icons": "bun ./other/build-icons.ts",
@@ -24,8 +25,9 @@
     "@playwright/test": "^1.28.1",
     "@remix-run/eslint-config": "2.9.2",
     "@sveltejs/adapter-auto": "^3.0.0",
-    "@sveltejs/kit": "^2.0.0",
-    "@sveltejs/vite-plugin-svelte": "^3.1.1",
+    "@sveltejs/adapter-node": "^5.2.2",
+    "@sveltejs/kit": "^2.5.25",
+    "@sveltejs/vite-plugin-svelte": "^4.0.0-next.6",
     "@testing-library/jest-dom": "^6.4.6",
     "@testing-library/svelte": "^5.1.0",
     "@testing-library/user-event": "^14.5.2",
@@ -54,8 +56,8 @@
     "msw": "^2.2.13",
     "prettier": "^3.1.1",
     "prettier-plugin-svelte": "^3.1.2",
-    "prisma": "latest",
-    "svelte": "^5.0.0-next.166",
+    "prisma": "^5.19.1",
+    "svelte": "^5.0.0-next.1",
     "svelte-check": "^3.6.0",
     "sveltekit-rate-limiter": "^0.5.1",
     "sveltekit-superforms": "^2.12.5",
@@ -72,7 +74,7 @@
     "@epic-web/totp": "^1.1.2",
     "@faker-js/faker": "^8.4.1",
     "@paralleldrive/cuid2": "^2.2.2",
-    "@prisma/client": "latest",
+    "@prisma/client": "^5.19.1",
     "bcryptjs": "^2.4.3",
     "better-sqlite3": "^9.3.0",
     "classnames": "^2.5.1",
@@ -80,20 +82,27 @@
     "cross-env": "^7.0.3",
     "crypto-js": "^4.2.0",
     "date-fns": "^3.5.0",
+    "dotenv": "^16.4.5",
     "execa": "^8.0.1",
     "glob": "^10.3.10",
     "handlebars": "^4.7.8",
     "jsonwebtoken": "^9.0.2",
-    "litefs-js": "^1.1.2",
     "lru-cache": "^10.2.2",
     "qrcode": "^1.5.3",
     "remix-auth": "^3.6.0",
-    "remix-auth-github": "^1.7.0",
+    "remix-auth-github": "^1.6.0",
     "zod": "^3.23.0"
   },
   "msw": {
     "workerDirectory": [
       "static"
     ]
+  },
+  "dockerfile": {
+    "packages": {
+      "deploy": [
+        "sqlite3"
+      ]
+    }
   }
 }

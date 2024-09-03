@@ -20,6 +20,7 @@ import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 import { twoFAVerificationType } from '$lib/profile/consts'
 import { checkHoneypot } from '$lib/utils/honeypot.server'
 import { VerifySchema } from '$lib/schemas'
+// import { ensurePrimary } from 'litefs-js/remix'
 
 type PrepareVerificatinParams = {
 	period: number
@@ -138,7 +139,7 @@ export async function validateRequest(
 		return setError(form, 'code', 'Invalid code')
 	}
 
-	// ensurePrimary ~~~ This has to do with caching with fly.io I believe 🤷🏻
+	// ensurePrimary()
 
 	const { data: formValue } = form
 

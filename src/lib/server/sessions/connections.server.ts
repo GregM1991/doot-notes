@@ -1,6 +1,6 @@
 import type { CookieSerializeOptions } from 'cookie'
 import type { ProviderName } from '../../utils/connections'
-import { GitHubProvider } from '../../utils/providers/github.server'
+// import { GitHubProvider } from '../../utils/providers/github.server'
 import type { AuthProvider } from '../../utils/providers/provider'
 import { decryptCookie, encryptAndSignCookieValue } from './secureCookie'
 import type { Cookies } from '@sveltejs/kit'
@@ -37,17 +37,18 @@ export function setConnectionDataToCookie(cookies: Cookies, state: string) {
 	)
 }
 
-export const providers: Record<ProviderName, AuthProvider> = {
-	github: new GitHubProvider(),
-}
+//  TODO: add providers back in: new GitHubProvider(),
+// export const providers: Record<ProviderName, AuthProvider> = {
+// 	github: new GitHubProvider(), 
+// }
 
-export function handleMockAction(providerName: ProviderName, cookies: Cookies) {
-	return providers[providerName].handleMockAction(cookies)
-}
+// export function handleMockAction(providerName: ProviderName, cookies: Cookies) {
+// 	return providers[providerName].handleMockAction(cookies)
+// }
 
-export function resolveConnectionData(
-	providerName: ProviderName,
-	providerId: string,
-) {
-	return providers[providerName].resolveConnectionData(providerId)
-}
+// export function resolveConnectionData(
+// 	providerName: ProviderName,
+// 	providerId: string,
+// ) {
+// 	return providers[providerName].resolveConnectionData(providerId)
+// }
