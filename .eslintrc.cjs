@@ -6,7 +6,6 @@ module.exports = {
 		'eslint:recommended',
 		'plugin:@typescript-eslint/recommended',
 		'plugin:svelte/recommended',
-		'@remix-run/eslint-config',
 		'prettier',
 	],
 	parser: '@typescript-eslint/parser',
