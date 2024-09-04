@@ -24,11 +24,7 @@ lease:
   advertise-url: 'http://${FLY_ALLOC_ID}.vm.${FLY_APP_NAME}.internal:20202'
 
   consul:
-    # The URL of the Consul cluster.
     url: '${FLY_CONSUL_URL}'
-
-    # A unique key shared by all nodes in the LiteFS cluster.
-    # Change this if you are running multiple clusters in a single app!
     key: '${FLY_APP_NAME}/primary'
 
 proxy:
@@ -37,6 +33,8 @@ proxy:
   db: '${DATABASE_FILENAME}'
 
 exec:
+  - cmd: node ./other/setup-swap.js
+
   - cmd: npx prisma migrate deploy
     if-candidate: true
 
