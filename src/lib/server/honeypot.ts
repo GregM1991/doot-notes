@@ -80,7 +80,7 @@ export class Honeypot {
 	public check(formData: FormData) {
 		let nameFieldName = this.config.nameFieldName ?? DEFAULT_NAME_FIELD_NAME
 		if (this.config.randomizeNameFieldName) {
-			let actualName = this.getRandomizedNameFieldName(nameFieldName, formData)
+			const actualName = this.getRandomizedNameFieldName(nameFieldName, formData)
 			if (actualName) nameFieldName = actualName
 		}
 
@@ -90,16 +90,16 @@ export class Honeypot {
 			throw new SpamError('Missing honeypot input')
 		}
 
-		let honeypotValue = formData.get(nameFieldName)
+		const honeypotValue = formData.get(nameFieldName)
 
 		if (honeypotValue !== '') throw new SpamError('Honeypot input not empty')
 		if (!this.validFromFieldName) return
 
-		let validFrom = formData.get(this.validFromFieldName)
+		const validFrom = formData.get(this.validFromFieldName)
 
 		if (!validFrom) throw new SpamError('Missing honeypot valid from input')
 
-		let time = this.decrypt(validFrom as string)
+		const time = this.decrypt(validFrom as string)
 		if (!time) throw new SpamError('Invalid honeypot valid from input')
 		if (!this.isValidTimeStamp(Number(time))) {
 			throw new SpamError('Invalid honeypot valid from input')
@@ -111,7 +111,7 @@ export class Honeypot {
 	}
 
 	protected get nameFieldName() {
-		let fieldName = this.config.nameFieldName ?? DEFAULT_NAME_FIELD_NAME
+		const fieldName = this.config.nameFieldName ?? DEFAULT_NAME_FIELD_NAME
 		if (!this.config.randomizeNameFieldName) return fieldName
 		return `${fieldName}_${this.randomValue()}`
 	}
@@ -131,7 +131,7 @@ export class Honeypot {
 		nameFieldName: string,
 		formData: FormData,
 	): string | undefined {
-		for (let key of formData.keys()) {
+		for (const key of formData.keys()) {
 			if (!key.startsWith(nameFieldName)) continue
 			return key
 		}

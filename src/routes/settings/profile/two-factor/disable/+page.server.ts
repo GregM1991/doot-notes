@@ -1,10 +1,10 @@
+import { redirect } from '@sveltejs/kit'
+import  { type Actions, type PageServerLoad } from './$types'
 import { requireRecentVerification } from '$lib/auth/verify.server'
 import { twoFAVerificationType } from '$lib/profile/consts'
 import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 import { requireUserId } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
-import { redirect } from '@sveltejs/kit'
-import type { Actions, PageServerLoad } from './$types'
 
 export const load = (async ({ request, locals, cookies }) => {
 	await requireRecentVerification(locals.userId, request, cookies)

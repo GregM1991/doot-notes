@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { type PrismaClient } from '@prisma/client'
-import { UniqueEnforcer } from 'enforce-unique'
 import bcrypt from 'bcryptjs'
+import { UniqueEnforcer } from 'enforce-unique'
 
 const uniqueUsernameEnforcer = new UniqueEnforcer()
 

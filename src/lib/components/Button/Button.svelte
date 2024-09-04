@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte'
 	import classnames from 'classnames'
-	import { Spinner } from '$lib/components'
+	import { createEventDispatcher } from 'svelte'
 	import { fly } from 'svelte/transition'
+	import { Spinner } from '$lib/components'
 
 	export let type: 'submit' | 'button' | 'reset' | undefined = undefined
 	export let href: string | undefined = undefined

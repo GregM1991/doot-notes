@@ -5,6 +5,9 @@
 		superForm,
 	} from 'sveltekit-superforms'
 	import { zodClient } from 'sveltekit-superforms/adapters'
+	import { idTestId, imageListTestId } from './consts.editNote'
+	import { generateCopy } from './editNote.helpers'
+	import  { type ImageFieldset } from './types'
 	import {
 		Input,
 		TextArea,
@@ -17,10 +20,7 @@
 		Cross,
 		Plus,
 	} from '$lib/components'
-	import type { ImageFieldset } from './types'
 	import { NoteEditorSchema } from '$lib/schemas'
-	import { generateCopy } from './editNote.helpers'
-	import { idTestId, imageListTestId } from './consts.editNote'
 
 	export let data: SuperValidated<Infer<typeof NoteEditorSchema>>
 	export let images: Array<ImageFieldset> = []
@@ -36,7 +36,7 @@
 	)
 	const Icon = $form.id ? Check : Plus
 
-	$: imageList = Boolean(images.length)
+	$: imageList = images.length
 		? images
 		: [{ id: undefined, file: undefined, altText: undefined }]
 

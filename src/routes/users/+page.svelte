@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { Searchbar } from '$lib/components/index'
-	import { getUserImgSrc } from '$lib/utils/misc'
 	import { goto } from '$app/navigation'
-	import { debounce } from '$lib/utils/misc'
 	import { navigating } from '$app/stores'
-
+	import { Searchbar } from '$lib/components/index'
+	import { getUserImgSrc , debounce } from '$lib/utils/misc'
+	
 	let { data } = $props()
 	let fetching = $state(Boolean(data.fetching))
 

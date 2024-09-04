@@ -1,13 +1,13 @@
 import { type Password, type User } from '@prisma/client'
-import { prisma } from './db.server'
-import bcrypt from 'bcryptjs'
 import { redirect, type Cookies } from '@sveltejs/kit'
+import bcrypt from 'bcryptjs'
+import { prisma } from './db.server'
+import { safeRedirect } from './misc'
 import {
 	authSessionCookieName,
 	authSessionCookieOptions,
 	getAuthSessionData,
 } from '$lib/server/sessions/authSession'
-import { safeRedirect } from './misc'
 
 type LoginParams = {
 	username: User['username']

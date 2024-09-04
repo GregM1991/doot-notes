@@ -1,6 +1,6 @@
+import  { type PageServerLoad } from './$types'
 import { UserSearchResultsSchema } from '$lib/schemas'
 import { prisma } from '$lib/utils/db.server'
-import type { PageServerLoad } from './$types'
 
 export const load = (async ({ url }) => {
 	const searchQuery = url.searchParams.get('search') ?? ''

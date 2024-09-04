@@ -1,8 +1,8 @@
+import { setError, type SuperValidated } from 'sveltekit-superforms'
+import  { type ZodType, type z } from 'zod'
 import { env } from '$env/dynamic/private'
 import { Honeypot, SpamError } from '$lib/server/honeypot'
-import type { Message } from '$lib/types'
-import { setError, type SuperValidated } from 'sveltekit-superforms'
-import type { ZodType, z } from 'zod'
+import  { type Message } from '$lib/types'
 
 export const honeypot = new Honeypot({
 	validFromFieldName: null,

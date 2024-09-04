@@ -1,14 +1,14 @@
-import type { CookieSerializeOptions } from 'cookie'
-import { z } from 'zod'
+import  { type Session } from '@prisma/client'
 import { redirect, type Cookies } from '@sveltejs/kit'
-import type { Session } from '@prisma/client'
+import  { type CookieSerializeOptions } from 'cookie'
+import { type z } from 'zod'
+import { AuthSessionSchema } from '$lib/schemas'
 import {
 	decryptCookie,
 	encryptAndSignCookieValue,
 } from '$lib/server/sessions/secureCookie'
 import { sessionKey } from '$lib/utils/auth.server'
 import { safeRedirect } from '$lib/utils/misc'
-import { AuthSessionSchema } from '$lib/schemas'
 
 type SessionType = {
 	id: Session['id']

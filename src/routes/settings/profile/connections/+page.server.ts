@@ -1,11 +1,11 @@
 // import { resolveConnectionData } from '$lib/server/sessions/connections.server'
+import  { type Actions } from '@sveltejs/kit'
+import  { type PageServerLoad } from './$types'
+import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 import { requireUserId } from '$lib/utils/auth.server'
 import { ProviderNameSchema, type ProviderName } from '$lib/utils/connections'
 import { prisma } from '$lib/utils/db.server'
-import type { Actions } from '@sveltejs/kit'
-import type { PageServerLoad } from './$types'
 import { invariantResponse } from '$lib/utils/misc'
-import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 
 async function userCanDeleteConnections(userId: string) {
 	const user = await prisma.user.findUnique({

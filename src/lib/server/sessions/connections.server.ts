@@ -1,9 +1,9 @@
-import type { CookieSerializeOptions } from 'cookie'
-import type { ProviderName } from '../../utils/connections'
+import  { type Cookies } from '@sveltejs/kit'
+import  { type CookieSerializeOptions } from 'cookie'
+import  { type ProviderName } from '../../utils/connections'
 // import { GitHubProvider } from '../../utils/providers/github.server'
-import type { AuthProvider } from '../../utils/providers/provider'
+import  { type AuthProvider } from '../../utils/providers/provider'
 import { decryptCookie, encryptAndSignCookieValue } from './secureCookie'
-import type { Cookies } from '@sveltejs/kit'
 import { ConnectionSchema } from '$lib/schemas'
 
 export const connectionCookieName = 'dn_connection'

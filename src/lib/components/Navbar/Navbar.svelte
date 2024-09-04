@@ -1,6 +1,6 @@
 <script lang="ts">
+	import  { type User } from '@prisma/client'
 	import { AvatarMenu, Button } from '$lib/components'
-	import type { User } from '@prisma/client'
 
 	export let user: (User & { image: { id: string } | null }) | null = null
 </script>

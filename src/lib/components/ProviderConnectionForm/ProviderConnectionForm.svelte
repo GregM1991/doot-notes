@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Button from '../Button/Button.svelte'
 	import { page } from '$app/stores'
 	import {
 		providerIconNamesMap,
@@ -6,7 +7,6 @@
 		type ProviderName,
 	} from '$lib/utils/connections'
 	// import { SvelteComponent, onMount } from 'svelte'
-	import Button from '../Button/Button.svelte'
 	// import type { SvelteHTMLElements } from 'svelte/elements'
 
 	export let redirectTo: string | null = null

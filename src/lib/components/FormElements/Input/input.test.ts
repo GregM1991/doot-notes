@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/svelte/svelte5'
-import Input from './Input.svelte'
 import { describe, expect, test } from 'vitest'
 import { inputLabelTestId, validationTest } from '../formElements.consts'
+import Input from './Input.svelte'
 
 describe('Input', () => {
 	test('If label passed, label renders', () => {

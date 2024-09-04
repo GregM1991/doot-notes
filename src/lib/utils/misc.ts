@@ -1,10 +1,10 @@
 import { error } from '@sveltejs/kit'
-import userImg from '$lib/images/user.png'
-import type {
-	ImageFieldset,
-	ImageFieldsetList,
+import  {
+	type ImageFieldset,
+	type ImageFieldsetList,
 } from '$lib/components/EditNote/types'
-import type { ImageMap } from '$lib/types'
+import userImg from '$lib/images/user.png'
+import  { type ImageMap } from '$lib/types'
 
 export function getUserImgSrc(imageId?: string | null) {
 	return imageId ? `/api/resources/user-images/${imageId}` : userImg

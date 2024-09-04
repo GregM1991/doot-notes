@@ -1,6 +1,6 @@
+import { type z } from 'zod'
 import { env } from '$env/dynamic/private'
 import { ResendSuccessSchema, ResendErrorSchema } from '$lib/schemas'
-import { z } from 'zod'
 
 type ResendError = z.infer<typeof ResendErrorSchema>
 

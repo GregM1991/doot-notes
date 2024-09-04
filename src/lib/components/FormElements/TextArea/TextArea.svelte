@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { ValidationErrors } from '$lib/components'
-	import type { InputConstraint } from 'sveltekit-superforms'
+	import  { type InputConstraint } from 'sveltekit-superforms'
 	import { inputLabelTestId, validationTest } from '../formElements.consts'
+	import { ValidationErrors } from '$lib/components'
 
 	export let name: string
 	export let value = ''

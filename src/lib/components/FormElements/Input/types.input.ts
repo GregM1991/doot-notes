@@ -1,4 +1,4 @@
-import type { InputConstraint } from 'sveltekit-superforms'
+import  { type InputConstraint } from 'sveltekit-superforms'
 
 export type InputProps = {
 	placeholder?: string

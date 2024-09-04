@@ -1,5 +1,5 @@
 import { redirect } from '@sveltejs/kit'
-import type { PageServerLoad } from './$types'
+import  { type PageServerLoad } from './$types'
 import { logout } from '$lib/utils/auth.server.js'
 
 export const load = (async () => {

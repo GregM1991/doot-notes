@@ -1,4 +1,4 @@
-import type { Cookies } from '@sveltejs/kit'
+import  { type Cookies } from '@sveltejs/kit'
 import { type Strategy } from 'remix-auth'
 
 // Define a user type for cleaner typing
