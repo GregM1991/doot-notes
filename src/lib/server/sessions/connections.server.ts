@@ -39,7 +39,7 @@ export function setConnectionDataToCookie(cookies: Cookies, state: string) {
 
 //  TODO: add providers back in: new GitHubProvider(),
 // export const providers: Record<ProviderName, AuthProvider> = {
-// 	github: new GitHubProvider(), 
+// 	github: new GitHubProvider(),
 // }
 
 // export function handleMockAction(providerName: ProviderName, cookies: Cookies) {

@@ -6,7 +6,9 @@
 </script> -->
 
 <h1 class="header">We're working on it!</h1>
-<p>We're working on adding third party connections in the future, hold tight!</p>
+<p>
+	We're working on adding third party connections in the future, hold tight!
+</p>
 <!-- {#if data.connections.length > 0}
 	{#each data.connections as connection}
 		<div>
