@@ -1,4 +1,4 @@
-import  { type PageServerLoad } from './$types'
+import { type PageServerLoad } from './$types'
 import { UserSearchResultsSchema } from '$lib/schemas'
 import { prisma } from '$lib/utils/db.server'
 

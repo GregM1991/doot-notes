@@ -1,4 +1,4 @@
-import  { type LayoutServerLoad } from './$types'
+import { type LayoutServerLoad } from './$types'
 import { prisma } from '$lib/utils/db.server'
 
 export const load = (async ({ parent }) => {

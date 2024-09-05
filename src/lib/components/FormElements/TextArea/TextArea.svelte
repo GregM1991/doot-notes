@@ -1,5 +1,5 @@
 <script lang="ts">
-	import  { type InputConstraint } from 'sveltekit-superforms'
+	import { type InputConstraint } from 'sveltekit-superforms'
 	import { inputLabelTestId, validationTest } from '../formElements.consts'
 	import { ValidationErrors } from '$lib/components'
 
@@ -19,7 +19,6 @@
 {#if label && !hidden}
 	<label data-testid={inputLabelTestId} for={id}>{label}</label>
 {/if}
-<!-- svelte-ignore a11y-autofocus -->
 <textarea
 	{id}
 	{name}

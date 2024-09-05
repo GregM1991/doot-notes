@@ -2,7 +2,7 @@ import { redirect } from '@sveltejs/kit'
 import { fail, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import { z } from 'zod'
-import  { type Actions, type PageServerLoad } from './$types'
+import { type Actions, type PageServerLoad } from './$types'
 import { ChangePasswordFormSchema } from '$lib/schemas'
 import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 import {

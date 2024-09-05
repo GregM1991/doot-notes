@@ -3,7 +3,7 @@ import { redirect } from '@sveltejs/kit'
 import * as QRCode from 'qrcode'
 import { fail, setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
-import  { type PageServerLoad } from './$types'
+import { type PageServerLoad } from './$types'
 import { isCodeValid } from '$lib/auth/verify.server'
 import {
 	twoFAVerificationType,

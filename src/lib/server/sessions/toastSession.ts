@@ -1,5 +1,5 @@
-import  { type Cookies } from '@sveltejs/kit'
-import  { type CookieSerializeOptions } from 'cookie'
+import { type Cookies } from '@sveltejs/kit'
+import { type CookieSerializeOptions } from 'cookie'
 import { type z } from 'zod'
 import { ToastSchema, type toastTypes } from '$lib/schemas'
 import {

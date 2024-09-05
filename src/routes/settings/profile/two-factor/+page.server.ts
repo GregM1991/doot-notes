@@ -1,6 +1,6 @@
 import { generateTOTP } from '@epic-web/totp'
 import { redirect } from '@sveltejs/kit'
-import  { type Actions, type PageServerLoad } from './$types'
+import { type Actions, type PageServerLoad } from './$types'
 import {
 	twoFAVerificationType,
 	twoFAVerifyVerificationType,
@@ -21,6 +21,7 @@ export const actions = {
 	default: async ({ request, locals }) => {
 		const userId = requireUserId(locals.userId, request)
 		const { otp: _otp, ...config } = generateTOTP()
+		console.log('Generated TOTP:', _otp) // TODO: What's going on with this
 		const verificationData = {
 			...config,
 			type: twoFAVerifyVerificationType,

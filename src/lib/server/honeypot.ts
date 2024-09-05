@@ -80,7 +80,10 @@ export class Honeypot {
 	public check(formData: FormData) {
 		let nameFieldName = this.config.nameFieldName ?? DEFAULT_NAME_FIELD_NAME
 		if (this.config.randomizeNameFieldName) {
-			const actualName = this.getRandomizedNameFieldName(nameFieldName, formData)
+			const actualName = this.getRandomizedNameFieldName(
+				nameFieldName,
+				formData,
+			)
 			if (actualName) nameFieldName = actualName
 		}
 

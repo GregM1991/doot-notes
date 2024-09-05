@@ -1,6 +1,6 @@
 import { setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
-import  { type Actions, type PageServerLoad } from './$types'
+import { type Actions, type PageServerLoad } from './$types'
 import {
 	deleteDataActionIntent,
 	profileUpdateActionIntent,

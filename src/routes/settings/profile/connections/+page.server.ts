@@ -1,9 +1,9 @@
 // import { resolveConnectionData } from '$lib/server/sessions/connections.server'
-import  { type Actions } from '@sveltejs/kit'
-import  { type PageServerLoad } from './$types'
+import { type Actions } from '@sveltejs/kit'
+import { type PageServerLoad } from './$types'
 import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 import { requireUserId } from '$lib/utils/auth.server'
-import { ProviderNameSchema, type ProviderName } from '$lib/utils/connections'
+// import { ProviderNameSchema, type ProviderName } from '$lib/utils/connections'
 import { prisma } from '$lib/utils/db.server'
 import { invariantResponse } from '$lib/utils/misc'
 

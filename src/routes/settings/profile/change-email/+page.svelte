@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms'
 	import { zodClient } from 'sveltekit-superforms/adapters'
-	import  { type PageData } from './$types'
+	import { type PageData } from './$types'
 	import { Button, FormGroup, Input, ValidationErrors } from '$lib/components'
 	import { ChangeEmailSchema } from '$lib/schemas'
 

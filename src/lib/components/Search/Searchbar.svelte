@@ -1,5 +1,5 @@
 <script lang="ts">
-	import  { type SearchProps } from './types.search'
+	import { type SearchProps } from './types.search'
 	import { page } from '$app/stores'
 	import { Input, MagnifyingGlass, Spinner } from '$lib/components'
 

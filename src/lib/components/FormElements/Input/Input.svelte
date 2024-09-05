@@ -1,7 +1,7 @@
 <script lang="ts">
 	import classNames from 'classnames'
 	import { inputLabelTestId, validationTest } from '../formElements.consts'
-	import  { type InputProps } from './types.input'
+	import { type InputProps } from './types.input'
 	import { ValidationErrors } from '$lib/components'
 
 	let {

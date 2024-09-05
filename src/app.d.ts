@@ -1,6 +1,5 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
-import  { type HoneypotInputProps } from '$lib/server/honeypot'
 import { Message } from '$lib/types'
 
 declare module 'svelte' {

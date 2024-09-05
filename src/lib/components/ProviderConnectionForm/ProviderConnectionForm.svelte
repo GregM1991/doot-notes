@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Button from '../Button/Button.svelte'
-	import { page } from '$app/stores'
+	// import { page } from '$app/stores'
 	import {
-		providerIconNamesMap,
+		// providerIconNamesMap,
 		providerLabels,
 		type ProviderName,
 	} from '$lib/utils/connections'

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { fileProxy, superForm } from 'sveltekit-superforms'
 	import { zodClient } from 'sveltekit-superforms/adapters'
-	import  { type PageData } from './$types'
+	import { type PageData } from './$types'
 	import { Button, Pencil2, Trash, ValidationErrors } from '$lib/components'
 	import { PhotoFormSchema } from '$lib/schemas'
 	import { getUserImgSrc } from '$lib/utils/misc'

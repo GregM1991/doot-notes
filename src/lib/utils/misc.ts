@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { error } from '@sveltejs/kit'
-import  {
+import {
 	type ImageFieldset,
 	type ImageFieldsetList,
 } from '$lib/components/EditNote/types'
 import userImg from '$lib/images/user.png'
-import  { type ImageMap } from '$lib/types'
+import { type ImageMap } from '$lib/types'
 
 export function getUserImgSrc(imageId?: string | null) {
 	return imageId ? `/api/resources/user-images/${imageId}` : userImg
@@ -100,7 +101,7 @@ export function getUserInitials(name: string) {
 export function extractImageGroup(formData: FormData) {
 	const imageMap = new Map<any, ImageMap>()
 	Array.from(formData.entries())
-		.filter(([key, _]) => key.includes('images'))
+		.filter(([key]) => key.includes('images'))
 		.forEach(([key, value]) => {
 			const [currKey, field] = key.split('.')
 			const match = currKey.match(/\[(\d+)\]/)

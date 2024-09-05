@@ -1,4 +1,4 @@
-import  { type VerificationTypes } from '$lib/auth/verify'
+import { type VerificationTypes } from '$lib/auth/verify'
 
 export const profileUpdateActionIntent = 'update-profile'
 export const signOutOfSessionsActionIntent = 'sign-out-of-sessions'

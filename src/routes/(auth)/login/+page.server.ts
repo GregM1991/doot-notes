@@ -1,7 +1,7 @@
 import { type Actions, redirect } from '@sveltejs/kit'
 import { superValidate, setError, fail } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
-import  { type PageServerLoad } from './$types'
+import { type PageServerLoad } from './$types'
 import { LoginFormSchema } from '$lib/schemas'
 import { handleNewSessionWithRedirect } from '$lib/server/sessions/authSession'
 import { login } from '$lib/utils/auth.server'

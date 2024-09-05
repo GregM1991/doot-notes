@@ -1,7 +1,7 @@
 import { type Actions, redirect } from '@sveltejs/kit'
 import { superValidate, fail, setError } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
-import { z } from 'zod'
+// import { z } from 'zod'
 import { forgotPasswordEmail } from '$lib/auth/recoverPassword.server'
 import { prepareVerification } from '$lib/auth/verify.server'
 import { ForgotPasswordSchema } from '$lib/schemas'
@@ -17,7 +17,7 @@ export const load = async ({ locals }) => {
 }
 
 export const actions = {
-	default: async ({ request, cookies }) => {
+	default: async ({ request }) => {
 		// TODO: Create honeypot
 		const formData = await request.formData()
 		const form = await superValidate(formData, zod(ForgotPasswordSchema))

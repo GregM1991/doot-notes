@@ -1,6 +1,6 @@
 import { fail, setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
-import  { type PageServerLoad } from './$types'
+import { type PageServerLoad } from './$types'
 import {
 	emailChangeEmail,
 	newEmailAddressSessionKey,

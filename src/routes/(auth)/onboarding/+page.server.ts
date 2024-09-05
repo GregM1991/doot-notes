@@ -1,7 +1,7 @@
 import { redirect, type Actions, type Cookies } from '@sveltejs/kit'
 import { fail, setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
-import  { type PageServerLoad } from './$types'
+import { type PageServerLoad } from './$types'
 import { onboardingEmailSessionKey } from '$lib/auth/onboarding'
 import { OnboardingSchema } from '$lib/schemas'
 import { handleNewSession } from '$lib/server/sessions/authSession'

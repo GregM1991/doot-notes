@@ -7,7 +7,7 @@
 	import { zodClient } from 'sveltekit-superforms/adapters'
 	import { idTestId, imageListTestId } from './consts.editNote'
 	import { generateCopy } from './editNote.helpers'
-	import  { type ImageFieldset } from './types'
+	import { type ImageFieldset } from './types'
 	import {
 		Input,
 		TextArea,

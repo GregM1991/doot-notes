@@ -2,8 +2,8 @@
 	import { goto } from '$app/navigation'
 	import { navigating } from '$app/stores'
 	import { Searchbar } from '$lib/components/index'
-	import { getUserImgSrc , debounce } from '$lib/utils/misc'
-	
+	import { getUserImgSrc, debounce } from '$lib/utils/misc'
+
 	let { data } = $props()
 	let fetching = $state(Boolean(data.fetching))
 

@@ -1,7 +1,7 @@
 import { redirect, type Cookies } from '@sveltejs/kit'
 import { fail, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
-import  { type PageServerLoad } from './$types'
+import { type PageServerLoad } from './$types'
 import { ResetPasswordSchema } from '$lib/schemas'
 import {
 	getVerifySessionData,

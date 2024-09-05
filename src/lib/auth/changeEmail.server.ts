@@ -1,7 +1,7 @@
 import { redirect } from '@sveltejs/kit'
 import { setError } from 'sveltekit-superforms'
 import { requireRecentVerification } from './verify.server'
-import  { type VerifyFunctionArgs } from '$lib/auth/verify'
+import { type VerifyFunctionArgs } from '$lib/auth/verify'
 import { sendEmail } from '$lib/server/email'
 import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 import { getVerifySessionData } from '$lib/server/sessions/verifySession'

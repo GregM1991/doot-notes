@@ -1,7 +1,7 @@
 import { redirect } from '@sveltejs/kit'
 import { fail, superValidate, withFiles } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
-import  { type Actions, type PageServerLoad } from './$types'
+import { type Actions, type PageServerLoad } from './$types'
 import { PhotoFormSchema } from '$lib/schemas'
 import { requireUserId } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'

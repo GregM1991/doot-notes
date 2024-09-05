@@ -1,4 +1,4 @@
-import  { type RequestEvent } from '@sveltejs/kit'
+import { type RequestEvent } from '@sveltejs/kit'
 import { RetryAfterRateLimiter } from 'sveltekit-rate-limiter/server'
 import { dev } from '$app/environment'
 

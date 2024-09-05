@@ -1,5 +1,5 @@
 import { redirect } from '@sveltejs/kit'
-import  { type LayoutServerLoad } from './$types'
+import { type LayoutServerLoad } from './$types'
 import { createLoginWithRedirectUrl } from '$lib/utils/auth.server'
 
 export const load = (async ({ parent, request }) => {

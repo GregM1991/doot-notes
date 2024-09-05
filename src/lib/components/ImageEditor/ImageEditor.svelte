@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Input, Plus } from '$lib/components'
-	import  { type ImageFieldset } from '$lib/components/EditNote/types'
+	import { type ImageFieldset } from '$lib/components/EditNote/types'
 	import { getNoteImgSrc } from '$lib/utils/misc'
 
 	export let image: ImageFieldset | undefined

@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit'
 import { setError } from 'sveltekit-superforms'
-import  { type VerifyFunctionArgs } from './verify'
+import { type VerifyFunctionArgs } from './verify'
 import { setVerificationCookieData } from '$lib/server/sessions/verifySession'
 import { prisma } from '$lib/utils/db.server'
 import { invariant } from '$lib/utils/misc'

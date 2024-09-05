@@ -1,5 +1,5 @@
 import { redirect } from '@sveltejs/kit'
-import  { type Actions, type PageServerLoad } from './$types'
+import { type Actions, type PageServerLoad } from './$types'
 import { requireRecentVerification } from '$lib/auth/verify.server'
 import { twoFAVerificationType } from '$lib/profile/consts'
 import { setToastDataToCookie } from '$lib/server/sessions/toastSession'

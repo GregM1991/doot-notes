@@ -1,7 +1,7 @@
 import { redirect } from '@sveltejs/kit'
 import { fail, setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
-import  { type PageServerLoad } from './$types'
+import { type PageServerLoad } from './$types'
 import { prepareVerification } from '$lib/auth/verify.server'
 import { SignupFormSchema } from '$lib/schemas'
 import { sendEmail } from '$lib/server/email'

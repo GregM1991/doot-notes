@@ -1,5 +1,5 @@
 import { onboardingEmailSessionKey } from './onboarding'
-import  { type VerifyFunctionArgs } from '$lib/auth/verify'
+import { type VerifyFunctionArgs } from '$lib/auth/verify'
 import { handleNewVerification } from '$lib/server/sessions/verifySession'
 import { invariant } from '$lib/utils/misc'
 
