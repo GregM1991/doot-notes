@@ -16,6 +16,13 @@ const config = {
 		csrf: {
 			checkOrigin: true,
 		},
+		vite: {
+			resolve: {
+				alias: {
+					$msw: path.resolve('./src/msw'),
+				},
+			},
+		},
 	},
 }
 
