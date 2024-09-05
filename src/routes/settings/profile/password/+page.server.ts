@@ -1,17 +1,17 @@
+import { redirect } from '@sveltejs/kit'
+import { fail, superValidate } from 'sveltekit-superforms'
+import { zod } from 'sveltekit-superforms/adapters'
+import { z } from 'zod'
+import { type Actions, type PageServerLoad } from './$types'
+import { ChangePasswordFormSchema } from '$lib/schemas'
+import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 import {
 	getPasswordHash,
 	requireUserId,
 	verifyUserPassword,
 } from '$lib/utils/auth.server'
-import { z } from 'zod'
-import type { Actions, PageServerLoad } from './$types'
 import { prisma } from '$lib/utils/db.server'
-import { redirect } from '@sveltejs/kit'
-import { fail, superValidate } from 'sveltekit-superforms'
-import { zod } from 'sveltekit-superforms/adapters'
 import { requirePassword } from '$lib/utils/misc.server'
-import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
-import { ChangePasswordFormSchema } from '$lib/schemas'
 
 export const load = (async ({ request, locals }) => {
 	const userId = requireUserId(locals.userId, request)

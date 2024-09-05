@@ -1,13 +1,13 @@
 import { redirect, type Cookies } from '@sveltejs/kit'
-import { newEmailAddressSessionKey } from '$lib/auth/changeEmail.server'
-import { onboardingEmailSessionKey } from '$lib/auth/onboarding'
-import { resetPasswordUsernameSessionKey } from '$lib/auth/resetPassword.server'
+import { type newEmailAddressSessionKey } from '$lib/auth/changeEmail.server'
+import { type onboardingEmailSessionKey } from '$lib/auth/onboarding'
+import { type resetPasswordUsernameSessionKey } from '$lib/auth/resetPassword.server'
+import { VerifySessionSchema } from '$lib/schemas.server'
 import {
 	decryptCookie,
 	encryptAndSignCookieValue,
 } from '$lib/server/sessions/secureCookie'
 import { safeRedirect } from '$lib/utils/misc'
-import { VerifySessionSchema } from '$lib/schemas.server'
 
 type VerificationType =
 	| typeof onboardingEmailSessionKey

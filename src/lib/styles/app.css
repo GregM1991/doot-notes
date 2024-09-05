@@ -157,9 +157,15 @@
 	--border-radius-circle: 9999px;
 	--border: 2px solid var(--color-grey-20);
 	--border-drop-shadow: 3px 3px 0px;
-	--border-drop-shadow-black: drop-shadow(var(--border-drop-shadow) var(--color-grey-20));
-	--border-drop-shadow-black-focus: drop-shadow(1px 1px 0px var(--color-grey-20));
-	--border-drop-shadow-black-hover: drop-shadow(5px 5px 0px var(--color-grey-20));
+	--border-drop-shadow-black: drop-shadow(
+		var(--border-drop-shadow) var(--color-grey-20)
+	);
+	--border-drop-shadow-black-focus: drop-shadow(
+		1px 1px 0px var(--color-grey-20)
+	);
+	--border-drop-shadow-black-hover: drop-shadow(
+		5px 5px 0px var(--color-grey-20)
+	);
 	--border-primary: 2px solid var(--palette-primary);
 }
 

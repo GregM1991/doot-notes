@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms'
+	import { zodClient } from 'sveltekit-superforms/adapters'
 	import { page } from '$app/stores'
 	import {
 		Button,
@@ -8,7 +9,6 @@
 		HoneypotInputs,
 		FormGroup,
 	} from '$lib/components'
-	import { zodClient } from 'sveltekit-superforms/adapters'
 	import { LoginFormSchema } from '$lib/schemas.js'
 
 	export let data
@@ -63,11 +63,7 @@
 			<a href="/forgot-password">Forgot password?</a>
 		</div>
 	</div>
-	<Input
-		type="hidden"
-		name="redirectTo"
-		value={$page.params.redirectTo}
-	/>
+	<Input type="hidden" name="redirectTo" value={$page.params.redirectTo} />
 	<Button
 		fluid
 		type="submit"

@@ -1,12 +1,12 @@
-import { fail } from '@sveltejs/kit'
-import { SESSION_SECRET } from '$env/static/private'
 import crypto from 'crypto'
+import { fail } from '@sveltejs/kit'
 import jwt from 'jsonwebtoken'
 import { z } from 'zod'
+import { env } from '$env/dynamic/private'
 import { EncryptedAndSignedCookieSchema } from '$lib/schemas'
 
 const algorithm = 'aes-256-cbc'
-const secret = SESSION_SECRET.split(',')[0]
+const secret = env.SESSION_SECRET
 
 export function encryptAndSignCookieValue<T>(
 	value: T,

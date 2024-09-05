@@ -1,11 +1,11 @@
+import { type Actions, redirect } from '@sveltejs/kit'
 import { superValidate, setError, fail } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
-import { type Actions, redirect } from '@sveltejs/kit'
+import { type PageServerLoad } from './$types'
+import { LoginFormSchema } from '$lib/schemas'
 import { handleNewSessionWithRedirect } from '$lib/server/sessions/authSession'
 import { login } from '$lib/utils/auth.server'
-import type { PageServerLoad } from './$types'
 import { checkHoneypot } from '$lib/utils/honeypot.server'
-import { LoginFormSchema } from '$lib/schemas'
 
 export const load = (async ({ locals }) => {
 	if (locals.userId) throw redirect(303, '/')

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { HoneypotInputProps } from '$lib/server/honeypot'
 	import { getContext } from 'svelte'
+	import { type HoneypotInputProps } from '$lib/server/honeypot'
 
 	export let label = 'Please leave this field empty'
 

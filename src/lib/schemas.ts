@@ -1,3 +1,4 @@
+import { createId as cuid } from '@paralleldrive/cuid2'
 import { z } from 'zod'
 import {
 	codeQueryParam,
@@ -5,7 +6,6 @@ import {
 	targetQueryParam,
 	typeQueryParam,
 } from './auth/verify'
-import { createId as cuid } from '@paralleldrive/cuid2'
 
 export const UsernameSchema = z
 	.string({ required_error: 'Username is required' })

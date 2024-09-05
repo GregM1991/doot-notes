@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/svelte/svelte5'
-import TextArea from './TextArea.svelte'
 import { describe, expect, test } from 'vitest'
 import { inputLabelTestId, validationTest } from '../formElements.consts'
+import TextArea from './TextArea.svelte'
 
 describe('TextArea', () => {
 	test('If label passed, label renders', () => {

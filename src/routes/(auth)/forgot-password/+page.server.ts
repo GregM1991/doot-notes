@@ -1,13 +1,13 @@
-import { z } from 'zod'
+import { type Actions, redirect } from '@sveltejs/kit'
 import { superValidate, fail, setError } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
-import { type Actions, redirect } from '@sveltejs/kit'
-import { prepareVerification } from '$lib/auth/verify.server'
+// import { z } from 'zod'
 import { forgotPasswordEmail } from '$lib/auth/recoverPassword.server'
+import { prepareVerification } from '$lib/auth/verify.server'
+import { ForgotPasswordSchema } from '$lib/schemas'
 import { sendEmail } from '$lib/server/email'
 import { prisma } from '$lib/utils/db.server'
 import { checkHoneypot } from '$lib/utils/honeypot.server.js'
-import { ForgotPasswordSchema } from '$lib/schemas'
 
 export const load = async ({ locals }) => {
 	if (locals.userId) throw redirect(303, '/')
@@ -17,7 +17,7 @@ export const load = async ({ locals }) => {
 }
 
 export const actions = {
-	default: async ({ request, cookies }) => {
+	default: async ({ request }) => {
 		// TODO: Create honeypot
 		const formData = await request.formData()
 		const form = await superValidate(formData, zod(ForgotPasswordSchema))
@@ -52,7 +52,7 @@ export const actions = {
 
 		const response = await sendEmail({
 			to: user.email,
-			subject: `Epic Notes Password Reset`,
+			subject: `Doot Notes Password Reset`,
 			html: forgotPasswordEmail({ verifyUrl: verifyUrl.toString(), otp }),
 			text: 'Whats this also?',
 		})

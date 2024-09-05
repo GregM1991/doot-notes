@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms'
+	import { zodClient } from 'sveltekit-superforms/adapters'
 	import {
 		Button,
 		Input,
@@ -7,7 +8,6 @@
 		HoneypotInputs,
 		FormGroup,
 	} from '$lib/components'
-	import { zodClient } from 'sveltekit-superforms/adapters'
 	import { ForgotPasswordSchema } from '$lib/schemas'
 
 	export let data

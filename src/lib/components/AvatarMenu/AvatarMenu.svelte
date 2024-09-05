@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { getUserImgSrc } from '$lib/utils/misc'
 	import { createDropdownMenu, melt } from '@melt-ui/svelte'
 	import { Exit, Pencil2, Person } from '$lib/components'
+	import { getUserImgSrc } from '$lib/utils/misc'
 	export let userImageId: string | null = null
 	export let username: string
 	export let name: string

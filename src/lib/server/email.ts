@@ -1,6 +1,6 @@
-import { RESEND_API_KEY } from '$env/static/private'
+import { type z } from 'zod'
+import { env } from '$env/dynamic/private'
 import { ResendSuccessSchema, ResendErrorSchema } from '$lib/schemas'
-import { z } from 'zod'
 
 type ResendError = z.infer<typeof ResendErrorSchema>
 
@@ -19,7 +19,7 @@ export async function sendEmail(options: SendEmailArgs) {
 		...options,
 	}
 
-	if (!RESEND_API_KEY && !process.env.MOCKS) {
+	if (!env.RESEND_API_KEY && !process.env.MOCKS) {
 		console.error(`RESEND_API_KEY needs to be set and we're`)
 		console.error(`RESEND_API_KEY needs to be in environment variables`)
 		console.error(
@@ -35,7 +35,7 @@ export async function sendEmail(options: SendEmailArgs) {
 		method: 'POST',
 		body: JSON.stringify(email),
 		headers: {
-			Authorization: `Bearer ${RESEND_API_KEY}`,
+			Authorization: `Bearer ${env.RESEND_API_KEY}`,
 			'Content-Type': 'application/json',
 		},
 	})

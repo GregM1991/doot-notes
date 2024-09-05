@@ -1,12 +1,12 @@
 import { generateTOTP } from '@epic-web/totp'
+import { redirect } from '@sveltejs/kit'
+import { type Actions, type PageServerLoad } from './$types'
 import {
 	twoFAVerificationType,
 	twoFAVerifyVerificationType,
 } from '$lib/profile/consts'
 import { requireUserId } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
-import type { Actions, PageServerLoad } from './$types'
-import { redirect } from '@sveltejs/kit'
 
 export const load = (async ({ request, locals }) => {
 	const userId = requireUserId(locals.userId, request)
@@ -21,6 +21,7 @@ export const actions = {
 	default: async ({ request, locals }) => {
 		const userId = requireUserId(locals.userId, request)
 		const { otp: _otp, ...config } = generateTOTP()
+		console.log('Generated TOTP:', _otp) // TODO: What's going on with this
 		const verificationData = {
 			...config,
 			type: twoFAVerifyVerificationType,

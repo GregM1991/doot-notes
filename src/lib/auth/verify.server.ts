@@ -1,6 +1,8 @@
 import { redirect, type Cookies } from '@sveltejs/kit'
-import { handleVerification as handleOnboardingVerification } from '$lib/auth/onboarding.server'
+import { fail, setError, superValidate } from 'sveltekit-superforms'
+import { zod } from 'sveltekit-superforms/adapters'
 import { handleVerification as handleChangeEmailVerification } from '$lib/auth/changeEmail.server'
+import { handleVerification as handleOnboardingVerification } from '$lib/auth/onboarding.server'
 import { handleVerification as handleResetPasswordVerification } from '$lib/auth/resetPassword.server'
 import {
 	codeQueryParam,
@@ -10,16 +12,15 @@ import {
 	type IsCodeValidParams,
 	type VerificationTypes,
 } from '$lib/auth/verify'
-import { generateTOTP, verifyTOTP } from '$lib/server/totp'
-import { prisma } from '$lib/utils/db.server'
-import { getDomainUrl } from '$lib/utils/misc'
-import { fail, setError, superValidate } from 'sveltekit-superforms'
-import { zod } from 'sveltekit-superforms/adapters'
-import { requireUserId } from '$lib/utils/auth.server'
-import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 import { twoFAVerificationType } from '$lib/profile/consts'
-import { checkHoneypot } from '$lib/utils/honeypot.server'
 import { VerifySchema } from '$lib/schemas'
+import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
+import { generateTOTP, verifyTOTP } from '$lib/server/totp'
+import { requireUserId } from '$lib/utils/auth.server'
+import { prisma } from '$lib/utils/db.server'
+import { checkHoneypot } from '$lib/utils/honeypot.server'
+import { getDomainUrl } from '$lib/utils/misc'
+// import { ensurePrimary } from 'litefs-js/remix'
 
 type PrepareVerificatinParams = {
 	period: number
@@ -138,7 +139,7 @@ export async function validateRequest(
 		return setError(form, 'code', 'Invalid code')
 	}
 
-	// ensurePrimary ~~~ This has to do with caching with fly.io I believe 🤷🏻
+	// ensurePrimary()
 
 	const { data: formValue } = form
 

@@ -16,6 +16,12 @@
     "skipLibCheck": true,
     "allowImportingTsExtensions": true,
     "noEmit": true
+  },
+  "paths": {
+    "$lib": ["src/lib"],
+    "$lib/*": ["src/lib/*"],
+    "$msw": ["src/msw"],
+    "$msw/*": ["src/msw/*"]
   }
 }
 // Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias

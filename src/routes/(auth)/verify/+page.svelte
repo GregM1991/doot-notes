@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { superForm } from 'sveltekit-superforms'
+	import { zodClient } from 'sveltekit-superforms/adapters'
 	import {
 		Input,
 		Button,
@@ -6,9 +8,7 @@
 		FormGroup,
 		ValidationErrors,
 	} from '$lib/components'
-	import { superForm } from 'sveltekit-superforms'
 	import { VerifySchema } from '$lib/schemas'
-	import { zodClient } from 'sveltekit-superforms/adapters'
 
 	let { data } = $props()
 	const { form, errors, enhance, constraints, formId } = superForm(

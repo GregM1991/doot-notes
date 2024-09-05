@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { superForm } from 'sveltekit-superforms'
+	import { zodClient } from 'sveltekit-superforms/adapters'
 	import {
 		Input,
 		Button,
@@ -17,10 +19,8 @@
 		profileUpdateActionIntent,
 		signOutOfSessionsActionIntent,
 	} from '$lib/profile/consts.js'
-	import { getUserImgSrc } from '$lib/utils/misc'
-	import { superForm } from 'sveltekit-superforms'
-	import { zodClient } from 'sveltekit-superforms/adapters'
 	import { ProfileFormSchema } from '$lib/schemas'
+	import { getUserImgSrc } from '$lib/utils/misc'
 
 	export let data
 	const { form, enhance, errors, constraints } = superForm(data.form, {

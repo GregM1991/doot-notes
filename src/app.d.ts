@@ -1,7 +1,6 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 import { Message } from '$lib/types'
-import type { HoneypotInputProps } from '$lib/server/honeypot'
 
 declare module 'svelte' {
 	export interface ContextKey<T = unknown> {} // eslint-disable-line @typescript-eslint/no-unused-vars
