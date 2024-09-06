@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { ProviderConnectionForm } from '$lib/components/index.js'
-	import { providerNames } from '$lib/utils/connections.js'
+	// import { ProviderConnectionForm } from '$lib/components/index.js'
+	// import { providerNames } from '$lib/utils/connections.js'
 
-	export let data
+	// export let data
 </script>
 
-<h1 class="header">Manage your connections</h1>
-{#if data.connections.length > 0}
+<h1 class="header">We're working on bringing you connections, sorry!</h1>
+<!-- {#if data.connections.length > 0}
 	{#each data.connections as connection}
 		<div>
 			<p>{connection.providerName}</p>
@@ -19,4 +19,4 @@
 			<ProviderConnectionForm type="Connect" {providerName} />
 		{/each}
 	</div>
-{/if}
+{/if} -->
