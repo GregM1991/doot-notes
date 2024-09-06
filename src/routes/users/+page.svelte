@@ -17,7 +17,10 @@
 
 <h1>Doot Notes User's</h1>
 <main>
-	<Searchbar oninput={handleFormChange} fetching={Boolean($navigating) || fetching} />
+	<Searchbar
+		oninput={handleFormChange}
+		fetching={Boolean($navigating) || fetching}
+	/>
 	{#if data.status === 'error'}
 		<span>{data.error}</span>
 	{:else if Boolean(data.users.length)}

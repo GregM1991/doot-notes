@@ -53,7 +53,7 @@ export function createLoginWithRedirectUrl(
 	redirectTo =
 		redirectTo === null
 			? null
-			: redirectTo ?? `${requestUrl.pathname}${requestUrl.search}`
+			: (redirectTo ?? `${requestUrl.pathname}${requestUrl.search}`)
 	const loginParams = redirectTo ? new URLSearchParams({ redirectTo }) : null
 	const loginRedirect = ['/login', loginParams?.toString()]
 		.filter(Boolean)
