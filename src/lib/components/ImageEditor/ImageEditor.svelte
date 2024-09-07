@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Input, Plus } from '$lib/components'
-	import { getNoteImgSrc } from '$lib/utils/misc'
 	import type { ImageFieldset } from '$lib/components/EditNote/types'
+	import { getNoteImgSrc } from '$lib/utils/misc'
 
 	export let image: ImageFieldset | undefined
 	export let index: number

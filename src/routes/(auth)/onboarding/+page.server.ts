@@ -1,20 +1,20 @@
 import { redirect, type Actions, type Cookies } from '@sveltejs/kit'
+import { fail, setError, superValidate } from 'sveltekit-superforms'
+import { zod } from 'sveltekit-superforms/adapters'
 import { onboardingEmailSessionKey } from '$lib/auth/onboarding'
+import { OnboardingSchema } from '$lib/schemas'
+import { handleNewSession } from '$lib/server/sessions/authSession'
+import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 import {
 	getVerifySessionData,
 	verifySessionCookieName,
 	verifySessionCookieOptions,
 } from '$lib/server/sessions/verifySession'
-import { handleNewSession } from '$lib/server/sessions/authSession'
-import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 import { signup, requireAnonymous } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
+import { checkHoneypot } from '$lib/utils/honeypot.server'
 import { safeRedirect } from '$lib/utils/misc'
 import type { PageServerLoad } from './$types'
-import { fail, setError, superValidate } from 'sveltekit-superforms'
-import { zod } from 'sveltekit-superforms/adapters'
-import { checkHoneypot } from '$lib/utils/honeypot.server'
-import { OnboardingSchema } from '$lib/schemas'
 
 async function requireOnboardingEmail(userId: string | null, cookies: Cookies) {
 	requireAnonymous(userId)

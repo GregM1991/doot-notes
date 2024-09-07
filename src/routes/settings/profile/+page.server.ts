@@ -1,8 +1,4 @@
-import { requireUserId } from '$lib/utils/auth.server'
-import { prisma } from '$lib/utils/db.server'
-import { invariantResponse } from '$lib/utils/misc'
 import { setError, superValidate } from 'sveltekit-superforms'
-import type { Actions, PageServerLoad } from './$types'
 import { zod } from 'sveltekit-superforms/adapters'
 import {
 	deleteDataActionIntent,
@@ -16,6 +12,10 @@ import {
 	signOutOfSessionsAction,
 } from '$lib/profile/profileActions.server'
 import { ProfileFormSchema } from '$lib/schemas'
+import { requireUserId } from '$lib/utils/auth.server'
+import { prisma } from '$lib/utils/db.server'
+import { invariantResponse } from '$lib/utils/misc'
+import type { Actions, PageServerLoad } from './$types'
 
 export const load = (async ({ request, locals }) => {
 	const userId = requireUserId(locals.userId, request)

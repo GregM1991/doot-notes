@@ -1,9 +1,9 @@
-import { validateRequest } from '$lib/auth/verify.server'
 import { type Actions } from '@sveltejs/kit'
-import type { PageServerLoad } from './$types'
 import { superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
+import { validateRequest } from '$lib/auth/verify.server'
 import { VerifySchema } from '$lib/schemas'
+import type { PageServerLoad } from './$types'
 
 export const load = (async ({ url }) => {
 	const verifyForm = await superValidate(url.searchParams, zod(VerifySchema), {

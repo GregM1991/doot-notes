@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { page } from '$app/stores'
 	import { EditNote } from '$lib/components'
+	import { page } from '$app/stores'
 
 	export let data
 

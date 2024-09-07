@@ -1,9 +1,9 @@
-import { fail } from '@sveltejs/kit'
-import { env } from '$env/dynamic/private'
 import crypto from 'crypto'
+import { fail } from '@sveltejs/kit'
 import jwt from 'jsonwebtoken'
 import { z } from 'zod'
 import { EncryptedAndSignedCookieSchema } from '$lib/schemas'
+import { env } from '$env/dynamic/private'
 
 const algorithm = 'aes-256-cbc'
 const secret = env.SESSION_SECRET

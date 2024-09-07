@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { Button, FormGroup, Input } from '$lib/components'
-	import { ChangePasswordFormSchema } from '$lib/schemas.js'
 	import { superForm } from 'sveltekit-superforms'
 	import { zodClient } from 'sveltekit-superforms/adapters'
+	import { Button, FormGroup, Input } from '$lib/components'
+	import { ChangePasswordFormSchema } from '$lib/schemas.js'
 
 	export let data
 	const { form, errors, enhance, constraints } = superForm(

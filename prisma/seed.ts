@@ -6,9 +6,9 @@ createPassword,
 getNoteImages,
 getUserImages,
 img */
+import { faker } from '@faker-js/faker'
 import { prisma } from '../src/lib/utils/db.server'
 import { createUser, cleanupDb, createPassword } from '../tests/db-utils'
-import { faker } from '@faker-js/faker'
 
 // create function seed, is main function where all seed logic sits
 async function seed() {

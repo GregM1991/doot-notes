@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { error } from '@sveltejs/kit'
-import userImg from '$lib/images/user.png'
 import type {
 	ImageFieldset,
 	ImageFieldsetList,
 } from '$lib/components/EditNote/types'
+import userImg from '$lib/images/user.png'
 import type { ImageMap } from '$lib/types'
 
 export function getUserImgSrc(imageId?: string | null) {

@@ -1,6 +1,6 @@
+import type { RequestEvent } from '@sveltejs/kit'
 import { RetryAfterRateLimiter } from 'sveltekit-rate-limiter/server'
 import { dev } from '$app/environment'
-import type { RequestEvent } from '@sveltejs/kit'
 
 const maxMultiple = !dev || process.env.PLAYWRIGHT_TEST_BASE_URL ? 10_000 : 1
 

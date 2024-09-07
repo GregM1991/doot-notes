@@ -1,9 +1,9 @@
 <script lang="ts">
+	import { onDestroy, setContext } from 'svelte'
+	import { readable, type Readable } from 'svelte/store'
 	import { Navbar, Toast } from '$lib/components'
 	import type { HoneypotInputProps } from '$lib/server/honeypot.js'
 	import '$lib/styles/app.css'
-	import { onDestroy, setContext } from 'svelte'
-	import { readable, type Readable } from 'svelte/store'
 
 	export let data
 	let timeoutId: ReturnType<typeof setTimeout>

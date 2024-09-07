@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms'
-	import { page } from '$app/stores'
+	import { zodClient } from 'sveltekit-superforms/adapters'
 	import {
 		Button,
 		Input,
@@ -8,8 +8,8 @@
 		HoneypotInputs,
 		FormGroup,
 	} from '$lib/components'
-	import { zodClient } from 'sveltekit-superforms/adapters'
 	import { LoginFormSchema } from '$lib/schemas.js'
+	import { page } from '$app/stores'
 
 	export let data
 	const { form, errors, constraints, enhance, delayed, timeout } = superForm(
