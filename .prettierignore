@@ -16,3 +16,4 @@ static/mockServiceWorker.js
 src/lib/fixtures/email/*.json
 
 package-lock.json
+package.json
