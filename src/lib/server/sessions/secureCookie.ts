@@ -6,7 +6,7 @@ import { z } from 'zod'
 import { EncryptedAndSignedCookieSchema } from '$lib/schemas'
 
 const algorithm = 'aes-256-cbc'
-const secret = env.SESSION_SECRET.split(',')[0]
+const secret = env.SESSION_SECRET
 
 export function encryptAndSignCookieValue<T>(
 	value: T,
