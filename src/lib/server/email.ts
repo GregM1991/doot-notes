@@ -12,7 +12,7 @@ type SendEmailArgs = {
 }
 
 export async function sendEmail(options: SendEmailArgs) {
-	const from = 'onboarding@resend.dev'
+	const from = 'dootnotes.com'
 
 	const email = {
 		from,
@@ -20,7 +20,7 @@ export async function sendEmail(options: SendEmailArgs) {
 	}
 
 	if (!env.RESEND_API_KEY && !process.env.MOCKS) {
-		console.error(`RESEND_API_KEY needs to be set and we're`)
+		console.error(`RESEND_API_KEY needs to be set and we're not in mocks mode`)
 		console.error(`RESEND_API_KEY needs to be in environment variables`)
 		console.error(
 			`Would have sent the following email: `,
