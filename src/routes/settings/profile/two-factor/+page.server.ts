@@ -20,6 +20,7 @@ export const load = (async ({ request, locals }) => {
 export const actions = {
 	default: async ({ request, locals }) => {
 		const userId = requireUserId(locals.userId, request)
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { otp: _otp, ...config } = generateTOTP()
 		const verificationData = {
 			...config,

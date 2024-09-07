@@ -36,7 +36,7 @@
 	)
 	const Icon = $form.id ? Check : Plus
 
-	$: imageList = Boolean(images.length)
+	$: imageList = images.length
 		? images
 		: [{ id: undefined, file: undefined, altText: undefined }]
 

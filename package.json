@@ -35,7 +35,7 @@
     "@types/bun": "^1.1.4",
     "@types/cookie": "^0.6.0",
     "@types/crypto-js": "^4.2.2",
-    "@types/eslint": "^8.56.7",
+    "@types/eslint": "^9.6.0",
     "@types/fs-extra": "^11.0.4",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/lru-cache": "^7.10.10",

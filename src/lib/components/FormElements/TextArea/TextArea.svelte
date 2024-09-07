@@ -19,7 +19,6 @@
 {#if label && !hidden}
 	<label data-testid={inputLabelTestId} for={id}>{label}</label>
 {/if}
-<!-- svelte-ignore a11y-autofocus -->
 <textarea
 	{id}
 	{name}

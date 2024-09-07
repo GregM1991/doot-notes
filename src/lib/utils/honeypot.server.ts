@@ -10,6 +10,7 @@ export const honeypot = new Honeypot({
 	encryptionSeed: HONEYPOT_SECRET,
 })
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function checkHoneypot<T extends ZodType<any, any>>(
 	formData: FormData,
 	form: SuperValidated<z.input<T>, Message, z.output<T>>,

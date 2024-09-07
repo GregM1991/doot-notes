@@ -1,10 +1,8 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
-import { Message } from '$lib/types'
-import type { HoneypotInputProps } from '$lib/server/honeypot'
-
 declare module 'svelte' {
-	export interface ContextKey<T = unknown> {} // eslint-disable-line @typescript-eslint/no-unused-vars
+	// eslint-disable-next-line @typescript-eslint/no-empty-object-type, @typescript-eslint/no-unused-vars
+	export interface ContextKey<T = unknown> {}
 
 	export function getContext<T>(key: ContextKey<T>): T
 	export function setContext<T>(key: ContextKey<T>, value: T): void
@@ -21,9 +19,6 @@ declare global {
 		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}
-		namespace Superforms {
-			Message
-		}
 	}
 }
 

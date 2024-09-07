@@ -28,6 +28,18 @@ export default [
 		},
 	},
 	{
-		ignores: ['build/', '.svelte-kit/', 'dist/'],
+		ignores: [
+			'.DS_Store',
+			'node_modules',
+			'build',
+			'.svelte-kit',
+			'package',
+			'.env',
+			'.env.*',
+			'!.env.example',
+			'pnpm-lock.yaml',
+			'package-lock.json',
+			'yarn.lock',
+		],
 	},
 ]
