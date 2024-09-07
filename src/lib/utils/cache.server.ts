@@ -17,12 +17,12 @@
 // import { z } from 'zod'
 // import { getInstanceInfo, getInstanceInfoSync } from './litefs.server.ts'
 // import { updatePrimaryCacheValue } from '$lib/server/cache_.sqlite.server.ts'
-// import { CACHE_DATABASE_PATH } from '$env/static/private'
+// import { env } from '$env/dynamic/private'
 
 // const cacheDb = remember('cacheDb', createDatabase)
 
 // function createDatabase(tryAgain = true): Database.Database {
-// 	const db = new Database(CACHE_DATABASE_PATH)
+// 	const db = new Database(env.CACHE_DATABASE_PATH)
 // 	const { currentIsPrimary } = getInstanceInfoSync()
 // 	if (!currentIsPrimary) return db
 
@@ -36,10 +36,10 @@
 // 			)
 // 		`)
 // 	} catch (error: unknown) {
-// 		fs.unlinkSync(CACHE_DATABASE_PATH)
+// 		fs.unlinkSync(env.CACHE_DATABASE_PATH)
 // 		if (tryAgain) {
 // 			console.error(
-// 				`Error creating cache database, deleting the file at "${CACHE_DATABASE_PATH}" and trying again...`,
+// 				`Error creating cache database, deleting the file at "${env.CACHE_DATABASE_PATH}" and trying again...`,
 // 			)
 // 			return createDatabase(false)
 // 		}

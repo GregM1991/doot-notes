@@ -1,4 +1,4 @@
-import { HONEYPOT_SECRET } from '$env/static/private'
+import { env } from '$env/dynamic/private'
 import { Honeypot, SpamError } from '$lib/server/honeypot'
 import type { Message } from '$lib/types'
 import { setError, type SuperValidated } from 'sveltekit-superforms'
@@ -7,7 +7,7 @@ import type { ZodType, z } from 'zod'
 export const honeypot = new Honeypot({
 	validFromFieldName: null,
 	// validFromFieldName: process.env.TESTING ? null : undefined, TODO: Find out why this is done this way
-	encryptionSeed: HONEYPOT_SECRET,
+	encryptionSeed: env.HONEYPOT_SECRET,
 })
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url'
 import { faker } from '@faker-js/faker'
 import fsExtra from 'fs-extra'
 import { HttpResponse, passthrough, http, type HttpHandler } from 'msw'
-import { GITHUB_CLIENT_ID } from '$env/static/private'
+import { env } from '$env/dynamic/private'
 
 const { json } = HttpResponse
 
@@ -119,7 +119,7 @@ async function getUser(request: Request) {
 }
 
 const passthroughGitHub =
-	!GITHUB_CLIENT_ID.startsWith('MOCK_') && !process.env.TESTING
+	!env.GITHUB_CLIENT_ID.startsWith('MOCK_') && !process.env.TESTING
 export const handlers: Array<HttpHandler> = [
 	http.post(
 		'https://github.com/login/oauth/access_token',
