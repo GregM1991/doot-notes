@@ -40,6 +40,7 @@ export default [
 			'pnpm-lock.yaml',
 			'package-lock.json',
 			'yarn.lock',
+			'static/mockServiceWorker.js',
 		],
 	},
 ]
