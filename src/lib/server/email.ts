@@ -12,7 +12,7 @@ type SendEmailArgs = {
 }
 
 export async function sendEmail(options: SendEmailArgs) {
-	const from = 'dootnotes.com'
+	const from = 'hello@dootnotes.com'
 
 	const email = {
 		from,
