@@ -1,7 +1,7 @@
 import closeWithGrace from 'close-with-grace'
-import { dev } from '$app/environment'
 import { getUserId } from '$lib/utils/auth.server'
 import { checkRateLimit } from '$lib/utils/limiter.server'
+import { dev } from '$app/environment'
 
 if (dev) {
 	const { server } = await import('$msw/server.server')

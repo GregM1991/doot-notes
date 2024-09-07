@@ -1,19 +1,19 @@
-import * as QRCode from 'qrcode'
 import { getTOTPAuthUri } from '@epic-web/totp'
 import { redirect } from '@sveltejs/kit'
-import { requireUserId } from '$lib/utils/auth.server'
-import { prisma } from '$lib/utils/db.server'
+import * as QRCode from 'qrcode'
+import { fail, setError, superValidate } from 'sveltekit-superforms'
+import { zod } from 'sveltekit-superforms/adapters'
+import { isCodeValid } from '$lib/auth/verify.server'
 import {
 	twoFAVerificationType,
 	twoFAVerifyVerificationType,
 } from '$lib/profile/consts'
+import { TwoFactorVerifySchema } from '$lib/schemas'
+import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
+import { requireUserId } from '$lib/utils/auth.server'
+import { prisma } from '$lib/utils/db.server'
 import { getDomainUrl } from '$lib/utils/misc'
 import type { PageServerLoad } from './$types'
-import { zod } from 'sveltekit-superforms/adapters'
-import { fail, setError, superValidate } from 'sveltekit-superforms'
-import { isCodeValid } from '$lib/auth/verify.server'
-import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
-import { TwoFactorVerifySchema } from '$lib/schemas'
 
 export const load = (async ({ request, locals }) => {
 	const userId = requireUserId(locals.userId, request)

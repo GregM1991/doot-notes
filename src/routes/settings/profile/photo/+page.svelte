@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { Button, Pencil2, Trash, ValidationErrors } from '$lib/components'
-	import { getUserImgSrc } from '$lib/utils/misc'
 	import { fileProxy, superForm } from 'sveltekit-superforms'
-	import type { PageData } from './$types'
 	import { zodClient } from 'sveltekit-superforms/adapters'
+	import { Button, Pencil2, Trash, ValidationErrors } from '$lib/components'
 	import { PhotoFormSchema } from '$lib/schemas'
+	import { getUserImgSrc } from '$lib/utils/misc'
+	import type { PageData } from './$types'
 
 	export let data: PageData
 	const { form, enhance, errors, constraints } = superForm(data.form, {

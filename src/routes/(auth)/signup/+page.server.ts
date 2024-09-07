@@ -1,12 +1,12 @@
-import { sendEmail } from '$lib/server/email'
-import { prepareVerification } from '$lib/auth/verify.server'
-import { prisma } from '$lib/utils/db.server.js'
 import { redirect } from '@sveltejs/kit'
 import { fail, setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
-import type { PageServerLoad } from './$types'
-import { checkHoneypot } from '$lib/utils/honeypot.server'
+import { prepareVerification } from '$lib/auth/verify.server'
 import { SignupFormSchema } from '$lib/schemas'
+import { sendEmail } from '$lib/server/email'
+import { prisma } from '$lib/utils/db.server.js'
+import { checkHoneypot } from '$lib/utils/honeypot.server'
+import type { PageServerLoad } from './$types'
 
 export const load = (async () => {
 	const form = await superValidate(zod(SignupFormSchema))

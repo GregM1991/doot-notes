@@ -1,7 +1,7 @@
+import { json } from '@sveltejs/kit'
 import { requireUserId } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
 import { getDomainUrl } from '$lib/utils/misc'
-import { json } from '@sveltejs/kit'
 
 export async function GET({ request, locals }) {
 	const userId = requireUserId(locals.userId, request)

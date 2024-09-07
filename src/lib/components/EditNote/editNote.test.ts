@@ -1,10 +1,10 @@
 import { render, screen, within } from '@testing-library/svelte/svelte5'
-import { expect, test } from 'vitest'
-import EditNote from './EditNote.svelte'
 import { superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
+import { expect, test } from 'vitest'
 import { NoteEditorSchema } from '$lib/schemas'
 import { idTestId, imageListTestId } from './consts.editNote'
+import EditNote from './EditNote.svelte'
 
 const action = `/test/action`
 

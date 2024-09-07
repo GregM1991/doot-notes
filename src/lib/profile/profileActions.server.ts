@@ -1,15 +1,15 @@
-import { z } from 'zod'
-import { fail, setError, type SuperValidated } from 'sveltekit-superforms'
-import { prisma } from '$lib/utils/db.server'
-import type { Message } from '$lib/types'
-import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 import { redirect, type Cookies } from '@sveltejs/kit'
+import { fail, setError, type SuperValidated } from 'sveltekit-superforms'
+import { z } from 'zod'
+import type { ProfileFormSchema } from '$lib/schemas'
 import {
 	authSessionCookieName,
 	getAuthSessionData,
 } from '$lib/server/sessions/authSession'
+import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
+import type { Message } from '$lib/types'
+import { prisma } from '$lib/utils/db.server'
 import { invariantResponse } from '$lib/utils/misc'
-import type { ProfileFormSchema } from '$lib/schemas'
 
 type Form = SuperValidated<
 	z.input<typeof ProfileFormSchema>,

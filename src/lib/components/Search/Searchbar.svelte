@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { page } from '$app/stores'
 	import { Input, MagnifyingGlass, Spinner } from '$lib/components'
 	import type { SearchProps } from './types.search'
+	import { page } from '$app/stores'
 
 	let { fetching, oninput }: SearchProps = $props()
 

@@ -1,8 +1,8 @@
 import { render } from '@testing-library/svelte/svelte5'
 import { describe, expect, test, vi } from 'vitest'
+import * as misc from '$lib/utils/misc'
 import ImageEditor from './ImageEditor.svelte'
 import testImage from './test-img.jpg'
-import * as misc from '$lib/utils/misc'
 
 describe('ImageEditor', () => {
 	const fileBlob = new Blob([testImage], { type: 'image/jpeg' })

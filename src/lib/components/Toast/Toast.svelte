@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { Type } from '$lib/server/sessions/toastSession'
 	import { createEventDispatcher } from 'svelte'
 	import { fly } from 'svelte/transition'
 	import { Cross } from '$lib/components'
+	import type { Type } from '$lib/server/sessions/toastSession'
 
 	export let title: string | undefined
 	export let description: string

@@ -17,10 +17,10 @@
 		Cross,
 		Plus,
 	} from '$lib/components'
-	import type { ImageFieldset } from './types'
 	import { NoteEditorSchema } from '$lib/schemas'
-	import { generateCopy } from './editNote.helpers'
 	import { idTestId, imageListTestId } from './consts.editNote'
+	import { generateCopy } from './editNote.helpers'
+	import type { ImageFieldset } from './types'
 
 	export let data: SuperValidated<Infer<typeof NoteEditorSchema>>
 	export let images: Array<ImageFieldset> = []

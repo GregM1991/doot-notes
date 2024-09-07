@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { ValidationErrors } from '$lib/components'
 	import classNames from 'classnames'
+	import { ValidationErrors } from '$lib/components'
 	import { inputLabelTestId, validationTest } from '../formElements.consts'
 	import type { InputProps } from './types.input'
 

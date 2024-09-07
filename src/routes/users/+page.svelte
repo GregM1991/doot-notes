@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { Searchbar } from '$lib/components/index'
 	import { getUserImgSrc } from '$lib/utils/misc'
-	import { goto } from '$app/navigation'
 	import { debounce } from '$lib/utils/misc'
+	import { goto } from '$app/navigation'
 	import { navigating } from '$app/stores'
 
 	let { data } = $props()

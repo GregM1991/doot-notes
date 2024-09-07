@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { enhance } from '$app/forms'
-	import { page } from '$app/stores'
 	import {
 		Button,
 		NoteInfoBar,
@@ -10,6 +8,8 @@
 		Spinner,
 	} from '$lib/components'
 	import { getNoteImgSrc } from '$lib/utils/misc.js'
+	import { enhance } from '$app/forms'
+	import { page } from '$app/stores'
 
 	// export let form
 	export let data

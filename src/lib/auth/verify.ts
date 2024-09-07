@@ -1,9 +1,9 @@
-import { z } from 'zod'
 import type { Cookies } from '@sveltejs/kit'
 import type { SuperValidated } from 'sveltekit-superforms'
-import type { Message } from '$lib/types'
+import { z } from 'zod'
 import type { twoFAVerifyVerificationType } from '$lib/profile/consts'
 import type { VerificationTypeSchema, VerifySchema } from '$lib/schemas'
+import type { Message } from '$lib/types'
 
 export const codeQueryParam = 'code'
 export const targetQueryParam = 'target'

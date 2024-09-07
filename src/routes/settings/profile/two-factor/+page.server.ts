@@ -1,4 +1,5 @@
 import { generateTOTP } from '@epic-web/totp'
+import { redirect } from '@sveltejs/kit'
 import {
 	twoFAVerificationType,
 	twoFAVerifyVerificationType,
@@ -6,7 +7,6 @@ import {
 import { requireUserId } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
 import type { Actions, PageServerLoad } from './$types'
-import { redirect } from '@sveltejs/kit'
 
 export const load = (async ({ request, locals }) => {
 	const userId = requireUserId(locals.userId, request)

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { page } from '$app/stores'
 	import { Button, Pencil1 } from '$lib/components'
+	import { page } from '$app/stores'
 
 	export let data
 	const hrefBase = `/users/${$page.params.username}/notes`
