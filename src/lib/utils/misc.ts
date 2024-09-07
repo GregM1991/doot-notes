@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { error } from '@sveltejs/kit'
 import userImg from '$lib/images/user.png'
 import type {
@@ -90,7 +91,8 @@ class InvariantError extends Error {
 
 const nameRgx = new RegExp(/(\p{L}{1})\p{L}+/u, 'gu')
 export function getUserInitials(name: string) {
-	const initials = [...name.matchAll(nameRgx)] || []
+	const matches = [...name.matchAll(nameRgx)]
+	const initials = matches || []
 
 	return (
 		(initials.shift()?.[1] || '') + (initials.pop()?.[1] || '')
@@ -100,15 +102,17 @@ export function getUserInitials(name: string) {
 export function extractImageGroup(formData: FormData) {
 	const imageMap = new Map<any, ImageMap>()
 	Array.from(formData.entries())
-		.filter(([key, _]) => key.includes('images'))
+		.filter(([key]) => key.includes('images'))
 		.forEach(([key, value]) => {
 			const [currKey, field] = key.split('.')
 			const match = currKey.match(/\[(\d+)\]/)
 			const index = match ? match[1] : null
 			const image = imageMap.get(currKey)
-			image
-				? imageMap.set(currKey, { ...image, [field]: value, index })
-				: imageMap.set(currKey, { [field]: value, index })
+			if (image) {
+				imageMap.set(currKey, { ...image, [field]: value, index })
+			} else {
+				imageMap.set(currKey, { [field]: value, index })
+			}
 		})
 	return Array.from(imageMap.values())
 }

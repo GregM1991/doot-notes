@@ -30,11 +30,13 @@
 		superForm(data, {
 			validators: zodClient(NoteEditorSchema),
 		})
-	const { header, buttonText, submitDelayedReason } =
-		generateCopy($form.id, $form.title)
+	const { header, buttonText, submitDelayedReason } = generateCopy(
+		$form.id,
+		$form.title,
+	)
 	const Icon = $form.id ? Check : Plus
 
-	$: imageList = Boolean(images.length)
+	$: imageList = images.length
 		? images
 		: [{ id: undefined, file: undefined, altText: undefined }]
 

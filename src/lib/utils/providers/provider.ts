@@ -11,6 +11,7 @@ export type ProviderUser = {
 }
 
 export interface AuthProvider {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	getAuthStrategy(): Strategy<ProviderUser, any>
 	handleMockAction(cookies: Cookies): Promise<void>
 	resolveConnectionData(providerId: string): Promise<{

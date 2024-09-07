@@ -4,9 +4,9 @@ module.exports = {
 	root: true,
 	extends: [
 		'eslint:recommended',
+		'plugin:import/recommended',
 		'plugin:@typescript-eslint/recommended',
 		'plugin:svelte/recommended',
-		'@remix-run/eslint-config',
 		'prettier',
 	],
 	parser: '@typescript-eslint/parser',
@@ -32,14 +32,6 @@ module.exports = {
 	],
 	rules: {
 		'no-empty-pattern': 'off',
-		'@typescript-eslint/consistent-type-imports': [
-			'warn',
-			{
-				prefer: 'type-imports',
-				disallowTypeAnnotations: true,
-				fixStyle: 'inline-type-imports',
-			},
-		],
 		'import/no-duplicates': ['warn', { 'prefer-inline': true }],
 		'import/consistent-type-specifier-style': ['warn', 'prefer-inline'],
 		'import/order': [

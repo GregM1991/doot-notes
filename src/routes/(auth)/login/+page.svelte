@@ -63,11 +63,7 @@
 			<a href="/forgot-password">Forgot password?</a>
 		</div>
 	</div>
-	<Input
-		type="hidden"
-		name="redirectTo"
-		value={$page.params.redirectTo}
-	/>
+	<Input type="hidden" name="redirectTo" value={$page.params.redirectTo} />
 	<Button
 		fluid
 		type="submit"

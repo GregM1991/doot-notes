@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import GithubLogo from 'virtual:icons/radix-icons/github-logo'
+// import GithubLogo from 'virtual:icons/radix-icons/github-logo'
 
 export const GITHUB_PROVIDER_NAME = 'github'
 export const GITHUB_PROVIDER_ICON_NAME = 'github-logo'

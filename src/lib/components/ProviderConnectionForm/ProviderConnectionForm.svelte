@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { page } from '$app/stores'
+	// import { page } from '$app/stores'
 	import {
-		providerIconNamesMap,
+		// providerIconNamesMap,
 		providerLabels,
 		type ProviderName,
 	} from '$lib/utils/connections'
