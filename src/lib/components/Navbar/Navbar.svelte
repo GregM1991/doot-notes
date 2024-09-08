@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { AvatarMenu, Button } from '$lib/components'
+	import { AvatarMenu, Button, MobileNav } from '$lib/components'
 	import type { User } from '@prisma/client'
 
 	export let user: (User & { image: { id: string } | null }) | null = null
@@ -24,6 +24,7 @@
 			<Button href="/login">Login</Button>
 		{/if}
 	</div>
+	<MobileNav />
 </nav>
 
 <style>
@@ -42,30 +43,45 @@
 		font-size: var(--type-step-0);
 		color: var(--palette-primary);
 		font-weight: var(--type-weight-bold);
+
+		.line {
+			display: flex;
+			position: relative;
+			align-items: center;
+		}
+
+		.line.top::before {
+			content: '📯';
+			position: absolute;
+			left: -35px;
+			top: -3px;
+		}
+
+		.line.bottom::after {
+			content: '📯';
+			position: absolute;
+			right: -30px;
+		}
+
+		@media (--below-med) {
+			.line.top::before {
+				left: -27px;
+			}
+
+			.line.bottom::after {
+				right: -24px;
+			}
+		}
 	}
 
 	.right-nav-group {
-		display: flex;
+		display: none;
 		align-items: center;
 		gap: var(--space-l);
-	}
 
-	.line {
-		display: flex;
-		position: relative;
-		align-items: center;
-	}
-
-	.line.top::before {
-		content: '📯';
-		position: absolute;
-		left: -35px;
-	}
-
-	.line.bottom::after {
-		content: '📯';
-		position: absolute;
-		right: -30px;
+		@media (--above-med) {
+			display: flex;
+		}
 	}
 
 	.right-links {

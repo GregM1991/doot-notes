@@ -5,6 +5,7 @@ export { default as HoneypotInputs } from '$lib/components/HoneypotInputs/Honeyp
 // export { default as Icon } from '$lib/components/icons/figureOutSpriteIcons/Icon.svelte'
 export * from '$lib/components/icons'
 export { default as ImageEditor } from '$lib/components/ImageEditor/ImageEditor.svelte'
+export { default as MobileNav } from '$lib/components/MobileNav/MobileNav.svelte'
 export { Input, TextArea, FormGroup } from '$lib/components/FormElements'
 export { default as Navbar } from '$lib/components/Navbar/Navbar.svelte'
 export { default as NoteInfoBar } from '$lib/components/NoteInfoBar/NoteInfoBar.svelte'

@@ -32,7 +32,7 @@
 		<!-- TODO: Do dev things here if need -->
 	{/if}
 	<!-- <link rel="preload" href="/src/lib/components/icons/sprite.svg" as="image" /> -->
-	<title>📯 Let's doot some notes 📯</title>
+	<title>Let's doot some notes</title>
 </svelte:head>
 
 <div class="content">
