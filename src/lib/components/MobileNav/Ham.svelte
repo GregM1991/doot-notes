@@ -29,14 +29,14 @@
 		flex-direction: column;
 		gap: var(--space-3xs);
 		position: absolute;
-		top: 20px;
-		right: 20px;
+		top: 30px;
+		right: 30px;
 		z-index: 2;
 
 		.line {
 			display: block;
 			border-radius: 4px;
-			width: 30px;
+			width: 25px;
 			height: 3px;
 			background-color: var(--palette-primary);
 			transition: 0.2s;

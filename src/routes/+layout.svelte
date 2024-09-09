@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { Navbar, Toast } from '$lib/components'
-	import type { HoneypotInputProps } from '$lib/server/honeypot.js'
 	import '$lib/styles/app.css'
 	import { onDestroy, setContext } from 'svelte'
+	import type { HoneypotInputProps } from '$lib/server/honeypot.js'
 	import { readable, type Readable } from 'svelte/store'
 
 	export let data
@@ -64,13 +64,27 @@
 			'footer footer footer';
 		gap: var(--space-xs);
 		position: relative;
-		height: 100vh;
+		height: 100%;
+		min-height: 100vh;
 		background: var(--palette-base);
+
+		@media (--below-med) {
+			grid-template-columns: 1fr;
+			grid-template-areas:
+			'header'
+			'main'
+			'footer';
+		}
 	}
 
 	header {
 		grid-area: header;
 		padding: var(--space-s) 0;
+		z-index: 1;
+
+		@media (--below-med) {
+			padding: var(--space-m);
+		}
 	}
 
 	.content-body {

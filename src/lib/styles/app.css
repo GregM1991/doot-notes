@@ -222,11 +222,6 @@ html:focus-within {
 	scroll-behavior: smooth;
 }
 
-html {
-	height: 100%;
-	overflow-x: hidden;
-}
-
 /* Set core body defaults */
 body {
 	text-rendering: geometricPrecision;

@@ -46,5 +46,9 @@
 	.buttons {
 		display: flex;
 		gap: var(--space-s);
+
+		@media (--below-med) {
+			flex-direction: column;
+		}
 	}
 </style>

@@ -1,13 +1,15 @@
 <script lang="ts">
 	import { page } from '$app/stores'
 	import { Button, Pencil1 } from '$lib/components'
+	import MobileSidebar from './MobileSidebar.svelte'
 
-	export let data
+	let { data, children } = $props()
 	const hrefBase = `/users/${$page.params.username}/notes`
-	$: isOwner = $page.data?.user?.id === data.owner.id
+	let isOwner = $state($page.data?.user?.id === data.owner.id)
 </script>
 
-<div class="wrapper" data-layout="grid">
+<div class="wrapper">
+	<MobileSidebar name={data.owner.name} {isOwner} {hrefBase} notes={data.notes} />
 	<div class="sidebar">
 		<h1>{data.owner.name}'s notes</h1>
 		{#if isOwner}
@@ -30,7 +32,7 @@
 		</ul>
 	</div>
 	<main class="main">
-		<slot />
+		{@render children()}
 	</main>
 </div>
 
@@ -47,6 +49,12 @@
 		grid-template-columns: 2fr 5fr;
 		grid-template-areas: 'sidebar main';
 		height: 100%;
+
+		@media (--below-med) {
+			grid-template-columns: 1fr;
+			grid-template-areas:
+				'main';
+		}
 	}
 
 	.sidebar {
@@ -58,10 +66,15 @@
 		border: 4px solid var(--palette-pop-light);
 		border-right: none;
 		overflow-y: auto;
+		
+		@media (--below-med) {
+			display: none;
+		}
 	}
 
 	/* TODO: fix the scrollbar-gutter: stable both-edges; thing */
 	.main {
+		grid-area: "main";
 		display: grid;
 		grid-template-columns: var(--space-m) 1fr var(--space-m);
 		grid-template-rows: 1fr auto;
@@ -71,6 +84,10 @@
 		border: 4px solid var(--palette-base-medium);
 		border-left: none;
 		overflow: auto;
+
+		@media (--below-med) {
+			border: none;
+		}
 	}
 
 	ul {

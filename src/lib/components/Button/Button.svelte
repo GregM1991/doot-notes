@@ -31,6 +31,7 @@
 <svelte:element
 	this={element}
 	{role}
+	{href}
 	{...resetProps}
 	class="base {classes} {className}"
 	disabled={delayed}

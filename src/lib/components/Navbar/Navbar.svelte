@@ -64,6 +64,10 @@
 		}
 
 		@media (--below-med) {
+			& {
+				margin-left: var(--space-s);
+			}
+
 			.line.top::before {
 				left: -27px;
 			}

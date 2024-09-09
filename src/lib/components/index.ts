@@ -12,5 +12,7 @@ export { default as NoteInfoBar } from '$lib/components/NoteInfoBar/NoteInfoBar.
 export { default as ProviderConnectionForm } from '$lib/components/ProviderConnectionForm/ProviderConnectionForm.svelte'
 export { default as Searchbar } from '$lib/components/Search/Searchbar.svelte'
 export { default as Spinner } from '$lib/components/Spinner/Spinner.svelte'
+export * from '$lib/components/svgs'
 export { default as Toast } from '$lib/components/Toast/Toast.svelte'
+export { default as UserCard } from '$lib/components/UserCard/UserCard.svelte'
 export { default as ValidationErrors } from '$lib/components/ValidationErrors/ValidationErrors.svelte'

@@ -18,7 +18,7 @@
 				<Button fluid href="/" onclick={toggle}>Doot Notes</Button>
 			</li>
 			<li>
-				<Button fluid href="/users" class="nav-link" onclick={toggle}
+				<Button fluid href="/users" onclick={toggle}
 					>Users</Button
 				>
 			</li>
