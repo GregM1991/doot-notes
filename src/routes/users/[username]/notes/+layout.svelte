@@ -8,8 +8,13 @@
 	let isOwner = $state($page.data?.user?.id === data.owner.id)
 </script>
 
+<MobileSidebar
+	name={data.owner.name}
+	{isOwner}
+	{hrefBase}
+	notes={data.notes}
+/>
 <div class="wrapper">
-	<MobileSidebar name={data.owner.name} {isOwner} {hrefBase} notes={data.notes} />
 	<div class="sidebar">
 		<h1>{data.owner.name}'s notes</h1>
 		{#if isOwner}
@@ -49,11 +54,11 @@
 		grid-template-columns: 2fr 5fr;
 		grid-template-areas: 'sidebar main';
 		height: 100%;
+		isolation: isolate;
 
 		@media (--below-med) {
 			grid-template-columns: 1fr;
-			grid-template-areas:
-				'main';
+			grid-template-areas: 'main';
 		}
 	}
 
@@ -66,15 +71,15 @@
 		border: 4px solid var(--palette-pop-light);
 		border-right: none;
 		overflow-y: auto;
-		
+
 		@media (--below-med) {
 			display: none;
 		}
 	}
 
-	/* TODO: fix the scrollbar-gutter: stable both-edges; thing */
+	/* TODO: fix the scrollbar-gutter: stable both-edges; thing (browser specific?) */
 	.main {
-		grid-area: "main";
+		grid-area: main;
 		display: grid;
 		grid-template-columns: var(--space-m) 1fr var(--space-m);
 		grid-template-rows: 1fr auto;
@@ -87,6 +92,8 @@
 
 		@media (--below-med) {
 			border: none;
+			border-radius: 0;
+			padding-left: var(--space-l)
 		}
 	}
 

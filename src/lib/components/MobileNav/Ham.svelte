@@ -11,10 +11,6 @@
 			active: isActive === true,
 		}),
 	)
-
-	$effect(() => {
-		console.log({ isActive, classes })
-	})
 </script>
 
 <button class="hamburger" onclick={toggleActive}>

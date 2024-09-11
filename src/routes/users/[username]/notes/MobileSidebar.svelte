@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Button, Corner, Pencil1 } from '$lib/components'
-	import { fly } from 'svelte/transition'
 
 	type MobileSidebarProps = {
 		name: string
@@ -29,6 +28,7 @@
 				href="{hrefBase}/new-note"
 				variant="secondary"
 				style="margin-bottom: var(--space-xs)"
+				onclick={toggle}
 			>
 				<Pencil1 /> Doot new note
 			</Button>
@@ -36,7 +36,7 @@
 		<ul role="list">
 			{#each notes as note (note.id)}
 				<li>
-					<Button fluid href={`${hrefBase}/${note.id}`}>
+					<Button onclick={toggle} fluid href={`${hrefBase}/${note.id}`}>
 						{note.title}
 					</Button>
 				</li>
@@ -63,18 +63,29 @@
 
 	.sidebar {
 		position: fixed;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-s);
 		background: var(--palette-pop-extra-light);
 		padding: var(--space-xs);
 		border: 4px solid var(--palette-pop-light);
 		border-left: none;
 		bottom: 0;
 		height: calc(100vh - var(--space-3xl));
-		width:  calc(100vw - 42px);
-		transition: ease-in-out 0.3s;
+		width: calc(100vw - 42px);
+		transition: ease-out 0.2s;
+		z-index: 1;
+
+		ul {
+			display: flex;
+			flex-direction: column;
+			gap: var(--space-s);
+		}
 	}
 
 	.is-active {
 		transform: translateX(-100%);
+		transition: ease-out 0.4s;
 	}
 
 	.notes-trigger {

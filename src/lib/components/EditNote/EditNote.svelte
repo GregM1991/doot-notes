@@ -1,3 +1,4 @@
+<!-- TODO: This is quite the component, will need a clean up at some stage NOT-63 -->
 <script lang="ts">
 	import {
 		type SuperValidated,
@@ -10,10 +11,8 @@
 		TextArea,
 		Button,
 		ImageEditor,
-		NoteInfoBar,
 		FormGroup,
 		ValidationErrors,
-		Check,
 		Cross,
 		Plus,
 	} from '$lib/components'
@@ -21,6 +20,7 @@
 	import { NoteEditorSchema } from '$lib/schemas'
 	import { generateCopy } from './editNote.helpers'
 	import { idTestId, imageListTestId } from './consts.editNote'
+	import InfoBar from './InfoBar.svelte'
 
 	export let data: SuperValidated<Infer<typeof NoteEditorSchema>>
 	export let images: Array<ImageFieldset> = []
@@ -34,7 +34,6 @@
 		$form.id,
 		$form.title,
 	)
-	const Icon = $form.id ? Check : Plus
 
 	$: imageList = images.length
 		? images
@@ -88,7 +87,7 @@
 	<ul class="image-list" data-testid={imageListTestId}>
 		{#each imageList as image, index (index)}
 			<li class="image-list-item">
-				<!-- TODO: //create form action for delete later -->
+				<!-- TODO: //create form action for delete later NOT-46 -->
 				<button
 					formaction="?/delete"
 					class="remove-image-button"
@@ -106,25 +105,12 @@
 			</li>
 		{/each}
 	</ul>
+	<!-- TODO: AddEmptyImage is not working 🐛 NOT-65 -->
 	<Button variant="secondary" type="button" on:click={addEmptyImage}>
 		<Plus />
 		Add another image
 	</Button>
-	<NoteInfoBar>
-		<div class="info-bar-buttons">
-			<Button danger type="reset">Reset</Button>
-			<!-- TODO: confirmation on note deletion -->
-			<Button
-				variant="secondary"
-				type="submit"
-				delayed={$delayed || $timeout}
-				delayedReason={submitDelayedReason}
-			>
-				<Icon />
-				{buttonText}
-			</Button>
-		</div>
-	</NoteInfoBar>
+	<InfoBar {formId} {buttonText} {submitDelayedReason} {delayed} {timeout} />
 	<ValidationErrors errorId={$formId} errors={$errors._errors} />
 </form>
 
@@ -134,12 +120,15 @@
 	}
 
 	.edit-form {
-		grid-row: 1 / span 2;
 		grid-column: 2 / 3;
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-xs);
 		align-items: stretch;
+
+		@media (--below-med) {
+			grid-column: 1 / 3;
+		}
 	}
 
 	h3 {
@@ -149,8 +138,13 @@
 		line-height: 2.8rem;
 	}
 
-	.image-list-item {
+	.image-list {
 		list-style: none;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.image-list-item {
 		position: relative;
 		padding-bottom: var(--space-xs);
 	}
@@ -169,13 +163,5 @@
 
 	.remove-image-button span {
 		display: flex;
-	}
-
-	.info-bar-buttons {
-		display: flex;
-		gap: var(--space-2xs);
-		align-items: center;
-		justify-content: flex-end;
-		width: 100%;
 	}
 </style>

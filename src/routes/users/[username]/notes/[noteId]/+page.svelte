@@ -20,15 +20,17 @@
 {:then}
 	<article class="article">
 		<h2 class="heading">{data.note.title}</h2>
-		<ul class="image-list">
-			{#each data.note.images as image}
-				<li>
-					<a href={getNoteImgSrc(image.id)}>
-						<img src={getNoteImgSrc(image.id)} alt={image.altText ?? ''} />
-					</a>
-				</li>
-			{/each}
-		</ul>
+		{#if data.note.images.length > 0}
+			<ul class="image-list">
+				{#each data.note.images as image}
+					<li>
+						<a href={getNoteImgSrc(image.id)}>
+							<img src={getNoteImgSrc(image.id)} alt={image.altText ?? ''} />
+						</a>
+					</li>
+				{/each}
+			</ul>
+		{/if}
 
 		{#each data.note.content as paragraph}
 			<p>{paragraph}</p>
@@ -60,6 +62,7 @@
 		flex-direction: column;
 		gap: var(--space-2xs);
 		overflow: auto;
+		margin-bottom: var(--space-3xl);
 	}
 
 	.heading {

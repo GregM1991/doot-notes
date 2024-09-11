@@ -69,6 +69,7 @@
 			name="images[{index}].altText"
 			value={image?.altText ?? ''}
 			type="text"
+			fluid
 		/>
 	</div>
 </fieldset>

@@ -44,12 +44,12 @@
 			on:close={dismissToast}
 		/>
 	{/if}
-	<header>
-		<Navbar user={data.user} />
-	</header>
 	<div class="content-body">
 		<slot />
 	</div>
+	<header>
+		<Navbar user={data.user} />
+	</header>
 	<footer>I'm the 🦶er</footer>
 </div>
 
@@ -80,7 +80,7 @@
 	header {
 		grid-area: header;
 		padding: var(--space-s) 0;
-		z-index: 1;
+		z-index: 2;
 
 		@media (--below-med) {
 			padding: var(--space-m);
