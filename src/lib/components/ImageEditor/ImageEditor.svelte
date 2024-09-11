@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Input, Plus } from '$lib/components'
 	import { getNoteImgSrc } from '$lib/utils/misc'
-	import type { ImageFieldset } from '$lib/components/EditNote/types'
+	import type { ImageFieldset } from '$lib/components/EditNote/types.editNote'
 
 	export let image: ImageFieldset | undefined
 	export let index: number
@@ -69,6 +69,7 @@
 			name="images[{index}].altText"
 			value={image?.altText ?? ''}
 			type="text"
+			fluid
 		/>
 	</div>
 </fieldset>

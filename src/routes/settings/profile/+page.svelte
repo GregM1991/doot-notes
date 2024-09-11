@@ -39,7 +39,7 @@
 		<Camera />
 	</a>
 </div>
-<form id="profile" method="POST" use:enhance>
+<form id="profile" method="POST" use:enhance class="profile-form">
 	<div class="inputs">
 		<!-- TODO: Should really incorporate this form group class into the input -->
 		<FormGroup>
@@ -184,8 +184,13 @@
 		flex-direction: column;
 		align-items: flex-start;
 		gap: var(--space-s);
-		width: 48rem;
+		max-width: 32rem;
+		width: 100%;
 		list-style: none;
+
+		/* @media (--below-med) {
+			width: 100%;
+		} */
 	}
 
 	.link {

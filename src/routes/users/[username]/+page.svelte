@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { Button } from '$lib/components'
+	import { page } from '$app/stores'
 
-	export let data
-	$: ({ name, username } = data.owner) // TODO: add user image
-	$: ({ userJoinedDisplay } = data)
+	let { data } = $props()
+	let { name, username } = $derived(data.owner) // TODO: add user image
+	let { userJoinedDisplay } = $derived(data)
+	let isOwner = $state($page.data?.user?.id === data.owner.id)
 </script>
 
 <h1>{name}'s Profile</h1>
@@ -14,7 +16,9 @@
 	</div>
 	<div class="buttons">
 		<Button href={`${username}/notes`}>View {name}'s notes</Button>
-		<Button href={`/settings/profile`}>Edit {name}'s profile</Button>
+		{#if isOwner}
+			<Button href={`/settings/profile`}>Edit {name}'s profile</Button>
+		{/if}
 	</div>
 </main>
 
@@ -46,5 +50,9 @@
 	.buttons {
 		display: flex;
 		gap: var(--space-s);
+
+		@media (--below-med) {
+			flex-direction: column;
+		}
 	}
 </style>

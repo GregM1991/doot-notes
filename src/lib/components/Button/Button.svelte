@@ -1,22 +1,21 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte'
 	import classnames from 'classnames'
 	import { Spinner } from '$lib/components'
 	import { fly } from 'svelte/transition'
+	import type { ButtonProps } from './types.button'
 
-	export let type: 'submit' | 'button' | 'reset' | undefined = undefined
-	export let href: string | undefined = undefined
-	export let variant: 'primary' | 'secondary' = 'primary'
-	export let fluid = false
-	export let style = ''
-	export let small = false
-	export let danger = false
-	export let name: string | null = null
-	export let value: string | null = null
-	export let id: string | null = null
-	export let form: string | null = null
-	export let delayed = false
-	export let delayedReason: string | null = null
+	let {
+		href = undefined,
+		variant = 'primary',
+		fluid = false,
+		small = false,
+		danger = false,
+		delayed = false,
+		delayedReason = null,
+		class: className = '',
+		children,
+		...resetProps
+	}: ButtonProps = $props()
 
 	const classes = classnames({
 		primary: variant === 'primary',
@@ -27,25 +26,14 @@
 	})
 	const element = href ? 'a' : 'button'
 	const role = element === 'a' ? 'link' : 'button'
-
-	const dispatch = createEventDispatcher()
-	function onClick() {
-		if (element === 'button') dispatch('click')
-	}
 </script>
 
 <svelte:element
 	this={element}
 	{role}
-	{style}
-	{name}
-	{value}
-	{id}
-	{form}
-	{type}
 	{href}
-	class="base {classes}"
-	on:click={onClick}
+	{...resetProps}
+	class="base {classes} {className}"
 	disabled={delayed}
 	aria-disabled={delayed ? 'true' : undefined}
 >
@@ -60,7 +48,7 @@
 		</span>
 	{:else}
 		<span class="delayed-text">
-			<slot />
+			{@render children()}
 		</span>
 	{/if}
 </svelte:element>

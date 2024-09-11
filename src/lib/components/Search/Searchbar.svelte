@@ -32,6 +32,10 @@
 <style>
 	.form {
 		flex-direction: row;
+
+		@media (--below-med) {
+			gap: var(--space-2xs);
+		}
 	}
 
 	.search-button {

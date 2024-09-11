@@ -4,7 +4,7 @@ import userImg from '$lib/images/user.png'
 import type {
 	ImageFieldset,
 	ImageFieldsetList,
-} from '$lib/components/EditNote/types'
+} from '$lib/components/EditNote/types.editNote'
 import type { ImageMap } from '$lib/types'
 
 export function getUserImgSrc(imageId?: string | null) {

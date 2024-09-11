@@ -5,7 +5,7 @@ import '#app/utils/env.server.ts'
 import '@testing-library/jest-dom/vitest'
 import { cleanup } from '@testing-library/svelte/svelte5'
 import { afterEach, beforeEach, vi, type MockInstance } from 'vitest'
-import { server } from '../../tests/mocks/index'
+import { server } from '../../tests/mocks'
 import './custom-matchers.ts'
 
 afterEach(() => server.resetHandlers())

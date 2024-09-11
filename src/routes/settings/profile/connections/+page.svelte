@@ -1,6 +1,6 @@
 <script lang="ts">
-	// import { ProviderConnectionForm } from '$lib/components/index.js'
-	// import { providerNames } from '$lib/utils/connections.js'
+	// import { ProviderConnectionForm } from '$lib/components'
+	// import { providerNames } from '$lib/utils/connections'
 
 	// export let data
 </script>
