@@ -8,12 +8,7 @@
 	let isOwner = $state($page.data?.user?.id === data.owner.id)
 </script>
 
-<MobileSidebar
-	name={data.owner.name}
-	{isOwner}
-	{hrefBase}
-	notes={data.notes}
-/>
+<MobileSidebar name={data.owner.name} {isOwner} {hrefBase} notes={data.notes} />
 <div class="wrapper">
 	<div class="sidebar">
 		<h1>{data.owner.name}'s notes</h1>
@@ -93,7 +88,7 @@
 		@media (--below-med) {
 			border: none;
 			border-radius: 0;
-			padding-left: var(--space-l)
+			padding-left: var(--space-l);
 		}
 	}
 

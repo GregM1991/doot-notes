@@ -32,12 +32,12 @@
 		height: 10rem;
 		width: 12rem;
 
-    @media (--below-med) {
-      position: relative;
-      height: auto;
-      width: auto;
-      padding: var(--space-l) var(--space-s) var(--space-xs);
-    }
+		@media (--below-med) {
+			position: relative;
+			height: auto;
+			width: auto;
+			padding: var(--space-l) var(--space-s) var(--space-xs);
+		}
 	}
 
 	.gravatar {
@@ -48,15 +48,15 @@
 		border-radius: var(--border-radius-circle);
 		width: 4rem;
 		height: 4rem;
-    overflow: hidden;
+		overflow: hidden;
 
-    @media (--below-med) {
-      position: absolute;
-      top: -15px;
-      width: 2.5rem;
-      height: 2.5rem;
-      border: var(--border-primary)
-    }
+		@media (--below-med) {
+			position: absolute;
+			top: -15px;
+			width: 2.5rem;
+			height: 2.5rem;
+			border: var(--border-primary);
+		}
 	}
 
 	.name {

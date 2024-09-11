@@ -71,9 +71,9 @@
 		@media (--below-med) {
 			grid-template-columns: 1fr;
 			grid-template-areas:
-			'header'
-			'main'
-			'footer';
+				'header'
+				'main'
+				'footer';
 		}
 	}
 

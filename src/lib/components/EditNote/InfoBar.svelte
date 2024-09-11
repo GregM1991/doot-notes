@@ -37,7 +37,7 @@
 			type="submit"
 			delayed={$delayed || $timeout}
 			delayedReason={submitDelayedReason}
-      small
+			small
 		>
 			<Icon />
 			{buttonText}
@@ -63,7 +63,7 @@
 	}
 
 	.mobile {
-		justify-content:stretch;
+		justify-content: stretch;
 
 		@media (--above-med) {
 			display: none;

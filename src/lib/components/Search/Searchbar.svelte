@@ -33,7 +33,7 @@
 	.form {
 		flex-direction: row;
 
-		@media(--below-med) {
+		@media (--below-med) {
 			gap: var(--space-2xs);
 		}
 	}

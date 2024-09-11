@@ -43,16 +43,16 @@
 		align-items: center;
 		gap: var(--space-l);
 		text-align: center;
-		padding: var(--space-l)
+		padding: var(--space-l);
 	}
-	
+
 	/* TODO: Create Typography component */
 	h1 {
 		color: var(--palette-pop);
 		font-size: var(--type-step-4);
 		text-align: center;
 	}
-	
+
 	.users-list {
 		display: flex;
 		flex-wrap: wrap;
