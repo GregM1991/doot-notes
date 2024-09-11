@@ -25,70 +25,80 @@
 	}
 </script>
 
-<div class="avatar-wrapper">
-	<img
-		class="avatar"
-		src={newImageSrc ?? (data.user ? getUserImgSrc(data.user.image?.id) : '')}
-		alt="{data.user.name}'s avatar"
-	/>
-</div>
-<ValidationErrors errorId="photo-file" errors={$errors._errors} />
-<form id="delete-image" action="?/delete" method="POST"></form>
-<form
-	action="?/add-or-update-avatar"
-	method="POST"
-	enctype="multipart/form-data"
-	use:enhance
->
-	<div class="button-wrapper">
-		<input
-			id="photo-file"
-			accept="image/*"
-			class="sr-only"
-			required
-			tabIndex={$file ? -1 : 0}
-			type="file"
-			name="photoFile"
-			bind:files={$file}
-			on:change={handleFileChange}
-			aria-invalid={$errors.photoFile ? 'true' : undefined}
-			{...$constraints.photoFile}
+<div class="wrapper">
+	<div class="avatar-wrapper">
+		<img
+			class="avatar"
+			src={newImageSrc ?? (data.user ? getUserImgSrc(data.user.image?.id) : '')}
+			alt="{data.user.name}'s avatar"
 		/>
-		<label id="change-button" for="photo-file" class="label-button">
-			<Pencil2 />Change
-		</label>
-		<Button
-			variant="secondary"
-			name="intent"
-			value="submit"
-			type="submit"
-			id="save-photo-button"
-		>
-			Save Photo
-		</Button>
-		<Button
-			on:click={() => (newImageSrc = null)}
-			type="reset"
-			id="reset-button"
-			danger
-		>
-			Reset
-		</Button>
-		{#if data.user?.image?.id}
+	</div>
+	<ValidationErrors errorId="photo-file" errors={$errors._errors} />
+	<form id="delete-image" action="?/delete" method="POST"></form>
+	<form
+		action="?/add-or-update-avatar"
+		method="POST"
+		enctype="multipart/form-data"
+		use:enhance
+	>
+		<div class="button-wrapper">
+			<input
+				id="photo-file"
+				accept="image/*"
+				class="sr-only"
+				required
+				tabIndex={$file ? -1 : 0}
+				type="file"
+				name="photoFile"
+				bind:files={$file}
+				on:change={handleFileChange}
+				aria-invalid={$errors.photoFile ? 'true' : undefined}
+				{...$constraints.photoFile}
+			/>
+			<label id="change-button" for="photo-file" class="label-button">
+				<Pencil2 />Change
+			</label>
 			<Button
-				id="delete-button"
-				form="delete-image"
+				variant="secondary"
 				name="intent"
-				value="delete"
+				value="submit"
+				type="submit"
+				id="save-photo-button"
+			>
+				Save Photo
+			</Button>
+			<Button
+				on:click={() => (newImageSrc = null)}
+				type="reset"
+				id="reset-button"
 				danger
 			>
-				<Trash />Delete
+				Reset
 			</Button>
-		{/if}
-	</div>
-</form>
+			{#if data.user?.image?.id}
+				<Button
+					id="delete-button"
+					form="delete-image"
+					name="intent"
+					value="delete"
+					danger
+				>
+					<Trash />Delete
+				</Button>
+			{/if}
+		</div>
+	</form>
+</div>
 
 <style>
+	.wrapper {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--space-xs);
+		padding: 0 var(--space-l);
+	}
+
 	.avatar-wrapper {
 		justify-self: center;
 		position: relative;
@@ -105,6 +115,10 @@
 		width: 100%;
 		height: 100%;
 		border-radius: var(--border-radius-circle);
+	}
+
+	#delete-image {
+		display: none;
 	}
 
 	.button-wrapper {

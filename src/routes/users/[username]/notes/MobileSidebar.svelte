@@ -75,6 +75,7 @@
 		width: calc(100vw - 42px);
 		transition: ease-out 0.2s;
 		z-index: 1;
+		transform: translateX(-100%);
 
 		ul {
 			display: flex;
@@ -84,7 +85,7 @@
 	}
 
 	.is-active {
-		transform: translateX(-100%);
+		transform: translateX(0);
 		transition: ease-out 0.4s;
 	}
 

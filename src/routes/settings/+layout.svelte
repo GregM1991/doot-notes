@@ -8,5 +8,6 @@
 		flex-direction: column;
 		align-items: center;
 		gap: var(--space-l);
+		padding: 0 var(--space-l);
 	}
 </style>

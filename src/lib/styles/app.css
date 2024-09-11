@@ -304,5 +304,5 @@ form {
 	align-items: center;
 	gap: var(--space-xs);
 	width: 100%;
-	max-width: 48rem;
+	max-width: 32rem;
 }
