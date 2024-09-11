@@ -16,7 +16,7 @@
 		Cross,
 		Plus,
 	} from '$lib/components'
-	import type { ImageFieldset } from './types'
+	import type { ImageFieldset } from './types.editNote'
 	import { NoteEditorSchema } from '$lib/schemas'
 	import { generateCopy } from './editNote.helpers'
 	import { idTestId, imageListTestId } from './consts.editNote'

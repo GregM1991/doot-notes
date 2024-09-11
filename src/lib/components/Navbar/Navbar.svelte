@@ -24,7 +24,7 @@
 			<Button href="/login">Login</Button>
 		{/if}
 	</div>
-	<MobileNav />
+	<MobileNav {user} />
 </nav>
 
 <style>

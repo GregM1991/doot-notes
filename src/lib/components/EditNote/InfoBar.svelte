@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button, Check, NoteInfoBar, Plus } from '$lib/components'
-	import type { InfoBarProps } from './types'
+	import type { InfoBarProps } from './types.editNote'
 
 	let {
 		formId,
