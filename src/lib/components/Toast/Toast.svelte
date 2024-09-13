@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition'
-	import { Cross } from '$lib/components'
+	import { Check, CircleBackslash, Cross, InfoCircled } from '$lib/components'
 	import type { Toast } from '$lib/server/sessions/toastSession'
 
 	let { toast }: { toast: Omit<Toast, 'id'> | null } = $props()
-	let showToast = $state(false)
+	let showToast = $state(true)
 
 	$effect(() => {
 		if (toast) {
@@ -25,19 +25,27 @@
 		out:fly|fade={{ y: -50, duration: 150 }}
 		class="wrapper {toast.type}"
 	>
-		<span class="type-icon icon-layout {toast.type}"> Icon </span>
+		<span class="icon-layout {toast.type}">
+			{#if toast.type === 'success'}
+				<Check />
+			{:else if toast.type === 'error'}
+				<CircleBackslash />
+			{:else if toast.type === 'message'}
+				<InfoCircled />
+			{/if}
+		</span>
 		<div class="content">
 			{#if toast.title}
-				<span>
+				<strong>
 					{toast.title}
-				</span>
+				</strong>
 			{/if}
 			<span>
 				{toast.description}
 			</span>
 		</div>
-		<form>
-			<button type="submit" onclick={() => showToast = false}>
+		<form class="dismiss-toast">
+			<button type="submit" onclick={() => (showToast = false)}>
 				<Cross />
 			</button>
 		</form>
@@ -48,8 +56,10 @@
 	.wrapper {
 		display: flex;
 		align-items: center;
+		gap: var(--space-2xs);
 		position: absolute;
 		border: 2px solid var(--content-background);
+		filter: drop-shadow(var(--border-drop-shadow) var(--content-background));
 		border-radius: var(--border-radius);
 		background: var(--palette-base);
 		top: 25px;
@@ -57,10 +67,11 @@
 		transform: translateX(-50%);
 		overflow: hidden;
 		z-index: 3;
+		padding: var(--space-2xs);
+		font-size: 1rem;
 	}
 
 	.content {
-		padding: var(--space-3xs) var(--space-2xs);
 		display: flex;
 		flex-direction: column;
 	}
@@ -68,16 +79,23 @@
 	.icon-layout {
 		display: grid;
 		place-items: center;
-		align-self: stretch;
-		padding: var(--space-3xs) var(--space-2xs);
-		background: var(--content-background);
 		color: var(--content-color);
+		background: var(--content-background);
+		border-radius: var(--border-radius-small);
+		width: 40px;
+		height: 40px;
+		font-size: 1.3rem;
+	}
+
+	.dismiss-toast {
+		width: max-content;
+		margin-left: var(--space-s);
+		font-size: 1.3rem;
 	}
 
 	button {
 		display: flex;
 		align-items: center;
-		margin: 0 var(--space-2xs);
 		border: none;
 		border-radius: 0 var(--border-radius) var(--border-radius) 0;
 		background: none;

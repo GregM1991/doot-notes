@@ -20,9 +20,7 @@
 </svelte:head>
 
 <div class="content">
-	<Toast
-		toast={data.toast}
-	/>
+	<Toast toast={data.toast} />
 
 	<div class="content-body">
 		{@render children()}
