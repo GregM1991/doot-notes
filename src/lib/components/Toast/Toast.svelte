@@ -1,41 +1,48 @@
 <script lang="ts">
-	import type { Type } from '$lib/server/sessions/toastSession'
-	import { createEventDispatcher } from 'svelte'
 	import { fly } from 'svelte/transition'
 	import { Cross } from '$lib/components'
+	import type { Toast } from '$lib/server/sessions/toastSession'
 
-	export let title: string | undefined
-	export let description: string
-	export let type: Type
+	let { toast }: { toast: Omit<Toast, 'id'> | null } = $props()
+	let showToast = $state(false)
 
-	const dispatch = createEventDispatcher()
-	function onClose() {
-		dispatch('close')
-	}
+	$effect(() => {
+		if (toast) {
+			showToast = true
+
+			const timer = setTimeout(() => {
+				showToast = false
+			}, 5000)
+
+			return () => clearTimeout(timer)
+		}
+	})
 </script>
 
-<div
-	in:fly|fade={{ y: -50, duration: 300 }}
-	out:fly|fade={{ y: -50, duration: 150 }}
-	class="wrapper {type}"
->
-	<span class="type-icon icon-layout {type}"> Icon </span>
-	<div class="content">
-		{#if title}
+{#if showToast && toast}
+	<div
+		in:fly|fade={{ y: -50, duration: 300 }}
+		out:fly|fade={{ y: -50, duration: 150 }}
+		class="wrapper {toast.type}"
+	>
+		<span class="type-icon icon-layout {toast.type}"> Icon </span>
+		<div class="content">
+			{#if toast.title}
+				<span>
+					{toast.title}
+				</span>
+			{/if}
 			<span>
-				{title}
+				{toast.description}
 			</span>
-		{/if}
-		<span>
-			{description}
-		</span>
+		</div>
+		<form>
+			<button type="submit" onclick={() => showToast = false}>
+				<Cross />
+			</button>
+		</form>
 	</div>
-	<form>
-		<button type="submit" on:click={onClose}>
-			<Cross />
-		</button>
-	</form>
-</div>
+{/if}
 
 <style>
 	.wrapper {
@@ -49,6 +56,7 @@
 		left: 50%;
 		transform: translateX(-50%);
 		overflow: hidden;
+		z-index: 3;
 	}
 
 	.content {

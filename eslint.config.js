@@ -18,6 +18,9 @@ export default [
 				...globals.node,
 			},
 		},
+		rules: {
+			'prefer-const': 'off',
+		},
 	},
 	{
 		files: ['**/*.svelte'],
