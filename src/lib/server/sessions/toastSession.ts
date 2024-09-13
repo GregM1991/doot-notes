@@ -27,7 +27,7 @@ export function getToastData(toastCookie: string) {
 	const parsedToast = JSON.parse(decryptedToastValue)
 	const toast = ToastSchema.safeParse(parsedToast)
 
-	return toast.success ? toast.data : undefined
+	return toast.success ? toast.data : null
 }
 
 export function setToastDataToCookie(

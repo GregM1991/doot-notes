@@ -18,7 +18,7 @@
 		name={nameFieldName}
 		type="text"
 		value=""
-		autoComplete="nope"
+		autoComplete={null}
 		tabIndex={-1}
 	/>
 	{#if validFromFieldName && encryptedValidFrom}
