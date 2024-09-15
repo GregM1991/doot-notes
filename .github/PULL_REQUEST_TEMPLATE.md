@@ -8,7 +8,7 @@
 
 - [ ] Tests updated
 - [ ] Docs updated
-
+- [ ] Mobile sizes checked
 ## Screenshots
 
 <!-- If what you're changing is within the app, please show before/after.
