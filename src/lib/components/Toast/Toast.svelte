@@ -4,7 +4,7 @@
 	import type { Toast } from '$lib/server/sessions/toastSession'
 
 	let { toast }: { toast: Omit<Toast, 'id'> | null } = $props()
-	let showToast = $state(true)
+	let showToast = $state(false)
 
 	$effect(() => {
 		if (toast) {
@@ -69,6 +69,13 @@
 		z-index: 3;
 		padding: var(--space-2xs);
 		font-size: 1rem;
+
+		@media (--below-med) {
+			top: var(--space-m);
+			left: var(--space-m);
+			right: var(--space-m);
+			transform: none;
+		}
 	}
 
 	.content {
@@ -91,6 +98,10 @@
 		width: max-content;
 		margin-left: var(--space-s);
 		font-size: 1.3rem;
+
+		@media (--below-med) {
+			margin-left: auto;
+		}
 	}
 
 	button {

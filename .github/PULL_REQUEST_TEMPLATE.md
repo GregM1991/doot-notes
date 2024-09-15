@@ -8,6 +8,7 @@
 
 - [ ] Tests updated
 - [ ] Docs updated
+- [ ] Mobile sizes checked
 
 ## Screenshots
 

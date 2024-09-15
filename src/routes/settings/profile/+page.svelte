@@ -150,6 +150,8 @@
 		text-align: center;
 		border-radius: var(--border-radius-circle);
 		background: var(--palette-base-light);
+		border: var(--border);
+		filter: var(--border-drop-shadow-black);
 	}
 
 	.avatar {
@@ -165,8 +167,8 @@
 		display: grid;
 		place-items: center;
 		position: absolute;
-		top: 0.5rem;
-		right: 0.5rem;
+		top: 3px;
+		right: 3px;
 		background: var(--palette-pop-light);
 		width: 3rem;
 		height: 3rem;
