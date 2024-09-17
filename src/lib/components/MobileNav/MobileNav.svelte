@@ -27,24 +27,14 @@
 				<Button fluid href="/users" onclick={toggle}>Users</Button>
 			</li>
 			{#if user}
-				<Button
-					fluid
-					href="/users/{user.username}"
-					onclick={toggle}
-					class="menu-item"
-				>
+				<Button fluid href="/users/{user.username}" onclick={toggle}>
 					<Person /> Profile
 				</Button>
-				<Button
-					fluid
-					href="/users/{user.username}/notes"
-					onclick={toggle}
-					class="menu-item"
-				>
+				<Button fluid href="/users/{user.username}/notes" onclick={toggle}>
 					<Pencil2 /> Notes
 				</Button>
 				<form action="/logout" method="POST">
-					<Button fluid type="submit" onclick={toggle} class="menu-item">
+					<Button fluid type="submit" onclick={toggle}>
 						<Exit /> Logout
 					</Button>
 				</form>

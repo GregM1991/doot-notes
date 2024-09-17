@@ -1,20 +1,27 @@
 import type { Snippet } from 'svelte'
 
+interface DataAttr {
+	[key: `data-${string}`]: string
+}
+
 export type ButtonProps = {
-	type?: 'submit' | 'button' | 'reset'
-	href?: string
-	variant?: 'primary' | 'secondary'
-	fluid?: boolean
-	style?: string
-	small?: boolean
+	children: Snippet
 	danger?: boolean
-	name?: string | null
-	value?: string | null
-	id?: string | null
-	form?: string | null
+	dataAttr?: DataAttr
 	delayed?: boolean
 	delayedReason?: string | null
-	class?: string
-	children: Snippet
+	fluid?: boolean
+	form?: string | null
+	href?: string
+	id?: string | null
+	name?: string | null
 	onclick?: (event: MouseEvent) => void
+	onkeyup?: (event: KeyboardEvent) => void
+	onblur?: () => void
+	requireDoubleCheck?: boolean
+	small?: boolean
+	style?: string
+	type?: 'submit' | 'button' | 'reset'
+	value?: string | null
+	variant?: 'primary' | 'secondary'
 }

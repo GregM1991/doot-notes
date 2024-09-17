@@ -11,6 +11,7 @@
 		Link2,
 		LockClosed,
 		LockOpened,
+		Trash,
 	} from '$lib/components'
 	import {
 		deleteDataActionIntent,
@@ -21,14 +22,20 @@
 	import { superForm } from 'sveltekit-superforms'
 	import { zodClient } from 'sveltekit-superforms/adapters'
 	import { ProfileFormSchema } from '$lib/schemas'
+	import { createDoubleCheckStore } from '$lib/stores/doubleCheck.svelte.js'
 
-	export let data
+	let { data } = $props()
+
+	const dcSessions = createDoubleCheckStore()
+	const dcDeleteData = createDoubleCheckStore()
 	const { form, enhance, errors, constraints } = superForm(data.form, {
+		onSubmit: () => dcSessions.handleSubmit,
 		validators: zodClient(ProfileFormSchema),
 		resetForm: false,
 	})
+
 	const profileSrc = getUserImgSrc(data.user.image?.id)
-	$: otherSessions = data.user._count.sessions - 1
+	let otherSessions = $derived(data.user._count.sessions - 1)
 </script>
 
 <h1 class="header">Let's make some changes to your profile</h1>
@@ -97,11 +104,18 @@
 		{#if otherSessions}
 			<Button
 				small
+				danger={dcSessions.doubleCheck}
 				form="profile"
 				name="intent"
 				value={signOutOfSessionsActionIntent}
-				type="submit">Sign out other sessions</Button
+				type="submit"
 			>
+				{#if dcSessions.doubleCheck}
+					Are you sure?
+				{:else}
+					Sign out other sessions
+				{/if}
+			</Button>
 		{:else}
 			<Person /> This is your only session
 		{/if}
@@ -122,15 +136,18 @@
 	</li>
 	<li>
 		<Button
+			small
 			form="profile"
 			danger
 			type="submit"
-			small
-			style="font-size: var(--type-step-0)"
 			name="intent"
 			value={deleteDataActionIntent}
 		>
-			<Download /> Delete your account and data
+			{#if dcDeleteData.doubleCheck}
+				Are you sure?
+			{:else}
+				<Trash /> Delete your account and data
+			{/if}
 		</Button>
 	</li>
 </ul>

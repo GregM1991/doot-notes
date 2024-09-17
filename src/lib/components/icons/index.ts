@@ -18,6 +18,7 @@ import Person from 'virtual:icons/radix-icons/person'
 import Plus from 'virtual:icons/radix-icons/plus'
 import Timer from 'virtual:icons/radix-icons/timer'
 import Trash from 'virtual:icons/radix-icons/trash'
+
 export {
 	Camera,
 	Check,
