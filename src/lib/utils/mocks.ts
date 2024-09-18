@@ -4,7 +4,7 @@ import fsExtra from 'fs-extra'
 import { z } from 'zod'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const fixturesDirPath = path.join(__dirname, '..', 'fixtures')
+const fixturesDirPath = path.join(__dirname, '/tests/fixtures', 'fixtures')
 
 // Defines the schema for an email object using zod
 

@@ -1,43 +1,36 @@
 import type { SubmitFunction } from '@sveltejs/kit'
 
-export function createDoubleCheckStore() {
-	let doubleCheck = $state(false)
+export function createDoubleCheckStore(dcIds: Array<string>) {
+	let doubleCheckMap = $state(Object.fromEntries(dcIds.map(id => [id, false])))
 
-	const handleSubmit: SubmitFunction = async ({ cancel, formElement }) => {
-		if (!doubleCheck) {
-			doubleCheck = true
-			cancel()
-		} else {
-			doubleCheck = false
-			formElement.requestSubmit()
+	const handleSubmit = (id: string): SubmitFunction => {
+		return async ({ cancel, formElement }) => {
+			const doubleCheck = doubleCheckMap[id]
+			if (!doubleCheck) {
+				doubleCheckMap[id] = true
+				cancel()
+			} else {
+				doubleCheckMap[id] = false
+				formElement.requestSubmit()
+			}
 		}
 	}
-	const onkeyup = (event: KeyboardEvent) => {
+
+	const onkeyup = (id: string) => (event: KeyboardEvent) => {
 		if (event.key === 'Escape') {
-			doubleCheck = false
+			doubleCheckMap[id] = false
 		}
 	}
-	const onblur = () => {
-		doubleCheck = false
-	}
-	const getButtonProps = () => {
-		return {
-			onkeyup: callAll(onkeyup),
-			onblur: callAll(onblur),
-		}
-	}
+	const onblur = (id: string) => () => (doubleCheckMap[id] = false)
+
+	const getButtonProps = (id: string) => ({
+		onkeyup: onkeyup(id),
+		onblur: onblur(id),
+	})
 
 	return {
-		get doubleCheck() {
-			return doubleCheck
-		},
+		doubleCheckMap,
 		handleSubmit,
 		getButtonProps,
 	}
-}
-
-function callAll<Args extends Array<unknown>>(
-	...fns: Array<((...args: Args) => unknown) | undefined>
-) {
-	return (...args: Args) => fns.forEach(fn => fn?.(...args))
 }

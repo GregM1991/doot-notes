@@ -26,10 +26,23 @@
 
 	let { data } = $props()
 
-	const dcSessions = createDoubleCheckStore()
-	const dcDeleteData = createDoubleCheckStore()
+	const [dcDeleteId, dcSignoutId] = ['delete', 'signOut']
+	const dc = createDoubleCheckStore([dcDeleteId, dcSignoutId])
+
 	const { form, enhance, errors, constraints } = superForm(data.form, {
-		onSubmit: () => dcSessions.handleSubmit,
+		onSubmit: submitArgs => {
+			if (submitArgs.submitter instanceof HTMLElement) {
+				const attrs = Array.from(submitArgs.submitter.attributes)
+				const attrsObject = Object.fromEntries(
+					attrs.map(attr => [attr.name, attr.value]),
+				)
+				if (attrsObject.value === signOutOfSessionsActionIntent) {
+					dc.handleSubmit(dcSignoutId)(submitArgs)
+				} else {
+					dc.handleSubmit(dcDeleteId)(submitArgs)
+				}
+			}
+		},
 		validators: zodClient(ProfileFormSchema),
 		resetForm: false,
 	})
@@ -104,13 +117,14 @@
 		{#if otherSessions}
 			<Button
 				small
-				danger={dcSessions.doubleCheck}
+				danger={dc.doubleCheckMap[dcSignoutId]}
 				form="profile"
 				name="intent"
 				value={signOutOfSessionsActionIntent}
 				type="submit"
+				{...dc.getButtonProps(dcSignoutId)}
 			>
-				{#if dcSessions.doubleCheck}
+				{#if dc.doubleCheckMap[dcSignoutId]}
 					Are you sure?
 				{:else}
 					Sign out other sessions
@@ -142,8 +156,9 @@
 			type="submit"
 			name="intent"
 			value={deleteDataActionIntent}
+			{...dc.getButtonProps(dcDeleteId)}
 		>
-			{#if dcDeleteData.doubleCheck}
+			{#if dc.doubleCheckMap[dcDeleteId]}
 				Are you sure?
 			{:else}
 				<Trash /> Delete your account and data
