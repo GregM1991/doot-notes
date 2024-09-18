@@ -1,7 +1,0 @@
-{
-  "to": "gregtest@martintest.com",
-  "from": "onboarding@resend.dev",
-  "subject": "Email change request verification from Doot Notes",
-  "text": "Whats this also?",
-  "html": "\n\t<!DOCTYPE PUBLIC “-//W3C//DTD XHTML 1.0 Transitional//EN” “https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd”>\n\t<html lang=\"en\" dir=\"ltr\" xmlns=\"http://www.w3.org/1999/xhtml\">\n\t\t<head>\n\t\t\t<meta charset=\"UTF-8\" />\n\t\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n\t\t</head>\n\t\t<body>\n\t\t\t<h1>Doot doot! Here's the code to change your e-mail address</h1>\n\t\t\t<p>Use this verification code: <strong>4GMTRE</strong></p>\n\t\t\t<p>Or click the link to get started:</p>\n\t\t\t<p><a href=\"http://localhost:5173/verify?type=change-email&target=cluu7rei1000413nt4bnut3zn&code=4GMTRE\">http://localhost:5173/verify?type=change-email&target=cluu7rei1000413nt4bnut3zn&code=4GMTRE</a></p>\n\t\t</body>\n\t</html>\n\t"
-}

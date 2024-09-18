@@ -11,7 +11,6 @@
 	} from '$lib/components'
 	import { getNoteImgSrc } from '$lib/utils/misc.js'
 
-	// export let form
 	export let data
 </script>
 
@@ -42,10 +41,10 @@
 			<span class="time-since-update"><Timer />{data.timeSinceUpdate}</span>
 			<div class="buttons">
 				<Button small variant="secondary" href="{$page.params.noteId}/edit">
-					<Pencil2 /> Edit
+					<Pencil2 />Edit
 				</Button>
 				<form method="POST" use:enhance>
-					<Button small danger type="submit"><Eraser /> Delete</Button>
+					<Button small danger type="submit"><Eraser />Delete</Button>
 				</form>
 			</div>
 		</NoteInfoBar>

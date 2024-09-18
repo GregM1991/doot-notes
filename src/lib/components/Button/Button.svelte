@@ -5,16 +5,16 @@
 	import type { ButtonProps } from './types.button'
 
 	let {
-		href = undefined,
-		variant = 'primary',
-		fluid = false,
-		small = false,
+		children,
+		dataAttr = {},
 		danger = false,
 		delayed = false,
 		delayedReason = null,
-		class: className = '',
-		children,
-		...resetProps
+		fluid = false,
+		href = undefined,
+		small = false,
+		variant = 'primary',
+		...restProps
 	}: ButtonProps = $props()
 
 	const classes = classnames({
@@ -30,10 +30,11 @@
 
 <svelte:element
 	this={element}
+	{...restProps}
+	{...dataAttr}
 	{role}
 	{href}
-	{...resetProps}
-	class="base {classes} {className}"
+	class="base {classes}"
 	disabled={delayed}
 	aria-disabled={delayed ? 'true' : undefined}
 >

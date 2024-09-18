@@ -11,6 +11,7 @@
 		Link2,
 		LockClosed,
 		LockOpened,
+		Trash,
 	} from '$lib/components'
 	import {
 		deleteDataActionIntent,
@@ -21,14 +22,33 @@
 	import { superForm } from 'sveltekit-superforms'
 	import { zodClient } from 'sveltekit-superforms/adapters'
 	import { ProfileFormSchema } from '$lib/schemas'
+	import { createDoubleCheckStore } from '$lib/stores/doubleCheck.svelte.js'
 
-	export let data
+	let { data } = $props()
+
+	const [dcDeleteId, dcSignoutId] = ['delete', 'signOut']
+	const dc = createDoubleCheckStore([dcDeleteId, dcSignoutId])
+
 	const { form, enhance, errors, constraints } = superForm(data.form, {
+		onSubmit: submitArgs => {
+			if (submitArgs.submitter instanceof HTMLElement) {
+				const attrs = Array.from(submitArgs.submitter.attributes)
+				const attrsObject = Object.fromEntries(
+					attrs.map(attr => [attr.name, attr.value]),
+				)
+				if (attrsObject.value === signOutOfSessionsActionIntent) {
+					dc.handleSubmit(dcSignoutId)(submitArgs)
+				} else {
+					dc.handleSubmit(dcDeleteId)(submitArgs)
+				}
+			}
+		},
 		validators: zodClient(ProfileFormSchema),
 		resetForm: false,
 	})
+
 	const profileSrc = getUserImgSrc(data.user.image?.id)
-	$: otherSessions = data.user._count.sessions - 1
+	let otherSessions = $derived(data.user._count.sessions - 1)
 </script>
 
 <h1 class="header">Let's make some changes to your profile</h1>
@@ -97,11 +117,19 @@
 		{#if otherSessions}
 			<Button
 				small
+				danger={dc.doubleCheckMap[dcSignoutId]}
 				form="profile"
 				name="intent"
 				value={signOutOfSessionsActionIntent}
-				type="submit">Sign out other sessions</Button
+				type="submit"
+				{...dc.getButtonProps(dcSignoutId)}
 			>
+				{#if dc.doubleCheckMap[dcSignoutId]}
+					Are you sure?
+				{:else}
+					Sign out other sessions
+				{/if}
+			</Button>
 		{:else}
 			<Person /> This is your only session
 		{/if}
@@ -122,15 +150,19 @@
 	</li>
 	<li>
 		<Button
+			small
 			form="profile"
 			danger
 			type="submit"
-			small
-			style="font-size: var(--type-step-0)"
 			name="intent"
 			value={deleteDataActionIntent}
+			{...dc.getButtonProps(dcDeleteId)}
 		>
-			<Download /> Delete your account and data
+			{#if dc.doubleCheckMap[dcDeleteId]}
+				Are you sure?
+			{:else}
+				<Trash /> Delete your account and data
+			{/if}
 		</Button>
 	</li>
 </ul>
