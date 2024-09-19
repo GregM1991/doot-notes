@@ -72,7 +72,6 @@
 		}
 	}
 
-	/* TODO: fix the scrollbar-gutter: stable both-edges; thing (browser specific?) */
 	.main {
 		grid-area: main;
 		display: grid;

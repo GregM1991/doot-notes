@@ -1,21 +1,22 @@
 import type { InputConstraint } from 'sveltekit-superforms'
 
 export type InputProps = {
-	placeholder?: string
-	name: string
-	id?: string
-	value: string
-	label?: string
-	style?: string
-	errors?: string[] | null
+	autofocus?: boolean
 	constraints?: InputConstraint | undefined
-	secondary?: boolean
-	required?: boolean
+	errors?: string[] | null
 	fluid?: boolean
 	hidden?: boolean
+	id?: string
+	label?: string
+	name: string
 	onchange?: () => void
-	type?: 'text' | 'password' | 'search' | 'hidden' | 'email' | null
 	oninput?: (
 		event: Event & { currentTarget: EventTarget & HTMLInputElement },
 	) => void
+	placeholder?: string
+	required?: boolean
+	secondary?: boolean
+	style?: string
+	type?: 'text' | 'password' | 'search' | 'hidden' | 'email' | null
+	value: string
 }

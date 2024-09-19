@@ -1,63 +1,78 @@
 <script lang="ts">
-	import { Input, Plus } from '$lib/components'
+	import { Cross, Input, Plus } from '$lib/components'
 	import { createState } from './helpers.imageEditor.svelte'
 	import type { ImageEditorProps } from './types.imageEditor'
 
-	let { image, index }: ImageEditorProps = $props()
+	let { image, index, deleteImage }: ImageEditorProps = $props()
 	const helperState = createState(image)
 
 	const fileGroupPrefix = `note-editor-images[${index}]`
 </script>
 
-<fieldset id={fileGroupPrefix} class="container">
-	<legend class="sr-only">Select an image to upload</legend>
+<li class="image-list-item">
+	<!-- TODO: //create form action for delete later NOT-46 -->
+	<button
+		formaction="?/delete"
+		class="remove-image-button"
+		name="id"
+		value={image?.id ?? index}
+		onclick={() => deleteImage(index)}
+	>
+		<span aria-hidden="true">
+			<Cross />
+		</span>
+		<span class="sr-only">Remove image {index}</span>
+	</button>
+	<fieldset id={fileGroupPrefix} class="container">
+		<legend class="sr-only">Select an image to upload</legend>
 
-	<!-- TODO: NOT-71 fix focus for file input -->
-	<div class="file-input-container">
-		<label class="file-label">
-			{#if helperState.state.previewImage}
-				<img
-					class="preview-image absolute"
-					src={helperState.state.previewImage}
-					alt={image?.altText ?? ''}
+		<!-- TODO: NOT-71 fix focus for file input -->
+		<div class="file-input-container">
+			<label class="file-label">
+				{#if helperState.state.previewImage}
+					<img
+						class="preview-image absolute"
+						src={helperState.state.previewImage}
+						alt={image?.altText ?? ''}
+					/>
+				{:else}
+					<button class="plus">
+						<Plus />
+					</button>
+				{/if}
+				<input
+					onchange={helperState.handleFileChange}
+					id="{fileGroupPrefix}.file"
+					name="images[{index}].file"
+					value={image?.file}
+					class="file absolute"
+					type="file"
+					accept="image/*"
+					aria-label="Image"
 				/>
-			{:else}
-				<button class="plus">
-					<Plus />
-				</button>
+			</label>
+			<!-- <ValidationErrors {errors} errorId={fileId} /> -->
+			{#if helperState.existingImage && image?.id}
+				<input
+					type="hidden"
+					id="{fileGroupPrefix}.id"
+					name="images[{index}].id"
+					value={image?.id}
+				/>
 			{/if}
-			<input
-				onchange={helperState.handleFileChange}
-				id="{fileGroupPrefix}.file"
-				name="images[{index}].file"
-				value={image?.file}
-				class="file absolute"
-				type="file"
-				accept="image/*"
-				aria-label="Image"
+		</div>
+		<div class="alt-input">
+			<Input
+				label="Alt text"
+				id="{fileGroupPrefix}.altText"
+				name="images[{index}].altText"
+				value={image?.altText ?? ''}
+				type="text"
+				fluid
 			/>
-		</label>
-		<!-- <ValidationErrors {errors} errorId={fileId} /> -->
-		{#if helperState.existingImage && image?.id}
-			<input
-				type="hidden"
-				id="{fileGroupPrefix}.id"
-				name="images[{index}].id"
-				value={image?.id}
-			/>
-		{/if}
-	</div>
-	<div class="alt-input">
-		<Input
-			label="Alt text"
-			id="{fileGroupPrefix}.altText"
-			name="images[{index}].altText"
-			value={image?.altText ?? ''}
-			type="text"
-			fluid
-		/>
-	</div>
-</fieldset>
+		</div>
+	</fieldset>
+</li>
 
 <style>
 	.container {
@@ -121,5 +136,26 @@
 		display: flex;
 		flex-direction: column;
 		width: 100%;
+	}
+
+	.image-list-item {
+		position: relative;
+		padding-bottom: var(--space-xs);
+	}
+
+	.remove-image-button {
+		display: grid;
+		place-items: center;
+		position: absolute;
+		right: 0;
+		top: 0;
+		border: none;
+		background: none;
+		color: tomato;
+		cursor: pointer;
+	}
+
+	.remove-image-button span {
+		display: flex;
 	}
 </style>

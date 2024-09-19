@@ -112,7 +112,7 @@
 			transform: translateY(-100%);
 		}
 		.bottom {
-			bottom: 0;
+			bottom: 1px;
 			transform: scaleY(-1) translateY(-100%);
 		}
 	}
