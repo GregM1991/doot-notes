@@ -1,10 +1,6 @@
 <!-- TODO: This is quite the component, will need a clean up at some stage NOT-63 -->
 <script lang="ts">
-	import {
-		type SuperValidated,
-		type Infer,
-		superForm,
-	} from 'sveltekit-superforms'
+	import { superForm } from 'sveltekit-superforms'
 	import { zodClient } from 'sveltekit-superforms/adapters'
 	import {
 		Input,
@@ -16,15 +12,18 @@
 		Cross,
 		Plus,
 	} from '$lib/components'
-	import type { ImageFieldset } from './types.editNote'
+	import type { EditNoteProps } from './types.editNote'
 	import { NoteEditorSchema } from '$lib/schemas'
 	import { generateCopy } from './editNote.helpers'
 	import { idTestId, imageListTestId } from './consts.editNote'
 	import InfoBar from './InfoBar.svelte'
 
-	export let data: SuperValidated<Infer<typeof NoteEditorSchema>>
-	export let images: Array<ImageFieldset> = []
-	export let action: string
+	let { data, action, images }: EditNoteProps = $props()
+	let imageList = $state(
+		images?.length
+			? images
+			: [{ id: undefined, file: undefined, altText: undefined }],
+	)
 
 	const { form, errors, enhance, formId, constraints, delayed, timeout } =
 		superForm(data, {
@@ -34,10 +33,6 @@
 		$form.id,
 		$form.title,
 	)
-
-	$: imageList = images.length
-		? images
-		: [{ id: undefined, file: undefined, altText: undefined }]
 
 	function addEmptyImage() {
 		imageList = [
@@ -93,8 +88,9 @@
 					class="remove-image-button"
 					name="id"
 					value={image.id ?? index}
-					on:click|preventDefault={() =>
-						(imageList = imageList.filter((_, i) => i !== index))}
+					onclick={() => {
+						imageList = imageList.filter((_, i) => i !== index)
+					}}
 				>
 					<span aria-hidden="true">
 						<Cross />
@@ -106,7 +102,7 @@
 		{/each}
 	</ul>
 	<!-- TODO: AddEmptyImage is not working 🐛 NOT-65 -->
-	<Button variant="secondary" type="button" on:click={addEmptyImage}>
+	<Button variant="secondary" type="button" onclick={addEmptyImage}>
 		<Plus />
 		Add another image
 	</Button>
