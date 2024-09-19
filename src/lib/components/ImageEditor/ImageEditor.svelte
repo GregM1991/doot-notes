@@ -1,39 +1,24 @@
 <script lang="ts">
 	import { Input, Plus } from '$lib/components'
-	import { getNoteImgSrc } from '$lib/utils/misc'
-	import type { ImageFieldset } from '$lib/components/EditNote/types.editNote'
+	import { createState } from './helpers.imageEditor.svelte'
+	import type { ImageEditorProps } from './types.imageEditor'
 
-	export let image: ImageFieldset | undefined
-	export let index: number
-
-	let previewImage: string | null = image?.id ? getNoteImgSrc(image?.id) : null
-	const existingImage = Boolean(image?.id)
+	let { image, index }: ImageEditorProps = $props()
+	const helperState = createState(image)
 
 	const fileGroupPrefix = `note-editor-images[${index}]`
-	function handleFileChange(event: Event) {
-		const file = (event.target as HTMLInputElement).files?.[0]
-		if (file) {
-			const reader = new FileReader()
-			reader.onload = () => {
-				previewImage = reader.result as string
-			}
-			reader.readAsDataURL(file)
-		} else {
-			previewImage = null
-		}
-	}
 </script>
 
 <fieldset id={fileGroupPrefix} class="container">
 	<legend class="sr-only">Select an image to upload</legend>
 
-	<!-- TODO: fix focus for file input -->
+	<!-- TODO: NOT-71 fix focus for file input -->
 	<div class="file-input-container">
 		<label class="file-label">
-			{#if previewImage}
+			{#if helperState.state.previewImage}
 				<img
 					class="preview-image absolute"
-					src={previewImage}
+					src={helperState.state.previewImage}
 					alt={image?.altText ?? ''}
 				/>
 			{:else}
@@ -42,7 +27,7 @@
 				</button>
 			{/if}
 			<input
-				on:change={handleFileChange}
+				onchange={helperState.handleFileChange}
 				id="{fileGroupPrefix}.file"
 				name="images[{index}].file"
 				value={image?.file}
@@ -53,7 +38,7 @@
 			/>
 		</label>
 		<!-- <ValidationErrors {errors} errorId={fileId} /> -->
-		{#if existingImage && image?.id}
+		{#if helperState.existingImage && image?.id}
 			<input
 				type="hidden"
 				id="{fileGroupPrefix}.id"

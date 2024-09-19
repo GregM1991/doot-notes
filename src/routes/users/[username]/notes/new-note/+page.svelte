@@ -2,7 +2,7 @@
 	import { page } from '$app/stores'
 	import { EditNote } from '$lib/components'
 
-	export let data
+	let { data } = $props()
 
 	const action = `/users/${$page.params.username}/notes/new-note?/newOrUpdate`
 </script>

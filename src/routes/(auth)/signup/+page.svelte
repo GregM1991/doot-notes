@@ -30,7 +30,7 @@
 			bind:value={$form.email}
 			errors={$errors.email}
 			constraints={$constraints.email}
-			type="text"
+			type="email"
 		/>
 	</FormGroup>
 	<Button fluid type="submit" variant="secondary">Submit</Button>

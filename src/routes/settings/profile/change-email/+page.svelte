@@ -27,7 +27,7 @@
 		<Input
 			label="New Email"
 			name="email"
-			type="text"
+			type="email"
 			bind:value={$form.email}
 			errors={$errors.email}
 			constraints={$constraints.email}
