@@ -76,6 +76,12 @@
 	--color-cream-95: var(--base-cream), 95%;
 	--color-cream-98: var(--base-cream), 98%;
 
+	--shadow-color-base: 30deg 5% 79%;
+	--shadow-base: 0px 0.7px 1px hsl(var(--shadow-color-base) / 0.01),
+		0px 2.7px 4px hsl(var(--shadow-color-base) / 0.09),
+		0px 5.3px 7.9px -0.1px hsl(var(--shadow-color-base) / 0.18),
+		0px 10.7px 15.9px -0.1px hsl(var(--shadow-color-base) / 0.26);
+
 	/* Grey */
 	--base-grey: 28, 10%;
 	--color-grey-10: hsl(var(--base-grey), 10%);
@@ -226,6 +232,12 @@ ol[role='list'] {
 /* Set core root defaults */
 html:focus-within {
 	scroll-behavior: smooth;
+}
+
+body,
+html {
+	height: 100vh;
+	overflow: hidden;
 }
 
 /* Set core body defaults */

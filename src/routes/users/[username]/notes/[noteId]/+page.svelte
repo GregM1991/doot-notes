@@ -55,13 +55,12 @@
 
 <style>
 	.article {
-		grid-column: 2 / 3;
-		grid-row: 1 / span 2;
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-2xs);
-		overflow: auto;
-		margin-bottom: var(--space-3xl);
+		padding-bottom: var(--space-xl);
+		height: 100%;
+		overflow-y: auto;
 	}
 
 	.heading {
