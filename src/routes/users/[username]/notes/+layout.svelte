@@ -73,16 +73,14 @@
 	}
 
 	.main {
+		position: relative;
 		grid-area: main;
-		display: grid;
-		grid-template-columns: var(--space-m) 1fr var(--space-m);
-		grid-template-rows: 1fr auto;
-		padding: var(--space-m);
+		padding: var(--space-xl);
 		background: var(--palette-base-light);
 		border-radius: 0 var(--border-radius) var(--border-radius) 0;
 		border: 4px solid var(--palette-base-medium);
 		border-left: none;
-		overflow: auto;
+		overflow: hidden;
 
 		@media (--below-med) {
 			border: none;

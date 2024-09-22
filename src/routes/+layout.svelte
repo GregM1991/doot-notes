@@ -21,13 +21,12 @@
 
 <div class="content">
 	<Toast toast={data.toast} />
-
-	<div class="content-body">
-		{@render children()}
-	</div>
 	<header>
 		<Navbar user={data.user} />
 	</header>
+	<div class="content-body">
+		{@render children()}
+	</div>
 	<footer>I'm the 🦶er</footer>
 </div>
 
