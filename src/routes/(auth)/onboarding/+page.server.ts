@@ -5,7 +5,6 @@ import {
 	verifySessionCookieName,
 	verifySessionCookieOptions,
 } from '$lib/server/sessions/verifySession'
-import { handleNewSession } from '$lib/server/sessions/authSession'
 import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 import { signup, requireAnonymous } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
@@ -15,6 +14,7 @@ import { fail, setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import { checkHoneypot } from '$lib/utils/honeypot.server'
 import { OnboardingSchema } from '$lib/schemas'
+import { handleNewAuthSession } from '$lib/server/sessions/authSession'
 
 async function requireOnboardingEmail(userId: string | null, cookies: Cookies) {
 	requireAnonymous(userId)
@@ -59,9 +59,10 @@ export const actions = {
 		// destroy the verify session
 		cookies.delete(verifySessionCookieName, verifySessionCookieOptions)
 		// create the auth session
-		handleNewSession({
+		handleNewAuthSession({
 			cookies,
-			session: { id: session.id },
+			sessionId: session.id,
+			sessionExpiry: session.expirationDate,
 			remember: remember ?? null,
 		})
 		// redirect with toast

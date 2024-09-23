@@ -1,24 +1,17 @@
 import type { CookieSerializeOptions } from 'cookie'
 import { z } from 'zod'
-import { redirect, type Cookies } from '@sveltejs/kit'
-import type { Session } from '@prisma/client'
 import {
 	decryptCookie,
 	encryptAndSignCookieValue,
 } from '$lib/server/sessions/secureCookie'
-import { sessionKey } from '$lib/utils/auth.server'
-import { safeRedirect } from '$lib/utils/misc'
 import { AuthSessionSchema } from '$lib/schemas'
+import type { Cookies } from '@sveltejs/kit'
+import { sessionKey } from '$lib/utils/auth.server'
 
-type SessionType = {
-	id: Session['id']
-	userId?: Session['userId']
-	expirationDate?: Session['expirationDate']
-}
-
-interface HandleNewSessionParams {
+interface HandleNewAuthSessionParams {
 	cookies: Cookies
-	session: SessionType
+	sessionId: string
+	sessionExpiry: Date
 	remember: boolean | null
 }
 
@@ -42,26 +35,17 @@ export function getAuthSessionData(sessionCookie: string | undefined) {
 	return session.success ? session.data : null
 }
 
-export async function handleNewSessionWithRedirect({
+export function handleNewAuthSession({
 	cookies,
-	session,
+	sessionId,
+	sessionExpiry,
 	remember,
-	redirectTo = null,
-}: HandleNewSessionParams & { redirectTo: string | null }) {
-	handleNewSession({ cookies, session, remember })
-	throw redirect(303, safeRedirect(redirectTo))
-}
-
-export function handleNewSession({
-	cookies,
-	session,
-	remember,
-}: HandleNewSessionParams) {
+}: HandleNewAuthSessionParams) {
 	const encryptedCookieString = encryptAndSignCookieValue({
-		[sessionKey]: session.id,
+		[sessionKey]: sessionId,
 	})
 	cookies.set(authSessionCookieName, encryptedCookieString, {
 		...authSessionCookieOptions,
-		expires: remember ? session.expirationDate : undefined,
+		expires: remember ? sessionExpiry : undefined,
 	})
 }
