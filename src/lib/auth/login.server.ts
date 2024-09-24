@@ -4,20 +4,28 @@ import { getRedirectToUrl } from '$lib/auth/verify.server'
 import { sessionKey } from '$lib/utils/auth.server'
 import { customRedirect, invariant, safeRedirect } from '$lib/utils/misc'
 import { encryptAndSignCookieValue } from '$lib/server/sessions/secureCookie'
-import type { Cookies } from '@sveltejs/kit'
+import { redirect, type Cookies } from '@sveltejs/kit'
 import type { Session } from '@prisma/client'
 import {
 	authSessionCookieName,
 	authSessionCookieOptions,
+	setNewAuthProperty,
 } from '$lib/server/sessions/authSession'
 import type { SuperValidated } from 'sveltekit-superforms'
 import type { z } from 'zod'
-import type { ProfileFormSchema } from '$lib/schemas'
+import type { VerifySchema } from '$lib/schemas'
 import type { Message } from '$lib/types'
-import { verifySessionCookieName } from '$lib/server/sessions/verifySession'
+import {
+	getVerifySessionData,
+	setVerificationCookieData,
+	verifySessionCookieName,
+	verifySessionCookieOptions,
+} from '$lib/server/sessions/verifySession'
+import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 
-const unverifiedSessionIdKey = 'unverified-session-id'
-const rememberKey = 'remember'
+const verifiedTimeKey = 'verified-time'
+export const unverifiedSessionIdKey = 'unverified-session-id'
+export const rememberKey = 'remember'
 
 type SessionType = {
 	id: Session['id']
@@ -34,11 +42,10 @@ type HandleNewSessionParams = {
 }
 
 export type VerifyFunctionArgs = {
-	request: Request
-	submission: SuperValidated<
-		z.input<typeof ProfileFormSchema>,
+	form: SuperValidated<
+		z.input<typeof VerifySchema>,
 		Message,
-		z.output<typeof ProfileFormSchema>
+		z.output<typeof VerifySchema>
 	>
 	body: FormData | URLSearchParams
 	cookies: Cookies
@@ -57,8 +64,9 @@ export async function handleNewSession(
 	const userHasTwoFactorEnabled = Boolean(verification)
 
 	if (userHasTwoFactorEnabled) {
-		cookies.set(unverifiedSessionIdKey, session.id, authSessionCookieOptions)
-		cookies.set(rememberKey, String(remember), authSessionCookieOptions)
+		// TODO: Figure out why this is not then logging in the user
+		setVerificationCookieData(unverifiedSessionIdKey, session.id, cookies)
+		setVerificationCookieData(rememberKey, String(remember), cookies)
 		const redirectUrl = getRedirectToUrl({
 			request,
 			type: twoFAVerificationType,
@@ -82,52 +90,38 @@ export async function handleNewSession(
 }
 
 export async function handleVerification({
-	request,
-	submission,
+	form,
 	cookies,
 }: VerifyFunctionArgs) {
-	invariant(submission.valid, 'Submission should be successful by now')
+	invariant(form.valid, 'Submission should be successful by now')
 
-	const authSession = cookies.get(authSessionCookieName)
-	const verifySession = cookies.get(verifySessionCookieName)
+	const verifySessionData = getVerifySessionData(cookies)
+	const remember = verifySessionData?.remember
+	const { redirectTo } = form.data
 
-	const remember = verifySession.get(rememberKey)
-	const { redirectTo } = submission.value
-	const headers = new Headers()
-	authSession.set(verifiedTimeKey, Date.now())
+	setNewAuthProperty(cookies, verifiedTimeKey, Date.now().toString())
 
-	const unverifiedSessionId = verifySession.get(unverifiedSessionIdKey)
+	const unverifiedSessionId = verifySessionData?.[unverifiedSessionIdKey]
 	if (unverifiedSessionId) {
 		const session = await prisma.session.findUnique({
 			select: { expirationDate: true },
 			where: { id: unverifiedSessionId },
 		})
 		if (!session) {
-			throw await redirectWithToast('/login', {
+			setToastDataToCookie(cookies, {
 				type: 'error',
 				title: 'Invalid session',
 				description: 'Could not find session to verify. Please try again.',
 			})
+			throw redirect(302, '/login')
 		}
-		authSession.set(sessionKey, unverifiedSessionId)
-
-		headers.append(
-			'set-cookie',
-			await authSessionStorage.commitSession(authSession, {
-				expires: remember ? session.expirationDate : undefined,
-			}),
-		)
-	} else {
-		headers.append(
-			'set-cookie',
-			await authSessionStorage.commitSession(authSession),
-		)
+		setNewAuthProperty(cookies, sessionKey, unverifiedSessionId)
+		if (remember) {
+			setNewAuthProperty(cookies, 'sessionExpiry', session.expirationDate)
+		}
 	}
+	cookies.delete(verifySessionCookieName, verifySessionCookieOptions)
 
-	headers.append(
-		'set-cookie',
-		await verifySessionStorage.destroySession(verifySession),
-	)
-
-	return redirect(safeRedirect(redirectTo), { headers })
+	const safeUrl = safeRedirect(redirectTo)
+	return redirect(303, safeUrl)
 }

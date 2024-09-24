@@ -6,12 +6,15 @@ import {
 } from '$lib/server/sessions/secureCookie'
 import { AuthSessionSchema } from '$lib/schemas'
 import type { Cookies } from '@sveltejs/kit'
-import { sessionKey } from '$lib/utils/auth.server'
+import type { sessionKey } from '$lib/utils/auth.server'
 
 interface HandleNewAuthSessionParams {
 	cookies: Cookies
-	sessionId: string
-	sessionExpiry: Date
+	cookieData: {
+		[sessionKey]: string
+		verifiedTimeKey?: Date
+		sessionExpiry: Date
+	}
 	remember: boolean | null
 }
 
@@ -27,7 +30,8 @@ export const authSessionCookieOptions: CookieSerializeOptions & {
 	secure: process.env.NODE_ENV === 'production',
 }
 
-export function getAuthSessionData(sessionCookie: string | undefined) {
+export function getAuthSessionData(cookies: Cookies) {
+	const sessionCookie = cookies.get(authSessionCookieName)
 	if (!sessionCookie) return null
 	const decryptedSessionValue = decryptCookie(sessionCookie)
 	const session = AuthSessionSchema.safeParse(decryptedSessionValue)
@@ -35,17 +39,25 @@ export function getAuthSessionData(sessionCookie: string | undefined) {
 	return session.success ? session.data : null
 }
 
-export function handleNewAuthSession({
-	cookies,
-	sessionId,
-	sessionExpiry,
-	remember,
-}: HandleNewAuthSessionParams) {
-	const encryptedCookieString = encryptAndSignCookieValue({
-		[sessionKey]: sessionId,
-	})
+export function setNewAuthProperty<T>(cookies: Cookies, key: string, value: T) {
+	const sessionData = getAuthSessionData(cookies)
+	if (!sessionData) return
+	const updatedSessionData = { ...sessionData, [key]: value }
+	const encryptedCookieString = encryptAndSignCookieValue(updatedSessionData)
 	cookies.set(authSessionCookieName, encryptedCookieString, {
 		...authSessionCookieOptions,
-		expires: remember ? sessionExpiry : undefined,
+		expires: sessionData.verifiedTimeKey,
+	})
+}
+
+export function handleNewAuthSession({
+	cookies,
+	cookieData,
+	remember,
+}: HandleNewAuthSessionParams) {
+	const encryptedCookieString = encryptAndSignCookieValue(cookieData)
+	cookies.set(authSessionCookieName, encryptedCookieString, {
+		...authSessionCookieOptions,
+		expires: remember ? cookieData.sessionExpiry : undefined,
 	})
 }

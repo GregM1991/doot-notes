@@ -2,6 +2,7 @@ import { redirect, type Cookies } from '@sveltejs/kit'
 import { handleVerification as handleOnboardingVerification } from '$lib/auth/onboarding.server'
 import { handleVerification as handleChangeEmailVerification } from '$lib/auth/changeEmail.server'
 import { handleVerification as handleResetPasswordVerification } from '$lib/auth/resetPassword.server'
+import { handleVerification as handleLoginTwoFactorVerification } from '$lib/auth/login.server'
 import {
 	codeQueryParam,
 	redirectToQueryParam,
@@ -172,10 +173,9 @@ export async function validateRequest(
 				userId,
 			})
 		}
-		// case '2fa': {
-		//   await deleteVerification()
-		//   return handleLoginTwoFactorVerification({ request, body, form})
-		// }
+		case '2fa': {
+			return handleLoginTwoFactorVerification({ form, cookies, body })
+		}
 	}
 }
 

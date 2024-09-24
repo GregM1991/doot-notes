@@ -61,8 +61,10 @@ export const actions = {
 		// create the auth session
 		handleNewAuthSession({
 			cookies,
-			sessionId: session.id,
-			sessionExpiry: session.expirationDate,
+			cookieData: {
+				sessionId: session.id,
+				sessionExpiry: session.expirationDate,
+			},
 			remember: remember ?? null,
 		})
 		// redirect with toast

@@ -36,7 +36,7 @@
 	use:enhance
 	enctype="multipart/form-data"
 >
-	<button type="submit" class="hidden"></button>
+	<button aria-label="submit" type="submit" class="hidden"></button>
 	<h3>{header}</h3>
 	{#if $form.id}
 		<input hidden value={$form.id} name="id" data-testid={idTestId} />

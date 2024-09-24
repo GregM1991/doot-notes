@@ -174,6 +174,7 @@ export const ResendSuccessSchema = z.object({ id: z.string() })
 
 export const AuthSessionSchema = z.object({
 	sessionId: z.string(),
+	verifiedTimeKey: z.date().optional(),
 })
 
 export const ConnectionSchema = z.object({

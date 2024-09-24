@@ -4,7 +4,9 @@
 	let {
 		toggleActive,
 		isActive,
-	}: { toggleActive: () => void; isActive: boolean } = $props()
+		controlledBy,
+	}: { toggleActive: () => void; isActive: boolean; controlledBy: string } =
+		$props()
 
 	const classes = $derived(
 		classnames({
@@ -13,7 +15,13 @@
 	)
 </script>
 
-<button class="hamburger" onclick={toggleActive}>
+<button
+	class="hamburger"
+	aria-expanded={`${isActive}`}
+	aria-controls={controlledBy}
+	onclick={toggleActive}
+	aria-label="hamburger-toggle"
+>
 	<span class="line top {classes}"></span>
 	<span class="line mid {classes}"></span>
 	<span class="line bot {classes}"></span>
