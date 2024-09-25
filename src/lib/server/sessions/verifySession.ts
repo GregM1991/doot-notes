@@ -45,14 +45,15 @@ export async function handleNewVerification({
 	throw redirect(303, safeRedirect(redirectTo))
 }
 
+// TODO: Figure out how to properly set these values to cookies
 export function setVerificationCookieData(
 	key: string,
 	value: string,
 	cookies: Cookies,
 ) {
-	const encryptedCookieString = encryptAndSignCookieValue({
-		[key]: value,
-	})
+	const sessionData = getVerifySessionData(cookies)
+	const updatedVerifyData = { ...sessionData, [key]: value }
+	const encryptedCookieString = encryptAndSignCookieValue(updatedVerifyData)
 	cookies.set(verifySessionCookieName, encryptedCookieString, {
 		...verifySessionCookieOptions,
 	})

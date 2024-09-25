@@ -40,13 +40,17 @@ export function getAuthSessionData(cookies: Cookies) {
 }
 
 export function setNewAuthProperty<T>(cookies: Cookies, key: string, value: T) {
+	let stringToSet = ''
 	const sessionData = getAuthSessionData(cookies)
-	if (!sessionData) return
-	const updatedSessionData = { ...sessionData, [key]: value }
-	const encryptedCookieString = encryptAndSignCookieValue(updatedSessionData)
-	cookies.set(authSessionCookieName, encryptedCookieString, {
+	if (!sessionData) {
+		stringToSet = encryptAndSignCookieValue({ [key]: value })
+	} else {
+		const updatedSessionData = { ...sessionData, [key]: value }
+		stringToSet = encryptAndSignCookieValue(updatedSessionData)
+	}
+	cookies.set(authSessionCookieName, stringToSet, {
 		...authSessionCookieOptions,
-		expires: sessionData.verifiedTimeKey,
+		expires: sessionData?.verifiedTimeKey,
 	})
 }
 

@@ -180,7 +180,6 @@ export function initialiseImageList(
 		: [{ id: undefined, file: undefined, altText: undefined }]
 }
 
-
 export function customRedirect(url: string = '/', init: ResponseInit = {}) {
 	let status = 302
 	let headers: Record<string, string> = {}

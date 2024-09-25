@@ -36,6 +36,13 @@ type GetRedirectToUrlParams = {
 	redirectTo?: string
 }
 
+type ValidateRequestParams = {
+	cookies: Cookies
+	request: Request
+	body: FormData | URLSearchParams
+	userId: string | null
+}
+
 /*
   This function takes in the type of verification and adds the necessary search
   params to a base domain URL and returns the URL
@@ -119,12 +126,12 @@ export async function prepareVerification({
 	}
 }
 
-export async function validateRequest(
-	cookies: Cookies,
-	request: Request,
-	body: FormData | URLSearchParams,
-	userId: string | null,
-) {
+export async function validateRequest({
+	cookies,
+	request,
+	body,
+	userId,
+}: ValidateRequestParams) {
 	const form = await superValidate(body, zod(VerifySchema))
 	if (!form.valid) return fail(400, { form })
 	if (body instanceof FormData) {
@@ -174,7 +181,7 @@ export async function validateRequest(
 			})
 		}
 		case '2fa': {
-			return handleLoginTwoFactorVerification({ form, cookies, body })
+			return handleLoginTwoFactorVerification({ form, cookies })
 		}
 	}
 }

@@ -47,7 +47,6 @@ export type VerifyFunctionArgs = {
 		Message,
 		z.output<typeof VerifySchema>
 	>
-	body: FormData | URLSearchParams
 	cookies: Cookies
 }
 
@@ -64,9 +63,10 @@ export async function handleNewSession(
 	const userHasTwoFactorEnabled = Boolean(verification)
 
 	if (userHasTwoFactorEnabled) {
-		// TODO: Figure out why this is not then logging in the user
 		setVerificationCookieData(unverifiedSessionIdKey, session.id, cookies)
 		setVerificationCookieData(rememberKey, String(remember), cookies)
+		const verifySessionData = getVerifySessionData(cookies)
+		console.log({ verifySessionData })
 		const redirectUrl = getRedirectToUrl({
 			request,
 			type: twoFAVerificationType,
@@ -96,6 +96,7 @@ export async function handleVerification({
 	invariant(form.valid, 'Submission should be successful by now')
 
 	const verifySessionData = getVerifySessionData(cookies)
+	console.log({ verifySessionData })
 	const remember = verifySessionData?.remember
 	const { redirectTo } = form.data
 
