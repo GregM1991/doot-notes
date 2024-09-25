@@ -1,24 +1,20 @@
 import type { CookieSerializeOptions } from 'cookie'
 import { z } from 'zod'
-import { redirect, type Cookies } from '@sveltejs/kit'
-import type { Session } from '@prisma/client'
 import {
 	decryptCookie,
 	encryptAndSignCookieValue,
 } from '$lib/server/sessions/secureCookie'
-import { sessionKey } from '$lib/utils/auth.server'
-import { safeRedirect } from '$lib/utils/misc'
 import { AuthSessionSchema } from '$lib/schemas'
+import type { Cookies } from '@sveltejs/kit'
+import type { sessionKey } from '$lib/utils/auth.server'
 
-type SessionType = {
-	id: Session['id']
-	userId?: Session['userId']
-	expirationDate?: Session['expirationDate']
-}
-
-interface HandleNewSessionParams {
+interface HandleNewAuthSessionParams {
 	cookies: Cookies
-	session: SessionType
+	cookieData: {
+		[sessionKey]: string
+		verifiedTimeKey?: Date
+		sessionExpiry: Date
+	}
 	remember: boolean | null
 }
 
@@ -34,7 +30,8 @@ export const authSessionCookieOptions: CookieSerializeOptions & {
 	secure: process.env.NODE_ENV === 'production',
 }
 
-export function getAuthSessionData(sessionCookie: string | undefined) {
+export function getAuthSessionData(cookies: Cookies) {
+	const sessionCookie = cookies.get(authSessionCookieName)
 	if (!sessionCookie) return null
 	const decryptedSessionValue = decryptCookie(sessionCookie)
 	const session = AuthSessionSchema.safeParse(decryptedSessionValue)
@@ -42,26 +39,29 @@ export function getAuthSessionData(sessionCookie: string | undefined) {
 	return session.success ? session.data : null
 }
 
-export async function handleNewSessionWithRedirect({
-	cookies,
-	session,
-	remember,
-	redirectTo = null,
-}: HandleNewSessionParams & { redirectTo: string | null }) {
-	handleNewSession({ cookies, session, remember })
-	throw redirect(303, safeRedirect(redirectTo))
+export function setNewAuthProperty<T>(cookies: Cookies, key: string, value: T) {
+	let stringToSet = ''
+	const sessionData = getAuthSessionData(cookies)
+	if (!sessionData) {
+		stringToSet = encryptAndSignCookieValue({ [key]: value })
+	} else {
+		const updatedSessionData = { ...sessionData, [key]: value }
+		stringToSet = encryptAndSignCookieValue(updatedSessionData)
+	}
+	cookies.set(authSessionCookieName, stringToSet, {
+		...authSessionCookieOptions,
+		expires: sessionData?.verifiedTimeKey,
+	})
 }
 
-export function handleNewSession({
+export function handleNewAuthSession({
 	cookies,
-	session,
+	cookieData,
 	remember,
-}: HandleNewSessionParams) {
-	const encryptedCookieString = encryptAndSignCookieValue({
-		[sessionKey]: session.id,
-	})
+}: HandleNewAuthSessionParams) {
+	const encryptedCookieString = encryptAndSignCookieValue(cookieData)
 	cookies.set(authSessionCookieName, encryptedCookieString, {
 		...authSessionCookieOptions,
-		expires: remember ? session.expirationDate : undefined,
+		expires: remember ? cookieData.sessionExpiry : undefined,
 	})
 }

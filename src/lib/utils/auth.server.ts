@@ -31,8 +31,7 @@ export const getSessionExpirationDate = () =>
 	(obviously if there's no authSession at all there's been no attempt at login).
 */
 export async function getUserId(cookies: Cookies) {
-	const sessionCookie = cookies.get(authSessionCookieName)
-	const sessionData = getAuthSessionData(sessionCookie)
+	const sessionData = getAuthSessionData(cookies)
 	if (!sessionData) return null
 	const session = await prisma.session.findFirst({
 		where: { id: sessionData.sessionId, expirationDate: { gt: new Date() } },
@@ -113,7 +112,7 @@ export async function resetUserPassword({
 }
 
 export async function logout(cookies: Cookies, redirectTo = '/') {
-	const session = getAuthSessionData(cookies.get(authSessionCookieName))
+	const session = getAuthSessionData(cookies)
 	if (session) {
 		void prisma.session
 			.deleteMany({ where: { id: session.sessionId } })

@@ -7,16 +7,17 @@
 	let {
 		user = null,
 	}: { user: (User & { image: { id: string } | null }) | null } = $props()
-
 	let isActive = $state(false)
 
 	function toggle() {
 		isActive = !isActive
 	}
+
+	const ariaControllerName = 'mobile-nav'
 </script>
 
-<div class="mobile-nav">
-	<Ham {isActive} toggleActive={toggle} />
+<div id={ariaControllerName} class="mobile-nav">
+	<Ham controlledBy={ariaControllerName} {isActive} toggleActive={toggle} />
 
 	{#if isActive}
 		<ul id="menu" class="menu" transition:fly={{ opacity: 0, x: '100%' }}>

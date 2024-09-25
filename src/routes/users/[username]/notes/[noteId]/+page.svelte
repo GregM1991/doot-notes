@@ -23,7 +23,7 @@
 			<ul class="image-list">
 				{#each data.note.images as image}
 					<li>
-						<a href={getNoteImgSrc(image.id)}>
+						<a aria-label="load-image" href={getNoteImgSrc(image.id)}>
 							<img src={getNoteImgSrc(image.id)} alt={image.altText ?? ''} />
 						</a>
 					</li>

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { redirect } from '@sveltejs/kit'
 import { error } from '@sveltejs/kit'
 import userImg from '$lib/images/user.png'
 import type {
@@ -57,7 +58,10 @@ export function invariant(
 	}
 }
 
-export function safeRedirect(redirectTo: string | null, defaultPath = '/') {
+export function safeRedirect(
+	redirectTo: string | null | undefined,
+	defaultPath = '/',
+) {
 	if (
 		redirectTo &&
 		redirectTo.startsWith('/') &&
@@ -174,4 +178,32 @@ export function initialiseImageList(
 	return images
 		? images
 		: [{ id: undefined, file: undefined, altText: undefined }]
+}
+
+export function customRedirect(url: string = '/', init: ResponseInit = {}) {
+	let status = 302
+	let headers: Record<string, string> = {}
+
+	if (typeof init === 'number') {
+		status = init
+	} else {
+		if (init.status) status = init.status
+		if (init.headers) {
+			if (init.headers instanceof Headers) {
+				init.headers.forEach((value, key) => {
+					headers[key] = value
+				})
+			} else if (Array.isArray(init.headers)) {
+				init.headers.forEach(([key, value]) => {
+					headers[key] = value
+				})
+			} else {
+				headers = { ...init.headers }
+			}
+		}
+	}
+
+	headers['Location'] = url.toString()
+
+	throw redirect(status, url.toString())
 }

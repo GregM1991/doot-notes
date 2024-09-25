@@ -4,10 +4,7 @@ import { prisma } from '$lib/utils/db.server'
 import type { Message } from '$lib/types'
 import { setToastDataToCookie } from '$lib/server/sessions/toastSession'
 import { redirect, type Cookies } from '@sveltejs/kit'
-import {
-	authSessionCookieName,
-	getAuthSessionData,
-} from '$lib/server/sessions/authSession'
+import { getAuthSessionData } from '$lib/server/sessions/authSession'
 import { invariantResponse } from '$lib/utils/misc'
 import type { ProfileFormSchema } from '$lib/schemas'
 
@@ -53,8 +50,7 @@ export async function signOutOfSessionsAction(
 	form: Form,
 	cookies: Cookies,
 ) {
-	const sessionCookie = cookies.get(authSessionCookieName)
-	const sessionData = getAuthSessionData(sessionCookie)
+	const sessionData = getAuthSessionData(cookies)
 
 	invariantResponse(
 		sessionData,

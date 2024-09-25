@@ -2,6 +2,7 @@ import { redirect, type Cookies } from '@sveltejs/kit'
 import { handleVerification as handleOnboardingVerification } from '$lib/auth/onboarding.server'
 import { handleVerification as handleChangeEmailVerification } from '$lib/auth/changeEmail.server'
 import { handleVerification as handleResetPasswordVerification } from '$lib/auth/resetPassword.server'
+import { handleVerification as handleLoginTwoFactorVerification } from '$lib/auth/login.server'
 import {
 	codeQueryParam,
 	redirectToQueryParam,
@@ -33,6 +34,13 @@ type GetRedirectToUrlParams = {
 	type: VerificationTypes
 	target: string
 	redirectTo?: string
+}
+
+type ValidateRequestParams = {
+	cookies: Cookies
+	request: Request
+	body: FormData | URLSearchParams
+	userId: string | null
 }
 
 /*
@@ -118,12 +126,12 @@ export async function prepareVerification({
 	}
 }
 
-export async function validateRequest(
-	cookies: Cookies,
-	request: Request,
-	body: FormData | URLSearchParams,
-	userId: string | null,
-) {
+export async function validateRequest({
+	cookies,
+	request,
+	body,
+	userId,
+}: ValidateRequestParams) {
 	const form = await superValidate(body, zod(VerifySchema))
 	if (!form.valid) return fail(400, { form })
 	if (body instanceof FormData) {
@@ -172,10 +180,9 @@ export async function validateRequest(
 				userId,
 			})
 		}
-		// case '2fa': {
-		//   await deleteVerification()
-		//   return handleLoginTwoFactorVerification({ request, body, form})
-		// }
+		case '2fa': {
+			return handleLoginTwoFactorVerification({ form, cookies })
+		}
 	}
 }
 
