@@ -60,7 +60,7 @@ export function invariant(
 
 export function safeRedirect(
 	redirectTo: string | null | undefined,
-	defaultPath = '/',
+	path = '/',
 ) {
 	if (
 		redirectTo &&
@@ -69,7 +69,7 @@ export function safeRedirect(
 	) {
 		return redirectTo
 	}
-	return defaultPath
+	return path
 }
 
 /*
