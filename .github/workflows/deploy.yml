@@ -16,7 +16,7 @@ permissions:
 jobs:
   lint:
     name: ⬣ ESLint
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
@@ -32,7 +32,7 @@ jobs:
 
   typecheck:
     name: ʦ TypeScript
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
@@ -48,7 +48,7 @@ jobs:
 
   # vitest:
   #   name: ⚡ Vitest
-  #   runs-on: ubuntu-22.04
+  #   runs-on: ubuntu-latest
   #   steps:
   #     - name: ⬇️ Checkout repo
   #       uses: actions/checkout@v3
@@ -72,7 +72,7 @@ jobs:
 
   # playwright:
   #   name: 🎭 Playwright
-  #   runs-on: ubuntu-22.04
+  #   runs-on: ubuntu-latest
   #   timeout-minutes: 60
   #   steps:
   #     - name: ⬇️ Checkout repo
@@ -127,7 +127,7 @@ jobs:
 
   deploy:
     name: 🚀 Deploy
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     needs: [lint, typecheck] #TODO: add actions back in when tests ready  vitest playwright
     # only build/deploy main branch on pushes
     if:
@@ -157,6 +157,6 @@ jobs:
       - name: 🚀 Deploy Production
         if: ${{ github.ref == 'refs/heads/main' }}
         run:
-          flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }}
+          flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }} --no-cache
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
