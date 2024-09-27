@@ -14,6 +14,7 @@
     "setup": "npm run build && prisma generate && prisma migrate deploy && prisma db seed && playwright install",
     "format": "prettier --write .",
     "prisma:studio": "prisma studio",
+    "seed": "bun run ./prisma/seed.ts",
     "test": "npx --node-options=\"--experimental-vm-modules\" jest src",
     "test:watch": "npx --node-options=\"--experimental-vm-modules\" jest src --watch",
     "test:ui": "vitest --ui"
