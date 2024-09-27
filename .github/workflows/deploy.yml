@@ -16,15 +16,13 @@ permissions:
 jobs:
   lint:
     name: ⬣ ESLint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: ⬇️ Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: ⎔ Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
+        uses: actions/setup-node@v4
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
@@ -34,15 +32,13 @@ jobs:
 
   typecheck:
     name: ʦ TypeScript
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
 
       - name: ⎔ Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
+        uses: actions/setup-node@v4
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
@@ -52,7 +48,7 @@ jobs:
 
   # vitest:
   #   name: ⚡ Vitest
-  #   runs-on: ubuntu-latest
+  #   runs-on: ubuntu-22.04
   #   steps:
   #     - name: ⬇️ Checkout repo
   #       uses: actions/checkout@v3
@@ -76,7 +72,7 @@ jobs:
 
   # playwright:
   #   name: 🎭 Playwright
-  #   runs-on: ubuntu-latest
+  #   runs-on: ubuntu-22.04
   #   timeout-minutes: 60
   #   steps:
   #     - name: ⬇️ Checkout repo
@@ -131,7 +127,7 @@ jobs:
 
   deploy:
     name: 🚀 Deploy
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: [lint, typecheck] #TODO: add actions back in when tests ready  vitest playwright
     # only build/deploy main branch on pushes
     if:
@@ -140,10 +136,10 @@ jobs:
 
     steps:
       - name: ⬇️ Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 👀 Read app name
-        uses: SebRollen/toml-action@v1.0.2
+        uses: SebRollen/toml-action@v1.2.0
         id: app_name
         with:
           file: 'fly.toml'
@@ -156,7 +152,7 @@ jobs:
           mv ./other/.dockerignore ./.dockerignore
 
       - name: 🎈 Setup Fly
-        uses: superfly/flyctl-actions/setup-flyctl@v1.4
+        uses: superfly/flyctl-actions/setup-flyctl@v1.5
 
       - name: 🚀 Deploy Production
         if: ${{ github.ref == 'refs/heads/main' }}
