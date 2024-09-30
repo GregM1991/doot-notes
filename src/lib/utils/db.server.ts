@@ -2,8 +2,9 @@
 // use chalk for nice colors
 import { PrismaClient } from '@prisma/client'
 import chalk from 'chalk'
+import { building } from '$app/environment'
 
-const isProduction = process.env.NODE_ENV === 'production'
+// const isProduction = process.env.NODE_ENV === 'production'
 
 /* NOTE: If you make any changes in this file, you will need to restart the server
    as any changes will not be HMR'd */
@@ -34,6 +35,6 @@ prisma.$on('query', async event => {
 	console.info(`prisma:query - ${dur} - ${event.query}`)
 })
 
-if (isProduction) {
+if (building) {
 	await prisma.$connect()
 }
