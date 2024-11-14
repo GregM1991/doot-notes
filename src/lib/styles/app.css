@@ -121,7 +121,9 @@
 	--type-step-4: clamp(2.0736rem, 1.5594rem + 2.5711vi, 3.552rem);
 	--type-step-5: clamp(2.4883rem, 1.7069rem + 3.907vi, 4.7348rem);
 	--type-step-6: clamp(2.986rem, 1.8293rem + 5.7835vi, 6.3115rem);
-	--type-primary: 'Nunito', sans-serif;
+	--type-display: 'Arvo', sans-serif;
+	--type-body: 'Lato', sans-serif;
+	--font-features-body: 'kern', 'liga', 'clig', 'calt';
 	--type-weight-bold: 700;
 	--type-weight-standard: 400;
 
@@ -176,17 +178,81 @@
 }
 
 @font-face {
-	font-family: 'Nunito';
-	src: url('/fonts/Nunito-Italic-VariableFont_wght.ttf') format('truetype');
-	font-weight: 400 700;
+	font-family: 'lato';
+	src: url('/fonts/Lato/lato-thin.woff2') format('woff2');
+	font-weight: 200;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+  font-family: 'lato';
+  src: url('/fonts/Lato/lato-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'lato';
+  src: url('/fonts/Lato/lato-bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+	font-family: 'lato';
+	src: url('/fonts/Lato/lato-thinitalic.woff2') format('woff2');
+	font-weight: 200;
 	font-style: italic;
 	font-display: swap;
 }
 
 @font-face {
-	font-family: 'Nunito';
-	src: url('/fonts/Nunito-VariableFont_wght.ttf') format('truetype');
-	font-weight: 400 700;
+  font-family: 'lato';
+  src: url('/fonts/Lato/lato-italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'lato';
+  src: url('/fonts/Lato/lato-bolditalic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Arvo';
+  src: url('/fonts/Arvo/arvo-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Arvo';
+  src: url('/fonts/Arvo/arvo-bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Arvo';
+  src: url('/fonts/Arvo/arvo-italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+	font-family: 'Arvo';
+	src: url('/fonts/Arvo/arvo-bolditalic.woff2') format('woff2');
+	font-weight: 700;
 	font-style: italic;
 	font-display: swap;
 }
@@ -206,20 +272,15 @@
 	margin: 0;
 }
 
-/* Remove default margin */
-body,
 h1,
 h2,
 h3,
 h4,
 h5,
 h6,
-p,
-figure,
-blockquote,
-dl,
-dd {
-	margin: 0;
+ {
+	letter-spacing: -2px;
+	font-family: var(--type-display);
 }
 
 /* Remove list styles on ul, ol elements with a list role, which suggests 
@@ -243,7 +304,8 @@ html {
 /* Set core body defaults */
 body {
 	text-rendering: geometricPrecision;
-	font-family: 'Nunito', sans-serif;
+	font-family: var(--type-body), sans-serif;
+	font-features-settings: var(--font-features-body);
 	-webkit-font-smoothing: antialiased;
 	font-size: var(--type-step-0);
 	color: var(--color-grey-20);

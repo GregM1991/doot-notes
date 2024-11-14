@@ -19,7 +19,7 @@
 
 	h1 {
 		color: var(--palette-pop);
-		font-family: var(--type-primary);
+		font-family: var(--type-display);
 		font-size: var(--type-step-4);
 		text-align: center;
 	}
