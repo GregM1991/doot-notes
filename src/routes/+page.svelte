@@ -1,5 +1,10 @@
-<main>
-	<h1>Welcome to DootNotes 📯</h1>
+<script lang="ts">
+	import { Logo } from '$lib/components'
+</script>
+
+<main class="main">
+	<Logo />
+	<h1>Welcome to DootNotes</h1>
 	<p>
 		DootNotes is a simple note-taking app that allows you to create, edit, and
 		delete notes. You also can browse other users notes if you so wish! 🎉
@@ -7,9 +12,10 @@
 </main>
 
 <style>
-	main {
+	.main {
 		display: flex;
 		flex-direction: column;
+		align-items: center;
 		gap: var(--space-s);
 
 		@media (--below-med) {
