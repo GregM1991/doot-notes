@@ -1,5 +1,5 @@
 # base node image
-ARG NODE_VERSION=20.0.0
+ARG NODE_VERSION=20.9.0
 FROM node:${NODE_VERSION}-slim AS base
 
 LABEL fly_launch_runtime="Node.js"
