@@ -5,8 +5,8 @@ import jwt from 'jsonwebtoken'
 import { z } from 'zod'
 import { EncryptedAndSignedCookieSchema } from '$lib/schemas'
 
-const algorithm = 'aes-256-cbc'
-const secret = env.SESSION_SECRET
+const algorithm = 'aes-256-gcm'
+const secret = Buffer.from(env.SECRET_KEY ?? '')
 
 export function encryptAndSignCookieValue<T>(
 	value: T,
@@ -20,6 +20,8 @@ export function encryptAndSignCookieValue<T>(
 		encryptedCookieValueBuffer,
 		cipher.final(),
 	]).toString('hex')
+	if (!secret) throw new Error('Secret key is required')
+
 	const signedAndEncryptedCookieValue = jwt.sign(
 		encryptedCookieValue,
 		secret,
