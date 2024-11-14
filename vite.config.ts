@@ -22,4 +22,13 @@ export default defineConfig({
 	css: {
 		devSourcemap: MODE === 'development',
 	},
+	server: {
+		watch: {
+			usePolling: true,
+			interval: 100,
+		},
+		hmr: {
+			protocol: 'ws',
+		},
+	},
 })
