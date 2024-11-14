@@ -37,6 +37,7 @@ RUN npm prune --omit=dev
 FROM base AS build
 
 WORKDIR /myapp
+ENV DATABASE_URL="file:./prisma/dev.db"
 
 COPY --from=deps /myapp/node_modules /myapp/node_modules
 
@@ -44,7 +45,7 @@ ADD prisma .
 RUN npx prisma generate
 
 ADD . .
-RUN npm run build
+RUN npm sync && npm run build
 
 # Finally, build the production image with minimal footprint
 FROM base
