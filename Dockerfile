@@ -1,5 +1,5 @@
 # base node image
-ARG NODE_VERSION=22.7.0
+ARG NODE_VERSION=20.0.0
 FROM node:${NODE_VERSION}-slim AS base
 
 LABEL fly_launch_runtime="Node.js"
@@ -14,6 +14,12 @@ RUN apt-get update && apt-get install -y fuse3 openssl sqlite3 ca-certificates
 FROM base AS deps
 
 WORKDIR /myapp
+
+RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    build-essential
 
 ADD package.json package-lock.json .npmrc ./
 RUN npm install --include=dev
@@ -65,8 +71,6 @@ COPY --from=build /myapp/build /myapp/build
 COPY --from=build /myapp/package.json /myapp/package.json
 COPY --from=build /myapp/prisma /myapp/prisma
 
-# prepare for litefs
-COPY --from=flyio/litefs:0.5 /usr/local/bin/litefs /usr/local/bin/litefs
 # prepare for litefs
 COPY --from=flyio/litefs:0.5.8 /usr/local/bin/litefs /usr/local/bin/litefs
 ADD other/litefs.yml /etc/litefs.yml
