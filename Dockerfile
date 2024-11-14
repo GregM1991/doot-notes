@@ -45,7 +45,7 @@ ADD prisma .
 RUN npx prisma generate
 
 ADD . .
-RUN npm sync && npm run build
+RUN npm run check && npm run build
 
 # Finally, build the production image with minimal footprint
 FROM base
