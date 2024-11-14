@@ -68,7 +68,7 @@
 				Save Photo
 			</Button>
 			<Button
-				on:click={() => (newImageSrc = null)}
+				onclick={() => (newImageSrc = null)}
 				type="reset"
 				id="reset-button"
 				danger
