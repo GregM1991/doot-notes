@@ -28,6 +28,8 @@ async function requireOnboardingEmail(userId: string | null, cookies: Cookies) {
 }
 
 export const load = (async ({ locals, cookies }) => {
+	 
+	console.log('hit onboarding page')
 	const email = await requireOnboardingEmail(locals.userId, cookies)
 	const form = await superValidate(zod(OnboardingSchema))
 	return { email, form }
