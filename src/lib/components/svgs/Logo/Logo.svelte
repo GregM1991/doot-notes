@@ -1,26 +1,14 @@
 <script lang="ts">
-	import {
-		animateLogo,
-		createTimeline,
-		getDurations,
-		getMarkers,
-		initializeGSAP,
-	} from './helpers.logo'
-
-	let logo: SVGElement | null = $state(null)
-
-	$effect(() => {
-		initializeGSAP()
-		const markers = getMarkers()
-		const durations = getDurations(markers)
-		const tl = createTimeline(markers)
-		
-		animateLogo(tl, durations)
-	})
+	let {
+		width = 300,
+		height = 'auto',
+		logo = null,
+	}: { width?: number; height?: number | string; logo?: SVGElement | null } = $props()
 </script>
 
 <svg
-	width="300"
+	{width}
+	{height}
 	id="logo"
 	viewBox="0 0 205.826 81.578"
 	xmlns="http://www.w3.org/2000/svg"
