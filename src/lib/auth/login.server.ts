@@ -65,8 +65,6 @@ export async function handleNewSession(
 	if (userHasTwoFactorEnabled) {
 		setVerificationCookieData(unverifiedSessionIdKey, session.id, cookies)
 		setVerificationCookieData(rememberKey, String(remember), cookies)
-		const verifySessionData = getVerifySessionData(cookies)
-		console.log({ verifySessionData })
 		const redirectUrl = getRedirectToUrl({
 			request,
 			type: twoFAVerificationType,
@@ -96,7 +94,6 @@ export async function handleVerification({
 	invariant(form.valid, 'Submission should be successful by now')
 
 	const verifySessionData = getVerifySessionData(cookies)
-	console.log({ verifySessionData })
 	const remember = verifySessionData?.remember
 	const { redirectTo } = form.data
 
