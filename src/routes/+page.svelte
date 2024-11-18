@@ -5,7 +5,7 @@
 <main class="main">
 	<Logo />
 
-	<h1>Welcome to DootNotes</h1>
+	<h1 class="header">Welcome to DootNotes</h1>
 	<p>
 		DootNotes is a simple note-taking app that allows you to create, edit, and
 		delete notes. You also can browse other users notes if you so wish! 🎉
@@ -24,7 +24,7 @@
 		}
 	}
 
-	h1 {
+	.header {
 		color: var(--palette-pop);
 		font-family: var(--type-display);
 		font-size: var(--type-step-4);
