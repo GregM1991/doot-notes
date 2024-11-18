@@ -1,4 +1,3 @@
-import { fail } from '@sveltejs/kit'
 import { env } from '$env/dynamic/private'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
@@ -6,21 +5,24 @@ import { z } from 'zod'
 import { EncryptedAndSignedCookieSchema } from '$lib/schemas'
 
 const algorithm = 'aes-256-gcm'
-const secret = Buffer.from(env.SECRET_KEY ?? '')
+const secret = Buffer.from(env.SESSION_SECRET ?? '')
 
 export function encryptAndSignCookieValue<T>(
 	value: T,
 	signOpts?: Parameters<typeof jwt.sign>[2],
 ) {
+	if (!secret) throw new Error('Secret key is required')
 	const iv = crypto.randomBytes(16)
 	const cookieValueString = objectToCookieValueString(value)
 	const cipher = crypto.createCipheriv(algorithm, secret, iv)
 	const encryptedCookieValueBuffer = cipher.update(cookieValueString)
+	const final = cipher.final()
+	const authTag = cipher.getAuthTag()
 	const encryptedCookieValue = Buffer.concat([
 		encryptedCookieValueBuffer,
-		cipher.final(),
+		final,
+		authTag,
 	]).toString('hex')
-	if (!secret) throw new Error('Secret key is required')
 
 	const signedAndEncryptedCookieValue = jwt.sign(
 		encryptedCookieValue,
@@ -52,12 +54,16 @@ export function decryptCookie(encryptedCookieValue: string) {
 		const ivBuffer = Buffer.from(iv, 'hex')
 		const encryptedBuffer = Buffer.from(jwtToken.data, 'hex')
 		const decipher = crypto.createDecipheriv(algorithm, secret, ivBuffer)
-		let decryptedVal = decipher.update(encryptedBuffer, undefined, 'utf8')
+		const authTag = encryptedBuffer.subarray(-16)
+		const encryptedContent = encryptedBuffer.subarray(0, -16)
+		decipher.setAuthTag(authTag)
+		let decryptedVal = decipher.update(encryptedContent, undefined, 'utf8')
 		decryptedVal += decipher.final('utf8')
 
 		return cookieValueStringToObject(decryptedVal)
 	} catch (error) {
-		return fail(403, { error })
+		console.error(error)
+		throw new Error((error as Error)?.message ?? 'Cookie decryption failed')
 	}
 }
 
