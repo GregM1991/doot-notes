@@ -17,12 +17,12 @@
 		deleteDataActionIntent,
 		profileUpdateActionIntent,
 		signOutOfSessionsActionIntent,
-	} from '$lib/profile/consts.js'
+	} from '$lib/profile/consts'
 	import { getUserImgSrc } from '$lib/utils/misc'
 	import { superForm } from 'sveltekit-superforms'
 	import { zodClient } from 'sveltekit-superforms/adapters'
 	import { ProfileFormSchema } from '$lib/schemas'
-	import { createDoubleCheckStore } from '$lib/stores/doubleCheck.svelte.js'
+	import { createDoubleCheckStore } from '$lib/stores/doubleCheck.store.svelte'
 
 	let { data } = $props()
 

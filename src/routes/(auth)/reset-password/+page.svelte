@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button, FormGroup, Input, ValidationErrors } from '$lib/components'
-	import { ResetPasswordSchema } from '$lib/schemas.js'
+	import { ResetPasswordSchema } from '$lib/schemas'
 	import { superForm } from 'sveltekit-superforms'
 	import { zodClient } from 'sveltekit-superforms/adapters'
 

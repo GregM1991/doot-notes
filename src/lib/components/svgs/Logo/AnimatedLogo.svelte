@@ -7,10 +7,14 @@
 		getMarkers,
 		initializeGSAP,
 	} from './helpers.logo'
+	import { createPrefersReducedMotionStore } from '$lib/stores/prefersReducedMotion.store.svelte'
+
+	const prefersReducedMotion = createPrefersReducedMotionStore()
 
 	let logo: SVGElement | null = $state(null)
 
 	$effect(() => {
+		if (prefersReducedMotion) return
 		initializeGSAP()
 		const markers = getMarkers()
 		const durations = getDurations(markers)
@@ -20,4 +24,7 @@
 	})
 </script>
 
-<Logo {logo}></Logo>
+<Logo
+	style={`--opacity: ${prefersReducedMotion ? '1' : '0'}; --will-change: transform, opacity;`}
+	{logo}
+></Logo>

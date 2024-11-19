@@ -3,12 +3,19 @@
 		width = 300,
 		height = 'auto',
 		logo = null,
-	}: { width?: number; height?: number | string; logo?: SVGElement | null } = $props()
+		style,
+	}: {
+		width?: number
+		height?: number | string
+		logo?: SVGElement | null
+		style?: string
+	} = $props()
 </script>
 
 <svg
 	{width}
 	{height}
+	{style}
 	id="logo"
 	viewBox="0 0 205.826 81.578"
 	xmlns="http://www.w3.org/2000/svg"
@@ -62,14 +69,10 @@
 
 <style>
 	#logo {
+		--opacity: 1;
+		--will-change: none;
 		transform: rotate(-15deg);
-		will-change: transform, opacity;
-	}
-
-	@media (prefers-reduced-motion: reduce), (script: none) {
-		#logo {
-			transform: translate(0, 0) rotate(-15deg);
-			opacity: 1;
-		}
+		will-change: var(--will-change);
+		opacity: var(--opacity);
 	}
 </style>

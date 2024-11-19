@@ -9,7 +9,7 @@
 		Timer,
 		Spinner,
 	} from '$lib/components'
-	import { getNoteImgSrc } from '$lib/utils/misc.js'
+	import { getNoteImgSrc } from '$lib/utils/misc'
 
 	export let data
 </script>

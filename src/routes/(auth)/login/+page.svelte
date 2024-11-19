@@ -9,7 +9,7 @@
 		FormGroup,
 	} from '$lib/components'
 	import { zodClient } from 'sveltekit-superforms/adapters'
-	import { LoginFormSchema } from '$lib/schemas.js'
+	import { LoginFormSchema } from '$lib/schemas'
 
 	export let data
 	const { form, errors, constraints, enhance, delayed, timeout } = superForm(

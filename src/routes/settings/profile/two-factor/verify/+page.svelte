@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Button from '$lib/components/Button/Button.svelte'
 	import { FormGroup, Input } from '$lib/components'
-	import { TwoFactorVerifySchema } from '$lib/schemas.js'
+	import { TwoFactorVerifySchema } from '$lib/schemas'
 	import { superForm } from 'sveltekit-superforms'
 	import { zodClient } from 'sveltekit-superforms/adapters'
 

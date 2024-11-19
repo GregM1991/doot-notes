@@ -2,7 +2,7 @@
 	import { Navbar, Toast } from '$lib/components'
 	import '$lib/styles/app.css'
 	import { setContext } from 'svelte'
-	import type { HoneypotInputProps } from '$lib/server/honeypot.js'
+	import type { HoneypotInputProps } from '$lib/server/honeypot'
 	import { readable, type Readable } from 'svelte/store'
 
 	let { data, children } = $props()

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button, FormGroup, Input } from '$lib/components'
-	import { ChangePasswordFormSchema } from '$lib/schemas.js'
+	import { ChangePasswordFormSchema } from '$lib/schemas'
 	import { superForm } from 'sveltekit-superforms'
 	import { zodClient } from 'sveltekit-superforms/adapters'
 

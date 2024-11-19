@@ -40,7 +40,7 @@ export const getDurations = (markers: ReturnType<typeof getMarkers>) => ({
 })
 
 export function createTimeline(markers: ReturnType<typeof getMarkers>) {
-	const tl = gsap.timeline()
+	const tl = gsap.timeline({ delay: 0.35 })
 
 	Object.entries(markers).forEach(([key, value]) => {
 		tl.addLabel(key, value)
