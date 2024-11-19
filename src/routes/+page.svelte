@@ -14,17 +14,19 @@
 			opacity: 1,
 			y: -15,
 			ease: 'power1.out',
-		}).to('.line-1', {
-			duration: 0.2,
-			opacity: 1,
-			y: -15,
-			ease: 'power1.out',
-		}).to('.line-2', {
-			duration: 0.3,
-			opacity: 1,
-			y: -15,
-			ease: 'power1.out',
 		})
+			.to('.line-1', {
+				duration: 0.2,
+				opacity: 1,
+				y: -15,
+				ease: 'power1.out',
+			})
+			.to('.line-2', {
+				duration: 0.3,
+				opacity: 1,
+				y: -15,
+				ease: 'power1.out',
+			})
 	})
 </script>
 

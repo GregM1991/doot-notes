@@ -11,6 +11,7 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --check . && eslint .",
+    "lint-staged": "lint-staged",
     "setup": "npm run build && prisma generate && prisma migrate deploy && prisma db seed && playwright install",
     "format": "prettier --write .",
     "prisma:studio": "prisma studio",
@@ -18,6 +19,9 @@
     "test": "npx --node-options=\"--experimental-vm-modules\" jest src",
     "test:watch": "npx --node-options=\"--experimental-vm-modules\" jest src --watch",
     "test:ui": "vitest --ui"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   },
   "devDependencies": {
     "@csstools/postcss-global-data": "^3.0.0",
@@ -48,7 +52,9 @@
     "eslint-plugin-svelte": "^2.36.0",
     "fs-extra": "^11.2.0",
     "globals": "^15.0.0",
+    "husky": "^8.0.0",
     "jsdom": "^24.1.0",
+    "lint-staged": "^15.2.10",
     "msw": "^2.2.13",
     "postcss": "^8.4.45",
     "postcss-csso": "^6.0.1",
