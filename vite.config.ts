@@ -12,7 +12,6 @@ export default defineConfig({
 		rollupOptions: {
 			external: [/node:.*/, 'stream', 'crypto', 'fsevents'],
 		},
-		sourcemap: MODE !== 'production',
 	},
 	plugins: [
 		svelteTesting(),
