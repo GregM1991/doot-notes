@@ -34,6 +34,11 @@
 		{#each data.note.content as paragraph}
 			<p>{paragraph}</p>
 		{/each}
+		{#if data.videoUrl}
+			<video controls src={data.videoUrl} class="w-full">
+				<track kind="captions" />
+			</video>
+		{/if}
 	</article>
 
 	{#if data.isOwner}

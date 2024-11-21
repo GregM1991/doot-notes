@@ -108,17 +108,19 @@ export const ImageFieldsetSchema = z
 		return !file || file.size <= MAX_UPLOAD_SIZE
 	}, 'File size must be less than 3MB')
 export const ImageFieldsetListSchema = z.array(ImageFieldsetSchema)
+
+export const VideoFieldSchema = z
+	.instanceof(File)
+	.optional()
+	.refine(
+		file => !file || file.size <= 50 * 1024 * 1024,
+		'File must be less than 50MB',
+	)
+
 export const NoteEditorSchema = z.object({
 	id: z.string().optional(),
 	title: z.string().min(titleMinLength).max(titleMaxLength),
 	content: z.string().min(contentMinLength).max(contentMaxLength),
-})
-
-export const FullNoteEditorSchema = z.object({
-	id: z.string().optional(),
-	title: z.string().min(titleMinLength).max(titleMaxLength),
-	content: z.string().min(contentMinLength).max(contentMaxLength),
-	images: z.array(ImageFieldsetSchema).max(5).optional(),
 })
 
 const MAX_SIZE = 1024 * 1024 * 3 // 3MB

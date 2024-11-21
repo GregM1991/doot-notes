@@ -42,6 +42,7 @@ model Note {
   ownerId String
 
   images NoteImage[]
+  videoKey String?
 }
 
 model UserImage {

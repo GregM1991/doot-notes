@@ -10,6 +10,7 @@
 		FormGroup,
 		ValidationErrors,
 		Plus,
+		VideoEditor,
 	} from '$lib/components'
 	import type { EditNoteProps } from './types.editNote'
 	import { NoteEditorSchema } from '$lib/schemas'
@@ -75,6 +76,7 @@
 		<Plus />
 		Add another image
 	</Button>
+	<VideoEditor />
 	<InfoBar {formId} {buttonText} {submitDelayedReason} {delayed} {timeout} />
 	<ValidationErrors errorId={$formId} errors={$errors._errors} />
 </form>
@@ -88,8 +90,12 @@
 		grid-column: 2 / 3;
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-xs);
+		gap: var(--space-s);
 		align-items: stretch;
+		max-width: none;
+		height: 100%;
+		overflow-y: auto;
+		padding-bottom: var(--space-xl);
 
 		@media (--below-med) {
 			grid-column: 1 / 3;

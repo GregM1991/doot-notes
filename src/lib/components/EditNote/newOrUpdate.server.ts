@@ -5,18 +5,32 @@ import { prisma } from '$lib/utils/db.server'
 import { fail, message, setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import { extractImageGroup, transformImageData } from '$lib/utils/misc'
-import { ImageFieldsetListSchema, NoteEditorSchema } from '$lib/schemas'
+import {
+	ImageFieldsetListSchema,
+	NoteEditorSchema,
+	VideoFieldSchema,
+} from '$lib/schemas'
+import { getVideoKeyFromFile } from '$lib/utils/video.server'
 
 export const newOrUpdate: Action = async ({ request, locals }) => {
 	const userId = requireUserId(locals.userId, request)
 	const formData = await request.formData()
 	const form = await superValidate(formData, zod(NoteEditorSchema))
 	if (!form.valid) return fail(400, { form })
+
 	const images = extractImageGroup(formData)
 	const imageSubmission = ImageFieldsetListSchema.safeParse(images)
+	const video = formData.get('video')
+	const videoSubmission = VideoFieldSchema.safeParse(video)
 
+	if (!videoSubmission.success)
+		return setError(form, '', 'Video file size must be less than 3MB')
 	if (!imageSubmission.success)
-		return setError(form, '', 'File size must be less than 3MB')
+		return setError(form, '', 'Image file size must be less than 3MB')
+
+	// Video handling
+	const videoKey = await getVideoKeyFromFile(videoSubmission.data)
+
 	const { imageUpdates = [], newImages = [] } = await transformImageData(
 		imageSubmission.data,
 	)
@@ -33,7 +47,6 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 	const transformedFormData = {
 		...form.data,
 	}
-
 	const { id: noteId, title, content } = transformedFormData
 	let formattedContent = content
 	if (Array.isArray(content)) {
@@ -52,6 +65,7 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 		update: {
 			title,
 			content: formattedContent,
+			...(videoKey ? { videoKey } : {}),
 			images: {
 				deleteMany: { id: { notIn: imageUpdates.map(image => image.id) } },
 				updateMany: imageUpdates.map(updates => ({
