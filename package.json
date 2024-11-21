@@ -11,6 +11,7 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --check . && eslint .",
+    "lint-staged": "lint-staged",
     "setup": "npm run build && prisma generate && prisma migrate deploy && prisma db seed && playwright install",
     "format": "prettier --write .",
     "prisma:studio": "prisma studio",
@@ -18,6 +19,9 @@
     "test": "npx --node-options=\"--experimental-vm-modules\" jest src",
     "test:watch": "npx --node-options=\"--experimental-vm-modules\" jest src --watch",
     "test:ui": "vitest --ui"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   },
   "devDependencies": {
     "@csstools/postcss-global-data": "^3.0.0",
@@ -33,6 +37,7 @@
     "@testing-library/user-event": "^14.5.2",
     "@types/bcryptjs": "^2.4.6",
     "@types/better-sqlite3": "^7.6.10",
+    "@types/canvas-confetti": "^1.6.4",
     "@types/cookie": "^0.6.0",
     "@types/crypto-js": "^4.2.2",
     "@types/fs-extra": "^11.0.4",
@@ -47,7 +52,9 @@
     "eslint-plugin-svelte": "^2.36.0",
     "fs-extra": "^11.2.0",
     "globals": "^15.0.0",
+    "husky": "^8.0.0",
     "jsdom": "^24.1.0",
+    "lint-staged": "^15.2.10",
     "msw": "^2.2.13",
     "postcss": "^8.4.45",
     "postcss-csso": "^6.0.1",
@@ -76,6 +83,7 @@
     "@prisma/client": "^5.20.0",
     "bcryptjs": "^2.4.3",
     "better-sqlite3": "^9.3.0",
+    "canvas-confetti": "^1.9.3",
     "classnames": "^2.5.1",
     "close-with-grace": "^1.3.0",
     "cross-env": "^7.0.3",
@@ -83,6 +91,7 @@
     "date-fns": "^3.5.0",
     "dotenv": "^16.4.5",
     "execa": "^8.0.1",
+    "gsap": "^3.12.5",
     "jsonwebtoken": "^9.0.2",
     "qrcode": "^1.5.3",
     "remix-auth": "^3.6.0",

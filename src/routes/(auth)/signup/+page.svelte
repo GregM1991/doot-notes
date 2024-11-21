@@ -6,7 +6,7 @@
 		Input,
 		ValidationErrors,
 	} from '$lib/components'
-	import { SignupFormSchema } from '$lib/schemas.js'
+	import { SignupFormSchema } from '$lib/schemas'
 	import { superForm } from 'sveltekit-superforms'
 	import { zodClient } from 'sveltekit-superforms/adapters'
 

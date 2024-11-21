@@ -8,7 +8,7 @@
 		HoneypotInputs,
 		FormGroup,
 	} from '$lib/components'
-	import { OnboardingSchema } from '$lib/schemas.js'
+	import { OnboardingSchema } from '$lib/schemas'
 
 	const { data } = $props()
 	const { form, formId, errors, enhance, constraints } = superForm(data.form, {

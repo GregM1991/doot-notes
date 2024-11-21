@@ -7,11 +7,11 @@ const MODE = process.env.NODE_ENV
 
 export default defineConfig({
 	build: {
+		sourcemap: MODE === 'development',
 		cssMinify: MODE === 'production',
 		rollupOptions: {
 			external: [/node:.*/, 'stream', 'crypto', 'fsevents'],
 		},
-		sourcemap: MODE !== 'production',
 	},
 	plugins: [
 		svelteTesting(),

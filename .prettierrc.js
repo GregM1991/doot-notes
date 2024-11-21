@@ -26,5 +26,7 @@ export default {
 			},
 		},
 	],
+	svelteSortOrder: 'options-scripts-markup-styles',
+	svelteIndentScriptAndStyle: true,
 	plugins: ['prettier-plugin-svelte'],
 }

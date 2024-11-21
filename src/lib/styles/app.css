@@ -237,7 +237,7 @@
 	font-family: 'Arvo';
 	src: url('/fonts/Arvo/arvo-bold.woff2') format('woff2');
 	font-weight: 700;
-	font-style: italic;
+	font-style: normal;
 	font-display: swap;
 }
 
