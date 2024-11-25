@@ -3,14 +3,17 @@ import { dev } from '$app/environment'
 import { getUserId } from '$lib/utils/auth.server'
 import { checkRateLimit } from '$lib/utils/limiter.server'
 
+const IGNORED_PATHS = ['r2.cloudflarestorage.com', 'hot-update', 'ws:'] as const
+
 if (dev) {
 	const { server } = await import('$msw/server.server')
 	console.info('🧑‍🤝‍🧑 Mock server up and running')
 	server.listen({
 		onUnhandledRequest(req, print) {
 			const url = req.url.toString()
+			const shouldIgnore = IGNORED_PATHS.some(path => url.includes(path))
 
-			if (!url.includes('r2.cloudflarestorage.com')) {
+			if (!shouldIgnore) {
 				print.warning()
 			}
 		},
