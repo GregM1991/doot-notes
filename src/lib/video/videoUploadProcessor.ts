@@ -1,6 +1,5 @@
 import { uploadResponseSchema } from '$lib/schemas'
 import { getDomainUrl } from '$lib/utils/misc'
-import { z } from 'zod'
 import type { VideoMetadata } from './types.video'
 import type { BaseVideoHandler } from './VideoHandler/baseVideoHandler'
 import { VideoHandlerFactory } from './VideoHandler/videoHandlerFactory'
@@ -18,6 +17,7 @@ class VideoUploadProcessor {
 
 	async processVideoUpload(
 		file: File,
+		userId: string,
 		onProgress?: (progress: number) => void,
 		onMetadata?: (metadata: VideoMetadata) => void,
 		onPreviewReady?: (previewUrl: string) => void,
@@ -40,7 +40,7 @@ class VideoUploadProcessor {
 
 			const date = new Date()
 			const dateString = date.toISOString().split('T')[0].replace(/-/g, '')
-			const fullKey = `videos/${dateString}-${metadata.fileName}`
+			const fullKey = `videos/${userId}/${dateString}-${metadata.fileName}`
 			const initializationResult = await this.initializeMultipartUpload(
 				fullKey,
 				file.type,
@@ -62,14 +62,14 @@ class VideoUploadProcessor {
 				uploadId,
 				fullKey,
 			)
-			const previewUrl = await this.generateAndUploadPreview(
+			const videoThumbnailKey = await this.generateAndUploadPreview(
 				file,
 				uploadId,
 				fullKey,
 			)
 
-			onPreviewReady?.(previewUrl)
-			return { uploadedVideoKey, previewUrl }
+			onPreviewReady?.(videoThumbnailKey)
+			return { uploadedVideoKey, videoThumbnailKey }
 		} catch (error) {
 			console.error('Video processing failed', error)
 			if (uploadId) {
@@ -182,53 +182,38 @@ class VideoUploadProcessor {
 	): Promise<string> {
 		try {
 			const previewBlob = await this.videoHandler.generatePreview(file)
-			const previewUploadId = `${uploadId}-preview`
-			const previewUrl = await this.getPresignedUrl({
-				uploadId: previewUploadId,
-				partNumber: 1,
-				key,
+			const previewKey = key.replace('videos/', 'previews/')
+
+			const response = await fetch(`${this.domain}/api/video/get-preview-url`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					key: previewKey,
+					contentType: 'image/jpeg',
+				}),
 			})
 
-			await fetch(previewUrl, {
+			if (!response.ok) throw new Error('Failed to get preview upload URL')
+
+			const { uploadUrl } = await response.json()
+
+			const uploadResponse = await fetch(uploadUrl, {
 				method: 'PUT',
 				body: previewBlob,
 				headers: {
-					'Content-Type': 'image/jpeg',
+					contentType: 'image/jpeg',
 				},
 			})
 
-			return await this.completePreviewUpload(previewUploadId)
+			if (!uploadResponse.ok) throw new Error('Failed to upload preview')
+
+			return key
 		} catch (error) {
 			console.error('Preview generation failed:', error)
 			throw new Error('Failed to generate preview')
 		}
-	}
-
-	private async completePreviewUpload(
-		previewUploadId: string,
-	): Promise<string> {
-		const response = await fetch(`${this.domain}/api/video/complete-preview`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				uploadId: previewUploadId,
-			}),
-		})
-
-		if (!response.ok) {
-			throw new Error('Failed to complete preview upload')
-		}
-
-		const data = await response.json()
-		const parsed = z.string().url().safeParse(data)
-
-		if (!parsed.success) {
-			throw new Error(`Invalid upload response: ${parsed.error.message}`)
-		}
-
-		return parsed.data
 	}
 
 	private async abortMultipartUpload(uploadId: string): Promise<void> {

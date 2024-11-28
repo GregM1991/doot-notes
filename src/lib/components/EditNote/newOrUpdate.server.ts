@@ -28,19 +28,20 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 	const videoSubmission = VideoFieldSchema.safeParse(video)
 
 	if (!videoSubmission.success)
-		return setError(form, '', 'Video file size must be less than 3MB')
+		return setError(form, '', videoSubmission.error.formErrors.formErrors)
 	if (!imageSubmission.success)
-		return setError(form, '', 'Image file size must be less than 3MB')
+		return setError(form, '', imageSubmission.error.formErrors.formErrors)
 
 	// Video handling
 	let videoKey: string | undefined
+	let videoThumbnailKey: string | undefined
 	if (videoSubmission.data) {
 		try {
 			const videoProcessor = new VideoUploadProcessor(request)
-			const { uploadedVideoKey, previewUrl } =
-				await videoProcessor.processVideoUpload(videoSubmission.data)
-			console.log({ uploadedVideoKey, previewUrl })
+			const { uploadedVideoKey, videoThumbnailKey: thumbKey } =
+				await videoProcessor.processVideoUpload(videoSubmission.data, userId)
 			videoKey = uploadedVideoKey
+			videoThumbnailKey = thumbKey
 		} catch (error) {
 			if (isErrorWithMessage(error)) {
 				console.error(error.message)
@@ -86,6 +87,7 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 			title,
 			content: formattedContent,
 			...(videoKey ? { videoKey } : {}),
+			...(videoThumbnailKey ? { videoThumbnailKey } : {}),
 			images: {
 				deleteMany: { id: { notIn: imageUpdates.map(image => image.id) } },
 				updateMany: imageUpdates.map(updates => ({

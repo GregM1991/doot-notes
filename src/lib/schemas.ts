@@ -113,8 +113,8 @@ export const VideoFieldSchema = z
 	.instanceof(File)
 	.optional()
 	.refine(
-		file => !file || file.size <= 50 * 1024 * 1024,
-		'File must be less than 50MB',
+		file => !file || file.size <= 100 * 1024 * 1024,
+		'File must be less than 100MB',
 	)
 
 export const NoteEditorSchema = z.object({

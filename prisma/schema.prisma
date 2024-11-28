@@ -43,6 +43,7 @@ model Note {
 
   images NoteImage[]
   videoKey String?
+  videoThumbnailKey String?
 }
 
 model UserImage {

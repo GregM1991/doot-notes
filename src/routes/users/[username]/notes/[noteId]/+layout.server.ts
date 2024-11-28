@@ -24,6 +24,7 @@ export const load = async ({ params, locals }) => {
 				},
 			},
 			videoKey: true,
+			videoThumbnailKey: true,
 			owner: {
 				select: {
 					id: true,

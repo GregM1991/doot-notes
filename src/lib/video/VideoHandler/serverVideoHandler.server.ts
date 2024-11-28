@@ -5,6 +5,7 @@ import { tmpdir } from 'os'
 import { join } from 'path'
 import crypto from 'crypto'
 import type { MetadataOptions, VideoMetadata } from '../types.video'
+import { dev } from '$app/environment'
 
 export class ServerVideoHandler extends BaseVideoHandler {
 	private async saveTempFile(buffer: Buffer): Promise<string> {
@@ -144,6 +145,9 @@ export class ServerVideoHandler extends BaseVideoHandler {
 			const chunks: Buffer[] = []
 
 			const process = spawn('ffmpeg', [
+				'-hide_banner',
+				'-loglevel',
+				dev ? 'info' : 'error',
 				'-ss',
 				seekTime.toString(),
 				'-i',
