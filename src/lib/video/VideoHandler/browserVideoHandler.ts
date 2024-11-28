@@ -1,11 +1,18 @@
-import type { VideoMetadata } from './types.video'
+import type { MetadataOptions, VideoMetadata } from '../types.video'
+import { BaseVideoHandler } from './baseVideoHandler'
 
-class VideoHandler {
+export class BrowserVideoHandler extends BaseVideoHandler {
 	private video: HTMLVideoElement
 	private mediaSource: MediaSource | null = null
 	private sourceBuffer: SourceBuffer | null = null
 
 	constructor() {
+		super()
+		if (typeof document === 'undefined') {
+			throw new Error(
+				'BrowserVideoHandler can only be used in browser environments',
+			)
+		}
 		this.video = document.createElement('video')
 		this.setupMediaSource()
 	}
@@ -26,7 +33,10 @@ class VideoHandler {
 		})
 	}
 
-	async getVideoMetadata(videoFile: File): Promise<VideoMetadata> {
+	async getVideoMetadata(
+		videoFile: File,
+		options: MetadataOptions,
+	): Promise<VideoMetadata> {
 		const url = URL.createObjectURL(videoFile)
 
 		return new Promise((resolve, reject) => {
@@ -48,6 +58,9 @@ class VideoHandler {
 						height: this.video.height,
 						frameRate: await this.detectFrameRate(),
 						codec: videoTrack ? 'H.264' : 'unknown',
+						fileName: options.fileName,
+						originalName: options.originalName,
+						contentType: options.contentType,
 					}
 
 					URL.revokeObjectURL(url)
@@ -55,10 +68,11 @@ class VideoHandler {
 				} catch (error) {
 					reject(error)
 				}
-				this.video.onerror = () => {
-					URL.revokeObjectURL(url)
-					reject(new Error('Failed to load video'))
-				}
+			}
+
+			this.video.onerror = () => {
+				URL.revokeObjectURL(url)
+				reject(new Error('Failed to load video'))
 			}
 		})
 	}
@@ -89,7 +103,7 @@ class VideoHandler {
 		})
 	}
 
-	async appendVideoChunk(chunk: ArrayBuffer) {
+	async appendVideoChunk(chunk: ArrayBuffer): Promise<void> {
 		if (!this.sourceBuffer || this.sourceBuffer.updating) {
 			return
 		}
@@ -108,6 +122,52 @@ class VideoHandler {
 		})
 	}
 
+	async generatePreview(
+		videoFile: File,
+		timeOffset: number = 0.25,
+	): Promise<Blob> {
+		const canvas = document.createElement('canvas')
+		const ctx = canvas.getContext('2d')
+		if (!ctx) {
+			throw new Error('Could not get canvas context')
+		}
+
+		const video = document.createElement('video')
+		const videoUrl = URL.createObjectURL(videoFile)
+		video.src = videoUrl
+
+		try {
+			await new Promise<void>((resolve, reject) => {
+				video.onloadedmetadata = () => resolve()
+				video.onerror = () => reject(new Error('Failed to load video'))
+			})
+
+			canvas.width = video.videoWidth
+			canvas.height = video.videoHeight
+
+			const previewFrame = await new Promise<string>((resolve, reject) => {
+				try {
+					video.currentTime = video.duration * timeOffset
+
+					video.onseeked = () => {
+						ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+						const previewData = canvas.toDataURL('image/jpeg', 0.8)
+						resolve(previewData)
+					}
+
+					video.onerror = () => reject(new Error('Failed to seek video'))
+				} catch (error) {
+					reject(error)
+				}
+			})
+
+			return await fetch(previewFrame).then(res => res.blob())
+		} finally {
+			URL.revokeObjectURL(videoUrl)
+			video.remove()
+		}
+	}
+
 	destroy() {
 		if (this.mediaSource && this.mediaSource.readyState === 'open') {
 			this.mediaSource.endOfStream()
@@ -116,5 +176,3 @@ class VideoHandler {
 		this.video.remove()
 	}
 }
-
-export default VideoHandler

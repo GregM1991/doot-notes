@@ -46,7 +46,6 @@ export const load = async ({ params, locals }) => {
 		...note,
 		content: paragraphs,
 	}
-	console.log('Video key from DB:', note?.videoKey)
 	let videoUrl = null
 	if (note.videoKey) {
 		try {

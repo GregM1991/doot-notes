@@ -223,5 +223,5 @@ export const SignupFormSchema = z.object({
 export const ResetPasswordSchema = PasswordAndConfirmPasswordSchema
 
 export const uploadResponseSchema = z.object({
-	url: z.string().url(),
+	key: z.string(),
 })

@@ -6,21 +6,19 @@ import { r2Client } from '$lib/storage/r2.server.js'
 
 export async function POST({ request }) {
 	try {
-		const { uploadId, partNumber } = await request.json()
+		const { uploadId, partNumber, key } = await request.json()
 
-		// Generate presigned URL for part upload
 		const command = new UploadPartCommand({
 			Bucket: env.R2_BUCKET_NAME,
-			Key: uploadId,
+			Key: key,
 			UploadId: uploadId,
 			PartNumber: partNumber,
-			// ContentType is not needed here - it's set during initialization
 		})
 
 		const presignedUrl = await getSignedUrl(r2Client, command, {
 			expiresIn: 3600,
 		})
-		return json({ url: presignedUrl })
+		return json(presignedUrl)
 	} catch (err) {
 		console.error('Failed to generate presigned URL:', err)
 		throw error(500, 'Failed to generate upload URL')

@@ -3,7 +3,12 @@ import { dev } from '$app/environment'
 import { getUserId } from '$lib/utils/auth.server'
 import { checkRateLimit } from '$lib/utils/limiter.server'
 
-const IGNORED_PATHS = ['r2.cloudflarestorage.com', 'hot-update', 'ws:'] as const
+const IGNORED_PATHS = [
+	'r2.cloudflarestorage.com',
+	'hot-update',
+	'ws:',
+	'http://localhost:5173',
+] as const
 
 if (dev) {
 	const { server } = await import('$msw/server.server')

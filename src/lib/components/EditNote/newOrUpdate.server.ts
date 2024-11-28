@@ -4,13 +4,17 @@ import { requireUserId } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
 import { fail, message, setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
-import { extractImageGroup, transformImageData } from '$lib/utils/misc'
+import {
+	extractImageGroup,
+	isErrorWithMessage,
+	transformImageData,
+} from '$lib/utils/misc'
 import {
 	ImageFieldsetListSchema,
 	NoteEditorSchema,
 	VideoFieldSchema,
 } from '$lib/schemas'
-import { getVideoKeyFromFile } from '$lib/utils/video.server'
+import VideoUploadProcessor from '$lib/video/videoUploadProcessor'
 
 export const newOrUpdate: Action = async ({ request, locals }) => {
 	const userId = requireUserId(locals.userId, request)
@@ -29,7 +33,23 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 		return setError(form, '', 'Image file size must be less than 3MB')
 
 	// Video handling
-	const videoKey = await getVideoKeyFromFile(videoSubmission.data)
+	let videoKey: string | undefined
+	if (videoSubmission.data) {
+		try {
+			const videoProcessor = new VideoUploadProcessor(request)
+			const { uploadedVideoKey, previewUrl } =
+				await videoProcessor.processVideoUpload(videoSubmission.data)
+			console.log({ uploadedVideoKey, previewUrl })
+			videoKey = uploadedVideoKey
+		} catch (error) {
+			if (isErrorWithMessage(error)) {
+				console.error(error.message)
+				setError(form, '', error.message)
+				return
+			}
+			setError(form, '', 'Unable to upload video')
+		}
+	}
 
 	const { imageUpdates = [], newImages = [] } = await transformImageData(
 		imageSubmission.data,

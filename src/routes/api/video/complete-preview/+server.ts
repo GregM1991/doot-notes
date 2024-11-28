@@ -16,7 +16,7 @@ export async function POST({ request }) {
 		const previewUrl = await getSignedUrl(r2Client, command, {
 			expiresIn: 3600,
 		})
-		return json({ url: previewUrl })
+		return json(previewUrl)
 	} catch (err) {
 		console.error('Failed to complete preview:', err)
 		throw error(500, 'Failed to complete preview upload')

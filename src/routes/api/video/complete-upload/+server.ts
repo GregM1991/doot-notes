@@ -8,12 +8,12 @@ import { r2Client } from '$lib/storage/r2.server.js'
 
 export async function POST({ request }) {
 	try {
-		const { uploadId } = await request.json()
+		const { uploadId, uploadKey } = await request.json()
 
 		// Get list of uploaded parts
 		const listPartsCommand = new ListPartsCommand({
 			Bucket: env.R2_BUCKET_NAME,
-			Key: uploadId,
+			Key: uploadKey,
 			UploadId: uploadId,
 		})
 
@@ -22,7 +22,7 @@ export async function POST({ request }) {
 		// Complete the multipart upload
 		const command = new CompleteMultipartUploadCommand({
 			Bucket: env.R2_BUCKET_NAME,
-			Key: uploadId,
+			Key: uploadKey,
 			UploadId: uploadId,
 			MultipartUpload: {
 				Parts: partsList.Parts?.map(part => ({
@@ -33,7 +33,7 @@ export async function POST({ request }) {
 		})
 
 		const result = await r2Client.send(command)
-		return json({ url: result.Location })
+		return json({ key: result.Key })
 	} catch (err) {
 		console.error('Failed to complete upload:', err)
 		throw error(500, 'Failed to complete upload')
