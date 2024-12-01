@@ -42,8 +42,7 @@ model Note {
   ownerId String
 
   images NoteImage[]
-  videoKey String?
-  videoThumbnailKey String?
+  video     Video?
 }
 
 model UserImage {
@@ -133,4 +132,25 @@ model Connection {
   userId String
 
   @@unique([providerName, providerId])
+}
+
+model Video {
+    id           String   @id @default(cuid())
+    noteId       String   @unique // Foreign key with unique constraint
+    note         Note     @relation(fields: [noteId], references: [id])
+    videoKey     String
+    thumbnailKey String
+    fileName     String
+    originalName String
+    contentType  String
+    frameRate    Int
+    duration     Float
+    width        Int
+    height       Int
+    codec        String
+    bitrate      Int
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+
+    @@index([noteId])
 }

@@ -18,7 +18,7 @@
 	import { idTestId, imageListTestId } from './consts.editNote'
 	import InfoBar from './InfoBar.svelte'
 
-	let { data, action, images }: EditNoteProps = $props()
+	let { data, action, images, video }: EditNoteProps = $props()
 	const helperState = createState(images)
 	const { form, errors, enhance, formId, constraints, delayed, timeout } =
 		superForm(data, {
@@ -76,7 +76,7 @@
 		<Plus />
 		Add another image
 	</Button>
-	<VideoEditor />
+	<VideoEditor id={video?.id} />
 	<InfoBar {formId} {buttonText} {submitDelayedReason} {delayed} {timeout} />
 	<ValidationErrors errorId={$formId} errors={$errors._errors} />
 </form>

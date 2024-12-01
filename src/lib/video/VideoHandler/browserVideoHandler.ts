@@ -52,6 +52,8 @@ export class BrowserVideoHandler extends BaseVideoHandler {
 						})
 					).supported
 
+					const bitrate = Math.round((videoFile.size * 8) / this.video.duration)
+
 					const metadata: VideoMetadata = {
 						duration: this.video.duration,
 						width: this.video.width,
@@ -61,6 +63,7 @@ export class BrowserVideoHandler extends BaseVideoHandler {
 						fileName: options.fileName,
 						originalName: options.originalName,
 						contentType: options.contentType,
+						bitrate,
 					}
 
 					URL.revokeObjectURL(url)
@@ -142,8 +145,13 @@ export class BrowserVideoHandler extends BaseVideoHandler {
 				video.onerror = () => reject(new Error('Failed to load video'))
 			})
 
-			canvas.width = video.videoWidth
-			canvas.height = video.videoHeight
+			const maxWidth = 320
+			const aspectRatio = video.videoWidth / video.videoHeight
+			const newWidth = Math.min(maxWidth, video.videoWidth)
+			const newHeight = Math.round(newWidth / aspectRatio)
+
+			canvas.width = newWidth
+			canvas.height = newHeight
 
 			const previewFrame = await new Promise<string>((resolve, reject) => {
 				try {
@@ -151,7 +159,7 @@ export class BrowserVideoHandler extends BaseVideoHandler {
 
 					video.onseeked = () => {
 						ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
-						const previewData = canvas.toDataURL('image/jpeg', 0.8)
+						const previewData = canvas.toDataURL('image/jpeg', 0.6)
 						resolve(previewData)
 					}
 

@@ -9,7 +9,7 @@
 		Timer,
 		Spinner,
 	} from '$lib/components'
-	import { getNoteImgSrc } from '$lib/utils/misc'
+	import { getNoteImgSrc, getNoteVideoThumbSrc } from '$lib/utils/misc'
 
 	export let data
 </script>
@@ -34,10 +34,14 @@
 		{#each data.note.content as paragraph}
 			<p>{paragraph}</p>
 		{/each}
-		{#if data.videoUrl}
-			<video controls src={data.videoUrl} class="w-full">
-				<track kind="captions" />
-			</video>
+		{#if data.video}
+			<h3>Video Note</h3>
+			<a href="{data.note.id}/video-note">
+				<img
+					src={getNoteVideoThumbSrc(data.video.thumbnailKey)}
+					alt="Thumbnail preview for video note"
+				/>
+			</a>
 		{/if}
 	</article>
 

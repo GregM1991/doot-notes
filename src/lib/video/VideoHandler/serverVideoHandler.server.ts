@@ -95,6 +95,10 @@ export class ServerVideoHandler extends BaseVideoHandler {
 				throw new Error('No video stream found in file')
 			}
 
+			const bitrate = parseInt(
+				videoStream.bit_rate || data.format.bit_rate || '0',
+			)
+
 			return {
 				duration: parseFloat(data.format.duration),
 				width: videoStream.width,
@@ -104,6 +108,7 @@ export class ServerVideoHandler extends BaseVideoHandler {
 				fileName: metadataOptions.fileName,
 				originalName: metadataOptions.originalName,
 				contentType: metadataOptions.contentType,
+				bitrate,
 			}
 		} finally {
 			await this.cleanupTempFile(tempPath)
@@ -154,12 +159,14 @@ export class ServerVideoHandler extends BaseVideoHandler {
 				filePath,
 				'-vframes',
 				'1',
+				'-vf',
+				'scale=320:-1',
+				'-q:v',
+				'5',
 				'-f',
 				'image2pipe',
 				'-c:v',
 				'mjpeg',
-				'-q:v',
-				'2',
 				'pipe:1',
 			])
 

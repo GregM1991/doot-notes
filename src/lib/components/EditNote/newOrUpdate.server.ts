@@ -6,6 +6,7 @@ import { fail, message, setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import {
 	extractImageGroup,
+	extractVideoGroup,
 	isErrorWithMessage,
 	transformImageData,
 } from '$lib/utils/misc'
@@ -15,6 +16,7 @@ import {
 	VideoFieldSchema,
 } from '$lib/schemas'
 import VideoUploadProcessor from '$lib/video/videoUploadProcessor'
+import type { VideoMetadata } from '$lib/video/types.video'
 
 export const newOrUpdate: Action = async ({ request, locals }) => {
 	const userId = requireUserId(locals.userId, request)
@@ -24,7 +26,7 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 
 	const images = extractImageGroup(formData)
 	const imageSubmission = ImageFieldsetListSchema.safeParse(images)
-	const video = formData.get('video')
+	const video = extractVideoGroup(formData)
 	const videoSubmission = VideoFieldSchema.safeParse(video)
 
 	if (!videoSubmission.success)
@@ -33,15 +35,23 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 		return setError(form, '', imageSubmission.error.formErrors.formErrors)
 
 	// Video handling
-	let videoKey: string | undefined
-	let videoThumbnailKey: string | undefined
-	if (videoSubmission.data) {
+	const { file, id: videoId } = videoSubmission.data
+	if (videoId) {
+		// handle deletions from cloudflare
+	}
+	let videoData:
+		| (VideoMetadata & { videoKey: string; thumbnailKey: string })
+		| undefined
+	if (file) {
 		try {
 			const videoProcessor = new VideoUploadProcessor(request)
-			const { uploadedVideoKey, videoThumbnailKey: thumbKey } =
-				await videoProcessor.processVideoUpload(videoSubmission.data, userId)
-			videoKey = uploadedVideoKey
-			videoThumbnailKey = thumbKey
+			const { uploadedVideoKey, thumbnailKey, metadata } =
+				await videoProcessor.processVideoUpload(file, userId)
+			videoData = {
+				videoKey: uploadedVideoKey,
+				thumbnailKey,
+				...metadata,
+			}
 		} catch (error) {
 			if (isErrorWithMessage(error)) {
 				console.error(error.message)
@@ -86,8 +96,22 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 		update: {
 			title,
 			content: formattedContent,
-			...(videoKey ? { videoKey } : {}),
-			...(videoThumbnailKey ? { videoThumbnailKey } : {}),
+			...(videoData
+				? {
+						video: {
+							...(videoId
+								? {
+										update: {
+											where: { id: videoId },
+											data: { ...videoData },
+										},
+									}
+								: {
+										create: videoData,
+									}),
+						},
+					}
+				: {}),
 			images: {
 				deleteMany: { id: { notIn: imageUpdates.map(image => image.id) } },
 				updateMany: imageUpdates.map(updates => ({

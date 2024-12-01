@@ -5,6 +5,7 @@ export type VideoMetadata = {
 	frameRate: number
 	codec: string
 	fileName: string
+	bitrate: number
 	originalName: string
 	contentType: string
 }

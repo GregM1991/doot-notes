@@ -109,13 +109,16 @@ export const ImageFieldsetSchema = z
 	}, 'File size must be less than 3MB')
 export const ImageFieldsetListSchema = z.array(ImageFieldsetSchema)
 
-export const VideoFieldSchema = z
-	.instanceof(File)
-	.optional()
-	.refine(
-		file => !file || file.size <= 100 * 1024 * 1024,
-		'File must be less than 100MB',
-	)
+export const VideoFieldSchema = z.object({
+	id: z.string().nullable(),
+	file: z
+		.instanceof(File)
+		.optional()
+		.refine(
+			file => !file || file.size <= 100 * 1024 * 1024,
+			'File must be less than 100MB',
+		),
+})
 
 export const NoteEditorSchema = z.object({
 	id: z.string().optional(),

@@ -5,11 +5,11 @@ import { error, json } from '@sveltejs/kit'
 
 export async function POST({ request }) {
 	try {
-		const { uploadId } = await request.json()
+		const { uploadId, videoKey } = await request.json()
 
 		const command = new AbortMultipartUploadCommand({
 			Bucket: env.R2_BUCKET_NAME,
-			Key: uploadId,
+			Key: videoKey,
 			UploadId: uploadId,
 		})
 

@@ -1,5 +1,8 @@
+import { env } from '$env/dynamic/private'
 import { uploadResponseSchema } from '$lib/schemas'
-import { getDomainUrl } from '$lib/utils/misc'
+import { r2Client } from '$lib/storage/r2.server'
+import { getDomainUrl, getNoteVideoThumbSrc } from '$lib/utils/misc'
+import { DeleteObjectCommand } from '@aws-sdk/client-s3'
 import type { VideoMetadata } from './types.video'
 import type { BaseVideoHandler } from './VideoHandler/baseVideoHandler'
 import { VideoHandlerFactory } from './VideoHandler/videoHandlerFactory'
@@ -25,7 +28,7 @@ class VideoUploadProcessor {
 		if (!this.ALLOWED_FORMATS.includes(file.type)) {
 			throw new Error('Unsupported video format')
 		}
-		let uploadId: string | undefined
+		let uploadId, fullKey, thumbnailKey: string | undefined
 		try {
 			const sanitizedName = file.name
 				.toLowerCase()
@@ -40,17 +43,18 @@ class VideoUploadProcessor {
 
 			const date = new Date()
 			const dateString = date.toISOString().split('T')[0].replace(/-/g, '')
-			const fullKey = `videos/${userId}/${dateString}-${metadata.fileName}`
-			const initializationResult = await this.initializeMultipartUpload(
+			fullKey = `videos-${userId}-${dateString}-${metadata.fileName}`
+
+			const { uploadId } = await this.initializeMultipartUpload(
 				fullKey,
 				file.type,
 			)
-			const { uploadId } = initializationResult
+
 			const chunks = await this.createFileChunks(file)
 			const uploadPromises = chunks.map(async (chunk, index) => {
 				const presignedUrl = await this.getPresignedUrl({
 					uploadId: uploadId,
-					key: fullKey,
+					key: fullKey!,
 					partNumber: index + 1,
 				})
 
@@ -62,20 +66,62 @@ class VideoUploadProcessor {
 				uploadId,
 				fullKey,
 			)
-			const videoThumbnailKey = await this.generateAndUploadPreview(
-				file,
-				uploadId,
-				fullKey,
-			)
 
-			onPreviewReady?.(videoThumbnailKey)
-			return { uploadedVideoKey, videoThumbnailKey }
+			const videoThumbnailBlob = await this.videoHandler.generatePreview(file)
+			thumbnailKey = `${fullKey.replace('videos-', 'thumbnails-')}.jpg`
+			await this.uploadThumbnail(thumbnailKey, videoThumbnailBlob)
+
+			onPreviewReady?.(getNoteVideoThumbSrc(thumbnailKey))
+
+			return { uploadedVideoKey, thumbnailKey, metadata }
 		} catch (error) {
 			console.error('Video processing failed', error)
-			if (uploadId) {
-				await this.abortMultipartUpload(uploadId)
+			if (fullKey && uploadId) {
+				await this.abortMultipartUpload(fullKey, uploadId)
+			}
+			if (thumbnailKey) {
+				try {
+					const deleteCommand = new DeleteObjectCommand({
+						Bucket: env.R2_BUCKET_NAME,
+						Key: thumbnailKey,
+					})
+					await r2Client.send(deleteCommand)
+				} catch (cleanupError) {
+					console.error('Failed to cleanup thumbnail:', cleanupError)
+				}
 			}
 			throw error
+		}
+	}
+
+	private async uploadThumbnail(key: string, blob: Blob): Promise<void> {
+		const response = await fetch(`${this.domain}/api/thumbnail/upload`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				key,
+				contentType: 'image/jpeg',
+			}),
+		})
+
+		if (!response.ok) {
+			const text = await response.text()
+			throw new Error(
+				`Failed to get thumbnail upload URL: ${response.status} - ${text}`,
+			)
+		}
+
+		const { uploadUrl } = await response.json()
+		const uploadResponse = await fetch(uploadUrl, {
+			method: 'PUT',
+			body: blob,
+			headers: { 'Content-Type': 'image/jpeg' },
+		})
+
+		if (!uploadResponse.ok) {
+			throw new Error('Failed to upload thumbnail')
 		}
 	}
 
@@ -175,83 +221,28 @@ class VideoUploadProcessor {
 		return parsed.data.key
 	}
 
-	private async generateAndUploadPreview(
-		file: File,
+	private async abortMultipartUpload(
+		videoKey: string,
 		uploadId: string,
-		key: string,
-	): Promise<string> {
-		try {
-			const previewBlob = await this.videoHandler.generatePreview(file)
-			const previewKey = key.replace('videos/', 'previews/')
-
-			const response = await fetch(`${this.domain}/api/video/get-preview-url`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					key: previewKey,
-					contentType: 'image/jpeg',
-				}),
-			})
-
-			if (!response.ok) throw new Error('Failed to get preview upload URL')
-
-			const { uploadUrl } = await response.json()
-
-			const uploadResponse = await fetch(uploadUrl, {
-				method: 'PUT',
-				body: previewBlob,
-				headers: {
-					contentType: 'image/jpeg',
-				},
-			})
-
-			if (!uploadResponse.ok) throw new Error('Failed to upload preview')
-
-			return key
-		} catch (error) {
-			console.error('Preview generation failed:', error)
-			throw new Error('Failed to generate preview')
-		}
-	}
-
-	private async abortMultipartUpload(uploadId: string): Promise<void> {
-		if (!uploadId) {
-			throw new Error('Invalid uploadId provided for abort')
+	): Promise<void> {
+		if (!videoKey || !uploadId) {
+			throw new Error('Invalid videoKey or videoId provided for abort')
 		}
 
 		try {
-			// Notify R2 to abort the upload and clean up chunks
 			const response = await fetch(`${this.domain}/api/video/abort-upload`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({ uploadId }),
+				body: JSON.stringify({ videoKey, uploadId }),
 			})
 
 			if (!response.ok) {
 				console.error('Failed to abort upload cleanly')
 			}
-
-			// Also try to clean up preview if it exists
-			try {
-				await fetch(`${this.domain}/api/video/abort-upload`, {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify({
-						uploadId: `${uploadId}-preview`,
-					}),
-				})
-			} catch (previewError) {
-				console.error('Failed to clean up preview:', previewError)
-			}
 		} catch (error) {
 			console.error('Error during upload abort:', error)
-			// We throw this error as it might be important for the calling code
 			throw new Error('Failed to abort upload cleanly')
 		}
 	}

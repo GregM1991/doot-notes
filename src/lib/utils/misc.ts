@@ -16,6 +16,14 @@ export function getNoteImgSrc(imageId: string) {
 	return `/api/resources/note-images/${imageId}`
 }
 
+export function getNoteVideoSrc(videoKey: string) {
+	return `/api/video/${videoKey}`
+}
+
+export function getNoteVideoThumbSrc(thumbKey: string) {
+	return `/api/thumbnail/${encodeURIComponent(thumbKey)}`
+}
+
 export function debounce<
 	Callback extends (...args: Parameters<Callback>) => void,
 >(fn: Callback, delay: number) {
@@ -119,6 +127,13 @@ export function extractImageGroup(formData: FormData) {
 			}
 		})
 	return Array.from(imageMap.values())
+}
+
+export function extractVideoGroup(formData: FormData) {
+	return {
+		id: formData.get('video.id'),
+		file: formData.get('video.file'),
+	}
 }
 
 function imageHasFile(
