@@ -22,7 +22,7 @@ export type EditNoteProps = {
 	data: SuperValidated<Infer<typeof NoteEditorSchema>>
 	action: string
 	images?: Array<ImageFieldset>
-	video: {
+	video?: {
 		id: string
 		videoKey: string
 		thumbnailKey: string

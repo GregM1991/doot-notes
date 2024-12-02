@@ -16,12 +16,8 @@ export function getNoteImgSrc(imageId: string) {
 	return `/api/resources/note-images/${imageId}`
 }
 
-export function getNoteVideoSrc(videoKey: string) {
-	return `/api/video/${videoKey}`
-}
-
 export function getNoteVideoThumbSrc(thumbKey: string) {
-	return `/api/thumbnail/${encodeURIComponent(thumbKey)}`
+	return `/api/thumbnail/get/${encodeURIComponent(thumbKey)}`
 }
 
 export function debounce<

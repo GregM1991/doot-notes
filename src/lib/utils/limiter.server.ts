@@ -14,6 +14,7 @@ export const strongRoutes = [
 	'/settings/profile',
 ]
 
+// TODO: NOT-74 ~~ Figure out rateLimiter error
 const limiter = new RetryAfterRateLimiter({
 	rates: {
 		IP: [1000 * maxMultiple, 'm'],

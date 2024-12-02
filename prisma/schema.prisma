@@ -136,8 +136,8 @@ model Connection {
 
 model Video {
     id           String   @id @default(cuid())
-    noteId       String   @unique // Foreign key with unique constraint
-    note         Note     @relation(fields: [noteId], references: [id])
+    noteId       String   @unique
+    note         Note     @relation(fields: [noteId], references: [id],  onDelete: Cascade, onUpdate: Cascade)
     videoKey     String
     thumbnailKey String
     fileName     String

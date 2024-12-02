@@ -36,10 +36,11 @@
 		{/each}
 		{#if data.video}
 			<h3>Video Note</h3>
-			<a href="{data.note.id}/video-note">
+			<a class="video-link" href="{data.note.id}/video-note">
 				<img
 					src={getNoteVideoThumbSrc(data.video.thumbnailKey)}
 					alt="Thumbnail preview for video note"
+					class="thumbnail"
 				/>
 			</a>
 		{/if}
@@ -101,5 +102,14 @@
 	.buttons {
 		display: flex;
 		gap: var(--space-s);
+	}
+
+	.video-link {
+		width: max-content;
+	}
+
+	.thumbnail {
+		width: 280px;
+		height: 150px;
 	}
 </style>

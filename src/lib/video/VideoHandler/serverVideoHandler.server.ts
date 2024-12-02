@@ -67,6 +67,7 @@ export class ServerVideoHandler extends BaseVideoHandler {
 	): Promise<VideoMetadata> {
 		let buffer: Buffer
 		let metadataOptions: MetadataOptions
+
 		if (videoBuffer instanceof File) {
 			buffer = Buffer.from(await videoBuffer.arrayBuffer())
 			metadataOptions = options || {
@@ -82,13 +83,14 @@ export class ServerVideoHandler extends BaseVideoHandler {
 				contentType: 'video/mp4',
 			}
 		}
+
 		const tempPath = await this.saveTempFile(buffer)
 
 		try {
 			const ffprobeOutput = await this.runFfprobe(tempPath)
 			const data = JSON.parse(ffprobeOutput)
 			const videoStream = data.streams.find(
-				stream => stream.codec_type === 'video',
+				(stream: { codec_type: string }) => stream.codec_type === 'video',
 			)
 
 			if (!videoStream) {

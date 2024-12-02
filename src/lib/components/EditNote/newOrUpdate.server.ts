@@ -4,19 +4,9 @@ import { requireUserId } from '$lib/utils/auth.server'
 import { prisma } from '$lib/utils/db.server'
 import { fail, message, setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
-import {
-	extractImageGroup,
-	extractVideoGroup,
-	isErrorWithMessage,
-	transformImageData,
-} from '$lib/utils/misc'
-import {
-	ImageFieldsetListSchema,
-	NoteEditorSchema,
-	VideoFieldSchema,
-} from '$lib/schemas'
-import VideoUploadProcessor from '$lib/video/videoUploadProcessor'
-import type { VideoMetadata } from '$lib/video/types.video'
+import { extractImageGroup, transformImageData } from '$lib/utils/misc'
+import { ImageFieldsetListSchema, NoteEditorSchema } from '$lib/schemas'
+import { handleNewOrUpdateVideo } from '$lib/video/handleNewOrUpdateVideo.server'
 
 export const newOrUpdate: Action = async ({ request, locals }) => {
 	const userId = requireUserId(locals.userId, request)
@@ -26,41 +16,8 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 
 	const images = extractImageGroup(formData)
 	const imageSubmission = ImageFieldsetListSchema.safeParse(images)
-	const video = extractVideoGroup(formData)
-	const videoSubmission = VideoFieldSchema.safeParse(video)
-
-	if (!videoSubmission.success)
-		return setError(form, '', videoSubmission.error.formErrors.formErrors)
 	if (!imageSubmission.success)
 		return setError(form, '', imageSubmission.error.formErrors.formErrors)
-
-	// Video handling
-	const { file, id: videoId } = videoSubmission.data
-	if (videoId) {
-		// handle deletions from cloudflare
-	}
-	let videoData:
-		| (VideoMetadata & { videoKey: string; thumbnailKey: string })
-		| undefined
-	if (file) {
-		try {
-			const videoProcessor = new VideoUploadProcessor(request)
-			const { uploadedVideoKey, thumbnailKey, metadata } =
-				await videoProcessor.processVideoUpload(file, userId)
-			videoData = {
-				videoKey: uploadedVideoKey,
-				thumbnailKey,
-				...metadata,
-			}
-		} catch (error) {
-			if (isErrorWithMessage(error)) {
-				console.error(error.message)
-				setError(form, '', error.message)
-				return
-			}
-			setError(form, '', 'Unable to upload video')
-		}
-	}
 
 	const { imageUpdates = [], newImages = [] } = await transformImageData(
 		imageSubmission.data,
@@ -74,6 +31,14 @@ export const newOrUpdate: Action = async ({ request, locals }) => {
 			return message(form, 'Note not found', { status: 404 })
 		}
 	}
+
+	const { videoData, videoId, error } = await handleNewOrUpdateVideo(
+		userId,
+		request,
+		formData,
+	)
+
+	if (error) setError(form, '', error)
 
 	const transformedFormData = {
 		...form.data,
