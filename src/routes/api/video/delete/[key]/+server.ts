@@ -5,17 +5,19 @@ import { env } from '$env/dynamic/private'
 
 export async function DELETE({ params }) {
 	const { key } = params
-	console.log('Delete video called')
+
 	try {
 		const headCommand = new HeadObjectCommand({
 			Bucket: env.R2_BUCKET_NAME,
 			Key: key,
 		})
 
+		console.log('Checking object in bucket:', env.R2_BUCKET_NAME)
+
 		try {
 			await r2Client.send(headCommand)
 		} catch (err) {
-			console.error(err)
+			console.error('Head check failed:', err)
 			throw error(404, 'Object not found')
 		}
 

@@ -5,7 +5,7 @@ import { env } from '$env/dynamic/private'
 
 export async function DELETE({ params }) {
 	const { key } = params
-	console.log('Delete thumbnail called')
+
 	try {
 		const headCommand = new HeadObjectCommand({
 			Bucket: env.R2_BUCKET_NAME,
@@ -15,7 +15,7 @@ export async function DELETE({ params }) {
 		try {
 			await r2Client.send(headCommand)
 		} catch (err) {
-			console.error(err)
+			console.error('Head check failed:', err)
 			throw error(404, 'Object not found')
 		}
 
