@@ -76,7 +76,7 @@
 		<Plus />
 		Add another image
 	</Button>
-	<VideoEditor id={video?.id} />
+	<VideoEditor {video} />
 	<InfoBar {formId} {buttonText} {submitDelayedReason} {delayed} {timeout} />
 	<ValidationErrors errorId={$formId} errors={$errors._errors} />
 </form>
