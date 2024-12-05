@@ -1,3 +1,4 @@
+<!-- EditNote.svelte -->
 <!-- TODO: This is quite the component, will need a clean up at some stage NOT-63 -->
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms'
@@ -68,7 +69,7 @@
 	</FormGroup>
 	<span>Images</span>
 	<ul class="image-list" data-testid={imageListTestId}>
-		{#each helperState.imageList as image, index (index)}
+		{#each helperState.state.imageList as image, index (index)}
 			<ImageEditor {image} {index} deleteImage={helperState.deleteImage} />
 		{/each}
 	</ul>

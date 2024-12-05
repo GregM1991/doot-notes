@@ -1,3 +1,4 @@
+// browserVideoHandler.ts
 import type { MetadataOptions, VideoMetadata } from '../types.video'
 import { BaseVideoHandler } from './baseVideoHandler'
 
@@ -125,10 +126,7 @@ export class BrowserVideoHandler extends BaseVideoHandler {
 		})
 	}
 
-	async generatePreview(
-		videoFile: File,
-		timeOffset: number = 0.25,
-	): Promise<Blob> {
+	async generatePreview(videoFile: File, timeOffset: number = 0.25) {
 		const canvas = document.createElement('canvas')
 		const ctx = canvas.getContext('2d')
 		if (!ctx) {
@@ -169,7 +167,7 @@ export class BrowserVideoHandler extends BaseVideoHandler {
 				}
 			})
 
-			return await fetch(previewFrame).then(res => res.blob())
+			return previewFrame
 		} finally {
 			URL.revokeObjectURL(videoUrl)
 			video.remove()

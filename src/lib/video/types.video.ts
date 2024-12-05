@@ -1,3 +1,4 @@
+// types.video.ts
 export type VideoMetadata = {
 	duration: number
 	width: number
@@ -10,19 +11,33 @@ export type VideoMetadata = {
 	contentType: string
 }
 
+export type VideoUploadStatus =
+	| { state: 'idle' }
+	| { state: 'preparing'; progress: number }
+	| { state: 'uploading'; progress: number }
+	| { state: 'processing'; progress: number }
+	| { state: 'complete'; metadata: VideoMetadata }
+	| { state: 'error'; error: string }
+
+export interface VideoUploadOptions {
+	maxChunkSize?: number
+	allowedFormats?: string[]
+	previewTimeOffset?: number
+}
+
+export interface VideoUploadContext {
+	uploadId?: string
+	key?: string
+	chunks?: number
+	currentChunk?: number
+	abortController?: AbortController
+	thumbnailKey?: string
+}
+
 export interface MetadataOptions {
 	fileName: string
 	originalName: string
 	contentType: string
 }
 
-export interface VideoHandlerConfig {
-	domElement?: HTMLVideoElement
-	maxFileSize?: number
-	allowedFormats?: string[]
-}
-
-export interface VideoProcessingResult {
-	duration: number
-	format: string
-}
+export type UploadProgressCallback = (status: VideoUploadStatus) => void

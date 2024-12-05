@@ -1,3 +1,4 @@
+// api/thumbnail/delete/[key]/+server.ts
 import { error } from '@sveltejs/kit'
 import { r2Client } from '$lib/storage/r2.server'
 import { DeleteObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3'

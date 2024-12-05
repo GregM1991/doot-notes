@@ -1,35 +1,63 @@
+// videoUploadProcessor.ts
 import { env } from '$env/dynamic/private'
-import { uploadResponseSchema } from '$lib/schemas'
 import { r2Client } from '$lib/storage/r2.server'
-import { getDomainUrl, getNoteVideoThumbSrc } from '$lib/utils/misc'
+import { getDomainUrl, invariant } from '$lib/utils/misc'
 import { DeleteObjectCommand } from '@aws-sdk/client-s3'
-import type { VideoMetadata } from './types.video'
-import type { BaseVideoHandler } from './VideoHandler/baseVideoHandler'
+import type {
+	UploadProgressCallback,
+	VideoUploadContext,
+	VideoUploadOptions,
+} from './types.video'
 import { VideoHandlerFactory } from './VideoHandler/videoHandlerFactory'
+import { ServerVideoHandler } from './VideoHandler/serverVideoHandler.server'
+import type { BaseVideoHandler } from './VideoHandler/baseVideoHandler'
+import { createVideoUploadError, VideoErrorCode } from './videoUploadErrors'
 
 class VideoUploadProcessor {
-	private videoHandler: BaseVideoHandler
-	private readonly MAX_CHUNK_SIZE = 5.5 * 1024 * 1024
-	private readonly ALLOWED_FORMATS = ['video/mp4', 'video/webm']
-	private readonly domain: string
+	private readonly context: VideoUploadContext = {}
+	private readonly options: Required<VideoUploadOptions>
 
-	constructor(request: Request) {
-		this.videoHandler = VideoHandlerFactory.create()
-		this.domain = getDomainUrl(request)
+	constructor(
+		private readonly videoHandler: BaseVideoHandler,
+		private readonly domain: string,
+		options?: VideoUploadOptions,
+	) {
+		this.options = {
+			maxChunkSize: 5.5 * 1024 * 1024,
+			allowedFormats: ['video/mp4', 'video/webm'],
+			previewTimeOffset: 0.25,
+			...options,
+		}
+	}
+
+	static async initialize(request: Request, options?: VideoUploadOptions) {
+		const handler = await VideoHandlerFactory.create()
+		const domain = getDomainUrl(request)
+		return new VideoUploadProcessor(handler, domain, options)
+	}
+
+	private validateFile(file: File) {
+		if (!this.options.allowedFormats.includes(file.type)) {
+			throw createVideoUploadError(VideoErrorCode.INVALID_FORMAT)
+		}
+	}
+
+	private generateUploadKey(fileName: string, userId: string) {
+		const date = new Date()
+		const dateString = date.toISOString().split('T')[0].replace(/-/g, '')
+		this.context.key = `videos-${userId}-${dateString}-${fileName}`
 	}
 
 	async processVideoUpload(
 		file: File,
 		userId: string,
-		onProgress?: (progress: number) => void,
-		onMetadata?: (metadata: VideoMetadata) => void,
-		onPreviewReady?: (previewUrl: string) => void,
+		onProgress?: UploadProgressCallback,
 	) {
-		if (!this.ALLOWED_FORMATS.includes(file.type)) {
-			throw new Error('Unsupported video format')
-		}
-		let uploadId, fullKey, thumbnailKey: string | undefined
+		this.validateFile(file)
+
 		try {
+			onProgress?.({ state: 'preparing', progress: 0 })
+
 			const sanitizedName = file.name
 				.toLowerCase()
 				.replace(/[^a-z0-9.]/g, '-')
@@ -39,51 +67,28 @@ class VideoUploadProcessor {
 				originalName: file.name,
 				contentType: file.type,
 			})
-			onMetadata?.(metadata)
+			this.generateUploadKey(metadata.fileName, userId)
 
-			const date = new Date()
-			const dateString = date.toISOString().split('T')[0].replace(/-/g, '')
-			fullKey = `videos-${userId}-${dateString}-${metadata.fileName}`
+			await this.initializeMultipartUpload(file.type)
+			await this.uploadChunks(file, onProgress)
+			await this.completeMultipartUpload()
+			await this.uploadThumbnail(file)
 
-			const { uploadId } = await this.initializeMultipartUpload(
-				fullKey,
-				file.type,
-			)
-
-			const chunks = await this.createFileChunks(file)
-			const uploadPromises = chunks.map(async (chunk, index) => {
-				const presignedUrl = await this.getPresignedUrl({
-					uploadId: uploadId,
-					key: fullKey!,
-					partNumber: index + 1,
-				})
-
-				await this.uploadChunk(presignedUrl, chunk)
-				onProgress?.(((index + 1) / chunks.length) * 100)
-			})
-			await Promise.all(uploadPromises)
-			const uploadedVideoKey = await this.completeMultipartUpload(
-				uploadId,
-				fullKey,
-			)
-
-			const videoThumbnailBlob = await this.videoHandler.generatePreview(file)
-			thumbnailKey = `${fullKey.replace('videos-', 'thumbnails-')}.jpg`
-			await this.uploadThumbnail(thumbnailKey, videoThumbnailBlob)
-
-			onPreviewReady?.(getNoteVideoThumbSrc(thumbnailKey))
-
-			return { uploadedVideoKey, thumbnailKey, metadata }
+			return {
+				uploadedVideoKey: this.context.key,
+				thumbnailKey: this.context.thumbnailKey,
+				metadata,
+			}
 		} catch (error) {
 			console.error('Video processing failed', error)
-			if (fullKey && uploadId) {
-				await this.abortMultipartUpload(fullKey, uploadId)
+			if (this.context.key && this.context.uploadId) {
+				await this.abortMultipartUpload(this.context.key, this.context.uploadId)
 			}
-			if (thumbnailKey) {
+			if (this.context.thumbnailKey) {
 				try {
 					const deleteCommand = new DeleteObjectCommand({
 						Bucket: env.R2_BUCKET_NAME,
-						Key: thumbnailKey,
+						Key: this.context.thumbnailKey,
 					})
 					await r2Client.send(deleteCommand)
 				} catch (cleanupError) {
@@ -94,80 +99,59 @@ class VideoUploadProcessor {
 		}
 	}
 
-	private async uploadThumbnail(key: string, blob: Blob): Promise<void> {
+	private async uploadThumbnail(file: File): Promise<void> {
+		if (!(this.videoHandler instanceof ServerVideoHandler))
+			throw new Error('Handler should not exist in this environment')
+
+		const videoThumbnailBlob = await this.videoHandler.generatePreview(file)
+		invariant(this.context.key, 'No key exists for this video')
+		this.context.thumbnailKey = `${this.context.key.replace('videos-', 'thumbnails-')}.jpg`
+
 		const response = await fetch(`${this.domain}/api/thumbnail/upload`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({
-				key,
+				key: this.context.thumbnailKey,
+				videoThumbnailBlob,
 				contentType: 'image/jpeg',
 			}),
 		})
-
 		if (!response.ok) {
-			const text = await response.text()
-			throw new Error(
-				`Failed to get thumbnail upload URL: ${response.status} - ${text}`,
-			)
-		}
-
-		const { uploadUrl } = await response.json()
-		const uploadResponse = await fetch(uploadUrl, {
-			method: 'PUT',
-			body: blob,
-			headers: { 'Content-Type': 'image/jpeg' },
-		})
-
-		if (!uploadResponse.ok) {
-			throw new Error('Failed to upload thumbnail')
+			createVideoUploadError(VideoErrorCode.UPLOAD_THUMBNAIL_FAILED)
 		}
 	}
 
-	private async initializeMultipartUpload(
-		uploadKey: string,
-		contentType: string,
-	) {
+	private async initializeMultipartUpload(contentType: string) {
 		const response = await fetch(`${this.domain}/api/video/initialize-upload`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({ uploadKey, contentType }),
+			body: JSON.stringify({ uploadKey: this.context.key, contentType }),
 		})
 
 		if (!response.ok) {
-			throw new Error('Failed to initialize upload')
+			createVideoUploadError(VideoErrorCode.UPLOAD_INITIALIZATION_FAILED)
 		}
 
 		const data = await response.json()
-		return { uploadId: data.uploadId, uploadKey: data.uploadKey }
+		this.context.uploadId = data.uploadId
+		this.context.key = data.uploadKey
 	}
 
-	private async createFileChunks(file: File) {
-		const chunks: Blob[] = []
-		let start = 0
-
-		while (start < file.size) {
-			chunks.push(file.slice(start, start + this.MAX_CHUNK_SIZE))
-			start += this.MAX_CHUNK_SIZE
-		}
-
-		return chunks
-	}
-
-	private async getPresignedUrl(params: {
-		uploadId: string
-		key: string
-		partNumber: number
-	}) {
+	private async getPresignedUrl(partNumber: number) {
 		const response = await fetch(`${this.domain}/api/video/get-upload-url`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify(params),
+			body: JSON.stringify({
+				partNumber,
+				key: this.context.key,
+				uploadId: this.context.uploadId,
+			}),
 		})
 
 		if (!response.ok) {
@@ -175,6 +159,33 @@ class VideoUploadProcessor {
 		}
 
 		return response.json()
+	}
+
+	private async createFileChunks(file: File) {
+		const chunks: Blob[] = []
+		let start = 0
+
+		while (start < file.size) {
+			chunks.push(file.slice(start, start + this.options.maxChunkSize))
+			start += this.options.maxChunkSize
+		}
+
+		return chunks
+	}
+
+	private async uploadChunks(file: File, onProgress?: UploadProgressCallback) {
+		const chunks = await this.createFileChunks(file)
+
+		const uploadPromises = chunks.map(async (chunk, index) => {
+			const presignedUrl = await this.getPresignedUrl(index + 1)
+
+			await this.uploadChunk(presignedUrl, chunk)
+			onProgress?.({
+				state: 'uploading',
+				progress: ((index + 1) / chunks.length) * 100,
+			})
+		})
+		await Promise.all(uploadPromises)
 	}
 
 	private async uploadChunk(presignedUrl: string, chunk: Blob, retries = 3) {
@@ -195,30 +206,21 @@ class VideoUploadProcessor {
 		}
 	}
 
-	private async completeMultipartUpload(
-		uploadId: string,
-		uploadKey: string,
-	): Promise<string> {
+	private async completeMultipartUpload() {
 		const response = await fetch(`${this.domain}/api/video/complete-upload`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({ uploadId, uploadKey }),
+			body: JSON.stringify({
+				uploadId: this.context.uploadId,
+				uploadKey: this.context.key,
+			}),
 		})
 
 		if (!response.ok) {
 			throw new Error('Failed to complete upload')
 		}
-
-		const data = await response.json()
-		const parsed = uploadResponseSchema.safeParse(data)
-
-		if (!parsed.success) {
-			throw new Error(`Invalid upload response: ${parsed.error.message}`)
-		}
-
-		return parsed.data.key
 	}
 
 	private async abortMultipartUpload(

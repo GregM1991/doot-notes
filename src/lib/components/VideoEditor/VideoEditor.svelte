@@ -1,39 +1,19 @@
-<!-- <script lang="ts">
-	// import { Plus } from '$lib/components'
-	// const maxSizeMB = 50
-
-	// let error: string | null = $state(null)
-	// let video: File | null = $state(null)
-
-	let { id }: { id: string | undefined } = $props()
-</script>
-
-{#if id}
-	<input type="hidden" {id} name="video.id" value={id} />
-{/if}
-<label class="video-label">
-	Upload Video
-	<input
-		id="video-upload"
-		name="video.file"
-		type="file"
-		accept="video/*"
-		aria-label="Image"
-	/>
-</label> -->
-
+<!-- VideoEditor.svelte -->
 <script lang="ts">
 	import { Cross, Input, Plus } from '$lib/components'
 	import { createVideoState } from './helpers.videoEditor.svelte'
 	import type { VideoEditorProps } from './types.videoEditor'
 
 	let { video }: { video: VideoEditorProps } = $props()
-
 	const helperState = createVideoState(video)
 </script>
 
 <div class="video-container">
 	<fieldset class="container">
+		{#if video?.id}
+			<input type="hidden" id="video-id" name="video.id" value={video.id} />
+		{/if}
+
 		<legend class="sr-only">Select a video to upload</legend>
 
 		<div class="file-input-container">
@@ -51,6 +31,7 @@
 				{/if}
 				<input
 					onchange={helperState.handleFileChange}
+					bind:this={helperState.state.fileInput}
 					id="video-upload"
 					name="video.file"
 					class="file absolute"
@@ -59,36 +40,33 @@
 					aria-label="Video"
 				/>
 			</label>
-
-			{#if video}
-				<input type="hidden" id="video-id" name="video.id" value={video.id} />
-			{/if}
 		</div>
-		<div class="alt-input">
-			<Input
-				label="Alt text"
-				id="video.alt-text"
-				name="video.alt-text"
-				value={helperState.state.altText}
-				type="text"
-				fluid
-			/>
-		</div>
-
-		{#if video}
-			<button
-				formaction="?/deleteVideo"
-				class="remove-video-button"
-				name="videoId"
-				value={video.id}
-				onclick={() => helperState.clearVideo()}
+		<div class="video-details">
+			<label for="video-upload" class="video-name"
+				>{helperState.state.videoLabelCopy}</label
 			>
-				<span aria-hidden="true">
-					<Cross />
-				</span>
-				<span class="sr-only">Remove video</span>
-			</button>
-		{/if}
+			<div class="alt-input">
+				<Input
+					label="Alt text"
+					id="video.alt-text"
+					name="video.alt-text"
+					value={helperState.state.altText}
+					type="text"
+					fluid
+				/>
+			</div>
+		</div>
+
+		<button
+			class="remove-video-button"
+			type="button"
+			name="videoId"
+			value={video?.id}
+			onclick={helperState.deleteVideo}
+		>
+			<Cross />
+			<span class="sr-only">Remove video</span>
+		</button>
 	</fieldset>
 </div>
 
@@ -145,6 +123,17 @@
 		position: absolute;
 		top: 0;
 		left: 0;
+	}
+
+	.video-details {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-s);
+		width: 100%;
+	}
+
+	.video-name {
+		font-weight: bold;
 	}
 
 	.alt-input {

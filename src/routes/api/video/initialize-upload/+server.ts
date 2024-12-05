@@ -1,3 +1,4 @@
+// api/video/initialize-upload/+server.ts
 import { error, json } from '@sveltejs/kit'
 import { CreateMultipartUploadCommand } from '@aws-sdk/client-s3'
 import { env } from '$env/dynamic/private'

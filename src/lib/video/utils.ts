@@ -1,57 +1,88 @@
+// utils.ts (video)
 import { prisma } from '$lib/utils/db.server'
 import { getDomainUrl } from '$lib/utils/misc'
 
-export async function cleanupVideoAssets(videoId: string, request: Request) {
-	if (!videoId) return
-
-	const video = await prisma.video.findFirst({
-		where: { id: videoId },
-		select: { videoKey: true, thumbnailKey: true },
-	})
-
-	if (!video) return
-
-	const baseUrl = getDomainUrl(request)
-	const deleteUrls = {
-		video: video.videoKey
-			? `${baseUrl}/api/video/delete/${video.videoKey}`
-			: null,
-		thumbnail: video.thumbnailKey
-			? `${baseUrl}/api/thumbnail/delete/${video.thumbnailKey}`
-			: null,
+export async function cleanupVideoAssets(
+	videoId: string,
+	noteId: string | undefined,
+	request: Request,
+) {
+	if (!videoId && !noteId) {
+		console.log('No video or note ID provided for cleanup')
+		return
 	}
 
-	const deleteAsset = async (
-		url: string | null,
-		assetType: 'video' | 'thumbnail',
-	) => {
-		if (!url) return
+	try {
+		const existingVideo = await prisma.video.findFirst({
+			where: {
+				AND: [videoId ? { id: videoId } : {}, noteId ? { noteId: noteId } : {}],
+			},
+			select: {
+				id: true,
+				thumbnailKey: true,
+				videoKey: true,
+				noteId: true,
+			},
+		})
 
-		try {
-			const response = await fetch(url, { method: 'DELETE' })
+		if (!existingVideo) {
+			return
+		}
 
-			if (!response.ok) {
-				throw new Error(
-					`Server returned ${response.status}: ${await response.text()}`,
-				)
+		const baseUrl = getDomainUrl(request)
+		const deleteUrls = {
+			video: existingVideo.videoKey
+				? `${baseUrl}/api/video/delete/${existingVideo.videoKey}`
+				: null,
+			thumbnail: existingVideo.thumbnailKey
+				? `${baseUrl}/api/thumbnail/delete/${existingVideo.thumbnailKey}`
+				: null,
+		}
+
+		const deleteAsset = async (
+			url: string | null,
+			assetType: 'video' | 'thumbnail',
+		): Promise<void> => {
+			if (!url) {
+				return
 			}
 
-			console.log(`Successfully deleted ${assetType}`)
-		} catch (err) {
-			console.error(`Failed to delete ${assetType}:`, err)
-			throw err
+			try {
+				const response = await fetch(url, {
+					method: 'DELETE',
+					signal: AbortSignal.timeout(5000),
+				})
+
+				if (!response.ok) {
+					throw new Error(
+						`Server returned ${response.status}: ${await response.text()}`,
+					)
+				}
+			} catch (err) {
+				console.error(`Failed to delete ${assetType}:`, err)
+				return
+			}
 		}
+
+		await prisma.$transaction(async tx => {
+			await tx.video.delete({
+				where: { id: existingVideo.id },
+			})
+
+			const results = await Promise.allSettled([
+				deleteUrls.video && deleteAsset(deleteUrls.video, 'video'),
+				deleteUrls.thumbnail && deleteAsset(deleteUrls.thumbnail, 'thumbnail'),
+			])
+
+			results.forEach((result, index) => {
+				if (result.status === 'rejected') {
+					const assetType = index === 0 ? 'video' : 'thumbnail'
+					console.error(`Failed to delete ${assetType}:`, result.reason)
+				}
+			})
+		})
+	} catch (error) {
+		console.error('Error during video cleanup:', error)
+		throw new Error('Failed to clean up video assets')
 	}
-
-	const results = await Promise.allSettled([
-		deleteUrls.video && deleteAsset(deleteUrls.video, 'video'),
-		deleteUrls.thumbnail && deleteAsset(deleteUrls.thumbnail, 'thumbnail'),
-	])
-
-	results.forEach((result, index) => {
-		if (result.status === 'rejected') {
-			const assetType = index === 0 ? 'video' : 'thumbnail'
-			console.error(`Failed to delete ${assetType}:`, result.reason)
-		}
-	})
 }

@@ -1,3 +1,4 @@
+// api/thumbnail/upload/+server.ts
 import { json } from '@sveltejs/kit'
 import { r2Client } from '$lib/storage/r2.server'
 import { PutObjectCommand } from '@aws-sdk/client-s3'
@@ -7,6 +8,7 @@ import { z } from 'zod'
 
 const uploadRequestSchema = z.object({
 	key: z.string(),
+	videoThumbnailBlob: z.instanceof(Blob),
 	contentType: z.literal('image/jpeg'),
 })
 
@@ -29,6 +31,16 @@ export async function POST({ request }) {
 		})
 
 		const uploadUrl = await getSignedUrl(r2Client, command, {})
+
+		const uploadResponse = await fetch(uploadUrl, {
+			method: 'PUT',
+			body: result.data.videoThumbnailBlob,
+			headers: { 'Content-Type': 'image/jpeg' },
+		})
+
+		if (!uploadResponse.ok) {
+			throw new Error('Failed to upload thumbnail')
+		}
 
 		return json({ uploadUrl })
 	} catch (error) {
