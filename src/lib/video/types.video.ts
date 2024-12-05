@@ -15,14 +15,3 @@ export interface MetadataOptions {
 	originalName: string
 	contentType: string
 }
-
-export interface VideoHandlerConfig {
-	domElement?: HTMLVideoElement
-	maxFileSize?: number
-	allowedFormats?: string[]
-}
-
-export interface VideoProcessingResult {
-	duration: number
-	format: string
-}

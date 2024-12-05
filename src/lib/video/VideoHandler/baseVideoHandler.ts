@@ -5,10 +5,13 @@ export abstract class BaseVideoHandler {
 		videoFile: File | Buffer,
 		options?: MetadataOptions,
 	): Promise<VideoMetadata>
+
 	abstract appendVideoChunk(chunk: ArrayBuffer): Promise<void>
+
 	abstract generatePreview(
 		videoData: Buffer | File,
 		timeOffset?: number,
-	): Promise<Blob>
+	): Promise<Blob | string>
+
 	abstract destroy(): void
 }

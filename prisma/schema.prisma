@@ -136,8 +136,9 @@ model Connection {
 
 model Video {
     id           String   @id @default(cuid())
+    note         Note     @relation(fields: [noteId], references: [id], onDelete: Cascade, onUpdate: Cascade)
     noteId       String   @unique
-    note         Note     @relation(fields: [noteId], references: [id],  onDelete: Cascade, onUpdate: Cascade)
+    altText      String?
     videoKey     String
     thumbnailKey String
     fileName     String

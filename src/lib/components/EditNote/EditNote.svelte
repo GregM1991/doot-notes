@@ -68,7 +68,7 @@
 	</FormGroup>
 	<span>Images</span>
 	<ul class="image-list" data-testid={imageListTestId}>
-		{#each helperState.imageList as image, index (index)}
+		{#each helperState.state.imageList as image, index (index)}
 			<ImageEditor {image} {index} deleteImage={helperState.deleteImage} />
 		{/each}
 	</ul>

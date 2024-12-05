@@ -1,12 +1,16 @@
-import type { BaseVideoHandler } from './baseVideoHandler'
 import { BrowserVideoHandler } from './browserVideoHandler'
-import { ServerVideoHandler } from './serverVideoHandler.server'
 
 export class VideoHandlerFactory {
-	static create(): BaseVideoHandler {
-		if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+	private static isBrowser(): boolean {
+		return typeof window !== 'undefined' && typeof document !== 'undefined'
+	}
+
+	static async create() {
+		if (this.isBrowser()) {
 			return new BrowserVideoHandler()
+		} else {
+			const { ServerVideoHandler } = await import('./serverVideoHandler.server')
+			return new ServerVideoHandler()
 		}
-		return new ServerVideoHandler()
 	}
 }

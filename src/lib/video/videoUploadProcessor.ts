@@ -4,8 +4,10 @@ import { r2Client } from '$lib/storage/r2.server'
 import { getDomainUrl, getNoteVideoThumbSrc } from '$lib/utils/misc'
 import { DeleteObjectCommand } from '@aws-sdk/client-s3'
 import type { VideoMetadata } from './types.video'
-import type { BaseVideoHandler } from './VideoHandler/baseVideoHandler'
 import { VideoHandlerFactory } from './VideoHandler/videoHandlerFactory'
+import type { BrowserVideoHandler } from './VideoHandler/browserVideoHandler'
+import { ServerVideoHandler } from './VideoHandler/serverVideoHandler.server'
+import type { BaseVideoHandler } from './VideoHandler/baseVideoHandler'
 
 class VideoUploadProcessor {
 	private videoHandler: BaseVideoHandler
@@ -13,9 +15,17 @@ class VideoUploadProcessor {
 	private readonly ALLOWED_FORMATS = ['video/mp4', 'video/webm']
 	private readonly domain: string
 
-	constructor(request: Request) {
-		this.videoHandler = VideoHandlerFactory.create()
+	constructor(
+		handler: BrowserVideoHandler | ServerVideoHandler,
+		request: Request,
+	) {
+		this.videoHandler = handler
 		this.domain = getDomainUrl(request)
+	}
+
+	static async initialize(request: Request) {
+		const handler = await VideoHandlerFactory.create()
+		return new VideoUploadProcessor(handler, request)
 	}
 
 	async processVideoUpload(
@@ -67,6 +77,8 @@ class VideoUploadProcessor {
 				fullKey,
 			)
 
+			if (!(this.videoHandler instanceof ServerVideoHandler))
+				throw new Error('Handler should not exist in this environment')
 			const videoThumbnailBlob = await this.videoHandler.generatePreview(file)
 			thumbnailKey = `${fullKey.replace('videos-', 'thumbnails-')}.jpg`
 			await this.uploadThumbnail(thumbnailKey, videoThumbnailBlob)

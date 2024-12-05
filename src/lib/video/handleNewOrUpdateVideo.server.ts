@@ -8,22 +8,32 @@ export async function handleNewOrUpdateVideo(
 	userId: string,
 	request: Request,
 	formData: FormData,
+	noteId: string | undefined,
 ) {
 	const video = extractVideoGroup(formData)
+
+	if (video.file && (video.file.size === 0 || video.file.name === '')) {
+		delete video.file
+	}
+
 	const videoSubmission = VideoFieldSchema.safeParse(video)
 
 	if (!videoSubmission.success)
 		return { error: videoSubmission.error.formErrors.formErrors }
-	const videoProcessor = new VideoUploadProcessor(request)
+	const videoProcessor = await VideoUploadProcessor.initialize(request)
 
-	const { file, id: videoId } = videoSubmission.data
+	const { file, id: videoId, altText } = videoSubmission.data
 
 	if (videoId && file) {
-		await cleanupVideoAssets(videoId, request)
+		await cleanupVideoAssets(videoId, noteId, request)
 	}
 
 	let videoData:
-		| (VideoMetadata & { videoKey: string; thumbnailKey: string })
+		| (VideoMetadata & {
+				videoKey: string
+				thumbnailKey: string
+				altText: string | null | undefined
+		  })
 		| null = null
 
 	if (file) {
@@ -33,6 +43,7 @@ export async function handleNewOrUpdateVideo(
 			videoData = {
 				videoKey: uploadedVideoKey,
 				thumbnailKey,
+				altText,
 				...metadata,
 			}
 		} catch (error) {

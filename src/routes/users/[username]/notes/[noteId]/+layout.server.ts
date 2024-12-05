@@ -48,7 +48,6 @@ export const load = async ({ params, locals }) => {
 		...note,
 		content: paragraphs,
 	}
-
 	return {
 		note: formattedNote,
 		timeSinceUpdate,

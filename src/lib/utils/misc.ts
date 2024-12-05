@@ -126,9 +126,20 @@ export function extractImageGroup(formData: FormData) {
 }
 
 export function extractVideoGroup(formData: FormData) {
+	const fileEntry = formData.get('video.file')
+	const file = fileEntry instanceof File ? fileEntry : undefined
+
+	if (file && (file.size === 0 || file.name === '')) {
+		return {
+			id: formData.get('video.id')?.toString() ?? null,
+			altText: formData.get('video.alt-text')?.toString() ?? null,
+		}
+	}
+
 	return {
-		id: formData.get('video.id'),
-		file: formData.get('video.file'),
+		file,
+		id: formData.get('video.id')?.toString() ?? null,
+		altText: formData.get('video.alt-text')?.toString() ?? null,
 	}
 }
 
