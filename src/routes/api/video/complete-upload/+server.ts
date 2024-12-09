@@ -1,3 +1,4 @@
+// api/video/complete-upload/+server.ts
 import { error, json } from '@sveltejs/kit'
 import {
 	CompleteMultipartUploadCommand,

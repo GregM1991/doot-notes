@@ -1,3 +1,4 @@
+<!-- VideoEditor.svelte -->
 <script lang="ts">
 	import { Cross, Input, Plus } from '$lib/components'
 	import { createVideoState } from './helpers.videoEditor.svelte'

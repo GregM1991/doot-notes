@@ -1,3 +1,4 @@
+// api/video/abort-upload/+server.ts
 import { env } from '$env/dynamic/private'
 import { r2Client } from '$lib/storage/r2.server.js'
 import { AbortMultipartUploadCommand } from '@aws-sdk/client-s3'

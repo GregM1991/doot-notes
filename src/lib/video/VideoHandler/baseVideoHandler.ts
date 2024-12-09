@@ -1,3 +1,4 @@
+// baseVideoHandler.ts
 import type { MetadataOptions, VideoMetadata } from '../types.video'
 
 export abstract class BaseVideoHandler {

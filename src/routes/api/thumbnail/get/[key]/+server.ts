@@ -1,3 +1,4 @@
+// api/thumbnail/get/[key]/+server.ts
 import { error } from '@sveltejs/kit'
 import { r2Client } from '$lib/storage/r2.server'
 import { GetObjectCommand } from '@aws-sdk/client-s3'
