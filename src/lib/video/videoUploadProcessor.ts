@@ -142,6 +142,7 @@ class VideoUploadProcessor {
 	}
 
 	private async getPresignedUrl(partNumber: number) {
+		// TODO: Create an api layer
 		const response = await fetch(`${this.domain}/api/video/get-upload-url`, {
 			method: 'POST',
 			headers: {
