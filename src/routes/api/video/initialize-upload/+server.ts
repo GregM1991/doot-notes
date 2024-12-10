@@ -1,8 +1,12 @@
 // api/video/initialize-upload/+server.ts
-import { error, json } from '@sveltejs/kit'
+import { json } from '@sveltejs/kit'
 import { CreateMultipartUploadCommand } from '@aws-sdk/client-s3'
 import { env } from '$env/dynamic/private'
 import { r2Client } from '$lib/storage/r2.server.js'
+import {
+	createVideoUploadError,
+	VideoErrorCode,
+} from '$lib/video/videoUploadErrors'
 
 export async function POST({ request }) {
 	try {
@@ -18,7 +22,7 @@ export async function POST({ request }) {
 
 		return json({ uploadId: result.UploadId, uploadKey: result.Key })
 	} catch (err) {
-		console.error('Failed to initialize upload:', err)
-		throw error(500, 'Failed to initialize upload')
+		console.error(err)
+		createVideoUploadError(VideoErrorCode.UPLOAD_INITIALIZATION_FAILED, err)
 	}
 }

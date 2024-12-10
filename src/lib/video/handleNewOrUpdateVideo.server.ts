@@ -1,5 +1,9 @@
 // handleNewOrUpdatVideo.server.ts
-import { extractVideoGroup, isErrorWithMessage } from '$lib/utils/misc'
+import {
+	extractVideoGroup,
+	invariantResponse,
+	isErrorWithMessage,
+} from '$lib/utils/misc'
 import { VideoFieldSchema } from '$lib/schemas'
 import VideoUploadProcessor from '$lib/video/videoUploadProcessor'
 import type { VideoMetadata } from '$lib/video/types.video'
@@ -41,6 +45,8 @@ export async function handleNewOrUpdateVideo(
 		try {
 			const { uploadedVideoKey, thumbnailKey, metadata } =
 				await videoProcessor.processVideoUpload(file, userId)
+			invariantResponse(uploadedVideoKey, 'Video key was not generated')
+			invariantResponse(thumbnailKey, 'Thumbnail key was not generated')
 			videoData = {
 				videoKey: uploadedVideoKey,
 				thumbnailKey,

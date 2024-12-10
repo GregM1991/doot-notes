@@ -17,6 +17,7 @@ export enum VideoErrorCode {
 	PREVIEW_GENERATION_FAILED = 'PREVIEW_GENERATION_FAILED',
 	UPLOAD_ABORTED = 'UPLOAD_ABORTED',
 	UPLOAD_THUMBNAIL_FAILED = 'UPLOAD_THUMBNAIL_FAILED',
+	PRESIGNED_URL_FAILED = 'PRESIGNED_URL_FAILED',
 }
 
 export const createVideoUploadError = (
@@ -34,6 +35,7 @@ export const createVideoUploadError = (
 			'Failed to generate video preview',
 		[VideoErrorCode.UPLOAD_ABORTED]: 'Upload was aborted',
 		[VideoErrorCode.UPLOAD_THUMBNAIL_FAILED]: 'Failed to upload thumbnail',
+		[VideoErrorCode.PRESIGNED_URL_FAILED]: 'Unable to get pre-signed url',
 	}
 
 	return new VideoUploadError(messages[code], code, details)
