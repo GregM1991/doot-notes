@@ -16,8 +16,9 @@
     "format": "prettier --write .",
     "prisma:studio": "prisma studio",
     "seed": "bun run ./prisma/seed.ts",
-    "test": "npx --node-options=\"--experimental-vm-modules\" jest src",
-    "test:watch": "npx --node-options=\"--experimental-vm-modules\" jest src --watch",
+    "test": "vitest",
+    "test:watch": "vitest --watch", 
+    "test:coverage": "vitest --coverage",
     "test:ui": "vitest --ui"
   },
   "lint-staged": {
