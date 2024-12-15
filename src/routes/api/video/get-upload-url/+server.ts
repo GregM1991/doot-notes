@@ -26,6 +26,6 @@ export async function POST({ request }) {
 		return json(presignedUrl)
 	} catch (err) {
 		console.error(err)
-		createVideoUploadError(VideoErrorCode.PRESIGNED_URL_FAILED)
+		throw createVideoUploadError(VideoErrorCode.PRESIGNED_URL_FAILED)
 	}
 }

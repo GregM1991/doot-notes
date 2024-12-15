@@ -23,6 +23,9 @@ export async function POST({ request }) {
 		return json({ uploadId: result.UploadId, uploadKey: result.Key })
 	} catch (err) {
 		console.error(err)
-		createVideoUploadError(VideoErrorCode.UPLOAD_INITIALIZATION_FAILED, err)
+		throw createVideoUploadError(
+			VideoErrorCode.UPLOAD_INITIALIZATION_FAILED,
+			err,
+		)
 	}
 }

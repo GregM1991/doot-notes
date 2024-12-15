@@ -119,7 +119,7 @@ class VideoUploadProcessor {
 			}),
 		})
 		if (!response.ok) {
-			createVideoUploadError(VideoErrorCode.UPLOAD_THUMBNAIL_FAILED)
+			throw createVideoUploadError(VideoErrorCode.UPLOAD_THUMBNAIL_FAILED)
 		}
 	}
 
@@ -133,7 +133,7 @@ class VideoUploadProcessor {
 		})
 
 		if (!response.ok) {
-			createVideoUploadError(VideoErrorCode.UPLOAD_INITIALIZATION_FAILED)
+			throw createVideoUploadError(VideoErrorCode.UPLOAD_INITIALIZATION_FAILED)
 		}
 
 		const data = await response.json()
@@ -142,7 +142,7 @@ class VideoUploadProcessor {
 	}
 
 	private async getPresignedUrl(partNumber: number) {
-		// TODO: Create an api layer
+		// TODO: NOT-77 Create an api layer
 		const response = await fetch(`${this.domain}/api/video/get-upload-url`, {
 			method: 'POST',
 			headers: {

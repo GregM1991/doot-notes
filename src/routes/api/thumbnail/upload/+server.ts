@@ -5,6 +5,11 @@ import { PutObjectCommand } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { env } from '$env/dynamic/private'
 import { z } from 'zod'
+import {
+	createVideoUploadError,
+	VideoErrorCode,
+	VideoUploadError,
+} from '$lib/video/videoUploadErrors.js'
 
 const uploadRequestSchema = z.object({
 	key: z.string(),
@@ -39,12 +44,19 @@ export async function POST({ request }) {
 		})
 
 		if (!uploadResponse.ok) {
-			throw new Error('Failed to upload thumbnail')
+			throw createVideoUploadError(
+				VideoErrorCode.UPLOAD_THUMBNAIL_FAILED,
+				await uploadResponse.text(),
+			)
 		}
 
 		return json({ uploadUrl })
 	} catch (error) {
 		console.error('Failed to generate upload URL:', error)
-		return json({ error: 'Failed to generate upload URL' }, { status: 500 })
+		if (error instanceof VideoUploadError) {
+			throw error
+		}
+
+		throw createVideoUploadError(VideoErrorCode.UPLOAD_THUMBNAIL_FAILED, error)
 	}
 }
