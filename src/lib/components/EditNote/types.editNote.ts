@@ -1,4 +1,3 @@
-// types.editNote.ts
 import type {
 	ImageFieldsetListSchema,
 	ImageFieldsetSchema,

@@ -1,4 +1,3 @@
-// videoHandlerFactory.ts
 import { BrowserVideoHandler } from './browserVideoHandler'
 
 export class VideoHandlerFactory {

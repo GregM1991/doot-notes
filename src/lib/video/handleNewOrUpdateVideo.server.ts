@@ -1,4 +1,3 @@
-// handleNewOrUpdatVideo.server.ts
 import {
 	extractVideoGroup,
 	invariantResponse,

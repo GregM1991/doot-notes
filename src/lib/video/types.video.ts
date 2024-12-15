@@ -1,4 +1,3 @@
-// types.video.ts
 export type VideoMetadata = {
 	duration: number
 	width: number

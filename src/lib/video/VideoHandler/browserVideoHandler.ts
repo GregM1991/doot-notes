@@ -1,4 +1,3 @@
-// browserVideoHandler.ts
 import type { MetadataOptions, VideoMetadata } from '../types.video'
 import { BaseVideoHandler } from './baseVideoHandler'
 

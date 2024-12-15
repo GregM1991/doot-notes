@@ -1,4 +1,3 @@
-// types.videoEditor.ts
 import type { VideoEditorVideo } from '../types.components'
 
 export type VideoEditorProps = VideoEditorVideo | null | undefined

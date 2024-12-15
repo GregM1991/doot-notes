@@ -1,4 +1,3 @@
-// helpers.videoEditor.svelte.ts
 import { getNoteVideoThumbSrc } from '$lib/utils/misc'
 import { BrowserVideoHandler } from '$lib/video/VideoHandler/browserVideoHandler'
 import { VideoHandlerFactory } from '$lib/video/VideoHandler/videoHandlerFactory'

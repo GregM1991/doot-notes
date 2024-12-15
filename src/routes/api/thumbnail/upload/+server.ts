@@ -1,4 +1,3 @@
-// api/thumbnail/upload/+server.ts
 import { json } from '@sveltejs/kit'
 import { r2Client } from '$lib/storage/r2.server'
 import { PutObjectCommand } from '@aws-sdk/client-s3'

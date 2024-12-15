@@ -1,4 +1,3 @@
-<!-- EditNote.svelte -->
 <!-- TODO: This is quite the component, will need a clean up at some stage NOT-63 -->
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms'

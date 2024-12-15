@@ -1,4 +1,3 @@
-// newOrUpdate.server.ts
 import { createId as cuid } from '@paralleldrive/cuid2'
 import { redirect, type Action } from '@sveltejs/kit'
 import { requireUserId } from '$lib/utils/auth.server'
