@@ -16,6 +16,10 @@ export function getNoteImgSrc(imageId: string) {
 	return `/api/resources/note-images/${imageId}`
 }
 
+export function getNoteVideoThumbSrc(thumbKey: string) {
+	return `/api/thumbnail/get/${encodeURIComponent(thumbKey)}`
+}
+
 export function debounce<
 	Callback extends (...args: Parameters<Callback>) => void,
 >(fn: Callback, delay: number) {
@@ -121,6 +125,24 @@ export function extractImageGroup(formData: FormData) {
 	return Array.from(imageMap.values())
 }
 
+export function extractVideoGroup(formData: FormData) {
+	const fileEntry = formData.get('video.file')
+	const file = fileEntry instanceof File ? fileEntry : undefined
+
+	if (file && (file.size === 0 || file.name === '')) {
+		return {
+			id: formData.get('video.id')?.toString() ?? null,
+			altText: formData.get('video.alt-text')?.toString() ?? null,
+		}
+	}
+
+	return {
+		file,
+		id: formData.get('video.id')?.toString() ?? null,
+		altText: formData.get('video.alt-text')?.toString() ?? null,
+	}
+}
+
 function imageHasFile(
 	image: ImageFieldset,
 ): image is ImageFieldset & { file: NonNullable<ImageFieldset['file']> } {
@@ -206,4 +228,15 @@ export function customRedirect(url: string = '/', init: ResponseInit = {}) {
 	headers['Location'] = url.toString()
 
 	throw redirect(status, url.toString())
+}
+
+export function isErrorWithMessage(
+	error: unknown,
+): error is { message: string } {
+	return (
+		typeof error === 'object' &&
+		error !== null &&
+		'message' in error &&
+		typeof (error as { message: unknown }).message === 'string'
+	)
 }

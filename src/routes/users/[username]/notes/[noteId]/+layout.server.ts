@@ -23,6 +23,14 @@ export const load = async ({ params, locals }) => {
 					id: true,
 				},
 			},
+			video: {
+				select: {
+					id: true,
+					videoKey: true,
+					thumbnailKey: true,
+					fileName: true,
+				},
+			},
 		},
 		where: {
 			id: noteId,
@@ -40,6 +48,10 @@ export const load = async ({ params, locals }) => {
 		...note,
 		content: paragraphs,
 	}
-
-	return { note: formattedNote, timeSinceUpdate, isOwner }
+	return {
+		note: formattedNote,
+		timeSinceUpdate,
+		isOwner,
+		video: note.video,
+	}
 }
