@@ -1,4 +1,3 @@
-// videoUploadProcessor.ts
 import { env } from '$env/dynamic/private'
 import { r2Client } from '$lib/storage/r2.server'
 import { getDomainUrl, invariant } from '$lib/utils/misc'
@@ -138,7 +137,6 @@ class VideoUploadProcessor {
 
 		const data = await response.json()
 		this.context.uploadId = data.uploadId
-		this.context.key = data.uploadKey
 	}
 
 	private async getPresignedUrl(partNumber: number) {
@@ -189,7 +187,12 @@ class VideoUploadProcessor {
 		await Promise.all(uploadPromises)
 	}
 
-	private async uploadChunk(presignedUrl: string, chunk: Blob, retries = 3) {
+	private async uploadChunk(
+		presignedUrl: string,
+		chunk: Blob,
+		retries = 3,
+		backoffMs = 1000,
+	) {
 		for (let attempt = 0; attempt < retries; attempt++) {
 			try {
 				const response = await fetch(presignedUrl, {
@@ -197,14 +200,25 @@ class VideoUploadProcessor {
 					body: chunk,
 					headers: { 'Content-Type': 'application/octet-stream' },
 				})
+
 				if (response.ok) return
 			} catch (error) {
-				if (attempt === retries - 1) throw error
-				await new Promise(resolve =>
-					setTimeout(resolve, 1000 * Math.pow(2, attempt)),
-				)
+				if (attempt < retries - 1) {
+					await new Promise(resolve =>
+						setTimeout(resolve, backoffMs * Math.pow(2, attempt)),
+					)
+					continue
+				}
+				throw createVideoUploadError(VideoErrorCode.CHUNK_UPLOAD_FAILED, {
+					error,
+					retries,
+				})
 			}
 		}
+
+		throw createVideoUploadError(VideoErrorCode.CHUNK_UPLOAD_FAILED, {
+			retries,
+		})
 	}
 
 	private async completeMultipartUpload() {

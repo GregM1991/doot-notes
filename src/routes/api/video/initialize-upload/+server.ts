@@ -1,4 +1,3 @@
-// api/video/initialize-upload/+server.ts
 import { json } from '@sveltejs/kit'
 import { CreateMultipartUploadCommand } from '@aws-sdk/client-s3'
 import { env } from '$env/dynamic/private'
@@ -20,7 +19,7 @@ export async function POST({ request }) {
 
 		const result = await r2Client.send(command)
 
-		return json({ uploadId: result.UploadId, uploadKey: result.Key })
+		return json({ uploadId: result.UploadId })
 	} catch (err) {
 		console.error(err)
 		throw createVideoUploadError(
