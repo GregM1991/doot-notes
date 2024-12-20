@@ -1,14 +1,20 @@
 import closeWithGrace from 'close-with-grace'
 import { setupServer } from 'msw/node'
-import { handlers as githubHandlers } from './github'
-import { handlers as resendHandlers } from './resend'
+import { handlers } from './handlers/index'
 
-export const server = setupServer(...resendHandlers, ...githubHandlers)
+const isTestEnvironment = process.env.NODE_ENV === 'test'
+const isMockEnvironment = process.env.MOCK_SERVICES === 'true'
+
+export const server = setupServer(...handlers)
 
 server.listen({ onUnhandledRequest: 'warn' })
 
-if (process.env.NODE_ENV !== 'test') {
-	console.info('🔶 Mock server installed')
+if (isTestEnvironment || isMockEnvironment) {
+	server.listen({
+		onUnhandledRequest: isTestEnvironment ? 'error' : 'warn',
+	})
+
+	console.info(`🔶 Mock server running in ${process.env.NODE_ENV} mode`)
 
 	closeWithGrace(() => {
 		server.close()

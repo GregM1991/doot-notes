@@ -12,6 +12,7 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			$msw: path.resolve('./src/msw'),
+			$tests: path.resolve('./tests'),
 		},
 	},
 }

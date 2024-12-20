@@ -96,7 +96,8 @@ const titleMaxLength = 100
 const titleMinLength = 1
 const contentMaxLength = 10000
 const contentMinLength = 1
-const MAX_UPLOAD_SIZE = 1024 * 1024 * 3 // 3MB
+const MAX_IMAGE_UPLOAD_SIZE = 1024 * 1024 * 3 // 3MB
+const MAX_VID_UPLOAD_SIZE = 1024 * 1024 * 100 // 100MB
 
 export const ImageFieldsetSchema = z
 	.object({
@@ -105,20 +106,26 @@ export const ImageFieldsetSchema = z
 		altText: z.string().optional().nullable(),
 	})
 	.refine(({ file }) => {
-		return !file || file.size <= MAX_UPLOAD_SIZE
+		return !file || file.size <= MAX_IMAGE_UPLOAD_SIZE
 	}, 'File size must be less than 3MB')
 export const ImageFieldsetListSchema = z.array(ImageFieldsetSchema)
+
+export const VideoFieldSchema = z.object({
+	id: z.string().nullable(),
+	file: z
+		.instanceof(File)
+		.optional()
+		.refine(
+			file => !file || file.size <= MAX_VID_UPLOAD_SIZE,
+			'File must be less than 100MB',
+		),
+	altText: z.string().nullable(),
+})
+
 export const NoteEditorSchema = z.object({
 	id: z.string().optional(),
 	title: z.string().min(titleMinLength).max(titleMaxLength),
 	content: z.string().min(contentMinLength).max(contentMaxLength),
-})
-
-export const FullNoteEditorSchema = z.object({
-	id: z.string().optional(),
-	title: z.string().min(titleMinLength).max(titleMaxLength),
-	content: z.string().min(contentMinLength).max(contentMaxLength),
-	images: z.array(ImageFieldsetSchema).max(5).optional(),
 })
 
 const MAX_SIZE = 1024 * 1024 * 3 // 3MB
@@ -219,3 +226,7 @@ export const SignupFormSchema = z.object({
 })
 
 export const ResetPasswordSchema = PasswordAndConfirmPasswordSchema
+
+export const uploadResponseSchema = z.object({
+	key: z.string(),
+})

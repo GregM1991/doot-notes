@@ -10,6 +10,7 @@
 		FormGroup,
 		ValidationErrors,
 		Plus,
+		VideoEditor,
 	} from '$lib/components'
 	import type { EditNoteProps } from './types.editNote'
 	import { NoteEditorSchema } from '$lib/schemas'
@@ -17,7 +18,7 @@
 	import { idTestId, imageListTestId } from './consts.editNote'
 	import InfoBar from './InfoBar.svelte'
 
-	let { data, action, images }: EditNoteProps = $props()
+	let { data, action, images, video }: EditNoteProps = $props()
 	const helperState = createState(images)
 	const { form, errors, enhance, formId, constraints, delayed, timeout } =
 		superForm(data, {
@@ -67,7 +68,7 @@
 	</FormGroup>
 	<span>Images</span>
 	<ul class="image-list" data-testid={imageListTestId}>
-		{#each helperState.imageList as image, index (index)}
+		{#each helperState.state.imageList as image, index (index)}
 			<ImageEditor {image} {index} deleteImage={helperState.deleteImage} />
 		{/each}
 	</ul>
@@ -75,6 +76,7 @@
 		<Plus />
 		Add another image
 	</Button>
+	<VideoEditor {video} />
 	<InfoBar {formId} {buttonText} {submitDelayedReason} {delayed} {timeout} />
 	<ValidationErrors errorId={$formId} errors={$errors._errors} />
 </form>
@@ -88,8 +90,12 @@
 		grid-column: 2 / 3;
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-xs);
+		gap: var(--space-s);
 		align-items: stretch;
+		max-width: none;
+		height: 100%;
+		overflow-y: auto;
+		padding-bottom: var(--space-xl);
 
 		@media (--below-med) {
 			grid-column: 1 / 3;

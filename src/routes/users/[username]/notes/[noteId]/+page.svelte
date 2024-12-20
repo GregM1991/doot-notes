@@ -9,7 +9,7 @@
 		Timer,
 		Spinner,
 	} from '$lib/components'
-	import { getNoteImgSrc } from '$lib/utils/misc'
+	import { getNoteImgSrc, getNoteVideoThumbSrc } from '$lib/utils/misc'
 
 	export let data
 </script>
@@ -31,9 +31,24 @@
 			</ul>
 		{/if}
 
-		{#each data.note.content as paragraph}
-			<p>{paragraph}</p>
-		{/each}
+		<div class="content-block">
+			{#each data.note.content as paragraph}
+				<p>{paragraph}</p>
+			{/each}
+		</div>
+		{#if data.video}
+			<span class="hr"></span>
+			<div class="content-block">
+				<h3 class="video-title">Video Note: {data.video.fileName}</h3>
+				<a class="video-link" href="{data.note.id}/video-note">
+					<img
+						src={getNoteVideoThumbSrc(data.video.thumbnailKey)}
+						alt="Thumbnail preview for video note"
+						class="thumbnail"
+					/>
+				</a>
+			</div>
+		{/if}
 	</article>
 
 	{#if data.isOwner}
@@ -57,7 +72,7 @@
 	.article {
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-2xs);
+		gap: var(--space-l);
 		padding-bottom: var(--space-xl);
 		height: 100%;
 		overflow-y: auto;
@@ -75,12 +90,18 @@
 		flex-wrap: wrap;
 		padding: var(--space-xs) 0;
 		list-style: none;
+
+		img {
+			width: 9rem;
+			height: 9rem;
+			border-radius: var(--border-radius);
+		}
 	}
 
-	.image-list img {
-		width: 9rem;
-		height: 9rem;
-		border-radius: var(--border-radius);
+	.content-block {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2xs);
 	}
 
 	.time-since-update {
@@ -92,5 +113,25 @@
 	.buttons {
 		display: flex;
 		gap: var(--space-s);
+	}
+
+	.video-link {
+		width: max-content;
+	}
+
+	.thumbnail {
+		width: 280px;
+		height: 150px;
+	}
+
+	.hr {
+		height: 1px;
+		background: var(--palette-pop);
+	}
+
+	.video-title {
+		font-size: var(--type-step-0);
+		font-family: var(--type-body);
+		letter-spacing: normal;
 	}
 </style>

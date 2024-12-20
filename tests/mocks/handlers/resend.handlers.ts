@@ -1,10 +1,10 @@
 import { faker } from '@faker-js/faker'
 import { HttpResponse, http, type HttpHandler } from 'msw'
-import { requireHeader, writeEmail } from './utils'
+import { requireHeader, writeEmail } from '../utils'
 
 const { json } = HttpResponse
 
-export const handlers: Array<HttpHandler> = [
+export const resendHandlers: Array<HttpHandler> = [
 	http.post(`https://api.resend.com/emails`, async ({ request }) => {
 		requireHeader(request.headers, 'Authorization')
 		const body = await request.json()

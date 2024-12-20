@@ -1,12 +1,10 @@
 import 'dotenv/config'
 import './db-setup.ts'
-import '#app/utils/env.server.ts'
 // we need these to be imported first 👆
 import '@testing-library/jest-dom/vitest'
 import { cleanup } from '@testing-library/svelte/svelte5'
 import { afterEach, beforeEach, vi, type MockInstance } from 'vitest'
 import { server } from '../../tests/mocks'
-import './custom-matchers.ts'
 
 afterEach(() => server.resetHandlers())
 afterEach(() => cleanup())

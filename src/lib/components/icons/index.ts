@@ -3,6 +3,7 @@ import Check from 'virtual:icons/radix-icons/check'
 import CircleBackslash from '~icons/radix-icons/circle-backslash'
 import Cross from 'virtual:icons/radix-icons/cross2'
 import DotsHorizontal from 'virtual:icons/radix-icons/dotsHorizontal'
+import DoubleArrowLeft from 'virtual:icons/radix-icons/double-arrow-left'
 import Download from 'virtual:icons/radix-icons/download'
 import Eraser from 'virtual:icons/radix-icons/eraser'
 import EnvelopeClosed from 'virtual:icons/radix-icons/envelopeClosed'
@@ -25,6 +26,7 @@ export {
 	CircleBackslash,
 	Cross,
 	DotsHorizontal,
+	DoubleArrowLeft,
 	Download,
 	Eraser,
 	EnvelopeClosed,

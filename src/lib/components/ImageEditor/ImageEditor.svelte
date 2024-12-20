@@ -12,7 +12,6 @@
 <li class="image-list-item">
 	<!-- TODO: //create form action for delete later NOT-46 -->
 	<button
-		formaction="?/delete"
 		class="remove-image-button"
 		name="id"
 		value={image?.id ?? index}

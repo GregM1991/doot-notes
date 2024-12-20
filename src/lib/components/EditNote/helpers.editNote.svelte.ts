@@ -7,27 +7,22 @@ export const generateCopy = (formId: string | undefined, title: string) => ({
 })
 
 export function createState(images: Array<ImageFieldset> | undefined) {
-	let imageList = $state(
-		images?.length
+	let state = $state({
+		imageList: images?.length
 			? images
 			: [{ id: undefined, file: undefined, altText: undefined }],
-	)
+	})
 
 	return {
-		get imageList() {
-			return imageList
-		},
-		set imageList(value: Array<ImageFieldset>) {
-			imageList = value
-		},
+		state,
 		addEmptyImage() {
-			imageList = [
-				...imageList,
+			state.imageList = [
+				...state.imageList,
 				{ id: undefined, file: undefined, altText: undefined },
 			]
 		},
 		deleteImage(index: number) {
-			imageList = imageList.filter((_, i) => i !== index)
+			state.imageList = state.imageList.filter((_, i) => i !== index)
 		},
 	}
 }

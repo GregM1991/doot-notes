@@ -25,7 +25,7 @@ export function createUser() {
 				})
 			)
 		})
-		.slice(0, 20)
+		.slice(0, 12)
 		.toLowerCase()
 		.replace(/[^a-z0-9_]/g, '_')
 
@@ -35,8 +35,6 @@ export function createUser() {
 		email: `${username}@example.com`,
 	}
 }
-
-// TODO: Create password util
 
 // TODO: getNoteImages util
 
