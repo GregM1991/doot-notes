@@ -20,6 +20,10 @@ export default [
 		},
 		rules: {
 			'prefer-const': 'off',
+			'@typescript-eslint/no-unused-vars': [
+				'error',
+				{ argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+			],
 		},
 	},
 	{

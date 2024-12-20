@@ -100,7 +100,7 @@ class VideoUploadProcessor {
 
 	private async uploadThumbnail(file: File): Promise<void> {
 		if (!(this.videoHandler instanceof ServerVideoHandler))
-			throw new Error('Handler should not exist in this environment')
+			throw new Error('Browser Handler should not exist in this environment')
 
 		const videoThumbnailBlob = await this.videoHandler.generatePreview(file)
 		invariant(this.context.key, 'No key exists for this video')
